@@ -1,0 +1,312 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>http://example.org/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Mon, 03 Jan 2022 15:44:03 +0800</lastBuildDate><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml"/><item><title>Git指南</title><link>http://example.org/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 15:44:03 +0800</pubDate><guid>http://example.org/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER http://example.org/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h2 id="零目的">零、目的&lt;/h2>
+&lt;ol>
+&lt;li>掌握各类场景下如何更好使用Git&lt;/li>
+&lt;li>减少因为代码提交问题带来的生产环境问题&lt;/li>
+&lt;/ol>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/69f298d6-b1a5-4570-99fb-89085f8a9c67/Untitled.png" alt="Git几大工作区域一览">&lt;/p>
+&lt;p>Git几大工作区域一览&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;h2 id="一了解git">一、了解Git&lt;/h2>
+&lt;ol>
+&lt;li>什么是Git？
+&lt;ol>
+&lt;li>一款分布式版本管理系统&lt;/li>
+&lt;li>优点：分布式、性能、版本的文件完整性
+&lt;ol>
+&lt;li>分布式，可以让你在本地提交代码（对于SVN而言没有网络就无法提交代码，在家也能愉快地写代码）；&lt;/li>
+&lt;li>性能，对于我们的一般项目而言，你感受不到合并时性能的差别（与SVN比较）；&lt;/li>
+&lt;li>版本的文件完整性：git背后设计理念是快照思想。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Git概念
+&lt;ol>
+&lt;li>仓库(repository)
+&lt;ol>
+&lt;li>用于代码版本管理&lt;/li>
+&lt;li>一个git仓库管理了三棵“树”，分别是
+&lt;ol>
+&lt;li>Working Directory（工作目录）&lt;/li>
+&lt;li>Index（暂存区）&lt;/li>
+&lt;li>HEAD（本地仓库）&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>大多数时候你通过编辑器只能对工作目录操作，操作其他两个“树”（区域）必须使用git命令才可以。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>分支(branch)
+&lt;ol>
+&lt;li>用于并行独立开发，更方便管理不同开发任务的进度&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Git常用命令
+&lt;ol>
+&lt;li>git add&lt;/li>
+&lt;li>git commit&lt;/li>
+&lt;li>git push&lt;/li>
+&lt;li>git pull&lt;/li>
+&lt;li>git branch&lt;/li>
+&lt;li>git switch&lt;/li>
+&lt;li>git restore&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="二最常见的一种使用场景">二、最常见的一种使用场景&lt;/h2>
+&lt;p>陈主管说他已经开发好了整个架构，需要我去把几个功能实现一下，并提交到dev分支让他方便Review。&lt;/p>
+&lt;ul>
+&lt;li>基本流程
+&lt;ol>
+&lt;li>先从远程服务器把代码拉到本地：&lt;code>git clone http://197.68.6.70/demo-project&lt;/code>&lt;/li>
+&lt;li>此时你拥有的是主干master分支的代码，我们需要切换到dev分支进行开发：
+&lt;ol>
+&lt;li>&lt;code>git fetch --all&lt;/code>&lt;/li>
+&lt;li>&lt;code>git switch --track origin/dev&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>在&lt;strong>工作目录&lt;/strong>写代码&lt;/li>
+&lt;li>提交变更的文件到&lt;strong>暂存区&lt;/strong>：&lt;code>git add &amp;lt;somefile&amp;gt;&lt;/code>&lt;/li>
+&lt;li>提交文件到&lt;strong>本地仓库&lt;/strong>：&lt;code>git commit -m &amp;quot;xxx&amp;quot;&lt;/code>&lt;/li>
+&lt;li>把我的代码推送到远程仓库（同步）：&lt;code>git push&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>一些case
+&lt;ol>
+&lt;li>我想把别人在dev分支上开发的代码同步下来看看：&lt;code>git pull --rebase&lt;/code> 或者 &lt;code>git pull&lt;/code> （前者会让你的commit log更加清爽一些，没有一些额外的merge commit log）&lt;/li>
+&lt;li>我提交到暂存区的代码搞错了：&lt;code>git restore &amp;lt;files or dir&amp;gt;&lt;/code> （在使用IDEA时，这个场景不太会出现，因为IDEA往往是把add 和 commit的操作会合并成一个处理）&lt;/li>
+&lt;li>我提交到本地仓库的代码搞错了：
+&lt;ol>
+&lt;li>最近的一个commit：&lt;code>git reset -mixed HEAD~1&lt;/code>&lt;/li>
+&lt;li>历史中的一个commit：
+&lt;ol>
+&lt;li>使用 &lt;code>git reset --mixed &amp;lt;commit_id&amp;gt;&lt;/code>，然后重新提交正确的代码&lt;/li>
+&lt;li>使用 &lt;code>git revert &amp;lt;commit_id&amp;gt;&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>我提交到远程仓库的代码搞错了：
+&lt;ol>
+&lt;li>只有一个建议：&lt;strong>请写出正确的代码，重新提交！所以，请在每次push之前谨慎！&lt;/strong>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="三最佳实践">三、最佳实践&lt;/h2>
+&lt;ol>
+&lt;li>开发过程中
+&lt;ol>
+&lt;li>如果你开发的分支和多人一同开发，建议每天进行一次 &lt;code>git pull --rebase&lt;/code> 与 &lt;code>git push&lt;/code>&lt;/li>
+&lt;li>如果你是比较独立的代码开发：
+&lt;ol>
+&lt;li>建议自己拉一个分支进行开发 &lt;code>git switch -c &amp;lt;new_branch_name&amp;gt;&lt;/code> 。&lt;/li>
+&lt;li>开发结束后，先把&lt;strong>主开发分支&lt;/strong>合并到你的分支：&lt;code>git merge dev&lt;/code>&lt;/li>
+&lt;li>没问题后再把你的分支合并到主开发分支：&lt;code>git switch dev&lt;/code> ，&lt;code>git merge &amp;lt;new_branch_name&amp;gt;&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>⭐准备上线前
+&lt;ol>
+&lt;li>和上一个版本代码对比(&lt;code>git diff release master&lt;/code>)，确认release分支是&lt;strong>正确的需要上线的代码&lt;/strong>&lt;/li>
+&lt;li>使用Jenkins对release分支进行自动打包与部署，在工作空间获取上线代码包（禁止本地打包）&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>上线完成后
+&lt;ol>
+&lt;li>在gitlab上提交release合并至master分支的merge request，由技术经理确认合并；&lt;/li>
+&lt;li>对最新的master分支进行tag，方便反查源码；&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="四几个原则">四、几个原则&lt;/h2>
+&lt;h3 id="强制">强制&lt;/h3>
+&lt;ol>
+&lt;li>禁止&lt;code>git push -f&lt;/code>&lt;/li>
+&lt;li>禁止&lt;code>git push master&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;h3 id="建议">建议&lt;/h3>
+&lt;ol>
+&lt;li>建议分支命名：master、release、dev、dev_xx
+&lt;ol>
+&lt;li>master分支为线上正在运行的代码；不允许手动提交；只能通过页面的merge request进行代码合并；每次上完线后把分支(release)代码合并到master&lt;/li>
+&lt;li>release为测试环境对应的代码，jenkins均从该分支进行自动构建与部署&lt;/li>
+&lt;li>dev，以及其他分支为开发分支，较为自由。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>减少对&lt;code>git checkout&lt;/code>的使用，已经拆分为 &lt;code>git switch&lt;/code> 和 &lt;code>git restore&lt;/code>&lt;/li>
+&lt;li>不要把二进制文件放到git仓库中进行版本管理&lt;/li>
+&lt;/ol>
+&lt;h2 id="五实现方式之数据结构">五、实现方式之数据结构&lt;/h2>
+&lt;p>在Git当中，&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-markdown" data-lang="markdown">// 一个文件就是字节数组
+type blob = array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">byte&lt;/span>&amp;gt;
+// 一个目录包含文件或者其他目录
+type tree = map&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">string&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">,&lt;/span> &lt;span style="color:#658b00">tree&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">|&lt;/span> &lt;span style="color:#658b00">blob&lt;/span>&amp;gt;
+// 一个commit包含它的父节点，原始信息，顶级目录（快）
+type commit = struct {
+parents: array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">commit&lt;/span>&amp;gt;
+author: string
+message: string
+snapshot: tree
+}
+// 文件、目录、commit最终都以object类型进行存储
+type object = blob | tree | commit
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样看起来，每一次修改文件并提交git仓库后，都会新建一个blob对象，并作为新的快照内部的文件使用，因此，git仓库存储空间可能会越来越大，特别是对于那些二进制文件（非文本文件，难以压缩）。这时候可以通过&lt;code>git gc&lt;/code>进行git仓库压缩，这里面的算法大家可以自己去探索一下。根据我的经验，能大概缩小到原本的1/3~1/2。&lt;/p>
+&lt;h2 id="六参考">六、参考&lt;/h2>
+&lt;h3 id="cheatsheet">Cheatsheet&lt;/h3>
+&lt;ol>
+&lt;li>&lt;a href="https://ndpsoftware.com/git-cheatsheet.html#loc=index;">&lt;strong>一个可视化的Git Cheatsheet&lt;/strong>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://about.gitlab.com/images/press/git-cheat-sheet.pdf">Gitlab官方Cheatsheet&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/k88hudson/git-flight-rules">https://github.com/k88hudson/git-flight-rules&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h3 id="原理学习">原理学习&lt;/h3>
+&lt;ol>
+&lt;li>&lt;a href="https://draveness.me/whys-the-design-git-the-best/">为什么你应该使用 Git 进行版本控制 - 面向信仰编程 (draveness.me)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.progit.cn/">Pro Git 中文版（第二版）&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://missing.csail.mit.edu/2020/version-control/">Version Control (Git) · the missing semester of your cs education (mit.edu)&lt;/a>&lt;/li>
+&lt;/ol>
+- http://example.org/posts/2021git%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2020]互联网技术社招总结</title><link>http://example.org/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</link><pubDate>Sun, 28 Mar 2021 18:00:00 +0000</pubDate><guid>http://example.org/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</guid><description>LIFE CODER http://example.org/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/ -&lt;h1 id="准备">准备&lt;/h1>
+&lt;h3 id="用人单位招聘诉求">用人单位招聘诉求&lt;/h3>
+&lt;p>对于每个用人单位来说，他们有两个诉求：1.招聘到能够立马(尽快)胜任工作并解决业务痛点的人；2.减少用人成本。&lt;/p>
+&lt;p>往往第二点是和招聘人利益是冲突的，所以我们只能通过第一点来进行突破，也就是大家常说的你要和你的岗位有较高的匹配度。&lt;/p>
+&lt;p>对于互联网岗位软件工程师来说，我认为有三方面可以讨论&lt;strong>匹配度：1.技术理解深度；2.业务场景理解以及抽象转换的能力；3.团队管理能力。&lt;/strong>&lt;/p>
+&lt;h3 id="简历完善">简历完善&lt;/h3>
+&lt;p>简历是面试双方的书面信息，其目的是为了使得面试官对面试者产生好奇心，且协助双方在面试过程更有内容可说。因此，可以从以下几个角度思考简历是否可以进一步优化。简历虽然很重要，但是也没必要说做到尽善尽美，主要原则还是信息准确以及一定的美观。&lt;/p>
+&lt;ol>
+&lt;li>信息是否罗列明确且无缺失。&lt;/li>
+&lt;li>可量化的地方尽可能做量化。&lt;/li>
+&lt;li>个人特色是否体现在简历之上(最好是对工作有贡献的)。&lt;/li>
+&lt;li>内容是否与目标岗位有比较好的匹配度。&lt;/li>
+&lt;/ol>
+&lt;h3 id="个人状况">个人状况&lt;/h3>
+&lt;p>在做面试准备之前，先要了解个人的软硬技能方面的状况来发现匹配度上的差异，以做针对性的准备。&lt;/p>
+&lt;h3 id="面试准备">面试准备&lt;/h3>
+&lt;p>在面试中，往往会有以下几块内容的沟通：&lt;strong>个人介绍、项目介绍、算法题、系统设计题、专业知识、技术方案、向面试官提问&lt;/strong>。系统设计题往往出现在后面几轮部门领导的面试，算法、专业知识则通常出现在第一二轮。技术方案则都会有所涉及。&lt;/p>
+&lt;p>在社招中，大部分公司会更注重你&lt;strong>过往的项目经历&lt;/strong>，且会在项目上挖掘你的专业知识以及难点技术方案。所以这一块需要深入剖析，包括技术方案、业务场景、拥抱变化的能力(高可用、高并发)等常见的互联网应用的问题。&lt;/p>
+&lt;p>由于近些年计算机大厂竞争愈发激烈，算法题与专业知识也经常单独进行考察。算法题一般就刷LeetCode中等就可以；专业知识包括数据结构、操作系统、网络、你的主语言使用理解等。&lt;/p>
+&lt;p>对于向面试官提问，有人说很重要，但是我认为这往往是锦上添花的效果。主导你拿到offer的还是前面提到的基本面。这一块通常体现了你对这份工作的向往程度。&lt;/p>
+&lt;p>贵司一天工作的时间线大概是怎么样的？&lt;/p>
+&lt;p>印象最深的一次工作内容是什么？&lt;/p>
+&lt;p>最近加班频繁吗？&lt;/p>
+&lt;p>最后，一场面试，当你说话的时间占比越大，往往就越有可能顺利通过。&lt;/p>
+&lt;h1 id="过程">过程&lt;/h1>
+&lt;ol>
+&lt;li>中小厂&lt;/li>
+&lt;/ol>
+&lt;p>中小厂对人的要求很直白，能干活，最好技术栈比较贴合，如果面试者过往接触的业务一致性一样就更好了。笔者经历了杭州的一家互联网券商的面试，整体体验感难度适中，问题也都比较贴合实际开发过程会碰到的问题。这也可能是因为整体技术栈重合度较高的原因。算法题、专业知识、技术方案（并发、消息、缓存、Scala）。没有涉及系统设计。&lt;/p>
+&lt;ol>
+&lt;li>大厂&lt;/li>
+&lt;/ol>
+&lt;p>国内大厂面试风格分为两派，项目技术方案为主与算法为主。前者主要在于项目这一块会问的非常深入，并随之伴随各类技术方案的讨论，强调实战经验。后者对于社招也要提出相当的算法与专业知识的要求，以便于进行高效的过滤。&lt;/p>
+&lt;p>大厂的算法题会结合更实际的场景来出题，而非LeetCode的原题。比如，提供一天登录登出日志文件(time, uid, action)，问如何计算得到在线人数峰值时间点以及90%峰位时间点。&lt;/p>
+&lt;p>大厂的项目介绍与技术方案往往是大头部分，面试官会从各个角度来测试你工作的含金量与价值。业务问题如何抽象设计、系统如何拆分设计、如何应对未来的大流量、中间件的选择考虑点等。这块可以参考&lt;a href="https://github.com/donnemartin/system-design-primer">system-design-primer&lt;/a>。&lt;/p>
+&lt;ol>
+&lt;li>外企&lt;/li>
+&lt;/ol>
+&lt;p>外企确实与国内企业差别很大，面试体验感很不错，你会感觉到你被认真对待。往往会在1天完成所有的面试。面试轮次会在3-4次。笔者面试的岗位更偏向于业务部门，所有问题都围绕实际场景展开。比如，算法题是设计一个类，提供两个操作：记录当前系统的负载和返回近5分钟的平均负载。另一个是设计一个命令行工具，实现对参数的读取与处理。&lt;/p>
+&lt;p>外企社招时对员工的要求普遍较高，并非单靠刷题就可以。比如在系统题中会考察如何进行项目管理，如何测试，如何运维等等非常全面的问题。另一方面，由于外企的产品往往面向全球，会有诸如如何解决多地数据中心同步的问题、攻击网关设计等国际化的问题。&lt;/p>
+&lt;h1 id="结论">结论&lt;/h1>
+&lt;p>在面试的准备与进行过程中，是对我们自己过往的一次总结与提升。面试失败也不必过于难过，不是每个面试官都是那么专业，也可能是你与这家公司这个岗位目前仍然不那么契合。&lt;/p>
+&lt;p>每一个人有每一个人的特色与优劣势，每一家公司有每一家公司的喜好。我们能做的就是保持自信，扬长避短，以一种积极友善的态度把握整个面试过程的主动性（比如有些面试官说让你简单说说xxx，此时若是你擅长的，你应该抓住机会表现出你的特色）&lt;/p>
+&lt;h1 id="站在巨人的肩膀上">站在巨人的肩膀上&lt;/h1>
+&lt;ol>
+&lt;li>&lt;a href="https://www.imwzk.com/posts/2020-10-05-an-incomplete-guide-to-campus-recruitment-interviews/">校招面试不完全指南&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mindhacks.cn/2011/11/04/how-to-interview-a-person-for-two-years/">怎样花两年时间去面试一个人&lt;/a>&lt;/li>
+&lt;/ol>
+- http://example.org/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>系统复杂度-1</title><link>http://example.org/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/</link><pubDate>Sat, 06 Jun 2020 18:00:00 +0000</pubDate><guid>http://example.org/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/</guid><description>LIFE CODER http://example.org/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/ -&lt;h1 id="0x1-introduction">0x1 Introduction&lt;/h1>
+&lt;p>当你接手一个不熟悉的系统的时候，你可能想找一下系统文档（但是已经很久没更新了）；你可能想看一下有没有单元测试（很多根本跑不起来了）；这时候，除了问同事，只能自己从几千几万行代码中开始摸索。&lt;/p>
+&lt;p>当你开发一个新系统的时候，由于某些原因需要调整局部的逻辑，因为没有相应的单元测试，结果在移交给测试后才发现各种顾此失彼的bug出现了。&lt;/p>
+&lt;p>当你的系统性能已经无法再满足时，又或者系统的迭代成本异常大时，此时就会可能需要重写或重构。此时，由于没有单元测试，自动化集成测试，你不得不拉上更多的同事来参与此次系统优化，以保证系统的可靠性。&lt;/p>
+&lt;p>当你的系统需要有新的客户接入时，因为没有最新的系统文档或使用说明书，你只能电话、口头地来教别人怎么接入你的系统。&lt;/p>
+&lt;p>上述的几个场景，都是因为系统的配套设施（文档、测试）没有同步完善，引起接入、迭代、重构的成本显著增加。这不是我们想看到的。相对地，系统的快速迭代的开发模式已经受到了广泛的认同，我们怎么在这个过程能够一直保持高效、可靠的输出呢？对于这个问题，本文尝试从系统复杂度、重构、设计模式、测试这几个角度来讨论这个问题，希望能给大家一些新的思考。&lt;/p>
+&lt;h1 id="0x2-系统复杂度">0x2 系统复杂度&lt;/h1>
+&lt;p>首先，算法有复杂度一说，在所有的算法课程基本都会在前1-2章围绕这个话题展开详细的定义与分析讨论。算法复杂度一般分为时间复杂度与空间复杂度，可以说是该算法解决问题的时间与空间成本。&lt;/p>
+&lt;p>在工作上，我们维护的往往是一个系统，一个工程。一个系统的复杂度定义，似乎并不是那么容易。本章节大多数内容来源于&lt;em>A Philosiphy of Software Designing&lt;/em>。这本书中对于系统的复杂度定义非常的实际，&lt;strong>软件系统结构中让其变得难以理解且难以变更的部分组成了系统的复杂性&lt;/strong>。回顾本文引子部分，其实都是系统难以理解、难以修改导致的结果。&lt;/p>
+&lt;p>这个定义相对于算法复杂度而言，显得非常主观，没有客观的评估准则，各个人的理解也会大相径庭。因此，书中进一步展开了几种复杂性症状。&lt;/p>
+&lt;ol>
+&lt;li>变化放大(change amplication)：当你需要改动某一个逻辑时，会涉及到多处代码变更。&lt;/li>
+&lt;li>认知负担(cognitive load)：有时尽管只写了很少的代码，但是对于他人来说异常难以理解，请尝试将它改写成容易理解的方式。&lt;/li>
+&lt;li>不可知(unknown unknowns)：不知道哪里有坑存在，就算BUG出现了。&lt;/li>
+&lt;/ol>
+&lt;p>总的来说，控制住整个系统的复杂度，将是保障我们高效、可靠工作的核心。低复杂度的系统，大大降低了开发过程中的心智压力。&lt;/p>
+&lt;h1 id="0x3-测试">0x3 测试&lt;/h1>
+&lt;p>为什么要把测试放在靠前的位置呢？测试是将一直伴随在生产代码演进的，是软件的&lt;strong>可靠性&lt;/strong>保证的重要工具。&lt;/p>
+&lt;p>拿建筑工程做一个类比，设计一幢房屋时，对于设计人员，最终产出的是施工图。那么，它的设计依据是什么呢？《规范》与模型的承载能力分析。前者，描述了什么类型的结构需要怎么样的设计，这种属于基本要求。后者，通过基于物理建模软件进行专门的结构性能分析，来确保本次设计的&lt;strong>可靠性&lt;/strong>。&lt;/p>
+&lt;p>软件工程相比建筑工程，非常年轻，一方面没有条条框框地规则（P3C也仅仅是一些基础性条约）；另一方面，因为大部分软件工程不涉及生命财产，也可以通过快速更新来解决问题，所以导致大多数人对&lt;strong>可靠性&lt;/strong>的关注度远不如建筑工程。先不说这样的态度容易使生产问题频发，另外也会让你的工作开展体验感相对差劲，总是在返工。&lt;/p>
+&lt;p>因此，我们需要在注重软件的可靠性。我们的第一个工具就是（自动化）测试。好的测试，就能够有效地模拟真实地业务场景，来校验代码的正确性。好的测试，能够让新加入的开发人员更容易理解系统是如何使用的。好的测试，能够促进系统架构的合理化——高内聚低耦合。但是，好的测试代码并不容易写，因为测试代码的思考方式与一般的coding并不一样，它更像是生产代码的前置条件、运行场景。&lt;/p>
+&lt;p>测试通常分为四个层次：单元测试（Unit Testing）、集成测试（Integration Testing）、系统测试（System Testing）、验收测试（Acceptance Testing）。其中离开发最近的是单元测试，一般覆盖的是函数以及类的功能正确性。集成测试则是对系统内部的各模块之间的协作是否正确，通常按内部接口进行覆盖测试。系统测试则是验证对外接口能否在各种情况下能够正常地运行（性能测试也属于这一层次）。验收测试属于辅助性的测试，范围也相对更广，不同的系统也会需要不同的验收测试，例如安全测试、易用性测试、兼容性测试等等。&lt;/p>
+&lt;p>这里我们主要谈一下单元测试，因为这是所有测试的基本面，也是开发人员所需要特别关注的地方。先考虑一下是先写生产代码还是先写测试代码。第一个角度是，当然是先写生产代码了，没有生产代码怎么测试呢？第二个角度是，先写测试代码再写生产代码，因为测试代码是功能的运行场景，只有先把这些前置条件搞清楚了，才能写出正确的生产代码。也许你会说，我可以先大脑过一下基本场景，然后再写生产代码，再写测试代码，这应该是大部分人目前的方式，但是不知道你有没有发现，这种方式写出来的测试代码往往会因为前期的假设导致覆盖率很低。&lt;/p>
+&lt;p>在2003年，Kent Beck提出了Test-Driven development（TDD）这样一种开发模式。&lt;/p>
+&lt;ol>
+&lt;li>添加一个测试&lt;/li>
+&lt;li>运行所有测试，是否有失败&lt;/li>
+&lt;li>一旦有失败的测试，就开始写生产代码，直到该测试通过为止。&lt;/li>
+&lt;li>所有测试通过后，就必须开始写测试代码，直到有一个测试无法通过。&lt;/li>
+&lt;/ol>
+&lt;p>可能，你会觉得这样非常耗时，但是你得明确，你在一个功能开发的耗时并不仅仅是写了那一堆生产代码而已，还包括测试、代码修复等等。所以，这种方式只是将一些顺序进行了调换，却能为最终的正确性铺垫很多。&lt;/p>
+&lt;h1 id="0x4-重构">0x4 重构&lt;/h1>
+&lt;p>重构与重写都是试图优化系统复杂度的方式，在不同的场景（代码状况、工期等）会选择不同的方式，但是大多时候会采用重构的方式来实现。&lt;/p>
+&lt;p>先来看一下wikipedia对重构的定义：&lt;/p>
+&lt;p>In &lt;a href="https://en.wikipedia.org/wiki/Computer_programming">computer programming&lt;/a> and &lt;a href="https://en.wikipedia.org/wiki/Software_design">software design&lt;/a>, &lt;strong>code refactoring&lt;/strong> is the process of restructuring existing &lt;a href="https://en.wikipedia.org/wiki/Computer_code">computer code&lt;/a>—changing the &lt;em>&lt;a href="https://en.wikipedia.org/wiki/Decomposition_(computer_science)">factoring&lt;/a>&lt;/em>—without changing its external behavior. Refactoring is intended to improve the design, structure, and/or implementation of the &lt;a href="https://en.wikipedia.org/wiki/Software">software&lt;/a> (its &lt;em>&lt;a href="https://en.wikipedia.org/wiki/Non-functional_requirement">non-functional&lt;/a>&lt;/em> attributes), while preserving its &lt;a href="https://en.wikipedia.org/wiki/Functional_requirement">functionality&lt;/a>. Potential advantages of refactoring may include improved code &lt;a href="https://en.wikipedia.org/wiki/Readability">readability&lt;/a> and reduced &lt;a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">complexity&lt;/a>; these can improve the &lt;a href="https://en.wikipedia.org/wiki/Source_code">source code&lt;/a>&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Maintainability">maintainability&lt;/a> and create a simpler, cleaner, or more expressive internal &lt;a href="https://en.wikipedia.org/wiki/Software_architecture">architecture&lt;/a> or &lt;a href="https://en.wikipedia.org/wiki/Object_model">object model&lt;/a> to improve &lt;a href="https://en.wikipedia.org/wiki/Extensibility">extensibility&lt;/a>.&lt;/p>
+&lt;p>在系统复杂度膨胀到一定程度后，添加功能异常困难、系统变得难以理解、修改的时候，重构往往就需要开始执行，从而降低系统的复杂度，让我们能够更高效地开发、修改代码。所以重构并不是某一个开发阶段，而是一种开发工具，帮助我们提升效率。&lt;/p>
+&lt;p>在《重构》这本书中，提到很多地坏味道，本质就是一些让系统复杂度变高的地方，你可以发现它与第二节中的那些症状很类似。&lt;/p>
+&lt;p>这里特别想说的是，重构的过程中，其实会采用不少设计模式，但是并不能说设计模式就是万能药。设计模式是我们需要了解的，但是我们需要记住的是它们出现的目的是什么，我这里可以列举几个：&lt;/p>
+&lt;ol>
+&lt;li>减少继承，多采用组合的方式来丰富类的功能。&lt;/li>
+&lt;li>面对各种功能的变更，能够将变化（影响）的范围尽可能的缩小到1个或者少量的类中。&lt;/li>
+&lt;li>面向接口编程。&lt;/li>
+&lt;/ol>
+&lt;h1 id="0x5-结论">0x5 结论&lt;/h1>
+&lt;ol>
+&lt;li>除了写好生产代码以外，我们要多多关注一些周边的工具：自动化测试、持续继承、文档等。&lt;/li>
+&lt;li>对于一个持续迭代的系统，系统复杂度是需要重点关注的。&lt;/li>
+&lt;li>尝试把你的测试代码前置。&lt;/li>
+&lt;li>重构能够帮助你降低系统复杂度。&lt;/li>
+&lt;li>三次原则：第一次做某件事时只管去做；第二次做类似的事会产生反感（蹩脚），但无论如何还是可以去做；第三次再做类似的事，你就应该重构/反思。&lt;/li>
+&lt;/ol>
+&lt;h1 id="站在巨人的肩膀上">站在巨人的肩膀上&lt;/h1>
+&lt;ol>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Software_testing#Testing_levels">https://en.wikipedia.org/wiki/Software_testing#Testing_levels&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Code_refactoring">https://en.wikipedia.org/wiki/Code_refactoring&lt;/a>&lt;/li>
+&lt;li>Ousterhout, John. &lt;em>A Philosophy of Software Design&lt;/em>. Yaknyam Press, 2018.&lt;/li>
+&lt;li>Fowler, Martin. &lt;em>Refactoring: improving the design of existing code&lt;/em>. Addison-Wesley Professional, 2018.&lt;/li>
+&lt;li>Martin, Robert C. &lt;em>The clean coder: a code of conduct for professional programmers&lt;/em>. Pearson Education, 2011.&lt;/li>
+&lt;/ol>
+- http://example.org/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Java传值方式讨论</title><link>http://example.org/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</link><pubDate>Sun, 27 Oct 2019 17:32:00 +0000</pubDate><guid>http://example.org/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</guid><description>LIFE CODER http://example.org/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/ -&lt;p>起因是一次华为面试题&lt;/p>
+&lt;blockquote>
+&lt;p>Java在进行函数调用时，参数时传值还是传引用？&lt;/p>
+&lt;/blockquote>
+&lt;p>当时，我考虑的是Java变量只有两类，基本类型与引用类型，引用类型本质应该是属于指针。所以基本类型与引用类型的实参传递都是值本身，即创建一个副本赋予形参。面试官给的仅仅是笑而不语……&lt;/p>
+&lt;p>而后在工作了一段时间回想这个问题并没有那么简单。&lt;/p>
+&lt;p>碰到问题首先要给好定义才能进一步做分析。通过Wiki上关于&lt;a href="https://en.wikipedia.org/wiki/Evaluation_strategy">Evaluation strategy&lt;/a>的介绍，其中本文主要关注的这三种方式：call by value, call by reference and call by sharing。&lt;/p>
+&lt;ol>
+&lt;li>call by value即按值传参，将&lt;strong>实参创建一个新副本赋予形参&lt;/strong>，供函数使用，并且函数对参数的操作，对caller而言是不可见的，即immutable。&lt;/li>
+&lt;li>call by reference即传引用，函数中的参数就是&lt;strong>对实参的直接引用&lt;/strong>，而不再是一份拷贝（也可以理解成是对实参的一个常量指针），因此是mutable的。&lt;/li>
+&lt;li>call by sharing，认为该编程语言中所有值都基于对象而非原始类型。在传参过程中赋予形参的是&lt;strong>引用的拷贝&lt;/strong>。因为是引用的拷贝，所以函数体内只能对原对象进行操作，但是不能修改实参引用本身。所以对对象而言，这种传参方式是mutable的，但是对于引用本身，又是immutable的。&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>现在回头来看下C，C++和Java。&lt;/p>
+&lt;p>C语言中策略很简单，一切均位call by value，尽管它有指针变量，但是它也是传的实参的拷贝。&lt;/p>
+&lt;p>C++中出现了引用类型的变量，并且传参时也可以指定call by reference。如，&lt;code>void func(int&amp;amp; n)&lt;/code>&lt;/p>
+&lt;p>Java当中考虑到指针的复杂性，于是直接砍掉了指针变量，只剩下了基本变量与引用变量，另外也不允许选择不同的传参方式。首先看基本变量，比较简单，就是call by value的表现。其次，对于引用变量而言，我们在函数可以对引用的对象进行操作，并且对caller是可见的，但是无法让实参引用到一个新的对象上去，即我们无法在函数中对实参进行assignment相关的操作，即引用本身是immutable的。这就是call by sharing。&lt;/p>
+&lt;p>这里附上知乎一位答主的回答：&lt;/p>
+&lt;blockquote>
+&lt;p>综上所述，对于Java的函数调用方式最准确的描述是：&lt;strong>参数藉由值传递方式，传递的值是个引用。（句中两个“值”不是一个意思，第一个值是evaluation result，第二个值是value content）&lt;/strong>&lt;/p>
+&lt;p>由于这个描述太绕，而且在字面上与Java总是传引用的事实冲突。于是对于Java，Python、Ruby、JavaScript等语言使用的这种求值策略，起了一个更贴切名字，叫&lt;a href="#Call_by_sharing">Call by sharing&lt;/a>。这个名字诞生于40年前。&lt;/p>
+&lt;p>作者：Yolanda&lt;/p>
+&lt;p>链接：https://www.zhihu.com/question/31203609/answer/112157038&lt;/p>
+&lt;p>来源：知乎&lt;/p>
+&lt;p>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。&lt;/p>
+&lt;/blockquote>
+&lt;hr>
+&lt;p>参考文献：&lt;/p>
+&lt;ol>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Evaluation_strategy">https://en.wikipedia.org/wiki/Evaluation_strategy&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Reference_(computer_science)">https://en.wikipedia.org/wiki/Reference_(computer_science)&lt;/a>&lt;/li>
+&lt;/ol>
+- http://example.org/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/ - 2019-2022 Akelio All rights reserved.</description></item></channel></rss>

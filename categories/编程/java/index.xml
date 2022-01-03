@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>编程/Java on LIFE CODER</title><link>http://example.org/categories/%E7%BC%96%E7%A8%8B/java/</link><description>Recent content in 编程/Java on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><atom:link href="http://example.org/categories/%E7%BC%96%E7%A8%8B/java/index.xml" rel="self" type="application/rss+xml"/><item><title>Java传值方式讨论</title><link>http://example.org/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</link><pubDate>Sun, 27 Oct 2019 17:32:00 +0000</pubDate><guid>http://example.org/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</guid><description>起因是一次华为面试题
+Java在进行函数调用时，参数时传值还是传引用？
+当时，我考虑的是Java变量只有两类，基本类型与引用类型，引用类型本质应该是属于指针。所以基本类型与引用类型的实参传递都是值本身，即创建一个副本赋予形参。面试官给的仅仅是笑而不语……
+而后在工作了一段时间回想这个问题并没有那么简单。
+碰到问题首先要给好定义才能进一步做分析。通过Wiki上关于Evaluation strategy的介绍，其中本文主要关注的这三种方式：call by value, call by reference and call by sharing。
+call by value即按值传参，将实参创建一个新副本赋予形参，供函数使用，并且函数对参数的操作，对caller而言是不可见的，即immutable。 call by reference即传引用，函数中的参数就是对实参的直接引用，而不再是一份拷贝（也可以理解成是对实参的一个常量指针），因此是mutable的。 call by sharing，认为该编程语言中所有值都基于对象而非原始类型。在传参过程中赋予形参的是引用的拷贝。因为是引用的拷贝，所以函数体内只能对原对象进行操作，但是不能修改实参引用本身。所以对对象而言，这种传参方式是mutable的，但是对于引用本身，又是immutable的。 现在回头来看下C，C++和Java。
+C语言中策略很简单，一切均位call by value，尽管它有指针变量，但是它也是传的实参的拷贝。
+C++中出现了引用类型的变量，并且传参时也可以指定call by reference。如，void func(int&amp;amp; n)
+Java当中考虑到指针的复杂性，于是直接砍掉了指针变量，只剩下了基本变量与引用变量，另外也不允许选择不同的传参方式。首先看基本变量，比较简单，就是call by value的表现。其次，对于引用变量而言，我们在函数可以对引用的对象进行操作，并且对caller是可见的，但是无法让实参引用到一个新的对象上去，即我们无法在函数中对实参进行assignment相关的操作，即引用本身是immutable的。这就是call by sharing。
+这里附上知乎一位答主的回答：
+综上所述，对于Java的函数调用方式最准确的描述是：参数藉由值传递方式，传递的值是个引用。（句中两个“值”不是一个意思，第一个值是evaluation result，第二个值是value content）
+由于这个描述太绕，而且在字面上与Java总是传引用的事实冲突。于是对于Java，Python、Ruby、JavaScript等语言使用的这种求值策略，起了一个更贴切名字，叫Call by sharing。这个名字诞生于40年前。
+作者：Yolanda
+链接：https://www.zhihu.com/question/31203609/answer/112157038
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+参考文献：
+https://en.wikipedia.org/wiki/Evaluation_strategy https://en.wikipedia.org/wiki/Reference_(computer_science)</description></item></channel></rss>

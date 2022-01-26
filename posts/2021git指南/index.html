@@ -14,8 +14,8 @@
  基本流程  先从远程服务器把代码拉到本地：git clone http://197.68.6.70/demo-project 此时你拥有的是主干master分支的代码，我们需要切换到dev分支进行开发：  git fetch --all git switch --track origin/dev   在工作目录写代码 提交变更的文件到暂存区：git add <somefile> 提交文件到本地仓库：git commit -m &#34;xxx&#34; 把我的代码推送到远程仓库（同步）：git push    三、最佳实践——Git里的后悔药  我提交到暂存区的代码搞错了：git restore -S <files or dir> （在使用IDEA时，这个场景不太会出现，因为IDEA往往是把add 和 commit的操作会合并成一个处理） 我提交到本地仓库的代码搞错了：  最近的一个commit：git reset -mixed HEAD~1 历史中的一个commit：  使用 git reset --mixed <commit_id>，然后重新提交正确的代码（ ❗从最新commit到指定commit的代码都需要重新提交） 使用 git revert <commit_id> ，这个操作近似于自己重新提交代码     我提交到远程仓库的代码搞错了：  只有一个建议：请写出正确的代码，重新提交！所以，请在每次push之前谨慎！    四、最佳实践——与他人同步  我想把别人在dev分支上开发的代码同步下来看看：git pull --rebase 或者 git pull （前者会让你的commit log更加清爽一些，没有一些额外的merge commit log） 如果你开发的分支和多人一同开发，建议每天进行一次 git pull --rebase 与 git push  五、最佳实践——我的改动比较大  建议自己拉一个分支进行开发 git switch -c <new_branch_name> 。 开发结束后，先把主开发分支合并到你的分支：git merge dev 没问题后再把你的分支合并到主开发分支：git switch dev ，git merge <new_branch_name>  六、其他  ⭐准备上线前  和上一个版本代码对比(git diff release master)，确认release分支是正确的需要上线的代码 使用Jenkins对release分支进行自动打包与部署，在工作空间获取上线代码包（禁止本地打包）   上线完成后  在gitlab上提交release合并至master分支的merge request，由技术经理确认合并； 对最新的master分支进行tag，方便反查源码；    七、几个原则 强制  禁止git push -f 禁止git push master  建议  建议分支命名：master、release、dev、dev_xx  master分支为线上正在运行的代码；不允许手动提交；只能通过页面的merge request进行代码合并；每次上完线后把分支(release)代码合并到master release为测试环境对应的代码，jenkins均从该分支进行自动构建与部署 dev，以及其他分支为开发分支，较为自由。   减少对git checkout的使用，已经拆分为 git switch 和 git restore 不要把二进制文件放到git仓库中进行版本管理  八、实现方式之数据结构 在Git当中，">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2022-01-03T15:44:03+08:00">
-<meta property="article:modified_time" content="2022-01-03T15:44:03+08:00"><meta property="og:site_name" content="My Blog">
+<meta property="article:published_time" content="2022-01-03T18:00:00+08:00">
+<meta property="article:modified_time" content="2022-01-03T18:00:00+08:00"><meta property="og:site_name" content="My Blog">
 <meta name=twitter:card content="summary">
 <meta name=twitter:title content="Git指南">
 <meta name=twitter:description content="零、目的  掌握各类场景下如何更好使用Git 减少因为代码提交问题带来的生产环境问题  Git几大工作区域一览
@@ -302,7 +302,7 @@ dark_mode
 Git指南
 <div class=post-meta>
 <time itemprop=datePublished>
-2022-01-03 15:44
+2022-01-03 18:00
 </time>
 <i class=material-icons>folder</i>
 <a href=/categories/%E5%B7%A5%E7%A8%8B/git>工程/Git</a>

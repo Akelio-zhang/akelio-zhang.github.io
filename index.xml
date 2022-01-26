@@ -1,10 +1,45 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Mon, 03 Jan 2022 15:44:03 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 15:44:03 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h2 id="零目的">零、目的&lt;/h2>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Wed, 26 Jan 2022 18:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>About Me</title><link>https://akelio-zhang.github.io/posts/about-me/</link><pubDate>Wed, 26 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/about-me/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/about-me/ -&lt;p>&lt;strong>Coder &amp;amp; Photographer&lt;/strong>&lt;/p>
+&lt;h2 id="我的设备">我的设备&lt;/h2>
+&lt;p>[工作]&lt;/p>
+&lt;ol>
+&lt;li>PC（i7 8700+32G+GTX 1066）with Dell 2720Q + Dell 2414H&lt;/li>
+&lt;li>NUC 11（16G）with Dell 2520DR&lt;/li>
+&lt;li>ThinkPad T450s（i7 6600U+8G）&lt;/li>
+&lt;li>QNAP T453D mini with 512G + 256G + 4T&lt;/li>
+&lt;li>Filco 87 Black&lt;/li>
+&lt;li>Anne Pro II&lt;/li>
+&lt;li>GPW&lt;/li>
+&lt;li>G304&lt;/li>
+&lt;li>Macbook Air 2013&lt;/li>
+&lt;/ol>
+&lt;p>[生活]&lt;/p>
+&lt;ol>
+&lt;li>iPhone 11 Pro Max (256G)&lt;/li>
+&lt;li>iPhone X (64G)&lt;/li>
+&lt;li>iPad Pro 2019 12.9'&lt;/li>
+&lt;li>Airpods Pro&lt;/li>
+&lt;li>Bose QC30&lt;/li>
+&lt;li>Sony 1A-DAC&lt;/li>
+&lt;/ol>
+&lt;p>[过往]&lt;/p>
+&lt;ol>
+&lt;li>Year 2018, PC(i5 8400 + 16G + GTX 1066)&lt;/li>
+&lt;li>Year 2015, PC(E3 v3 + 16G + AMD graphic card)&lt;/li>
+&lt;li>Year 2015, iPhone 6&lt;/li>
+&lt;li>Year 2013, Fujifilm X10&lt;/li>
+&lt;li>Year 2011, PC(i3 + 8G + AMD graphic card)&lt;/li>
+&lt;li>Year 2011, Sony VAIO Laptop&lt;/li>
+&lt;li>Year 2011, Nikon D90&lt;/li>
+&lt;li>Year 2005, Lenovo PC&lt;/li>
+&lt;/ol>
+&lt;p>Last edited on 2022/01/26&lt;/p>
+- https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 15:44:03 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>
 &lt;li>掌握各类场景下如何更好使用Git&lt;/li>
 &lt;li>减少因为代码提交问题带来的生产环境问题&lt;/li>
 &lt;/ol>
 &lt;!-- raw HTML omitted -->
-&lt;p>&lt;img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/69f298d6-b1a5-4570-99fb-89085f8a9c67/Untitled.png" alt="Git几大工作区域一览">&lt;/p>
+&lt;p>&lt;img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/69f298d6-b1a5-4570-99fb-89085f8a9c67/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;amp;X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;amp;X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220126%2Fus-west-2%2Fs3%2Faws4_request&amp;amp;X-Amz-Date=20220126T144907Z&amp;amp;X-Amz-Expires=86400&amp;amp;X-Amz-Signature=4790a4b24b3b0f255b21a9790f518921d3b29db2317319acdd4fd3e5d824172e&amp;amp;X-Amz-SignedHeaders=host&amp;amp;response-content-disposition=filename%20%3D%22Untitled.png%22&amp;amp;x-id=GetObject" alt="Git几大工作区域一览">&lt;/p>
 &lt;p>Git几大工作区域一览&lt;/p>
 &lt;!-- raw HTML omitted -->
 &lt;h2 id="一了解git">一、了解Git&lt;/h2>
@@ -73,17 +108,17 @@
 &lt;li>把我的代码推送到远程仓库（同步）：&lt;code>git push&lt;/code>&lt;/li>
 &lt;/ol>
 &lt;/li>
-&lt;li>一些case
+&lt;/ul>
+&lt;h2 id="三最佳实践git里的后悔药">三、最佳实践——Git里的后悔药&lt;/h2>
 &lt;ol>
-&lt;li>我想把别人在dev分支上开发的代码同步下来看看：&lt;code>git pull --rebase&lt;/code> 或者 &lt;code>git pull&lt;/code> （前者会让你的commit log更加清爽一些，没有一些额外的merge commit log）&lt;/li>
-&lt;li>我提交到暂存区的代码搞错了：&lt;code>git restore &amp;lt;files or dir&amp;gt;&lt;/code> （在使用IDEA时，这个场景不太会出现，因为IDEA往往是把add 和 commit的操作会合并成一个处理）&lt;/li>
+&lt;li>我提交到暂存区的代码搞错了：&lt;code>git restore -S &amp;lt;files or dir&amp;gt;&lt;/code> （在使用IDEA时，这个场景不太会出现，因为IDEA往往是把add 和 commit的操作会合并成一个处理）&lt;/li>
 &lt;li>我提交到本地仓库的代码搞错了：
 &lt;ol>
 &lt;li>最近的一个commit：&lt;code>git reset -mixed HEAD~1&lt;/code>&lt;/li>
 &lt;li>历史中的一个commit：
 &lt;ol>
-&lt;li>使用 &lt;code>git reset --mixed &amp;lt;commit_id&amp;gt;&lt;/code>，然后重新提交正确的代码&lt;/li>
-&lt;li>使用 &lt;code>git revert &amp;lt;commit_id&amp;gt;&lt;/code>&lt;/li>
+&lt;li>使用 &lt;code>git reset --mixed &amp;lt;commit_id&amp;gt;&lt;/code>，然后重新提交正确的代码（ ❗从最新commit到指定commit的代码都需要重新提交）&lt;/li>
+&lt;li>使用 &lt;code>git revert &amp;lt;commit_id&amp;gt;&lt;/code> ，这个操作近似于自己重新提交代码&lt;/li>
 &lt;/ol>
 &lt;/li>
 &lt;/ol>
@@ -94,22 +129,19 @@
 &lt;/ol>
 &lt;/li>
 &lt;/ol>
-&lt;/li>
-&lt;/ul>
-&lt;h2 id="三最佳实践">三、最佳实践&lt;/h2>
+&lt;h2 id="四最佳实践与他人同步">四、最佳实践——与他人同步&lt;/h2>
 &lt;ol>
-&lt;li>开发过程中
-&lt;ol>
+&lt;li>我想把别人在dev分支上开发的代码同步下来看看：&lt;code>git pull --rebase&lt;/code> 或者 &lt;code>git pull&lt;/code> （前者会让你的commit log更加清爽一些，没有一些额外的merge commit log）&lt;/li>
 &lt;li>如果你开发的分支和多人一同开发，建议每天进行一次 &lt;code>git pull --rebase&lt;/code> 与 &lt;code>git push&lt;/code>&lt;/li>
-&lt;li>如果你是比较独立的代码开发：
+&lt;/ol>
+&lt;h2 id="五最佳实践我的改动比较大">五、最佳实践——我的改动比较大&lt;/h2>
 &lt;ol>
 &lt;li>建议自己拉一个分支进行开发 &lt;code>git switch -c &amp;lt;new_branch_name&amp;gt;&lt;/code> 。&lt;/li>
 &lt;li>开发结束后，先把&lt;strong>主开发分支&lt;/strong>合并到你的分支：&lt;code>git merge dev&lt;/code>&lt;/li>
 &lt;li>没问题后再把你的分支合并到主开发分支：&lt;code>git switch dev&lt;/code> ，&lt;code>git merge &amp;lt;new_branch_name&amp;gt;&lt;/code>&lt;/li>
 &lt;/ol>
-&lt;/li>
-&lt;/ol>
-&lt;/li>
+&lt;h2 id="六其他">六、其他&lt;/h2>
+&lt;ol>
 &lt;li>⭐准备上线前
 &lt;ol>
 &lt;li>和上一个版本代码对比(&lt;code>git diff release master&lt;/code>)，确认release分支是&lt;strong>正确的需要上线的代码&lt;/strong>&lt;/li>
@@ -123,7 +155,7 @@
 &lt;/ol>
 &lt;/li>
 &lt;/ol>
-&lt;h2 id="四几个原则">四、几个原则&lt;/h2>
+&lt;h2 id="七几个原则">七、几个原则&lt;/h2>
 &lt;h3 id="强制">强制&lt;/h3>
 &lt;ol>
 &lt;li>禁止&lt;code>git push -f&lt;/code>&lt;/li>
@@ -141,7 +173,7 @@
 &lt;li>减少对&lt;code>git checkout&lt;/code>的使用，已经拆分为 &lt;code>git switch&lt;/code> 和 &lt;code>git restore&lt;/code>&lt;/li>
 &lt;li>不要把二进制文件放到git仓库中进行版本管理&lt;/li>
 &lt;/ol>
-&lt;h2 id="五实现方式之数据结构">五、实现方式之数据结构&lt;/h2>
+&lt;h2 id="八实现方式之数据结构">八、实现方式之数据结构&lt;/h2>
 &lt;p>在Git当中，&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-markdown" data-lang="markdown">// 一个文件就是字节数组
 type blob = array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">byte&lt;/span>&amp;gt;
@@ -157,12 +189,13 @@ snapshot: tree
 // 文件、目录、commit最终都以object类型进行存储
 type object = blob | tree | commit
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>这样看起来，每一次修改文件并提交git仓库后，都会新建一个blob对象，并作为新的快照内部的文件使用，因此，git仓库存储空间可能会越来越大，特别是对于那些二进制文件（非文本文件，难以压缩）。这时候可以通过&lt;code>git gc&lt;/code>进行git仓库压缩，这里面的算法大家可以自己去探索一下。根据我的经验，能大概缩小到原本的1/3~1/2。&lt;/p>
-&lt;h2 id="六参考">六、参考&lt;/h2>
+&lt;h2 id="九参考">九、参考&lt;/h2>
 &lt;h3 id="cheatsheet">Cheatsheet&lt;/h3>
 &lt;ol>
-&lt;li>&lt;a href="https://ndpsoftware.com/git-cheatsheet.html#loc=index;">&lt;strong>一个可视化的Git Cheatsheet&lt;/strong>&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://ndpsoftware.com/git-cheatsheet.html#loc=index;">一个可视化的Git Cheatsheet&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://about.gitlab.com/images/press/git-cheat-sheet.pdf">Gitlab官方Cheatsheet&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/k88hudson/git-flight-rules">https://github.com/k88hudson/git-flight-rules&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E9%AB%98%E7%BA%A7%E5%90%88%E5%B9%B6">Git - 高级合并 (git-scm.com)&lt;/a>&lt;/li>
 &lt;/ol>
 &lt;h3 id="原理学习">原理学习&lt;/h3>
 &lt;ol>
@@ -170,7 +203,25 @@ type object = blob | tree | commit
 &lt;li>&lt;a href="https://www.progit.cn/">Pro Git 中文版（第二版）&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://missing.csail.mit.edu/2020/version-control/">Version Control (Git) · the missing semester of your cs education (mit.edu)&lt;/a>&lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2020]互联网技术社招总结</title><link>https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</link><pubDate>Sun, 28 Mar 2021 18:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/ -&lt;h1 id="准备">准备&lt;/h1>
+&lt;h2 id="some-code">Some code&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">git clone
+git branch --track dev origin/dev
+git checkout dev
+git add &amp;amp; git commit
+git push
+Merge Request (MR)
+git restore -S &amp;lt;files or dir&amp;gt;
+git reset -mixed HEAD~1
+git reset --mixed &amp;lt;commit_id&amp;gt;
+git revert &amp;lt;commit_id&amp;gt;
+git pull --rebase
+git pull
+git checkout -b &amp;lt;branch_name&amp;gt;
+...
+git merge dev
+git stash
+git stash pop
+&lt;/code>&lt;/pre>&lt;/div>- https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2020]互联网技术社招总结</title><link>https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</link><pubDate>Sun, 28 Mar 2021 18:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/ -&lt;h1 id="准备">准备&lt;/h1>
 &lt;h3 id="用人单位招聘诉求">用人单位招聘诉求&lt;/h3>
 &lt;p>对于每个用人单位来说，他们有两个诉求：1.招聘到能够立马(尽快)胜任工作并解决业务痛点的人；2.减少用人成本。&lt;/p>
 &lt;p>往往第二点是和招聘人利益是冲突的，所以我们只能通过第一点来进行突破，也就是大家常说的你要和你的岗位有较高的匹配度。&lt;/p>

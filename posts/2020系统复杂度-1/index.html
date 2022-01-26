@@ -1,0 +1,341 @@
+<!doctype html><html><head>
+<title>系统复杂度-1</title>
+<meta charset=utf-8>
+<meta name=X-UA-Compatible content="IE=edge">
+<meta name=google-site-verification content>
+<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport>
+<meta content="telephone=no" name=format-detection>
+<meta name=description content>
+<meta name=renderer content="webkit">
+<meta name=theme-color content="#ffffff">
+<meta property="og:title" content="系统复杂度-1">
+<meta property="og:description" content="0x1 Introduction 当你接手一个不熟悉的系统的时候，你可能想找一下系统文档（但是已经很久没更新了）；你可能想看一下有没有单元测试（很多根本跑不起来了）；这时候，除了问同事，只能自己从几千几万行代码中开始摸索。
+当你开发一个新系统的时候，由于某些原因需要调整局部的逻辑，因为没有相应的单元测试，结果在移交给测试后才发现各种顾此失彼的bug出现了。
+当你的系统性能已经无法再满足时，又或者系统的迭代成本异常大时，此时就会可能需要重写或重构。此时，由于没有单元测试，自动化集成测试，你不得不拉上更多的同事来参与此次系统优化，以保证系统的可靠性。
+当你的系统需要有新的客户接入时，因为没有最新的系统文档或使用说明书，你只能电话、口头地来教别人怎么接入你的系统。
+上述的几个场景，都是因为系统的配套设施（文档、测试）没有同步完善，引起接入、迭代、重构的成本显著增加。这不是我们想看到的。相对地，系统的快速迭代的开发模式已经受到了广泛的认同，我们怎么在这个过程能够一直保持高效、可靠的输出呢？对于这个问题，本文尝试从系统复杂度、重构、设计模式、测试这几个角度来讨论这个问题，希望能给大家一些新的思考。
+0x2 系统复杂度 首先，算法有复杂度一说，在所有的算法课程基本都会在前1-2章围绕这个话题展开详细的定义与分析讨论。算法复杂度一般分为时间复杂度与空间复杂度，可以说是该算法解决问题的时间与空间成本。
+在工作上，我们维护的往往是一个系统，一个工程。一个系统的复杂度定义，似乎并不是那么容易。本章节大多数内容来源于A Philosiphy of Software Designing。这本书中对于系统的复杂度定义非常的实际，软件系统结构中让其变得难以理解且难以变更的部分组成了系统的复杂性。回顾本文引子部分，其实都是系统难以理解、难以修改导致的结果。
+这个定义相对于算法复杂度而言，显得非常主观，没有客观的评估准则，各个人的理解也会大相径庭。因此，书中进一步展开了几种复杂性症状。
+ 变化放大(change amplication)：当你需要改动某一个逻辑时，会涉及到多处代码变更。 认知负担(cognitive load)：有时尽管只写了很少的代码，但是对于他人来说异常难以理解，请尝试将它改写成容易理解的方式。 不可知(unknown unknowns)：不知道哪里有坑存在，就算BUG出现了。  总的来说，控制住整个系统的复杂度，将是保障我们高效、可靠工作的核心。低复杂度的系统，大大降低了开发过程中的心智压力。
+0x3 测试 为什么要把测试放在靠前的位置呢？测试是将一直伴随在生产代码演进的，是软件的可靠性保证的重要工具。
+拿建筑工程做一个类比，设计一幢房屋时，对于设计人员，最终产出的是施工图。那么，它的设计依据是什么呢？《规范》与模型的承载能力分析。前者，描述了什么类型的结构需要怎么样的设计，这种属于基本要求。后者，通过基于物理建模软件进行专门的结构性能分析，来确保本次设计的可靠性。
+软件工程相比建筑工程，非常年轻，一方面没有条条框框地规则（P3C也仅仅是一些基础性条约）；另一方面，因为大部分软件工程不涉及生命财产，也可以通过快速更新来解决问题，所以导致大多数人对可靠性的关注度远不如建筑工程。先不说这样的态度容易使生产问题频发，另外也会让你的工作开展体验感相对差劲，总是在返工。
+因此，我们需要在注重软件的可靠性。我们的第一个工具就是（自动化）测试。好的测试，就能够有效地模拟真实地业务场景，来校验代码的正确性。好的测试，能够让新加入的开发人员更容易理解系统是如何使用的。好的测试，能够促进系统架构的合理化——高内聚低耦合。但是，好的测试代码并不容易写，因为测试代码的思考方式与一般的coding并不一样，它更像是生产代码的前置条件、运行场景。
+测试通常分为四个层次：单元测试（Unit Testing）、集成测试（Integration Testing）、系统测试（System Testing）、验收测试（Acceptance Testing）。其中离开发最近的是单元测试，一般覆盖的是函数以及类的功能正确性。集成测试则是对系统内部的各模块之间的协作是否正确，通常按内部接口进行覆盖测试。系统测试则是验证对外接口能否在各种情况下能够正常地运行（性能测试也属于这一层次）。验收测试属于辅助性的测试，范围也相对更广，不同的系统也会需要不同的验收测试，例如安全测试、易用性测试、兼容性测试等等。
+这里我们主要谈一下单元测试，因为这是所有测试的基本面，也是开发人员所需要特别关注的地方。先考虑一下是先写生产代码还是先写测试代码。第一个角度是，当然是先写生产代码了，没有生产代码怎么测试呢？第二个角度是，先写测试代码再写生产代码，因为测试代码是功能的运行场景，只有先把这些前置条件搞清楚了，才能写出正确的生产代码。也许你会说，我可以先大脑过一下基本场景，然后再写生产代码，再写测试代码，这应该是大部分人目前的方式，但是不知道你有没有发现，这种方式写出来的测试代码往往会因为前期的假设导致覆盖率很低。
+在2003年，Kent Beck提出了Test-Driven development（TDD）这样一种开发模式。
+ 添加一个测试 运行所有测试，是否有失败 一旦有失败的测试，就开始写生产代码，直到该测试通过为止。 所有测试通过后，就必须开始写测试代码，直到有一个测试无法通过。  可能，你会觉得这样非常耗时，但是你得明确，你在一个功能开发的耗时并不仅仅是写了那一堆生产代码而已，还包括测试、代码修复等等。所以，这种方式只是将一些顺序进行了调换，却能为最终的正确性铺垫很多。
+0x4 重构 重构与重写都是试图优化系统复杂度的方式，在不同的场景（代码状况、工期等）会选择不同的方式，但是大多时候会采用重构的方式来实现。
+先来看一下wikipedia对重构的定义：
+In computer programming and software design, code refactoring is the process of restructuring existing computer code—changing the factoring—without changing its external behavior.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://akelio-zhang.github.io/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-06-06T18:00:00+00:00">
+<meta property="article:modified_time" content="2020-06-06T18:00:00+00:00"><meta property="og:site_name" content="My Blog">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="系统复杂度-1">
+<meta name=twitter:description content="0x1 Introduction 当你接手一个不熟悉的系统的时候，你可能想找一下系统文档（但是已经很久没更新了）；你可能想看一下有没有单元测试（很多根本跑不起来了）；这时候，除了问同事，只能自己从几千几万行代码中开始摸索。
+当你开发一个新系统的时候，由于某些原因需要调整局部的逻辑，因为没有相应的单元测试，结果在移交给测试后才发现各种顾此失彼的bug出现了。
+当你的系统性能已经无法再满足时，又或者系统的迭代成本异常大时，此时就会可能需要重写或重构。此时，由于没有单元测试，自动化集成测试，你不得不拉上更多的同事来参与此次系统优化，以保证系统的可靠性。
+当你的系统需要有新的客户接入时，因为没有最新的系统文档或使用说明书，你只能电话、口头地来教别人怎么接入你的系统。
+上述的几个场景，都是因为系统的配套设施（文档、测试）没有同步完善，引起接入、迭代、重构的成本显著增加。这不是我们想看到的。相对地，系统的快速迭代的开发模式已经受到了广泛的认同，我们怎么在这个过程能够一直保持高效、可靠的输出呢？对于这个问题，本文尝试从系统复杂度、重构、设计模式、测试这几个角度来讨论这个问题，希望能给大家一些新的思考。
+0x2 系统复杂度 首先，算法有复杂度一说，在所有的算法课程基本都会在前1-2章围绕这个话题展开详细的定义与分析讨论。算法复杂度一般分为时间复杂度与空间复杂度，可以说是该算法解决问题的时间与空间成本。
+在工作上，我们维护的往往是一个系统，一个工程。一个系统的复杂度定义，似乎并不是那么容易。本章节大多数内容来源于A Philosiphy of Software Designing。这本书中对于系统的复杂度定义非常的实际，软件系统结构中让其变得难以理解且难以变更的部分组成了系统的复杂性。回顾本文引子部分，其实都是系统难以理解、难以修改导致的结果。
+这个定义相对于算法复杂度而言，显得非常主观，没有客观的评估准则，各个人的理解也会大相径庭。因此，书中进一步展开了几种复杂性症状。
+ 变化放大(change amplication)：当你需要改动某一个逻辑时，会涉及到多处代码变更。 认知负担(cognitive load)：有时尽管只写了很少的代码，但是对于他人来说异常难以理解，请尝试将它改写成容易理解的方式。 不可知(unknown unknowns)：不知道哪里有坑存在，就算BUG出现了。  总的来说，控制住整个系统的复杂度，将是保障我们高效、可靠工作的核心。低复杂度的系统，大大降低了开发过程中的心智压力。
+0x3 测试 为什么要把测试放在靠前的位置呢？测试是将一直伴随在生产代码演进的，是软件的可靠性保证的重要工具。
+拿建筑工程做一个类比，设计一幢房屋时，对于设计人员，最终产出的是施工图。那么，它的设计依据是什么呢？《规范》与模型的承载能力分析。前者，描述了什么类型的结构需要怎么样的设计，这种属于基本要求。后者，通过基于物理建模软件进行专门的结构性能分析，来确保本次设计的可靠性。
+软件工程相比建筑工程，非常年轻，一方面没有条条框框地规则（P3C也仅仅是一些基础性条约）；另一方面，因为大部分软件工程不涉及生命财产，也可以通过快速更新来解决问题，所以导致大多数人对可靠性的关注度远不如建筑工程。先不说这样的态度容易使生产问题频发，另外也会让你的工作开展体验感相对差劲，总是在返工。
+因此，我们需要在注重软件的可靠性。我们的第一个工具就是（自动化）测试。好的测试，就能够有效地模拟真实地业务场景，来校验代码的正确性。好的测试，能够让新加入的开发人员更容易理解系统是如何使用的。好的测试，能够促进系统架构的合理化——高内聚低耦合。但是，好的测试代码并不容易写，因为测试代码的思考方式与一般的coding并不一样，它更像是生产代码的前置条件、运行场景。
+测试通常分为四个层次：单元测试（Unit Testing）、集成测试（Integration Testing）、系统测试（System Testing）、验收测试（Acceptance Testing）。其中离开发最近的是单元测试，一般覆盖的是函数以及类的功能正确性。集成测试则是对系统内部的各模块之间的协作是否正确，通常按内部接口进行覆盖测试。系统测试则是验证对外接口能否在各种情况下能够正常地运行（性能测试也属于这一层次）。验收测试属于辅助性的测试，范围也相对更广，不同的系统也会需要不同的验收测试，例如安全测试、易用性测试、兼容性测试等等。
+这里我们主要谈一下单元测试，因为这是所有测试的基本面，也是开发人员所需要特别关注的地方。先考虑一下是先写生产代码还是先写测试代码。第一个角度是，当然是先写生产代码了，没有生产代码怎么测试呢？第二个角度是，先写测试代码再写生产代码，因为测试代码是功能的运行场景，只有先把这些前置条件搞清楚了，才能写出正确的生产代码。也许你会说，我可以先大脑过一下基本场景，然后再写生产代码，再写测试代码，这应该是大部分人目前的方式，但是不知道你有没有发现，这种方式写出来的测试代码往往会因为前期的假设导致覆盖率很低。
+在2003年，Kent Beck提出了Test-Driven development（TDD）这样一种开发模式。
+ 添加一个测试 运行所有测试，是否有失败 一旦有失败的测试，就开始写生产代码，直到该测试通过为止。 所有测试通过后，就必须开始写测试代码，直到有一个测试无法通过。  可能，你会觉得这样非常耗时，但是你得明确，你在一个功能开发的耗时并不仅仅是写了那一堆生产代码而已，还包括测试、代码修复等等。所以，这种方式只是将一些顺序进行了调换，却能为最终的正确性铺垫很多。
+0x4 重构 重构与重写都是试图优化系统复杂度的方式，在不同的场景（代码状况、工期等）会选择不同的方式，但是大多时候会采用重构的方式来实现。
+先来看一下wikipedia对重构的定义：
+In computer programming and software design, code refactoring is the process of restructuring existing computer code—changing the factoring—without changing its external behavior.">
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
+<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.3f72a5fc8f5b5dd732a4b476aced0eece2156958d9d414316494ddb10593ddf7.css integrity="sha256-P3Kl/I9bXdcypLR2rO0O7OIVaVjZ1BQxZJTdsQWT3fc=" media=screen>
+<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.f7c2efa7183435a6bd1842f91c541481c7a5137b5991629a870f24e4a516ad4b.css integrity="sha256-98Lvpxg0Naa9GEL5HFQUgcelE3tZkWKahw8k5KUWrUs=" media=screen>
+<script src=/vendor/js/loadCSS.js></script>
+<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
+<script src=/js/toc.js></script>
+</head>
+<body>
+<div id=app><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://amazingrise.net>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#0x1-introduction onclick="onNavClick(`#0x1-introduction-nav`)" id=0x1-introduction-nav>
+0x1 Introduction
+</a>
+</li>
+<li>
+<a href=#0x2-%e7%b3%bb%e7%bb%9f%e5%a4%8d%e6%9d%82%e5%ba%a6 onclick="onNavClick(`#0x2-系统复杂度-nav`)" id=0x2-系统复杂度-nav>
+0x2 系统复杂度
+</a>
+</li>
+<li>
+<a href=#0x3-%e6%b5%8b%e8%af%95 onclick="onNavClick(`#0x3-测试-nav`)" id=0x3-测试-nav>
+0x3 测试
+</a>
+</li>
+<li>
+<a href=#0x4-%e9%87%8d%e6%9e%84 onclick="onNavClick(`#0x4-重构-nav`)" id=0x4-重构-nav>
+0x4 重构
+</a>
+</li>
+<li>
+<a href=#0x5-%e7%bb%93%e8%ae%ba onclick="onNavClick(`#0x5-结论-nav`)" id=0x5-结论-nav>
+0x5 结论
+</a>
+</li>
+<li>
+<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a onclick="onNavClick(`#站在巨人的肩膀上-nav`)" id=站在巨人的肩膀上-nav>
+站在巨人的肩膀上
+</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
+</div>
+</div>
+<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div class=drawer-content>
+<div class=drawer-menu>
+<a class="a-block drawer-menu-item active" href=/posts>
+Archive
+</a>
+<a class="a-block drawer-menu-item false" href=/categories>
+Categories
+</a>
+<a class="a-block drawer-menu-item false" href=/tags>
+Tags
+</a>
+<a class="a-block drawer-menu-item false" href=/index.xml>
+RSS Feed
+</a>
+<div class=toc>
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#0x1-introduction onclick="onNavClick(`#0x1-introduction-nav`)" id=0x1-introduction-nav>
+0x1 Introduction
+</a>
+</li>
+<li>
+<a href=#0x2-%e7%b3%bb%e7%bb%9f%e5%a4%8d%e6%9d%82%e5%ba%a6 onclick="onNavClick(`#0x2-系统复杂度-nav`)" id=0x2-系统复杂度-nav>
+0x2 系统复杂度
+</a>
+</li>
+<li>
+<a href=#0x3-%e6%b5%8b%e8%af%95 onclick="onNavClick(`#0x3-测试-nav`)" id=0x3-测试-nav>
+0x3 测试
+</a>
+</li>
+<li>
+<a href=#0x4-%e9%87%8d%e6%9e%84 onclick="onNavClick(`#0x4-重构-nav`)" id=0x4-重构-nav>
+0x4 重构
+</a>
+</li>
+<li>
+<a href=#0x5-%e7%bb%93%e8%ae%ba onclick="onNavClick(`#0x5-结论-nav`)" id=0x5-结论-nav>
+0x5 结论
+</a>
+</li>
+<li>
+<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a onclick="onNavClick(`#站在巨人的肩膀上-nav`)" id=站在巨人的肩膀上-nav>
+站在巨人的肩膀上
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<transition name=fade>
+<div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div>
+</transition>
+<nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container">
+<div id=navBackground class=nav-background></div>
+<div class="container container-narrow nav-content">
+<button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
+<i class=material-icons>
+menu
+</i>
+</button>
+<a id=navTitle class=navbar-brand href=https://akelio-zhang.github.io/>
+LIFE CODER
+</a>
+<button type=button class=nav-darkmode-toggle id=darkModeToggleButton2>
+<i class=material-icons id=darkModeToggleIcon2>
+dark_mode
+</i>
+</button>
+</div>
+</nav>
+<div class=single-column-header-container id=pageHead v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+<a href=https://akelio-zhang.github.io/>
+<div class=single-column-header-title>LIFE CODER</div>
+<div class=single-column-header-subtitle>Akelio's Blog</div>
+</a>
+</div>
+<div id=content>
+<div id=streamContainer class=stream-container>
+<div class="post-list-container post-list-container-shadow">
+<div class=post>
+<div class=post-head-wrapper-text-only>
+<div class=post-title>
+系统复杂度-1
+<div class=post-meta>
+<time itemprop=datePublished>
+2020-06-06 18:00
+</time>
+<i class=material-icons>folder</i>
+<a href=/categories/%E5%B7%A5%E7%A8%8B/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1>工程/系统设计</a>
+&nbsp;
+<i class=material-icons>label</i>
+<a href=/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1>系统设计</a>
+&nbsp;
+<a href=/tags/%E9%87%8D%E6%9E%84>重构</a>
+&nbsp;
+</div>
+</div>
+</div>
+<div class=post-body-wrapper>
+<div class=post-body v-pre>
+<h1 id=0x1-introduction>0x1 Introduction</h1>
+<p>当你接手一个不熟悉的系统的时候，你可能想找一下系统文档（但是已经很久没更新了）；你可能想看一下有没有单元测试（很多根本跑不起来了）；这时候，除了问同事，只能自己从几千几万行代码中开始摸索。</p>
+<p>当你开发一个新系统的时候，由于某些原因需要调整局部的逻辑，因为没有相应的单元测试，结果在移交给测试后才发现各种顾此失彼的bug出现了。</p>
+<p>当你的系统性能已经无法再满足时，又或者系统的迭代成本异常大时，此时就会可能需要重写或重构。此时，由于没有单元测试，自动化集成测试，你不得不拉上更多的同事来参与此次系统优化，以保证系统的可靠性。</p>
+<p>当你的系统需要有新的客户接入时，因为没有最新的系统文档或使用说明书，你只能电话、口头地来教别人怎么接入你的系统。</p>
+<p>上述的几个场景，都是因为系统的配套设施（文档、测试）没有同步完善，引起接入、迭代、重构的成本显著增加。这不是我们想看到的。相对地，系统的快速迭代的开发模式已经受到了广泛的认同，我们怎么在这个过程能够一直保持高效、可靠的输出呢？对于这个问题，本文尝试从系统复杂度、重构、设计模式、测试这几个角度来讨论这个问题，希望能给大家一些新的思考。</p>
+<h1 id=0x2-系统复杂度>0x2 系统复杂度</h1>
+<p>首先，算法有复杂度一说，在所有的算法课程基本都会在前1-2章围绕这个话题展开详细的定义与分析讨论。算法复杂度一般分为时间复杂度与空间复杂度，可以说是该算法解决问题的时间与空间成本。</p>
+<p>在工作上，我们维护的往往是一个系统，一个工程。一个系统的复杂度定义，似乎并不是那么容易。本章节大多数内容来源于<em>A Philosiphy of Software Designing</em>。这本书中对于系统的复杂度定义非常的实际，<strong>软件系统结构中让其变得难以理解且难以变更的部分组成了系统的复杂性</strong>。回顾本文引子部分，其实都是系统难以理解、难以修改导致的结果。</p>
+<p>这个定义相对于算法复杂度而言，显得非常主观，没有客观的评估准则，各个人的理解也会大相径庭。因此，书中进一步展开了几种复杂性症状。</p>
+<ol>
+<li>变化放大(change amplication)：当你需要改动某一个逻辑时，会涉及到多处代码变更。</li>
+<li>认知负担(cognitive load)：有时尽管只写了很少的代码，但是对于他人来说异常难以理解，请尝试将它改写成容易理解的方式。</li>
+<li>不可知(unknown unknowns)：不知道哪里有坑存在，就算BUG出现了。</li>
+</ol>
+<p>总的来说，控制住整个系统的复杂度，将是保障我们高效、可靠工作的核心。低复杂度的系统，大大降低了开发过程中的心智压力。</p>
+<h1 id=0x3-测试>0x3 测试</h1>
+<p>为什么要把测试放在靠前的位置呢？测试是将一直伴随在生产代码演进的，是软件的<strong>可靠性</strong>保证的重要工具。</p>
+<p>拿建筑工程做一个类比，设计一幢房屋时，对于设计人员，最终产出的是施工图。那么，它的设计依据是什么呢？《规范》与模型的承载能力分析。前者，描述了什么类型的结构需要怎么样的设计，这种属于基本要求。后者，通过基于物理建模软件进行专门的结构性能分析，来确保本次设计的<strong>可靠性</strong>。</p>
+<p>软件工程相比建筑工程，非常年轻，一方面没有条条框框地规则（P3C也仅仅是一些基础性条约）；另一方面，因为大部分软件工程不涉及生命财产，也可以通过快速更新来解决问题，所以导致大多数人对<strong>可靠性</strong>的关注度远不如建筑工程。先不说这样的态度容易使生产问题频发，另外也会让你的工作开展体验感相对差劲，总是在返工。</p>
+<p>因此，我们需要在注重软件的可靠性。我们的第一个工具就是（自动化）测试。好的测试，就能够有效地模拟真实地业务场景，来校验代码的正确性。好的测试，能够让新加入的开发人员更容易理解系统是如何使用的。好的测试，能够促进系统架构的合理化——高内聚低耦合。但是，好的测试代码并不容易写，因为测试代码的思考方式与一般的coding并不一样，它更像是生产代码的前置条件、运行场景。</p>
+<p>测试通常分为四个层次：单元测试（Unit Testing）、集成测试（Integration Testing）、系统测试（System Testing）、验收测试（Acceptance Testing）。其中离开发最近的是单元测试，一般覆盖的是函数以及类的功能正确性。集成测试则是对系统内部的各模块之间的协作是否正确，通常按内部接口进行覆盖测试。系统测试则是验证对外接口能否在各种情况下能够正常地运行（性能测试也属于这一层次）。验收测试属于辅助性的测试，范围也相对更广，不同的系统也会需要不同的验收测试，例如安全测试、易用性测试、兼容性测试等等。</p>
+<p>这里我们主要谈一下单元测试，因为这是所有测试的基本面，也是开发人员所需要特别关注的地方。先考虑一下是先写生产代码还是先写测试代码。第一个角度是，当然是先写生产代码了，没有生产代码怎么测试呢？第二个角度是，先写测试代码再写生产代码，因为测试代码是功能的运行场景，只有先把这些前置条件搞清楚了，才能写出正确的生产代码。也许你会说，我可以先大脑过一下基本场景，然后再写生产代码，再写测试代码，这应该是大部分人目前的方式，但是不知道你有没有发现，这种方式写出来的测试代码往往会因为前期的假设导致覆盖率很低。</p>
+<p>在2003年，Kent Beck提出了Test-Driven development（TDD）这样一种开发模式。</p>
+<ol>
+<li>添加一个测试</li>
+<li>运行所有测试，是否有失败</li>
+<li>一旦有失败的测试，就开始写生产代码，直到该测试通过为止。</li>
+<li>所有测试通过后，就必须开始写测试代码，直到有一个测试无法通过。</li>
+</ol>
+<p>可能，你会觉得这样非常耗时，但是你得明确，你在一个功能开发的耗时并不仅仅是写了那一堆生产代码而已，还包括测试、代码修复等等。所以，这种方式只是将一些顺序进行了调换，却能为最终的正确性铺垫很多。</p>
+<h1 id=0x4-重构>0x4 重构</h1>
+<p>重构与重写都是试图优化系统复杂度的方式，在不同的场景（代码状况、工期等）会选择不同的方式，但是大多时候会采用重构的方式来实现。</p>
+<p>先来看一下wikipedia对重构的定义：</p>
+<p>In <a href=https://en.wikipedia.org/wiki/Computer_programming>computer programming</a> and <a href=https://en.wikipedia.org/wiki/Software_design>software design</a>, <strong>code refactoring</strong> is the process of restructuring existing <a href=https://en.wikipedia.org/wiki/Computer_code>computer code</a>—changing the <em><a href=https://en.wikipedia.org/wiki/Decomposition_(computer_science)>factoring</a></em>—without changing its external behavior. Refactoring is intended to improve the design, structure, and/or implementation of the <a href=https://en.wikipedia.org/wiki/Software>software</a> (its <em><a href=https://en.wikipedia.org/wiki/Non-functional_requirement>non-functional</a></em> attributes), while preserving its <a href=https://en.wikipedia.org/wiki/Functional_requirement>functionality</a>. Potential advantages of refactoring may include improved code <a href=https://en.wikipedia.org/wiki/Readability>readability</a> and reduced <a href=https://en.wikipedia.org/wiki/Cyclomatic_complexity>complexity</a>; these can improve the <a href=https://en.wikipedia.org/wiki/Source_code>source code</a>&rsquo;s <a href=https://en.wikipedia.org/wiki/Maintainability>maintainability</a> and create a simpler, cleaner, or more expressive internal <a href=https://en.wikipedia.org/wiki/Software_architecture>architecture</a> or <a href=https://en.wikipedia.org/wiki/Object_model>object model</a> to improve <a href=https://en.wikipedia.org/wiki/Extensibility>extensibility</a>.</p>
+<p>在系统复杂度膨胀到一定程度后，添加功能异常困难、系统变得难以理解、修改的时候，重构往往就需要开始执行，从而降低系统的复杂度，让我们能够更高效地开发、修改代码。所以重构并不是某一个开发阶段，而是一种开发工具，帮助我们提升效率。</p>
+<p>在《重构》这本书中，提到很多地坏味道，本质就是一些让系统复杂度变高的地方，你可以发现它与第二节中的那些症状很类似。</p>
+<p>这里特别想说的是，重构的过程中，其实会采用不少设计模式，但是并不能说设计模式就是万能药。设计模式是我们需要了解的，但是我们需要记住的是它们出现的目的是什么，我这里可以列举几个：</p>
+<ol>
+<li>减少继承，多采用组合的方式来丰富类的功能。</li>
+<li>面对各种功能的变更，能够将变化（影响）的范围尽可能的缩小到1个或者少量的类中。</li>
+<li>面向接口编程。</li>
+</ol>
+<h1 id=0x5-结论>0x5 结论</h1>
+<ol>
+<li>除了写好生产代码以外，我们要多多关注一些周边的工具：自动化测试、持续继承、文档等。</li>
+<li>对于一个持续迭代的系统，系统复杂度是需要重点关注的。</li>
+<li>尝试把你的测试代码前置。</li>
+<li>重构能够帮助你降低系统复杂度。</li>
+<li>三次原则：第一次做某件事时只管去做；第二次做类似的事会产生反感（蹩脚），但无论如何还是可以去做；第三次再做类似的事，你就应该重构/反思。</li>
+</ol>
+<h1 id=站在巨人的肩膀上>站在巨人的肩膀上</h1>
+<ol>
+<li><a href=https://en.wikipedia.org/wiki/Software_testing#Testing_levels>https://en.wikipedia.org/wiki/Software_testing#Testing_levels</a></li>
+<li><a href=https://en.wikipedia.org/wiki/Code_refactoring>https://en.wikipedia.org/wiki/Code_refactoring</a></li>
+<li>Ousterhout, John. <em>A Philosophy of Software Design</em>. Yaknyam Press, 2018.</li>
+<li>Fowler, Martin. <em>Refactoring: improving the design of existing code</em>. Addison-Wesley Professional, 2018.</li>
+<li>Martin, Robert C. <em>The clean coder: a code of conduct for professional programmers</em>. Pearson Education, 2011.</li>
+</ol>
+<hr width=100% id=EOF>
+<p style=color:#777>最后修改于 2020-06-06</p>
+</div>
+</div>
+<nav class=post-pagination>
+<a class=newer-posts href=https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/>
+下回<br>[2020]互联网技术社招总结
+</a>
+<a class=older-posts href=https://akelio-zhang.github.io/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/>
+上回<br>Java传值方式讨论
+</a>
+</nav>
+<div class=post-comment-wrapper>
+</div>
+</div>
+</div>
+</div>
+</div><div id=single-column-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://amazingrise.net>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div>
+<script src=/js/journal.js></script>
+</body>
+</html>

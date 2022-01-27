@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>数字生活 on LIFE CODER</title><link>https://akelio-zhang.github.io/tags/%E6%95%B0%E5%AD%97%E7%94%9F%E6%B4%BB/</link><description>Recent content in 数字生活 on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Thu, 27 Jan 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/tags/%E6%95%B0%E5%AD%97%E7%94%9F%E6%B4%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>[2021]Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021notion/</guid><description>0x1 使用过的方案 有道云笔记（markdown支持太弱） Microsoft Todo（不太适合大量文字记载） 语雀（不适合临时想法记录） Typora/VS Code + Onedrive（文件之间的关联比较麻烦，没有统一的入口） 微信公众号（不适合个人内容记载，且使用起来比较麻烦，适合做推广） 0x2 场景整理 问题的解决方案往往要追溯到需求本身，不然只是在为了使用而使用，缺乏了创造力。
+工作上对项目、系统的设计、开发、运维的文档落地与持续运维追踪。 读书笔记记录。 CS一些技术的学习笔记。 生活的一些行程安排或记录。 Todo List。 0x3 Notion，最大好处就是ALL IN ONE。 良好的Markdown支持 UI符合我的审美需求 能够支持大量文字输入 因为是web，天生跨平台 block，database，link的设计，能够满足绝大部分的知识库使用场景（场景2-4） 支持项目管理，可部分替代teambition（场景1） 支持Todo，可部分替代todo app（场景5） 有些遗憾 所有数据在线，尽管有了Github的备份和导出，但是没有一套本地持久化的方案总觉得并不安心。 没有标签系统 不支持快速的外部文章导入 0x4 目前的文字工作方式 DASHBOARD是所有内容的入口。
+DASHBOARD展示的内容尽可能少，一般就是日常要做的、工作追踪、学习提升的三个入口。
+Notion主要做有一些计划性的、需要有结果输出的文字工作。
+每天使用Github进行备份 [H1]Todo来承载一些紧急类的工作记录（往往重要性不会太强）【可以用便利贴替代】
+[H2]Xmind承担思维脑图，基本无可替代，数据用Onedrive管理。
+[H3]备忘录只做个人信息备忘录，待办事项直接用todo/cubox解决。
+[IN]cubox承载信息流的记录（手机、PC浏览器），替代之前的微信收藏、知乎收藏。</description></item></channel></rss>

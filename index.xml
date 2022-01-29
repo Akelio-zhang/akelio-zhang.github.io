@@ -109,10 +109,8 @@
 &lt;li>掌握各类场景下如何更好使用Git。&lt;/li>
 &lt;li>减少因为代码提交问题带来的生产环境问题。&lt;/li>
 &lt;/ol>
-&lt;!-- raw HTML omitted -->
-&lt;p>&lt;img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/69f298d6-b1a5-4570-99fb-89085f8a9c67/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;amp;X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;amp;X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220126%2Fus-west-2%2Fs3%2Faws4_request&amp;amp;X-Amz-Date=20220126T144907Z&amp;amp;X-Amz-Expires=86400&amp;amp;X-Amz-Signature=4790a4b24b3b0f255b21a9790f518921d3b29db2317319acdd4fd3e5d824172e&amp;amp;X-Amz-SignedHeaders=host&amp;amp;response-content-disposition=filename%20%3D%22Untitled.png%22&amp;amp;x-id=GetObject" alt="Git几大工作区域一览">&lt;/p>
+&lt;p>&lt;img src="https://tva1.sinaimg.cn/large/62e64b03ly1gyubr07jvfj20s50se4ba.jpg" alt="Git几大工作区域一览">&lt;/p>
 &lt;p>Git几大工作区域一览&lt;/p>
-&lt;!-- raw HTML omitted -->
 &lt;h2 id="一了解git">一、了解Git&lt;/h2>
 &lt;ol>
 &lt;li>什么是Git？

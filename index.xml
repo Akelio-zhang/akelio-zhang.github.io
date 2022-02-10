@@ -1,4 +1,83 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Thu, 27 Jan 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>[2021]Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Thu, 10 Feb 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>[2022]MacBook Pro到手设置</title><link>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ -&lt;h1 id="效率">效率&lt;/h1>
+&lt;ol>
+&lt;li>Office 365, Microsoft edge, Onedrive, Todo, Outlook&lt;/li>
+&lt;li>Xmind&lt;/li>
+&lt;li>Cubox&lt;/li>
+&lt;li>Typora&lt;/li>
+&lt;li>Sketch&lt;/li>
+&lt;/ol>
+&lt;h1 id="开发者">开发者&lt;/h1>
+&lt;ol>
+&lt;li>Homebrew, &lt;a href="https://brew.idayer.com/guide/">https://brew.idayer.com/guide/&lt;/a>
+&lt;ol>
+&lt;li>Stats&lt;/li>
+&lt;li>Alfred&lt;/li>
+&lt;li>Item2+ayu&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>VS code
+&lt;ol>
+&lt;li>extension
+&lt;ol>
+&lt;li>copilot&lt;/li>
+&lt;li>tabnine&lt;/li>
+&lt;li>wakatime&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Terminal (item2)
+&lt;ol>
+&lt;li>&lt;a href="https://wyydsb.xin/Operations/terminal.html#zsh-sh">https://wyydsb.xin/Operations/terminal.html#zsh-sh&lt;/a>&lt;/li>
+&lt;li>Zsh-syntax-highlighting&lt;/li>
+&lt;li>Zsh-autosuggestions&lt;/li>
+&lt;li>Fzf with vim plugin&lt;/li>
+&lt;li>.vimrc + vim plug&lt;/li>
+&lt;li>tabnine by coc.nvim&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Java
+&lt;ol>
+&lt;li>JetBrains IDEA
+&lt;ol>
+&lt;li>extensions same as vs code.&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>JDK (&lt;a href="https://www.azul.com/downloads/?os=macos&amp;amp;architecture=arm-64-bit&amp;amp;package=jdk">Java Download | Java 8, Java 11, Java 13 - Linux, Windows &amp;amp; macOS (azul.com)&lt;/a>)&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Go
+&lt;ol>
+&lt;li>brew install golang&lt;/li>
+&lt;li>go proxy setup&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>KX
+&lt;ol>
+&lt;li>Clash X Pro: &lt;a href="https://github.com/yichengchen/clashX">https://github.com/yichengchen/clashX&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;h1 id="娱乐">娱乐&lt;/h1>
+&lt;ol>
+&lt;li>iina&lt;/li>
+&lt;li>wechat&lt;/li>
+&lt;/ol>
+&lt;h1 id="设置">设置&lt;/h1>
+&lt;ol>
+&lt;li>Hot corner&lt;/li>
+&lt;li>程序坞的大小与缩小&lt;/li>
+&lt;li>Apple Watch 解锁&lt;/li>
+&lt;li>触控板手势&lt;/li>
+&lt;li>iCloud 设置&lt;/li>
+&lt;li>桌面使用叠放&lt;/li>
+&lt;li>finder 显示状态栏&lt;/li>
+&lt;/ol>
+&lt;h1 id="远程控制">远程控制&lt;/h1>
+&lt;ol>
+&lt;li>teamviewer—&amp;gt;todesk—&amp;gt;rustdesk&lt;/li>
+&lt;/ol>
+- https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2021]Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
 &lt;ol>
 &lt;li>有道云笔记（markdown支持太弱）&lt;/li>
 &lt;li>Microsoft Todo（不太适合大量文字记载）&lt;/li>

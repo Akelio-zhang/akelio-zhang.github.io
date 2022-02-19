@@ -177,17 +177,23 @@
 &lt;p>当然，目前在使用Notion还有一些不舒服的地方：1）DASHBOARD呈现的内容过多，会分散注意力；2）Notion中很多已经完成的内容，目前只是简单放在database置为完成状态，或者移入存档Page。这些内容在较长不会做更新，却依旧占据了较多的篇幅，也会分散注意力。目前使用toggle或者database filter来隐藏。&lt;/p>
 - https://akelio-zhang.github.io/posts/2021notion/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>About Me</title><link>https://akelio-zhang.github.io/posts/about-me/</link><pubDate>Wed, 26 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/about-me/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/about-me/ -&lt;p>&lt;strong>Coder &amp;amp; Photographer&lt;/strong>&lt;/p>
 &lt;h2 id="我的设备">我的设备&lt;/h2>
-&lt;p>[工作]&lt;/p>
+&lt;p>[计算设备]&lt;/p>
 &lt;ol>
-&lt;li>PC（i7 8700+32G+GTX 1066）with Dell 2720Q + Dell 2414H&lt;/li>
-&lt;li>NUC 11（16G）with Dell 2520DR&lt;/li>
-&lt;li>ThinkPad T450s（i7 6600U+8G）&lt;/li>
-&lt;li>QNAP T453D mini with 512G + 256G + 4T&lt;/li>
+&lt;li>*PC (i7-8700 + 32G + GTX 1066) with Dell 2720Q + Dell 2414H&lt;/li>
+&lt;li>*NUC 11 (16G) with Dell 2520DR (workplace)&lt;/li>
+&lt;li>*QNAP T453D mini with (512G + 256G + 4T)&lt;/li>
+&lt;li>*ThinkPad T460s (i7-6600U + 8G)&lt;/li>
+&lt;li>*RaspBerry 3 (for scheduling)&lt;/li>
+&lt;/ol>
+&lt;p>[配件]&lt;/p>
+&lt;ol>
 &lt;li>Filco 87 Black&lt;/li>
-&lt;li>Anne Pro II&lt;/li>
+&lt;li>Anne Pro II (workplace)&lt;/li>
 &lt;li>GPW&lt;/li>
-&lt;li>G304&lt;/li>
-&lt;li>Macbook Air 2013&lt;/li>
+&lt;li>G304 (workplace)&lt;/li>
+&lt;li>Bose SoundLink Resolve&lt;/li>
+&lt;li>BenQ ScreenBar Halo&lt;/li>
+&lt;li>Xiaomi ScreenBar (workplace)&lt;/li>
 &lt;/ol>
 &lt;p>[生活]&lt;/p>
 &lt;ol>
@@ -196,20 +202,26 @@
 &lt;li>iPad Pro 2019 12.9'&lt;/li>
 &lt;li>Airpods Pro&lt;/li>
 &lt;li>Bose QC30&lt;/li>
-&lt;li>Sony 1A-DAC&lt;/li>
+&lt;li>Year 2016, Sony 1A-DAC&lt;/li>
+&lt;li>Year 2015, Sennheiser MOMENTUM&lt;/li>
+&lt;li>Year 2013, Fujifilm X10&lt;/li>
 &lt;/ol>
 &lt;p>[过往]&lt;/p>
-&lt;ol>
-&lt;li>Year 2018, PC(i5 8400 + 16G + GTX 1066)&lt;/li>
-&lt;li>Year 2015, PC(E3 v3 + 16G + AMD graphic card)&lt;/li>
+&lt;ul>
+&lt;li>Year 2019, LG UL650&lt;/li>
+&lt;li>Year 2018, PC(i5-8400 + 16G + GTX 1066)&lt;/li>
+&lt;li>Year 2015, PC(E3v3 + 16G + AMD 380X)&lt;/li>
 &lt;li>Year 2015, iPhone 6&lt;/li>
-&lt;li>Year 2013, Fujifilm X10&lt;/li>
+&lt;li>Year 2013, Macbook Air 2013&lt;/li>
+&lt;li>Year 2013, Samsumg WinPhone&lt;/li>
+&lt;li>Year 2012, Meizu&lt;/li>
 &lt;li>Year 2011, PC(i3 + 8G + AMD graphic card)&lt;/li>
 &lt;li>Year 2011, Sony VAIO Laptop&lt;/li>
 &lt;li>Year 2011, Nikon D90&lt;/li>
+&lt;li>Year 2010, iPhone 3Gs&lt;/li>
 &lt;li>Year 2005, Lenovo PC&lt;/li>
-&lt;/ol>
-&lt;p>Last edited on 2022/01/26&lt;/p>
+&lt;/ul>
+&lt;p>Last edited on 2022/02/19&lt;/p>
 - https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>
 &lt;li>掌握各类场景下如何更好使用Git。&lt;/li>

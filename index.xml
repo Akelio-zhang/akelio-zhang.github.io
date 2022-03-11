@@ -230,7 +230,20 @@
 &lt;li>Year 2010, iPhone 3Gs&lt;/li>
 &lt;li>Year 2005, Lenovo PC&lt;/li>
 &lt;/ul>
-&lt;p>Last edited on 2022/02/19&lt;/p>
+&lt;h2 id="我的存储">我的存储&lt;/h2>
+&lt;ol>
+&lt;li>OneDrive（文档，扫描件）&lt;/li>
+&lt;li>&lt;del>坚果云&lt;/del>（存量 books与文献）&lt;/li>
+&lt;li>阿里云盘（相册）&lt;/li>
+&lt;li>百度网盘（各类资源）&lt;/li>
+&lt;/ol>
+&lt;h2 id="联系我">联系我&lt;/h2>
+&lt;ol>
+&lt;li>Gmail&lt;/li>
+&lt;li>Outlook&lt;/li>
+&lt;li>iCloud隐私邮箱&lt;/li>
+&lt;/ol>
+&lt;p>Last edited on 2022/03/11&lt;/p>
 - https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>
 &lt;li>掌握各类场景下如何更好使用Git。&lt;/li>

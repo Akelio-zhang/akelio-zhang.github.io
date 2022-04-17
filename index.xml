@@ -105,7 +105,8 @@
 &lt;p>⭐&lt;a href="https://jeffe.cs.illinois.edu/teaching/algorithms/#book">Algorithms by Jeff Erickson (illinois.edu)&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]MacBook Pro到手设置</title><link>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ -&lt;h1 id="效率">效率&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]MacBook Pro到手设置</title><link>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ -&lt;h1 id="2022-macbook-pro到手设置">2022-MacBook Pro到手设置&lt;/h1>
+&lt;h2 id="效率">效率&lt;/h2>
 &lt;ol>
 &lt;li>Office 365, Microsoft edge, Onedrive, Todo, Outlook&lt;/li>
 &lt;li>Xmind&lt;/li>
@@ -113,64 +114,52 @@
 &lt;li>Typora&lt;/li>
 &lt;li>Sketch&lt;/li>
 &lt;/ol>
-&lt;h1 id="开发者">开发者&lt;/h1>
+&lt;h2 id="开发者">开发者&lt;/h2>
 &lt;ol>
-&lt;li>Homebrew, &lt;a href="https://brew.idayer.com/guide/">https://brew.idayer.com/guide/&lt;/a>
-&lt;ol>
-&lt;li>Stats&lt;/li>
-&lt;li>Alfred&lt;/li>
-&lt;li>Item2+ayu&lt;/li>
-&lt;/ol>
+&lt;li>
+&lt;p>Homebrew, &lt;a href="https://brew.idayer.com/guide/">https://brew.idayer.com/guide/&lt;/a>
+    1. Stats
+    2. Alfred
+    3. Item2+ayu&lt;/p>
 &lt;/li>
-&lt;li>VS code
-&lt;ol>
-&lt;li>extension
-&lt;ol>
-&lt;li>copilot&lt;/li>
-&lt;li>tabnine&lt;/li>
-&lt;li>wakatime&lt;/li>
-&lt;/ol>
+&lt;li>
+&lt;p>VS code
+    1. extension
+        1. copilot
+        2. tabnine
+        3. wakatime&lt;/p>
 &lt;/li>
-&lt;/ol>
+&lt;li>
+&lt;p>Terminal (item2)
+    1. &lt;a href="https://wyydsb.xin/Operations/terminal.html#zsh-sh">https://wyydsb.xin/Operations/terminal.html#zsh-sh&lt;/a>
+    2. Zsh-syntax-highlighting
+    3. Zsh-autosuggestions
+    4. Fzf with vim plugin
+    5. .vimrc + vim plug
+    6. tabnine by coc.nvim&lt;/p>
 &lt;/li>
-&lt;li>Terminal (item2)
-&lt;ol>
-&lt;li>&lt;a href="https://wyydsb.xin/Operations/terminal.html#zsh-sh">https://wyydsb.xin/Operations/terminal.html#zsh-sh&lt;/a>&lt;/li>
-&lt;li>Zsh-syntax-highlighting&lt;/li>
-&lt;li>Zsh-autosuggestions&lt;/li>
-&lt;li>Fzf with vim plugin&lt;/li>
-&lt;li>.vimrc + vim plug&lt;/li>
-&lt;li>tabnine by coc.nvim&lt;/li>
-&lt;/ol>
+&lt;li>
+&lt;p>Java
+    1. JetBrains IDEA
+        1. extensions same as vs code.
+    2. JDK (&lt;a href="https://www.azul.com/downloads/?os=macos&amp;amp;architecture=arm-64-bit&amp;amp;package=jdk">Java Download | Java 8, Java 11, Java 13 - Linux, Windows &amp;amp; macOS (azul.com)&lt;/a>)&lt;/p>
 &lt;/li>
-&lt;li>Java
-&lt;ol>
-&lt;li>JetBrains IDEA
-&lt;ol>
-&lt;li>extensions same as vs code.&lt;/li>
-&lt;/ol>
+&lt;li>
+&lt;p>Go
+    1. brew install golang
+    2. go proxy setup&lt;/p>
 &lt;/li>
-&lt;li>JDK (&lt;a href="https://www.azul.com/downloads/?os=macos&amp;amp;architecture=arm-64-bit&amp;amp;package=jdk">Java Download | Java 8, Java 11, Java 13 - Linux, Windows &amp;amp; macOS (azul.com)&lt;/a>)&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;li>Go
-&lt;ol>
-&lt;li>brew install golang&lt;/li>
-&lt;li>go proxy setup&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;li>KX
-&lt;ol>
-&lt;li>Clash X Pro: &lt;a href="https://github.com/yichengchen/clashX">https://github.com/yichengchen/clashX&lt;/a>&lt;/li>
-&lt;/ol>
+&lt;li>
+&lt;p>KX
+    1. Clash X Pro: &lt;a href="https://github.com/yichengchen/clashX">https://github.com/yichengchen/clashX&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-&lt;h1 id="娱乐">娱乐&lt;/h1>
+&lt;h2 id="娱乐">娱乐&lt;/h2>
 &lt;ol>
 &lt;li>iina&lt;/li>
 &lt;li>wechat&lt;/li>
 &lt;/ol>
-&lt;h1 id="设置">设置&lt;/h1>
+&lt;h2 id="设置">设置&lt;/h2>
 &lt;ol>
 &lt;li>Hot corner&lt;/li>
 &lt;li>程序坞的大小与缩小&lt;/li>
@@ -180,9 +169,16 @@
 &lt;li>桌面使用叠放&lt;/li>
 &lt;li>finder 显示状态栏&lt;/li>
 &lt;/ol>
-&lt;h1 id="远程控制">远程控制&lt;/h1>
+&lt;h2 id="远程控制">远程控制&lt;/h2>
 &lt;ol>
 &lt;li>teamviewer—&amp;gt;todesk—&amp;gt;rustdesk&lt;/li>
+&lt;/ol>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ol>
+&lt;li>&lt;a href="https://zhuye.notion.site/Macbook-M1-9c908ba2946440aeb02d63609c9990ae">Macbook环境配置（含M1） (notion.site)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rualc.com/workspace/mac/#brew">Mac 环境（M1 + Monterey） | 前端指南 (rualc.com)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.bilibili.com/video/BV1sD4y1X7MQ">学生党M1 Mac入门指北_哔哩哔哩_bilibili&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=67keaaWOKzE">Mac Tutorial for Beginners - Switching from Windows to macOS - YouTube&lt;/a>&lt;/li>
 &lt;/ol>
 - https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2021]Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
 &lt;ol>

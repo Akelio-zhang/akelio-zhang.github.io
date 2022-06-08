@@ -1,4 +1,74 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Fri, 25 Mar 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>[2022]决策引擎 Note</title><link>https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</link><pubDate>Fri, 25 Mar 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ -&lt;h1 id="2022决策引擎-note">[2022]决策引擎 Note&lt;/h1>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Fri, 15 Apr 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>[2022]读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ -&lt;h1 id="读书笔记--用数据讲故事">读书笔记&amp;ndash;用数据讲故事&lt;/h1>
+&lt;ul>
+&lt;li>第二章 选择有效的图表
+&lt;ul>
+&lt;li>图表类型
+&lt;ul>
+&lt;li>简单文本&lt;/li>
+&lt;li>表格（不利于展示你的观点）
+&lt;ul>
+&lt;li>热力图&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>点图
+&lt;ul>
+&lt;li>散点图（往往需要配合辅助线、辅助文本）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>线图
+&lt;ul>
+&lt;li>折线图（可以增加最大值、最小值的同图展示）&lt;/li>
+&lt;li>斜率图&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>条形图
+&lt;ul>
+&lt;li>直方图（竖直条形图）&lt;/li>
+&lt;li>堆叠竖直条形图（一般是最下一层能够比较有效对比）&lt;/li>
+&lt;li>瀑布图&lt;/li>
+&lt;li>水平条形图（适合阅读，分类标签可以很长）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>面积图&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>图表使用建议
+&lt;ul>
+&lt;li>不要使用饼图&lt;/li>
+&lt;li>不要使用3D图&lt;/li>
+&lt;li>尽量不要使用双Y轴&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>第三章 杂乱是你的敌人&lt;/li>
+&lt;li>第四章 聚焦受众的视线（引导到核心的数据）
+&lt;ul>
+&lt;li>前属性&lt;/li>
+&lt;li>颜色&lt;/li>
+&lt;li>大小&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>第五章 像设计师一样思考（通过可视化，让读者观众明白你的结论，第四章的升级版）
+&lt;ul>
+&lt;li>可供性
+&lt;ul>
+&lt;li>突出重要内容&lt;/li>
+&lt;li>消除干扰&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>无障碍
+&lt;ul>
+&lt;li>不要过于复杂&lt;/li>
+&lt;li>擅长使用文字突出结论&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>美观&lt;/li>
+&lt;li>接受度&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+- https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]决策引擎 Note</title><link>https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</link><pubDate>Fri, 25 Mar 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ -&lt;h1 id="2022决策引擎-note">[2022]决策引擎 Note&lt;/h1>
 &lt;ul>
 &lt;li>开场
 &lt;ul>
@@ -697,36 +767,4 @@ git stash pop
 &lt;p>如何对时间、压力进行管理。&lt;/p>
 &lt;p>这本书，可以在碰到问题时找到相关的章节去看看有没有什么解决方案，不一定有用，至少可以帮助开拓一定的思路。&lt;/p>
 &lt;p>相关大佬: Kent Beck; Martin Fowler; R. C. Martin&lt;/p>
-- https://akelio-zhang.github.io/posts/2020clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Java传值方式讨论</title><link>https://akelio-zhang.github.io/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</link><pubDate>Sun, 27 Oct 2019 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/ -&lt;p>起因是一次华为面试题&lt;/p>
-&lt;blockquote>
-&lt;p>Java在进行函数调用时，参数时传值还是传引用？&lt;/p>
-&lt;/blockquote>
-&lt;p>当时，我考虑的是Java变量只有两类，基本类型与引用类型，引用类型本质应该是属于指针。所以基本类型与引用类型的实参传递都是值本身，即创建一个副本赋予形参。面试官给的仅仅是笑而不语……&lt;/p>
-&lt;p>而后在工作了一段时间回想这个问题并没有那么简单。&lt;/p>
-&lt;p>碰到问题首先要给好定义才能进一步做分析。通过Wiki上关于&lt;a href="https://en.wikipedia.org/wiki/Evaluation_strategy">Evaluation strategy&lt;/a>的介绍，其中本文主要关注的这三种方式：call by value, call by reference and call by sharing。&lt;/p>
-&lt;ol>
-&lt;li>call by value即按值传参，将&lt;strong>实参创建一个新副本赋予形参&lt;/strong>，供函数使用，并且函数对参数的操作，对caller而言是不可见的，即immutable。&lt;/li>
-&lt;li>call by reference即传引用，函数中的参数就是&lt;strong>对实参的直接引用&lt;/strong>，而不再是一份拷贝（也可以理解成是对实参的一个常量指针），因此是mutable的。&lt;/li>
-&lt;li>call by sharing，认为该编程语言中所有值都基于对象而非原始类型。在传参过程中赋予形参的是&lt;strong>引用的拷贝&lt;/strong>。因为是引用的拷贝，所以函数体内只能对原对象进行操作，但是不能修改实参引用本身。所以对对象而言，这种传参方式是mutable的，但是对于引用本身，又是immutable的。&lt;/li>
-&lt;/ol>
-&lt;hr>
-&lt;p>现在回头来看下C，C++和Java。&lt;/p>
-&lt;p>C语言中策略很简单，一切均位call by value，尽管它有指针变量，但是它也是传的实参的拷贝。&lt;/p>
-&lt;p>C++中出现了引用类型的变量，并且传参时也可以指定call by reference。如，&lt;code>void func(int&amp;amp; n)&lt;/code>&lt;/p>
-&lt;p>Java当中考虑到指针的复杂性，于是直接砍掉了指针变量，只剩下了基本变量与引用变量，另外也不允许选择不同的传参方式。首先看基本变量，比较简单，就是call by value的表现。其次，对于引用变量而言，我们在函数可以对引用的对象进行操作，并且对caller是可见的，但是无法让实参引用到一个新的对象上去，即我们无法在函数中对实参进行assignment相关的操作，即引用本身是immutable的。这就是call by sharing。&lt;/p>
-&lt;p>这里附上知乎一位答主的回答：&lt;/p>
-&lt;blockquote>
-&lt;p>综上所述，对于Java的函数调用方式最准确的描述是：&lt;strong>参数藉由值传递方式，传递的值是个引用。（句中两个“值”不是一个意思，第一个值是evaluation result，第二个值是value content）&lt;/strong>&lt;/p>
-&lt;p>由于这个描述太绕，而且在字面上与Java总是传引用的事实冲突。于是对于Java，Python、Ruby、JavaScript等语言使用的这种求值策略，起了一个更贴切名字，叫&lt;a href="#Call_by_sharing">Call by sharing&lt;/a>。这个名字诞生于40年前。&lt;/p>
-&lt;p>作者：Yolanda&lt;/p>
-&lt;p>链接：https://www.zhihu.com/question/31203609/answer/112157038&lt;/p>
-&lt;p>来源：知乎&lt;/p>
-&lt;p>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。&lt;/p>
-&lt;/blockquote>
-&lt;hr>
-&lt;p>参考文献：&lt;/p>
-&lt;ol>
-&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Evaluation_strategy">https://en.wikipedia.org/wiki/Evaluation_strategy&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Reference_(computer_science)">https://en.wikipedia.org/wiki/Reference_(computer_science)&lt;/a>&lt;/li>
-&lt;/ol>
-- https://akelio-zhang.github.io/posts/java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/ - 2019-2022 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2020clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/ - 2019-2022 Akelio All rights reserved.</description></item></channel></rss>

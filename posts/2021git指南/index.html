@@ -22,8 +22,8 @@
 一、了解Git  什么是Git？  一款分布式版本管理系统 优点：分布式、性能、版本的文件完整性  分布式，可以让你在本地提交代码（对于SVN而言没有网络就无法提交代码，在家也能愉快地写代码）； 性能，对于我们的一般项目而言，你感受不到合并时性能的差别（与SVN比较）； 版本的文件完整性：git背后设计理念是快照思想。     Git概念  仓库(repository)  用于代码版本管理 一个git仓库管理了三棵“树”，分别是  Working Directory（工作目录） Index（暂存区） HEAD（本地仓库）   大多数时候你通过编辑器只能对工作目录操作，操作其他两个“树”（区域）必须使用git命令才可以。   分支(branch)  用于并行独立开发，更方便管理不同开发任务的进度     Git常用命令  git add git commit git push git pull git branch git switch git restore    二、最常见的一种使用场景 陈主管说他已经开发好了整个架构，需要我去把几个功能实现一下，并提交到dev分支让他方便Review。
  基本流程  先从远程服务器把代码拉到本地：git clone http://197.68.6.70/demo-project 此时你拥有的是主干master分支的代码，我们需要切换到dev分支进行开发：  git fetch --all git switch --track origin/dev   在工作目录写代码 提交变更的文件到暂存区：git add <somefile> 提交文件到本地仓库：git commit -m &#34;xxx&#34; 把我的代码推送到远程仓库（同步）：git push    三、最佳实践——Git里的后悔药  我提交到暂存区的代码搞错了：git restore -S <files or dir> （在使用IDEA时，这个场景不太会出现，因为IDEA往往是把add 和 commit的操作会合并成一个处理） 我提交到本地仓库的代码搞错了：  最近的一个commit：git reset -mixed HEAD~1 历史中的一个commit：  使用 git reset --mixed <commit_id>，然后重新提交正确的代码（ ❗从最新commit到指定commit的代码都需要重新提交） 使用 git revert <commit_id> ，这个操作近似于自己重新提交代码     我提交到远程仓库的代码搞错了：  只有一个建议：请写出正确的代码，重新提交！所以，请在每次push之前谨慎！    四、最佳实践——与他人同步  我想把别人在dev分支上开发的代码同步下来看看：git pull --rebase 或者 git pull （前者会让你的commit log更加清爽一些，没有一些额外的merge commit log） 如果你开发的分支和多人一同开发，建议每天进行一次 git pull --rebase 与 git push  五、最佳实践——我的改动比较大  建议自己拉一个分支进行开发 git switch -c <new_branch_name> 。 开发结束后，先把主开发分支合并到你的分支：git merge dev 没问题后再把你的分支合并到主开发分支：git switch dev ，git merge <new_branch_name>  六、其他  ⭐准备上线前  和上一个版本代码对比(git diff release master)，确认release分支是正确的需要上线的代码 使用Jenkins对release分支进行自动打包与部署，在工作空间获取上线代码包（禁止本地打包）   上线完成后  在gitlab上提交release合并至master分支的merge request，由技术经理确认合并； 对最新的master分支进行tag，方便反查源码；    七、几个原则 强制  禁止git push -f 禁止git push master  建议  建议分支命名：master、release、dev、dev_xx  master分支为线上正在运行的代码；不允许手动提交；只能通过页面的merge request进行代码合并；每次上完线后把分支(release)代码合并到master release为测试环境对应的代码，jenkins均从该分支进行自动构建与部署 dev，以及其他分支为开发分支，较为自由。   减少对git checkout的使用，已经拆分为 git switch 和 git restore 不要把二进制文件放到git仓库中进行版本管理  八、实现方式之数据结构 在Git当中，">
 <link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.3f72a5fc8f5b5dd732a4b476aced0eece2156958d9d414316494ddb10593ddf7.css integrity="sha256-P3Kl/I9bXdcypLR2rO0O7OIVaVjZ1BQxZJTdsQWT3fc=" media=screen>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.f7c2efa7183435a6bd1842f91c541481c7a5137b5991629a870f24e4a516ad4b.css integrity="sha256-98Lvpxg0Naa9GEL5HFQUgcelE3tZkWKahw8k5KUWrUs=" media=screen>
+<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen>
+<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen>
 <script src=/vendor/js/loadCSS.js></script>
 <script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
 <script src=/js/toc.js></script>
@@ -53,7 +53,7 @@ RSS Feed
 </a>
 </div>
 <div class=nav-footer>
-Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://amazingrise.net>Rise</a>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
 <br>
 移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
 <br>
@@ -529,7 +529,7 @@ git stash pop
 </div>
 </div>
 </div><div id=single-column-footer>
-Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://amazingrise.net>Rise</a>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
 <br>
 移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
 <br>

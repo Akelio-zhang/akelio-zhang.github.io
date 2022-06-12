@@ -336,8 +336,9 @@
 &lt;p>[计算设备]&lt;/p>
 &lt;ol>
 &lt;li>*PC (i7-8700 + 32G + GTX 1066) with Dell 2720Q + Dell 2414H&lt;/li>
-&lt;li>*NUC 11 (16G) with Dell 2520DR (workplace)&lt;/li>
-&lt;li>*QNAP T453D mini with (512G + 256G + 4T)&lt;/li>
+&lt;li>*Laptop: MacBook Pro 14 with M1 Pro + Dell 2520DR&lt;/li>
+&lt;li>*Homelab: NUC 11 (16G) for ESXi&lt;/li>
+&lt;li>*NAS: QNAP T453D mini with (512G + 256G + 4T)&lt;/li>
 &lt;li>*ThinkPad T460s (i7-6600U + 8G)&lt;/li>
 &lt;li>*RaspBerry 3 (for scheduling)&lt;/li>
 &lt;/ol>
@@ -350,6 +351,7 @@
 &lt;li>Bose SoundLink Resolve&lt;/li>
 &lt;li>BenQ ScreenBar Halo&lt;/li>
 &lt;li>Xiaomi ScreenBar (workplace)&lt;/li>
+&lt;li>Marshall Stanmore II&lt;/li>
 &lt;/ol>
 &lt;p>[自动化]&lt;/p>
 &lt;ul>
@@ -397,9 +399,9 @@
 &lt;ol>
 &lt;li>Gmail&lt;/li>
 &lt;li>Outlook&lt;/li>
-&lt;li>iCloud隐私邮箱&lt;/li>
+&lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
 &lt;/ol>
-&lt;p>Last edited on 2022/03/11&lt;/p>
+&lt;p>Last edited on 2022/06/12&lt;/p>
 - https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>
 &lt;li>掌握各类场景下如何更好使用Git。&lt;/li>

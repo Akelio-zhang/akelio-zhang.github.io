@@ -193,7 +193,91 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ -&lt;h1 id="读书笔记--用数据讲故事">读书笔记&amp;ndash;用数据讲故事&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]单元测试减少心智负担</title><link>https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</link><pubDate>Wed, 15 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ -&lt;h1 id="单元测试减少心智负担">单元测试减少心智负担&lt;/h1>
+&lt;hr>
+&lt;h2 id="责任意识">责任意识&lt;/h2>
+&lt;ul>
+&lt;li>案例1: 错误的空判断，导致错误放款上百万；&lt;/li>
+&lt;li>案例2: 使用本地环境打包，部署到线上环境后异常，官网无法访问；&lt;/li>
+&lt;li>线上问题，第一责任人基本都是软件开发人员，不是测试、也不是运维人员；&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="什么是单元测试">什么是单元测试&lt;/h2>
+&lt;ul>
+&lt;li>在计算机编程中，单元测试（英语：Unit Testing）又称为模块测试  ，是针对程序模块（软件设计的最小单位）来进行正确性检验的测试工作。程序单元是应用的最小可测试部件。在过程化编程中，一个单元就是单个程序、函数、过程等；对于面向对象编程，最小单元就是方法，包括基类（超类）、抽象类、或者派生类（子类）中的方法。&lt;/li>
+&lt;li>通常来说，程序员每修改一次程序就会进行最少一次单元测试，在编写程序的过程中前后很可能要进行多次单元测试，以证实程序达到软件规格书要求的工作目标，没有程序错误；虽然单元测试不是必须的，但也不坏，这牵涉到项目管理的政策决定。&lt;/li>
+&lt;li>每个理想的测试案例独立于其它案例；为测试时隔离模块，经常使用stubs、mock或fake等测试马甲程序。单元测试通常由软件开发人员编写，用于确保他们所写的代码符合软件需求和遵循开发目标。它的实施方式可以是非常手动的（透过纸笔），或者是做成构建自动化的一部分。&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="为什么要做单元测试">为什么要做单元测试&lt;/h2>
+&lt;ul>
+&lt;li>保证功能的正确性；&lt;/li>
+&lt;li>适应于代码改造、重构；&lt;/li>
+&lt;li>对功能的一种文档记录（包括一次BUG，对应一个单元测试）&lt;/li>
+&lt;li>从使用者的角度先行设计（参考——测试驱动开发TDD）&lt;/li>
+&lt;li>收益
+&lt;ul>
+&lt;li>更短的修复时间&lt;/li>
+&lt;li>更少的开发成本&lt;/li>
+&lt;li>更高的代码质量&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="哪些代码要做单元测试">哪些代码要做单元测试&lt;/h2>
+&lt;ul>
+&lt;li>最理想，100%的代码覆盖率以及分支覆盖率。
+&lt;ul>
+&lt;li>覆盖率好不等价于代码合格&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>时间有限
+&lt;ul>
+&lt;li>核心功能代码&lt;/li>
+&lt;li>逻辑复杂的代码&lt;/li>
+&lt;li>分支较多的代码&lt;/li>
+&lt;li>数据状态变化较多的代码&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="怎么做单元测试">怎么做单元测试&lt;/h2>
+&lt;ul>
+&lt;li>从一个Java程序开始&lt;/li>
+&lt;li>怎么做Spring容器的单元测试？
+&lt;ul>
+&lt;li>@SpringBootTest&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>数据库数据怎么办？
+&lt;ul>
+&lt;li>@DbUnit&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="单元测试的建议">单元测试的建议&lt;/h2>
+&lt;ul>
+&lt;li>日志或者System.out.println对测试无意义&lt;/li>
+&lt;li>如依赖数据库，建议使用非测试数据库，并用spring-test-dbunit来做数据初始化准备。&lt;/li>
+&lt;li>如依赖外部接口，建议有相应的测试接口，保证其接口输入与响应保持一致性&lt;/li>
+&lt;li>了解一下测试驱动开发，能提高对代码可测试性、模块设计的理解。&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">单元测试&lt;/a> &lt;a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">-&lt;/a> &lt;a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">维基百科，自由的百科全书&lt;/a> &lt;a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">(&lt;/a>&lt;a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">wikipedia.org)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mp.weixin.qq.com/s/okmWMOeBm7cCIZ1zzFr4KQ">从头到脚说单测&lt;/a>&lt;a href="https://mp.weixin.qq.com/s/okmWMOeBm7cCIZ1zzFr4KQ">——&lt;/a>&lt;a href="https://mp.weixin.qq.com/s/okmWMOeBm7cCIZ1zzFr4KQ">谈有效的单元测试&lt;/a> &lt;a href="https://mp.weixin.qq.com/s/okmWMOeBm7cCIZ1zzFr4KQ">(&lt;/a>&lt;a href="https://mp.weixin.qq.com/s/okmWMOeBm7cCIZ1zzFr4KQ">qq.com)&lt;/a>&lt;/li>
+&lt;li>关键词
+&lt;ul>
+&lt;li>测试开发&lt;/li>
+&lt;li>JUnit, xUNit, dbUnit&lt;/li>
+&lt;li>SpringBooTest&lt;/li>
+&lt;li>Mock, spy, stub&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+- https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ -&lt;h1 id="读书笔记--用数据讲故事">读书笔记&amp;ndash;用数据讲故事&lt;/h1>
 &lt;ul>
 &lt;li>第二章 选择有效的图表
 &lt;ul>
@@ -344,7 +428,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>LeetCode 刷题指南</title><link>https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</link><pubDate>Fri, 18 Feb 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ -&lt;h1 id="刷题的意义">“刷题”的意义&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]LeetCode 刷题指南</title><link>https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</link><pubDate>Fri, 18 Feb 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ -&lt;h1 id="刷题的意义">“刷题”的意义&lt;/h1>
 &lt;p>刷题确实可能会让非常多人嗤之以鼻，但是没有办法，这一切都是市场决定的。如果要在这个市场生存，你只有两个选择，适应这条规则或者打破这条规则。如果我们可以打破这条规则，那说明我们拥有更大的价值，这当然很好。但是对于大多数人而言，可能或多或少会得刷一刷题。刷题一方面能让我们面试通过，另一方面也在过程中重温一些基础知识（可以不用再面对繁冗复杂的业务诉求）。&lt;/p>
 &lt;h1 id="如何刷">如何刷&lt;/h1>
 &lt;p>笔者自己是从两条线分别出发刷题。一，按数据结构类型；二，按算法策略。从这两条线组织刷题顺序可以帮我们更快地构建起题与知识的映射关系。其实在面试解题过程中，关键要解决的就是破除题目本身的外壳，发现本质问题，属于什么类型的问题，需要用怎么样的数据结构与算法来解决。&lt;/p>
@@ -600,7 +684,8 @@
 &lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
 &lt;/ol>
 &lt;p>Last edited on 2022/06/12&lt;/p>
-- https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h2 id="零目的">零、目的&lt;/h2>
+- https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2021]Git指南</title><link>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
+&lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>
 &lt;li>掌握各类场景下如何更好使用Git。&lt;/li>
 &lt;li>减少因为代码提交问题带来的生产环境问题。&lt;/li>
@@ -834,63 +919,4 @@ git stash pop
 &lt;li>&lt;a href="https://www.imwzk.com/posts/2020-10-05-an-incomplete-guide-to-campus-recruitment-interviews/">校招面试不完全指南&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://mindhacks.cn/2011/11/04/how-to-interview-a-person-for-two-years/">怎样花两年时间去面试一个人&lt;/a>&lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>系统复杂度-1</title><link>https://akelio-zhang.github.io/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/</link><pubDate>Sat, 06 Jun 2020 18:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/ -&lt;h1 id="0x1-introduction">0x1 Introduction&lt;/h1>
-&lt;p>当你接手一个不熟悉的系统的时候，你可能想找一下系统文档（但是已经很久没更新了）；你可能想看一下有没有单元测试（很多根本跑不起来了）；这时候，除了问同事，只能自己从几千几万行代码中开始摸索。&lt;/p>
-&lt;p>当你开发一个新系统的时候，由于某些原因需要调整局部的逻辑，因为没有相应的单元测试，结果在移交给测试后才发现各种顾此失彼的bug出现了。&lt;/p>
-&lt;p>当你的系统性能已经无法再满足时，又或者系统的迭代成本异常大时，此时就会可能需要重写或重构。此时，由于没有单元测试，自动化集成测试，你不得不拉上更多的同事来参与此次系统优化，以保证系统的可靠性。&lt;/p>
-&lt;p>当你的系统需要有新的客户接入时，因为没有最新的系统文档或使用说明书，你只能电话、口头地来教别人怎么接入你的系统。&lt;/p>
-&lt;p>上述的几个场景，都是因为系统的配套设施（文档、测试）没有同步完善，引起接入、迭代、重构的成本显著增加。这不是我们想看到的。相对地，系统的快速迭代的开发模式已经受到了广泛的认同，我们怎么在这个过程能够一直保持高效、可靠的输出呢？对于这个问题，本文尝试从系统复杂度、重构、设计模式、测试这几个角度来讨论这个问题，希望能给大家一些新的思考。&lt;/p>
-&lt;h1 id="0x2-系统复杂度">0x2 系统复杂度&lt;/h1>
-&lt;p>首先，算法有复杂度一说，在所有的算法课程基本都会在前1-2章围绕这个话题展开详细的定义与分析讨论。算法复杂度一般分为时间复杂度与空间复杂度，可以说是该算法解决问题的时间与空间成本。&lt;/p>
-&lt;p>在工作上，我们维护的往往是一个系统，一个工程。一个系统的复杂度定义，似乎并不是那么容易。本章节大多数内容来源于&lt;em>A Philosiphy of Software Designing&lt;/em>。这本书中对于系统的复杂度定义非常的实际，&lt;strong>软件系统结构中让其变得难以理解且难以变更的部分组成了系统的复杂性&lt;/strong>。回顾本文引子部分，其实都是系统难以理解、难以修改导致的结果。&lt;/p>
-&lt;p>这个定义相对于算法复杂度而言，显得非常主观，没有客观的评估准则，各个人的理解也会大相径庭。因此，书中进一步展开了几种复杂性症状。&lt;/p>
-&lt;ol>
-&lt;li>变化放大(change amplication)：当你需要改动某一个逻辑时，会涉及到多处代码变更。&lt;/li>
-&lt;li>认知负担(cognitive load)：有时尽管只写了很少的代码，但是对于他人来说异常难以理解，请尝试将它改写成容易理解的方式。&lt;/li>
-&lt;li>不可知(unknown unknowns)：不知道哪里有坑存在，就算BUG出现了。&lt;/li>
-&lt;/ol>
-&lt;p>总的来说，控制住整个系统的复杂度，将是保障我们高效、可靠工作的核心。低复杂度的系统，大大降低了开发过程中的心智压力。&lt;/p>
-&lt;h1 id="0x3-测试">0x3 测试&lt;/h1>
-&lt;p>为什么要把测试放在靠前的位置呢？测试是将一直伴随在生产代码演进的，是软件的&lt;strong>可靠性&lt;/strong>保证的重要工具。&lt;/p>
-&lt;p>拿建筑工程做一个类比，设计一幢房屋时，对于设计人员，最终产出的是施工图。那么，它的设计依据是什么呢？《规范》与模型的承载能力分析。前者，描述了什么类型的结构需要怎么样的设计，这种属于基本要求。后者，通过基于物理建模软件进行专门的结构性能分析，来确保本次设计的&lt;strong>可靠性&lt;/strong>。&lt;/p>
-&lt;p>软件工程相比建筑工程，非常年轻，一方面没有条条框框地规则（P3C也仅仅是一些基础性条约）；另一方面，因为大部分软件工程不涉及生命财产，也可以通过快速更新来解决问题，所以导致大多数人对&lt;strong>可靠性&lt;/strong>的关注度远不如建筑工程。先不说这样的态度容易使生产问题频发，另外也会让你的工作开展体验感相对差劲，总是在返工。&lt;/p>
-&lt;p>因此，我们需要在注重软件的可靠性。我们的第一个工具就是（自动化）测试。好的测试，就能够有效地模拟真实地业务场景，来校验代码的正确性。好的测试，能够让新加入的开发人员更容易理解系统是如何使用的。好的测试，能够促进系统架构的合理化——高内聚低耦合。但是，好的测试代码并不容易写，因为测试代码的思考方式与一般的coding并不一样，它更像是生产代码的前置条件、运行场景。&lt;/p>
-&lt;p>测试通常分为四个层次：单元测试（Unit Testing）、集成测试（Integration Testing）、系统测试（System Testing）、验收测试（Acceptance Testing）。其中离开发最近的是单元测试，一般覆盖的是函数以及类的功能正确性。集成测试则是对系统内部的各模块之间的协作是否正确，通常按内部接口进行覆盖测试。系统测试则是验证对外接口能否在各种情况下能够正常地运行（性能测试也属于这一层次）。验收测试属于辅助性的测试，范围也相对更广，不同的系统也会需要不同的验收测试，例如安全测试、易用性测试、兼容性测试等等。&lt;/p>
-&lt;p>这里我们主要谈一下单元测试，因为这是所有测试的基本面，也是开发人员所需要特别关注的地方。先考虑一下是先写生产代码还是先写测试代码。第一个角度是，当然是先写生产代码了，没有生产代码怎么测试呢？第二个角度是，先写测试代码再写生产代码，因为测试代码是功能的运行场景，只有先把这些前置条件搞清楚了，才能写出正确的生产代码。也许你会说，我可以先大脑过一下基本场景，然后再写生产代码，再写测试代码，这应该是大部分人目前的方式，但是不知道你有没有发现，这种方式写出来的测试代码往往会因为前期的假设导致覆盖率很低。&lt;/p>
-&lt;p>在2003年，Kent Beck提出了Test-Driven development（TDD）这样一种开发模式。&lt;/p>
-&lt;ol>
-&lt;li>添加一个测试&lt;/li>
-&lt;li>运行所有测试，是否有失败&lt;/li>
-&lt;li>一旦有失败的测试，就开始写生产代码，直到该测试通过为止。&lt;/li>
-&lt;li>所有测试通过后，就必须开始写测试代码，直到有一个测试无法通过。&lt;/li>
-&lt;/ol>
-&lt;p>可能，你会觉得这样非常耗时，但是你得明确，你在一个功能开发的耗时并不仅仅是写了那一堆生产代码而已，还包括测试、代码修复等等。所以，这种方式只是将一些顺序进行了调换，却能为最终的正确性铺垫很多。&lt;/p>
-&lt;h1 id="0x4-重构">0x4 重构&lt;/h1>
-&lt;p>重构与重写都是试图优化系统复杂度的方式，在不同的场景（代码状况、工期等）会选择不同的方式，但是大多时候会采用重构的方式来实现。&lt;/p>
-&lt;p>先来看一下wikipedia对重构的定义：&lt;/p>
-&lt;p>In &lt;a href="https://en.wikipedia.org/wiki/Computer_programming">computer programming&lt;/a> and &lt;a href="https://en.wikipedia.org/wiki/Software_design">software design&lt;/a>, &lt;strong>code refactoring&lt;/strong> is the process of restructuring existing &lt;a href="https://en.wikipedia.org/wiki/Computer_code">computer code&lt;/a>—changing the &lt;em>&lt;a href="https://en.wikipedia.org/wiki/Decomposition_(computer_science)">factoring&lt;/a>&lt;/em>—without changing its external behavior. Refactoring is intended to improve the design, structure, and/or implementation of the &lt;a href="https://en.wikipedia.org/wiki/Software">software&lt;/a> (its &lt;em>&lt;a href="https://en.wikipedia.org/wiki/Non-functional_requirement">non-functional&lt;/a>&lt;/em> attributes), while preserving its &lt;a href="https://en.wikipedia.org/wiki/Functional_requirement">functionality&lt;/a>. Potential advantages of refactoring may include improved code &lt;a href="https://en.wikipedia.org/wiki/Readability">readability&lt;/a> and reduced &lt;a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">complexity&lt;/a>; these can improve the &lt;a href="https://en.wikipedia.org/wiki/Source_code">source code&lt;/a>&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Maintainability">maintainability&lt;/a> and create a simpler, cleaner, or more expressive internal &lt;a href="https://en.wikipedia.org/wiki/Software_architecture">architecture&lt;/a> or &lt;a href="https://en.wikipedia.org/wiki/Object_model">object model&lt;/a> to improve &lt;a href="https://en.wikipedia.org/wiki/Extensibility">extensibility&lt;/a>.&lt;/p>
-&lt;p>在系统复杂度膨胀到一定程度后，添加功能异常困难、系统变得难以理解、修改的时候，重构往往就需要开始执行，从而降低系统的复杂度，让我们能够更高效地开发、修改代码。所以重构并不是某一个开发阶段，而是一种开发工具，帮助我们提升效率。&lt;/p>
-&lt;p>在《重构》这本书中，提到很多地坏味道，本质就是一些让系统复杂度变高的地方，你可以发现它与第二节中的那些症状很类似。&lt;/p>
-&lt;p>这里特别想说的是，重构的过程中，其实会采用不少设计模式，但是并不能说设计模式就是万能药。设计模式是我们需要了解的，但是我们需要记住的是它们出现的目的是什么，我这里可以列举几个：&lt;/p>
-&lt;ol>
-&lt;li>减少继承，多采用组合的方式来丰富类的功能。&lt;/li>
-&lt;li>面对各种功能的变更，能够将变化（影响）的范围尽可能的缩小到1个或者少量的类中。&lt;/li>
-&lt;li>面向接口编程。&lt;/li>
-&lt;/ol>
-&lt;h1 id="0x5-结论">0x5 结论&lt;/h1>
-&lt;ol>
-&lt;li>除了写好生产代码以外，我们要多多关注一些周边的工具：自动化测试、持续继承、文档等。&lt;/li>
-&lt;li>对于一个持续迭代的系统，系统复杂度是需要重点关注的。&lt;/li>
-&lt;li>尝试把你的测试代码前置。&lt;/li>
-&lt;li>重构能够帮助你降低系统复杂度。&lt;/li>
-&lt;li>三次原则：第一次做某件事时只管去做；第二次做类似的事会产生反感（蹩脚），但无论如何还是可以去做；第三次再做类似的事，你就应该重构/反思。&lt;/li>
-&lt;/ol>
-&lt;h1 id="站在巨人的肩膀上">站在巨人的肩膀上&lt;/h1>
-&lt;ol>
-&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Software_testing#Testing_levels">https://en.wikipedia.org/wiki/Software_testing#Testing_levels&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Code_refactoring">https://en.wikipedia.org/wiki/Code_refactoring&lt;/a>&lt;/li>
-&lt;li>Ousterhout, John. &lt;em>A Philosophy of Software Design&lt;/em>. Yaknyam Press, 2018.&lt;/li>
-&lt;li>Fowler, Martin. &lt;em>Refactoring: improving the design of existing code&lt;/em>. Addison-Wesley Professional, 2018.&lt;/li>
-&lt;li>Martin, Robert C. &lt;em>The clean coder: a code of conduct for professional programmers&lt;/em>. Pearson Education, 2011.&lt;/li>
-&lt;/ol>
-- https://akelio-zhang.github.io/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/ - 2019-2022 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/ - 2019-2022 Akelio All rights reserved.</description></item></channel></rss>

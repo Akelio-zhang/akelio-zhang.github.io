@@ -1,5 +1,5 @@
 <!doctype html><html><head>
-<title>[2022]决策引擎 Note</title>
+<title>决策引擎 Note</title>
 <meta charset=utf-8>
 <meta name=X-UA-Compatible content="IE=edge">
 <meta name=google-site-verification content>
@@ -8,15 +8,15 @@
 <meta name=description content>
 <meta name=renderer content="webkit">
 <meta name=theme-color content="#ffffff">
-<meta property="og:title" content="[2022]决策引擎 Note">
-<meta property="og:description" content="[2022]决策引擎 Note  开场  常见的引擎有哪些？  游戏、模板、规则、决策；   引擎是一套通用的软件解决方案，基于引擎，可以实现一类相似的业务需求；   决策引擎是什么？  如果用最简单的说，对某一类型的事件进行加工处理后得到一个决策结果； 从这句话看起来，和规则引擎很像，确实很像，或者说决策引擎是一种高级的规则引擎（是基于规则引擎的提升改造以适应更加复杂的流程）；   怎么会自己开发出一个决策引擎  罗列业务上的诉求 时间线 所以一个东西并不是一蹴而就的，也是因为业务的复杂逐渐提升，引擎也在随之提升变化   如何设计  原则  组合>继承 单一责任 每一个类应该和尽可能少的类交互，对象的层次设计   主要对象  Filter TaskNode Task FlowEngine IFlowContext     效果  代码工程可读性、可测试性（可维护性）强； 不同决策模型均适应 易扩展  方便查问题（日志落表与业务逻辑完全解耦） 可以在大数据环境运行（不基于Spring）     应用  同业预警财务模型V2   未来规划  支持并发 支持节点超时配置 前端展示转换层，配置与执行流可视化，便于运维   启示  原型能力  从规则引擎&ndash;>规则引擎V2&ndash;>决策引擎   产品需要打磨 其他    ">
+<meta property="og:title" content="决策引擎 Note">
+<meta property="og:description" content="决策引擎 Note  开场  常见的引擎有哪些？  游戏、模板、规则、决策；   引擎是一套通用的软件解决方案，基于引擎，可以实现一类相似的业务需求；   决策引擎是什么？  如果用最简单的说，对某一类型的事件进行加工处理后得到一个决策结果； 从这句话看起来，和规则引擎很像，确实很像，或者说决策引擎是一种高级的规则引擎（是基于规则引擎的提升改造以适应更加复杂的流程）；   怎么会自己开发出一个决策引擎  罗列业务上的诉求 时间线 所以一个东西并不是一蹴而就的，也是因为业务的复杂逐渐提升，引擎也在随之提升变化   如何设计  原则  组合>继承 单一责任 每一个类应该和尽可能少的类交互，对象的层次设计   主要对象  Filter TaskNode Task FlowEngine IFlowContext     效果  代码工程可读性、可测试性（可维护性）强； 不同决策模型均适应 易扩展  方便查问题（日志落表与业务逻辑完全解耦） 可以在大数据环境运行（不基于Spring）     应用  同业预警财务模型V2   未来规划  支持并发 支持节点超时配置 前端展示转换层，配置与执行流可视化，便于运维   启示  原型能力  从规则引擎&ndash;>规则引擎V2&ndash;>决策引擎   产品需要打磨 其他    ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-03-25T12:00:00+08:00">
 <meta property="article:modified_time" content="2022-03-25T12:00:00+08:00"><meta property="og:site_name" content="My Blog">
 <meta name=twitter:card content="summary">
-<meta name=twitter:title content="[2022]决策引擎 Note">
-<meta name=twitter:description content="[2022]决策引擎 Note  开场  常见的引擎有哪些？  游戏、模板、规则、决策；   引擎是一套通用的软件解决方案，基于引擎，可以实现一类相似的业务需求；   决策引擎是什么？  如果用最简单的说，对某一类型的事件进行加工处理后得到一个决策结果； 从这句话看起来，和规则引擎很像，确实很像，或者说决策引擎是一种高级的规则引擎（是基于规则引擎的提升改造以适应更加复杂的流程）；   怎么会自己开发出一个决策引擎  罗列业务上的诉求 时间线 所以一个东西并不是一蹴而就的，也是因为业务的复杂逐渐提升，引擎也在随之提升变化   如何设计  原则  组合>继承 单一责任 每一个类应该和尽可能少的类交互，对象的层次设计   主要对象  Filter TaskNode Task FlowEngine IFlowContext     效果  代码工程可读性、可测试性（可维护性）强； 不同决策模型均适应 易扩展  方便查问题（日志落表与业务逻辑完全解耦） 可以在大数据环境运行（不基于Spring）     应用  同业预警财务模型V2   未来规划  支持并发 支持节点超时配置 前端展示转换层，配置与执行流可视化，便于运维   启示  原型能力  从规则引擎&ndash;>规则引擎V2&ndash;>决策引擎   产品需要打磨 其他    ">
+<meta name=twitter:title content="决策引擎 Note">
+<meta name=twitter:description content="决策引擎 Note  开场  常见的引擎有哪些？  游戏、模板、规则、决策；   引擎是一套通用的软件解决方案，基于引擎，可以实现一类相似的业务需求；   决策引擎是什么？  如果用最简单的说，对某一类型的事件进行加工处理后得到一个决策结果； 从这句话看起来，和规则引擎很像，确实很像，或者说决策引擎是一种高级的规则引擎（是基于规则引擎的提升改造以适应更加复杂的流程）；   怎么会自己开发出一个决策引擎  罗列业务上的诉求 时间线 所以一个东西并不是一蹴而就的，也是因为业务的复杂逐渐提升，引擎也在随之提升变化   如何设计  原则  组合>继承 单一责任 每一个类应该和尽可能少的类交互，对象的层次设计   主要对象  Filter TaskNode Task FlowEngine IFlowContext     效果  代码工程可读性、可测试性（可维护性）强； 不同决策模型均适应 易扩展  方便查问题（日志落表与业务逻辑完全解耦） 可以在大数据环境运行（不基于Spring）     应用  同业预警财务模型V2   未来规划  支持并发 支持节点超时配置 前端展示转换层，配置与执行流可视化，便于运维   启示  原型能力  从规则引擎&ndash;>规则引擎V2&ndash;>决策引擎   产品需要打磨 其他    ">
 <link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
 <link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen>
 <link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen>
@@ -65,8 +65,8 @@ Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by 
 <center>- 目录 -</center>
 <ul>
 <li>
-<a href=#2022%e5%86%b3%e7%ad%96%e5%bc%95%e6%93%8e-note onclick="onNavClick(`#2022决策引擎-note-nav`)" id=2022决策引擎-note-nav>
-[2022]决策引擎 Note
+<a href=#%e5%86%b3%e7%ad%96%e5%bc%95%e6%93%8e-note onclick="onNavClick(`#决策引擎-note-nav`)" id=决策引擎-note-nav>
+决策引擎 Note
 </a>
 </li>
 </ul>
@@ -108,8 +108,8 @@ About
 <center>- 目录 -</center>
 <ul>
 <li>
-<a href=#2022%e5%86%b3%e7%ad%96%e5%bc%95%e6%93%8e-note onclick="onNavClick(`#2022决策引擎-note-nav`)" id=2022决策引擎-note-nav>
-[2022]决策引擎 Note
+<a href=#%e5%86%b3%e7%ad%96%e5%bc%95%e6%93%8e-note onclick="onNavClick(`#决策引擎-note-nav`)" id=决策引擎-note-nav>
+决策引擎 Note
 </a>
 </li>
 </ul>
@@ -151,7 +151,7 @@ dark_mode
 <div class=post>
 <div class=post-head-wrapper-text-only>
 <div class=post-title>
-[2022]决策引擎 Note
+决策引擎 Note
 <div class=post-meta>
 <time itemprop=datePublished>
 2022-03-25 12:00
@@ -169,7 +169,7 @@ dark_mode
 </div>
 <div class=post-body-wrapper>
 <div class=post-body v-pre>
-<h1 id=2022决策引擎-note>[2022]决策引擎 Note</h1>
+<h1 id=决策引擎-note>决策引擎 Note</h1>
 <ul>
 <li>开场
 <ul>
@@ -256,10 +256,10 @@ dark_mode
 </div>
 <nav class=post-pagination>
 <a class=newer-posts href=https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/>
-下回<br>[2022]读书笔记--用数据讲故事
+下回<br>读书笔记--用数据讲故事
 </a>
 <a class=older-posts href=https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/>
-上回<br>[2022]LeetCode 刷题指南
+上回<br>LeetCode 刷题指南
 </a>
 </nav>
 <div class=post-comment-wrapper>

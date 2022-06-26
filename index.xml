@@ -1,4 +1,4 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 26 Jun 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>[2022]CS自学 Roadmap</title><link>https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/</link><pubDate>Sun, 26 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/ -&lt;h1 id="cs自学-roadmap">CS自学 Roadmap&lt;/h1>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 26 Jun 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>CS自学 Roadmap</title><link>https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/</link><pubDate>Sun, 26 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/ -&lt;h1 id="cs自学-roadmap">CS自学 Roadmap&lt;/h1>
 &lt;blockquote>
 &lt;p>这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。&lt;/p>
 &lt;/blockquote>
@@ -193,7 +193,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]单元测试减少心智负担</title><link>https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</link><pubDate>Wed, 15 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ -&lt;h1 id="单元测试减少心智负担">单元测试减少心智负担&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>单元测试减少心智负担</title><link>https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</link><pubDate>Wed, 15 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ -&lt;h1 id="单元测试减少心智负担">单元测试减少心智负担&lt;/h1>
 &lt;hr>
 &lt;h2 id="责任意识">责任意识&lt;/h2>
 &lt;ul>
@@ -277,7 +277,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ -&lt;h1 id="读书笔记--用数据讲故事">读书笔记&amp;ndash;用数据讲故事&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ -&lt;h1 id="读书笔记--用数据讲故事">读书笔记&amp;ndash;用数据讲故事&lt;/h1>
 &lt;ul>
 &lt;li>第二章 选择有效的图表
 &lt;ul>
@@ -347,7 +347,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]决策引擎 Note</title><link>https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</link><pubDate>Fri, 25 Mar 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ -&lt;h1 id="2022决策引擎-note">[2022]决策引擎 Note&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>决策引擎 Note</title><link>https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</link><pubDate>Fri, 25 Mar 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ -&lt;h1 id="决策引擎-note">决策引擎 Note&lt;/h1>
 &lt;ul>
 &lt;li>开场
 &lt;ul>
@@ -428,7 +428,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]LeetCode 刷题指南</title><link>https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</link><pubDate>Fri, 18 Feb 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ -&lt;h1 id="刷题的意义">“刷题”的意义&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>LeetCode 刷题指南</title><link>https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</link><pubDate>Fri, 18 Feb 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ -&lt;h1 id="刷题的意义">“刷题”的意义&lt;/h1>
 &lt;p>刷题确实可能会让非常多人嗤之以鼻，但是没有办法，这一切都是市场决定的。如果要在这个市场生存，你只有两个选择，适应这条规则或者打破这条规则。如果我们可以打破这条规则，那说明我们拥有更大的价值，这当然很好。但是对于大多数人而言，可能或多或少会得刷一刷题。刷题一方面能让我们面试通过，另一方面也在过程中重温一些基础知识（可以不用再面对繁冗复杂的业务诉求）。&lt;/p>
 &lt;h1 id="如何刷">如何刷&lt;/h1>
 &lt;p>笔者自己是从两条线分别出发刷题。一，按数据结构类型；二，按算法策略。从这两条线组织刷题顺序可以帮我们更快地构建起题与知识的映射关系。其实在面试解题过程中，关键要解决的就是破除题目本身的外壳，发现本质问题，属于什么类型的问题，需要用怎么样的数据结构与算法来解决。&lt;/p>
@@ -454,7 +454,7 @@
 &lt;p>⭐&lt;a href="https://jeffe.cs.illinois.edu/teaching/algorithms/#book">Algorithms by Jeff Erickson (illinois.edu)&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2022]MacBook Pro到手设置</title><link>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ -&lt;h1 id="2022-macbook-pro到手设置">2022-MacBook Pro到手设置&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>MacBook Pro到手设置</title><link>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ -&lt;h1 id="macbook-pro到手设置">MacBook Pro到手设置&lt;/h1>
 &lt;h2 id="效率">效率&lt;/h2>
 &lt;ol>
 &lt;li>Office 365, Microsoft edge, Onedrive, Todo, Outlook&lt;/li>
@@ -541,7 +541,7 @@
 &lt;li>&lt;a href="https://www.bilibili.com/video/BV1sD4y1X7MQ">学生党M1 Mac入门指北_哔哩哔哩_bilibili&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.youtube.com/watch?v=67keaaWOKzE">Mac Tutorial for Beginners - Switching from Windows to macOS - YouTube&lt;/a>&lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2021]Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
+- https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
 &lt;ol>
 &lt;li>有道云笔记（markdown支持太弱）&lt;/li>
 &lt;li>Microsoft Todo（不太适合大量文字记载）&lt;/li>
@@ -684,7 +684,7 @@
 &lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
 &lt;/ol>
 &lt;p>Last edited on 2022/06/12&lt;/p>
-- https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2021]Git指南</title><link>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
+- https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
 &lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>
 &lt;li>掌握各类场景下如何更好使用Git。&lt;/li>
@@ -871,7 +871,7 @@ git checkout -b &amp;lt;branch_name&amp;gt;
 git merge dev
 git stash
 git stash pop
-&lt;/code>&lt;/pre>&lt;/div>- https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>[2020]互联网技术社招总结</title><link>https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</link><pubDate>Sun, 28 Mar 2021 18:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/ -&lt;h1 id="准备">准备&lt;/h1>
+&lt;/code>&lt;/pre>&lt;/div>- https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>互联网技术社招总结</title><link>https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</link><pubDate>Sun, 28 Mar 2021 18:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/ -&lt;h1 id="准备">准备&lt;/h1>
 &lt;h3 id="用人单位招聘诉求">用人单位招聘诉求&lt;/h3>
 &lt;p>对于每个用人单位来说，他们有两个诉求：1.招聘到能够立马(尽快)胜任工作并解决业务痛点的人；2.减少用人成本。&lt;/p>
 &lt;p>往往第二点是和招聘人利益是冲突的，所以我们只能通过第一点来进行突破，也就是大家常说的你要和你的岗位有较高的匹配度。&lt;/p>

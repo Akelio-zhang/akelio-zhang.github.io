@@ -68,8 +68,8 @@ PS. 由于流程复杂，单元测试也基本没怎么做，之后测试BUG较�
 3-4月就属于开始编码的阶段，最困难的还是类的设计（包括成员以及实现的函数）。就讲讲返工，以及代码让自己感觉比较geying的几个场景吧。
  计算实现的细节，从A->B->C，做了三版。A的主要问题是，内存计算与IO线程混用影响整体性能。B，从业务角度考虑，可用性较差。C，当前的实现，为了系统实现上的简化，仍然对业务提出了一些要求，但是目前认为较合理。 对于系统内部全流程都使用的类，建议不要直接使用API包中的类，比较受限制。 操作一个类中的数据，只能使用这个类提供的方法，而不能直接操作成员变量。（例如，getMap().put(key, value)，这种写法会让后期维护成本很大） 不要过早重构（extract method、类的抽象），因为此时很多问题还没有真正暴露。 异常定义也需要写进设计文档。 不要试图复用同一个单元测试，如果要增加测试case，就直接新增。  总的来说，花2个月的时间来实现这个系统（底层代码是基于已有的工程修改），我认为是比较久了。那么，现在回顾想想有哪些方式可以提高效率的。">
 <link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen>
+<link rel=stylesheet href=/scss/journal.min.c5d92f380bf10f6849c7ac487c7df2b22c081e0851e5339224f1ae29210b20d2.css integrity="sha256-xdkvOAvxD2hJx6xIfH3ysiwIHghR5TOSJPGuKSELINI=" media=screen>
+<link rel=stylesheet href=/scss/dark-mode.min.9f8d8c2df9285089d141edd4a50cb7506c7948e6ab79a29968dced1bd0ab7d22.css integrity="sha256-n42MLfkoUInRQe3UpQy3UGx5SOareaKZaNztG9CrfSI=" media=screen>
 <script src=/vendor/js/loadCSS.js></script>
 <script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
 <script src=/js/toc.js></script>
@@ -382,10 +382,10 @@ Clean系统读书笔记——两年项目回顾
 </div>
 </div>
 <nav class=post-pagination>
-<a class=newer-posts href=https://akelio-zhang.github.io/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/>
+<a class=newer-posts href=/posts/2020%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/>
 下回<br>系统复杂度-1
 </a>
-<a class=older-posts href=https://akelio-zhang.github.io/posts/2019java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/>
+<a class=older-posts href=/posts/2019java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/>
 上回<br>Java传值方式讨论
 </a>
 </nav>

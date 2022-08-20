@@ -1,0 +1,380 @@
+<!doctype html><html><head>
+<title>2020社招互联网技术面试总结</title>
+<meta charset=utf-8>
+<meta name=X-UA-Compatible content="IE=edge">
+<meta name=google-site-verification content>
+<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport>
+<meta content="telephone=no" name=format-detection>
+<meta name=description content>
+<meta name=renderer content="webkit">
+<meta name=theme-color content="#ffffff">
+<meta property="og:title" content="2020社招互联网技术面试总结">
+<meta property="og:description" content="2020社招互联网技术面试总结 准备 用人单位招聘诉求 对于每个用人单位来说，他们有两个诉求：1.招聘到能够立马(尽快)胜任工作并解决业务痛点的人；2.减少用人成本。
+往往第二点是和招聘人利益是冲突的，所以我们只能通过第一点来进行突破，也就是大家常说的你要和你的岗位有较高的匹配度。
+对于互联网岗位软件工程师来说，我认为有三方面可以讨论匹配度：1.技术理解深度；2.业务场景理解以及抽象转换的能力；3.团队管理能力。
+简历完善 简历是面试双方的书面信息，其目的是为了使得面试官对面试者产生好奇心，且协助双方在面试过程更有内容可说。因此，可以从以下几个角度思考简历是否可以进一步优化。简历虽然很重要，但是也没必要说做到尽善尽美，主要原则还是信息准确以及一定的美观。
+ 信息是否罗列明确且无缺失。 可量化的地方尽可能做量化。 个人特色是否体现在简历之上(最好是对工作有贡献的)。 内容是否与目标岗位有比较好的匹配度。  个人状况 在做面试准备之前，先要了解个人的软硬技能方面的状况来发现匹配度上的差异，以做针对性的准备。
+ 对技术的掌握范围较窄，没有形成对一些问题的统一解决方案。（武器库的理解还比较浅） 缺少团队管理的经验。 对业务的理解较浅，没有主动进行抽象转换。  面试准备 在面试中，往往会有以下几块内容的沟通：个人介绍、项目介绍、算法题、系统设计题、专业知识、技术方案、向面试官提问。系统设计题往往出现在后面几轮部门领导的面试，算法、专业知识则通常出现在第一二轮。技术方案则都会有所涉及。
+在社招中，大部分公司会更注重你过往的项目经历，且会在项目上挖掘你的专业知识以及难点技术方案。所以这一块需要深入剖析，包括技术方案、业务场景、拥抱变化的能力(高可用、高并发)等常见的互联网应用的问题。
+由于近些年计算机大厂竞争愈发激烈，算法题与专业知识也经常单独进行考察。算法题一般就刷LeetCode中等就可以；专业知识包括数据结构、操作系统、网络、你的主语言使用理解等。
+对于向面试官提问，有人说很重要，但是我认为这往往是锦上添花的效果。主导你拿到offer的还是前面提到的基本面。这一块通常体现了你对这份工作的向往程度。
+ 贵司一天工作的时间线大概是怎么样的？
+印象最深的一次工作内容是什么？
+最近加班频繁吗？
+ 最后，一场面试，当你说话的时间占比越大，往往就越有可能顺利通过。
+过程  中小厂  中小厂对人的要求很直白，能干活，最好技术栈比较贴合，如果面试者过往接触的业务一致性一样就更好了。笔者经历了杭州的一家互联网券商的面试，整体体验感难度适中，问题也都比较贴合实际开发过程会碰到的问题。这也可能是因为整体技术栈重合度较高的原因。算法题、专业知识、技术方案（并发、消息、缓存、Scala）。没有涉及系统设计。
+大厂  国内大厂面试风格分为两派，项目技术方案为主与算法为主。前者主要在于项目这一块会问的非常深入，并随之伴随各类技术方案的讨论，强调实战经验。后者对于社招也要提出相当的算法与专业知识的要求，以便于进行高效的过滤。
+大厂的算法题会结合更实际的场景来出题，而非LeetCode的原题。比如，提供一天登录登出日志文件(time, uid, action)，问如何计算得到在线人数峰值时间点以及90%峰位时间点。
+大厂的项目介绍与技术方案往往是大头部分，面试官会从各个角度来测试你工作的含金量与价值。业务问题如何抽象设计、系统如何拆分设计、如何应对未来的大流量、中间件的选择考虑点等。这块可以参考system-design-primer。
+外企  外企确实与国内企业差别很大，面试体验感很不错，你会感觉到你被认真对待。往往会在1天完成所有的面试。面试轮次会在3-4次。笔者面试的岗位更偏向于业务部门，所有问题都围绕实际场景展开。比如，算法题是设计一个类，提供两个操作：记录当前系统的负载和返回近5分钟的平均负载。另一个是设计一个命令行工具，实现对参数的读取与处理。
+外企社招时对员工的要求普遍较高，并非单靠刷题就可以。比如在系统题中会考察如何进行项目管理，如何测试，如何运维等等非常全面的问题。另一方面，由于外企的产品往往面向全球，会有诸如如何解决多地数据中心同步的问题、攻击网关设计等国际化的问题。
+结论 在面试的准备与进行过程中，是对我们自己过往的一次总结与提升。面试失败也不必过于难过，不是每个面试官都是那么专业，也可能是你与这家公司这个岗位目前仍然不那么契合。
+每一个人有每一个人的特色与优劣势，每一家公司有每一家公司的喜好。我们能做的就是保持自信，扬长避短，以一种积极友善的态度把握整个面试过程的主动性（比如有些面试官说让你简单说说xxx，此时若是你擅长的，你应该抓住机会表现出你的特色）
+站在巨人的肩膀上  校招面试不完全指南 怎样花两年时间去面试一个人  ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-03-28T18:00:00+00:00">
+<meta property="article:modified_time" content="2021-03-28T18:00:00+00:00"><meta property="og:site_name" content="My Blog">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="2020社招互联网技术面试总结">
+<meta name=twitter:description content="2020社招互联网技术面试总结 准备 用人单位招聘诉求 对于每个用人单位来说，他们有两个诉求：1.招聘到能够立马(尽快)胜任工作并解决业务痛点的人；2.减少用人成本。
+往往第二点是和招聘人利益是冲突的，所以我们只能通过第一点来进行突破，也就是大家常说的你要和你的岗位有较高的匹配度。
+对于互联网岗位软件工程师来说，我认为有三方面可以讨论匹配度：1.技术理解深度；2.业务场景理解以及抽象转换的能力；3.团队管理能力。
+简历完善 简历是面试双方的书面信息，其目的是为了使得面试官对面试者产生好奇心，且协助双方在面试过程更有内容可说。因此，可以从以下几个角度思考简历是否可以进一步优化。简历虽然很重要，但是也没必要说做到尽善尽美，主要原则还是信息准确以及一定的美观。
+ 信息是否罗列明确且无缺失。 可量化的地方尽可能做量化。 个人特色是否体现在简历之上(最好是对工作有贡献的)。 内容是否与目标岗位有比较好的匹配度。  个人状况 在做面试准备之前，先要了解个人的软硬技能方面的状况来发现匹配度上的差异，以做针对性的准备。
+ 对技术的掌握范围较窄，没有形成对一些问题的统一解决方案。（武器库的理解还比较浅） 缺少团队管理的经验。 对业务的理解较浅，没有主动进行抽象转换。  面试准备 在面试中，往往会有以下几块内容的沟通：个人介绍、项目介绍、算法题、系统设计题、专业知识、技术方案、向面试官提问。系统设计题往往出现在后面几轮部门领导的面试，算法、专业知识则通常出现在第一二轮。技术方案则都会有所涉及。
+在社招中，大部分公司会更注重你过往的项目经历，且会在项目上挖掘你的专业知识以及难点技术方案。所以这一块需要深入剖析，包括技术方案、业务场景、拥抱变化的能力(高可用、高并发)等常见的互联网应用的问题。
+由于近些年计算机大厂竞争愈发激烈，算法题与专业知识也经常单独进行考察。算法题一般就刷LeetCode中等就可以；专业知识包括数据结构、操作系统、网络、你的主语言使用理解等。
+对于向面试官提问，有人说很重要，但是我认为这往往是锦上添花的效果。主导你拿到offer的还是前面提到的基本面。这一块通常体现了你对这份工作的向往程度。
+ 贵司一天工作的时间线大概是怎么样的？
+印象最深的一次工作内容是什么？
+最近加班频繁吗？
+ 最后，一场面试，当你说话的时间占比越大，往往就越有可能顺利通过。
+过程  中小厂  中小厂对人的要求很直白，能干活，最好技术栈比较贴合，如果面试者过往接触的业务一致性一样就更好了。笔者经历了杭州的一家互联网券商的面试，整体体验感难度适中，问题也都比较贴合实际开发过程会碰到的问题。这也可能是因为整体技术栈重合度较高的原因。算法题、专业知识、技术方案（并发、消息、缓存、Scala）。没有涉及系统设计。
+大厂  国内大厂面试风格分为两派，项目技术方案为主与算法为主。前者主要在于项目这一块会问的非常深入，并随之伴随各类技术方案的讨论，强调实战经验。后者对于社招也要提出相当的算法与专业知识的要求，以便于进行高效的过滤。
+大厂的算法题会结合更实际的场景来出题，而非LeetCode的原题。比如，提供一天登录登出日志文件(time, uid, action)，问如何计算得到在线人数峰值时间点以及90%峰位时间点。
+大厂的项目介绍与技术方案往往是大头部分，面试官会从各个角度来测试你工作的含金量与价值。业务问题如何抽象设计、系统如何拆分设计、如何应对未来的大流量、中间件的选择考虑点等。这块可以参考system-design-primer。
+外企  外企确实与国内企业差别很大，面试体验感很不错，你会感觉到你被认真对待。往往会在1天完成所有的面试。面试轮次会在3-4次。笔者面试的岗位更偏向于业务部门，所有问题都围绕实际场景展开。比如，算法题是设计一个类，提供两个操作：记录当前系统的负载和返回近5分钟的平均负载。另一个是设计一个命令行工具，实现对参数的读取与处理。
+外企社招时对员工的要求普遍较高，并非单靠刷题就可以。比如在系统题中会考察如何进行项目管理，如何测试，如何运维等等非常全面的问题。另一方面，由于外企的产品往往面向全球，会有诸如如何解决多地数据中心同步的问题、攻击网关设计等国际化的问题。
+结论 在面试的准备与进行过程中，是对我们自己过往的一次总结与提升。面试失败也不必过于难过，不是每个面试官都是那么专业，也可能是你与这家公司这个岗位目前仍然不那么契合。
+每一个人有每一个人的特色与优劣势，每一家公司有每一家公司的喜好。我们能做的就是保持自信，扬长避短，以一种积极友善的态度把握整个面试过程的主动性（比如有些面试官说让你简单说说xxx，此时若是你擅长的，你应该抓住机会表现出你的特色）
+站在巨人的肩膀上  校招面试不完全指南 怎样花两年时间去面试一个人  ">
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
+<link rel=stylesheet href=/scss/journal.min.c5d92f380bf10f6849c7ac487c7df2b22c081e0851e5339224f1ae29210b20d2.css integrity="sha256-xdkvOAvxD2hJx6xIfH3ysiwIHghR5TOSJPGuKSELINI=" media=screen>
+<link rel=stylesheet href=/scss/dark-mode.min.9f8d8c2df9285089d141edd4a50cb7506c7948e6ab79a29968dced1bd0ab7d22.css integrity="sha256-n42MLfkoUInRQe3UpQy3UGx5SOareaKZaNztG9CrfSI=" media=screen>
+<script src=/vendor/js/loadCSS.js></script>
+<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
+<script src=/js/toc.js></script>
+</head>
+<body>
+<div id=app><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/posts/about-me/>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#2020%e7%a4%be%e6%8b%9b%e4%ba%92%e8%81%94%e7%bd%91%e6%8a%80%e6%9c%af%e9%9d%a2%e8%af%95%e6%80%bb%e7%bb%93 onclick="onNavClick(`#2020社招互联网技术面试总结-nav`)" id=2020社招互联网技术面试总结-nav>
+2020社招互联网技术面试总结
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e5%87%86%e5%a4%87 onclick="onNavClick(`#准备-nav`)" id=准备-nav>
+准备
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e7%94%a8%e4%ba%ba%e5%8d%95%e4%bd%8d%e6%8b%9b%e8%81%98%e8%af%89%e6%b1%82 onclick="onNavClick(`#用人单位招聘诉求-nav`)" id=用人单位招聘诉求-nav>
+用人单位招聘诉求
+</a>
+</li>
+<li>
+<a href=#%e7%ae%80%e5%8e%86%e5%ae%8c%e5%96%84 onclick="onNavClick(`#简历完善-nav`)" id=简历完善-nav>
+简历完善
+</a>
+</li>
+<li>
+<a href=#%e4%b8%aa%e4%ba%ba%e7%8a%b6%e5%86%b5 onclick="onNavClick(`#个人状况-nav`)" id=个人状况-nav>
+个人状况
+</a>
+</li>
+<li>
+<a href=#%e9%9d%a2%e8%af%95%e5%87%86%e5%a4%87 onclick="onNavClick(`#面试准备-nav`)" id=面试准备-nav>
+面试准备
+</a>
+</li>
+</ul>
+<li>
+<a href=#%e8%bf%87%e7%a8%8b onclick="onNavClick(`#过程-nav`)" id=过程-nav>
+过程
+</a>
+</li>
+<li>
+<a href=#%e7%bb%93%e8%ae%ba onclick="onNavClick(`#结论-nav`)" id=结论-nav>
+结论
+</a>
+</li>
+<li>
+<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a onclick="onNavClick(`#站在巨人的肩膀上-nav`)" id=站在巨人的肩膀上-nav>
+站在巨人的肩膀上
+</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
+</div>
+</div>
+<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div class=drawer-content>
+<div class=drawer-menu>
+<a class="a-block drawer-menu-item active" href=/posts>
+Archive
+</a>
+<a class="a-block drawer-menu-item false" href=/categories>
+Categories
+</a>
+<a class="a-block drawer-menu-item false" href=/tags>
+Tags
+</a>
+<a class="a-block drawer-menu-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block drawer-menu-item false" href=/posts/about-me/>
+About
+</a>
+<div class=toc>
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#2020%e7%a4%be%e6%8b%9b%e4%ba%92%e8%81%94%e7%bd%91%e6%8a%80%e6%9c%af%e9%9d%a2%e8%af%95%e6%80%bb%e7%bb%93 onclick="onNavClick(`#2020社招互联网技术面试总结-nav`)" id=2020社招互联网技术面试总结-nav>
+2020社招互联网技术面试总结
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e5%87%86%e5%a4%87 onclick="onNavClick(`#准备-nav`)" id=准备-nav>
+准备
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e7%94%a8%e4%ba%ba%e5%8d%95%e4%bd%8d%e6%8b%9b%e8%81%98%e8%af%89%e6%b1%82 onclick="onNavClick(`#用人单位招聘诉求-nav`)" id=用人单位招聘诉求-nav>
+用人单位招聘诉求
+</a>
+</li>
+<li>
+<a href=#%e7%ae%80%e5%8e%86%e5%ae%8c%e5%96%84 onclick="onNavClick(`#简历完善-nav`)" id=简历完善-nav>
+简历完善
+</a>
+</li>
+<li>
+<a href=#%e4%b8%aa%e4%ba%ba%e7%8a%b6%e5%86%b5 onclick="onNavClick(`#个人状况-nav`)" id=个人状况-nav>
+个人状况
+</a>
+</li>
+<li>
+<a href=#%e9%9d%a2%e8%af%95%e5%87%86%e5%a4%87 onclick="onNavClick(`#面试准备-nav`)" id=面试准备-nav>
+面试准备
+</a>
+</li>
+</ul>
+<li>
+<a href=#%e8%bf%87%e7%a8%8b onclick="onNavClick(`#过程-nav`)" id=过程-nav>
+过程
+</a>
+</li>
+<li>
+<a href=#%e7%bb%93%e8%ae%ba onclick="onNavClick(`#结论-nav`)" id=结论-nav>
+结论
+</a>
+</li>
+<li>
+<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a onclick="onNavClick(`#站在巨人的肩膀上-nav`)" id=站在巨人的肩膀上-nav>
+站在巨人的肩膀上
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<transition name=fade>
+<div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div>
+</transition>
+<nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container">
+<div id=navBackground class=nav-background></div>
+<div class="container container-narrow nav-content">
+<button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
+<i class=material-icons>
+menu
+</i>
+</button>
+<a id=navTitle class=navbar-brand href=https://akelio-zhang.github.io/>
+LIFE CODER
+</a>
+<button type=button class=nav-darkmode-toggle id=darkModeToggleButton2>
+<i class=material-icons id=darkModeToggleIcon2>
+dark_mode
+</i>
+</button>
+</div>
+</nav>
+<div class=single-column-header-container id=pageHead v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+<a href=https://akelio-zhang.github.io/>
+<div class=single-column-header-title>LIFE CODER</div>
+<div class=single-column-header-subtitle>Akelio's Blog</div>
+</a>
+</div>
+<div id=content>
+<div id=streamContainer class=stream-container>
+<div class="post-list-container post-list-container-shadow">
+<div class=post>
+<div class=post-head-wrapper-text-only>
+<div class=post-title>
+2020社招互联网技术面试总结
+<div class=post-meta>
+<time itemprop=datePublished>
+2021-03-28 18:00
+</time>
+<i class=material-icons>folder</i>
+<a href=/categories/%E6%9D%82%E6%96%87/%E9%9D%A2%E8%AF%95>杂文/面试</a>
+&nbsp;
+</div>
+</div>
+</div>
+<div class=post-body-wrapper>
+<div class=post-body v-pre>
+<h1 id=2020社招互联网技术面试总结>2020社招互联网技术面试总结</h1>
+<h2 id=准备>准备</h2>
+<h3 id=用人单位招聘诉求>用人单位招聘诉求</h3>
+<p>对于每个用人单位来说，他们有两个诉求：1.招聘到能够立马(尽快)胜任工作并解决业务痛点的人；2.减少用人成本。</p>
+<p>往往第二点是和招聘人利益是冲突的，所以我们只能通过第一点来进行突破，也就是大家常说的你要和你的岗位有较高的匹配度。</p>
+<p>对于互联网岗位软件工程师来说，我认为有三方面可以讨论<strong>匹配度：1.技术理解深度；2.业务场景理解以及抽象转换的能力；3.团队管理能力。</strong></p>
+<h3 id=简历完善>简历完善</h3>
+<p>简历是面试双方的书面信息，其目的是为了使得面试官对面试者产生好奇心，且协助双方在面试过程更有内容可说。因此，可以从以下几个角度思考简历是否可以进一步优化。简历虽然很重要，但是也没必要说做到尽善尽美，主要原则还是信息准确以及一定的美观。</p>
+<ol>
+<li>信息是否罗列明确且无缺失。</li>
+<li>可量化的地方尽可能做量化。</li>
+<li>个人特色是否体现在简历之上(最好是对工作有贡献的)。</li>
+<li>内容是否与目标岗位有比较好的匹配度。</li>
+</ol>
+<h3 id=个人状况>个人状况</h3>
+<p>在做面试准备之前，先要了解个人的软硬技能方面的状况来发现匹配度上的差异，以做针对性的准备。</p>
+<ol>
+<li>对技术的掌握范围较窄，没有形成对一些问题的统一解决方案。（武器库的理解还比较浅）</li>
+<li>缺少团队管理的经验。</li>
+<li>对业务的理解较浅，没有主动进行抽象转换。</li>
+</ol>
+<h3 id=面试准备>面试准备</h3>
+<p>在面试中，往往会有以下几块内容的沟通：<strong>个人介绍、项目介绍、算法题、系统设计题、专业知识、技术方案、向面试官提问</strong>。系统设计题往往出现在后面几轮部门领导的面试，算法、专业知识则通常出现在第一二轮。技术方案则都会有所涉及。</p>
+<p>在社招中，大部分公司会更注重你<strong>过往的项目经历</strong>，且会在项目上挖掘你的专业知识以及难点技术方案。所以这一块需要深入剖析，包括技术方案、业务场景、拥抱变化的能力(高可用、高并发)等常见的互联网应用的问题。</p>
+<p>由于近些年计算机大厂竞争愈发激烈，算法题与专业知识也经常单独进行考察。算法题一般就刷LeetCode中等就可以；专业知识包括数据结构、操作系统、网络、你的主语言使用理解等。</p>
+<p>对于向面试官提问，有人说很重要，但是我认为这往往是锦上添花的效果。主导你拿到offer的还是前面提到的基本面。这一块通常体现了你对这份工作的向往程度。</p>
+<blockquote>
+<p>贵司一天工作的时间线大概是怎么样的？</p>
+<p>印象最深的一次工作内容是什么？</p>
+<p>最近加班频繁吗？</p>
+</blockquote>
+<p>最后，一场面试，当你说话的时间占比越大，往往就越有可能顺利通过。</p>
+<h2 id=过程>过程</h2>
+<ol>
+<li>中小厂</li>
+</ol>
+<p>中小厂对人的要求很直白，能干活，最好技术栈比较贴合，如果面试者过往接触的业务一致性一样就更好了。笔者经历了杭州的一家互联网券商的面试，整体体验感难度适中，问题也都比较贴合实际开发过程会碰到的问题。这也可能是因为整体技术栈重合度较高的原因。算法题、专业知识、技术方案（并发、消息、缓存、Scala）。没有涉及系统设计。</p>
+<ol start=2>
+<li>大厂</li>
+</ol>
+<p>国内大厂面试风格分为两派，项目技术方案为主与算法为主。前者主要在于项目这一块会问的非常深入，并随之伴随各类技术方案的讨论，强调实战经验。后者对于社招也要提出相当的算法与专业知识的要求，以便于进行高效的过滤。</p>
+<p>大厂的算法题会结合更实际的场景来出题，而非LeetCode的原题。比如，提供一天登录登出日志文件(time, uid, action)，问如何计算得到在线人数峰值时间点以及90%峰位时间点。</p>
+<p>大厂的项目介绍与技术方案往往是大头部分，面试官会从各个角度来测试你工作的含金量与价值。业务问题如何抽象设计、系统如何拆分设计、如何应对未来的大流量、中间件的选择考虑点等。这块可以参考<a href=https://github.com/donnemartin/system-design-primer>system-design-primer</a>。</p>
+<ol start=3>
+<li>外企</li>
+</ol>
+<p>外企确实与国内企业差别很大，面试体验感很不错，你会感觉到你被认真对待。往往会在1天完成所有的面试。面试轮次会在3-4次。笔者面试的岗位更偏向于业务部门，所有问题都围绕实际场景展开。比如，算法题是设计一个类，提供两个操作：记录当前系统的负载和返回近5分钟的平均负载。另一个是设计一个命令行工具，实现对参数的读取与处理。</p>
+<p>外企社招时对员工的要求普遍较高，并非单靠刷题就可以。比如在系统题中会考察如何进行项目管理，如何测试，如何运维等等非常全面的问题。另一方面，由于外企的产品往往面向全球，会有诸如如何解决多地数据中心同步的问题、攻击网关设计等国际化的问题。</p>
+<h2 id=结论>结论</h2>
+<p>在面试的准备与进行过程中，是对我们自己过往的一次总结与提升。面试失败也不必过于难过，不是每个面试官都是那么专业，也可能是你与这家公司这个岗位目前仍然不那么契合。</p>
+<p>每一个人有每一个人的特色与优劣势，每一家公司有每一家公司的喜好。我们能做的就是保持自信，扬长避短，以一种积极友善的态度把握整个面试过程的主动性（比如有些面试官说让你简单说说xxx，此时若是你擅长的，你应该抓住机会表现出你的特色）</p>
+<h2 id=站在巨人的肩膀上>站在巨人的肩膀上</h2>
+<ol>
+<li><a href=https://www.imwzk.com/posts/2020-10-05-an-incomplete-guide-to-campus-recruitment-interviews/>校招面试不完全指南</a></li>
+<li><a href=https://mindhacks.cn/2011/11/04/how-to-interview-a-person-for-two-years/>怎样花两年时间去面试一个人</a></li>
+</ol>
+<hr width=100% id=EOF>
+<p style=color:#777>最后修改于 2021-03-28</p>
+</div>
+</div>
+<nav class=post-pagination>
+<a class=newer-posts href=/posts/2021-git%E6%8C%87%E5%8D%97/>
+下回<br>Git指南
+</a>
+<a class=older-posts href=/posts/2020-%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/>
+上回<br>系统复杂度 Part I
+</a>
+</nav>
+<div class=post-comment-wrapper>
+<script src=https://utteranc.es/client.js repo=Akelio-zhang/akelio-zhang.github.io issue-term=pathname label=Comment theme=github-light crossorigin=anonymous async></script>
+</div>
+</div>
+</div>
+</div>
+</div><div id=single-column-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div>
+<script src=/js/journal.js></script>
+</body>
+</html>

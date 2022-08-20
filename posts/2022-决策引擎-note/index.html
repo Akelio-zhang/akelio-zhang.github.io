@@ -1,0 +1,282 @@
+<!doctype html><html><head>
+<title>决策引擎 Note</title>
+<meta charset=utf-8>
+<meta name=X-UA-Compatible content="IE=edge">
+<meta name=google-site-verification content>
+<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport>
+<meta content="telephone=no" name=format-detection>
+<meta name=description content>
+<meta name=renderer content="webkit">
+<meta name=theme-color content="#ffffff">
+<meta property="og:title" content="决策引擎 Note">
+<meta property="og:description" content="决策引擎 Note  开场  常见的引擎有哪些？  游戏、模板、规则、决策；   引擎是一套通用的软件解决方案，基于引擎，可以实现一类相似的业务需求；   决策引擎是什么？  如果用最简单的说，对某一类型的事件进行加工处理后得到一个决策结果； 从这句话看起来，和规则引擎很像，确实很像，或者说决策引擎是一种高级的规则引擎（是基于规则引擎的提升改造以适应更加复杂的流程）；   怎么会自己开发出一个决策引擎  罗列业务上的诉求 时间线 所以一个东西并不是一蹴而就的，也是因为业务的复杂逐渐提升，引擎也在随之提升变化   如何设计  原则  组合>继承 单一责任 每一个类应该和尽可能少的类交互，对象的层次设计   主要对象  Filter TaskNode Task FlowEngine IFlowContext     效果  代码工程可读性、可测试性（可维护性）强； 不同决策模型均适应 易扩展  方便查问题（日志落表与业务逻辑完全解耦） 可以在大数据环境运行（不基于Spring）     应用  同业预警财务模型V2   未来规划  支持并发 支持节点超时配置 前端展示转换层，配置与执行流可视化，便于运维   启示  原型能力  从规则引擎&ndash;>规则引擎V2&ndash;>决策引擎   产品需要打磨 其他    ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://akelio-zhang.github.io/posts/2022-%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2022-03-25T12:00:00+08:00">
+<meta property="article:modified_time" content="2022-03-25T12:00:00+08:00"><meta property="og:site_name" content="My Blog">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="决策引擎 Note">
+<meta name=twitter:description content="决策引擎 Note  开场  常见的引擎有哪些？  游戏、模板、规则、决策；   引擎是一套通用的软件解决方案，基于引擎，可以实现一类相似的业务需求；   决策引擎是什么？  如果用最简单的说，对某一类型的事件进行加工处理后得到一个决策结果； 从这句话看起来，和规则引擎很像，确实很像，或者说决策引擎是一种高级的规则引擎（是基于规则引擎的提升改造以适应更加复杂的流程）；   怎么会自己开发出一个决策引擎  罗列业务上的诉求 时间线 所以一个东西并不是一蹴而就的，也是因为业务的复杂逐渐提升，引擎也在随之提升变化   如何设计  原则  组合>继承 单一责任 每一个类应该和尽可能少的类交互，对象的层次设计   主要对象  Filter TaskNode Task FlowEngine IFlowContext     效果  代码工程可读性、可测试性（可维护性）强； 不同决策模型均适应 易扩展  方便查问题（日志落表与业务逻辑完全解耦） 可以在大数据环境运行（不基于Spring）     应用  同业预警财务模型V2   未来规划  支持并发 支持节点超时配置 前端展示转换层，配置与执行流可视化，便于运维   启示  原型能力  从规则引擎&ndash;>规则引擎V2&ndash;>决策引擎   产品需要打磨 其他    ">
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
+<link rel=stylesheet href=/scss/journal.min.c5d92f380bf10f6849c7ac487c7df2b22c081e0851e5339224f1ae29210b20d2.css integrity="sha256-xdkvOAvxD2hJx6xIfH3ysiwIHghR5TOSJPGuKSELINI=" media=screen>
+<link rel=stylesheet href=/scss/dark-mode.min.9f8d8c2df9285089d141edd4a50cb7506c7948e6ab79a29968dced1bd0ab7d22.css integrity="sha256-n42MLfkoUInRQe3UpQy3UGx5SOareaKZaNztG9CrfSI=" media=screen>
+<script src=/vendor/js/loadCSS.js></script>
+<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
+<script src=/js/toc.js></script>
+</head>
+<body>
+<div id=app><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/posts/about-me/>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#%e5%86%b3%e7%ad%96%e5%bc%95%e6%93%8e-note onclick="onNavClick(`#决策引擎-note-nav`)" id=决策引擎-note-nav>
+决策引擎 Note
+</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
+</div>
+</div>
+<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div class=drawer-content>
+<div class=drawer-menu>
+<a class="a-block drawer-menu-item active" href=/posts>
+Archive
+</a>
+<a class="a-block drawer-menu-item false" href=/categories>
+Categories
+</a>
+<a class="a-block drawer-menu-item false" href=/tags>
+Tags
+</a>
+<a class="a-block drawer-menu-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block drawer-menu-item false" href=/posts/about-me/>
+About
+</a>
+<div class=toc>
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#%e5%86%b3%e7%ad%96%e5%bc%95%e6%93%8e-note onclick="onNavClick(`#决策引擎-note-nav`)" id=决策引擎-note-nav>
+决策引擎 Note
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<transition name=fade>
+<div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div>
+</transition>
+<nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container">
+<div id=navBackground class=nav-background></div>
+<div class="container container-narrow nav-content">
+<button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
+<i class=material-icons>
+menu
+</i>
+</button>
+<a id=navTitle class=navbar-brand href=https://akelio-zhang.github.io/>
+LIFE CODER
+</a>
+<button type=button class=nav-darkmode-toggle id=darkModeToggleButton2>
+<i class=material-icons id=darkModeToggleIcon2>
+dark_mode
+</i>
+</button>
+</div>
+</nav>
+<div class=single-column-header-container id=pageHead v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+<a href=https://akelio-zhang.github.io/>
+<div class=single-column-header-title>LIFE CODER</div>
+<div class=single-column-header-subtitle>Akelio's Blog</div>
+</a>
+</div>
+<div id=content>
+<div id=streamContainer class=stream-container>
+<div class="post-list-container post-list-container-shadow">
+<div class=post>
+<div class=post-head-wrapper-text-only>
+<div class=post-title>
+决策引擎 Note
+<div class=post-meta>
+<time itemprop=datePublished>
+2022-03-25 12:00
+</time>
+<i class=material-icons>folder</i>
+<a href=/categories/%E7%B3%BB%E7%BB%9F%E5%86%85%E5%A4%96%E7%B3%BB%E5%88%97/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1>系统内外系列/系统设计</a>
+&nbsp;
+<i class=material-icons>label</i>
+<a href=/tags/%E5%BC%95%E6%93%8E>引擎</a>
+&nbsp;
+<a href=/tags/%E6%9E%B6%E6%9E%84>架构</a>
+&nbsp;
+</div>
+</div>
+</div>
+<div class=post-body-wrapper>
+<div class=post-body v-pre>
+<h1 id=决策引擎-note>决策引擎 Note</h1>
+<ul>
+<li>开场
+<ul>
+<li>常见的引擎有哪些？
+<ul>
+<li>游戏、模板、规则、决策；</li>
+</ul>
+</li>
+<li>引擎是一套通用的软件解决方案，基于引擎，可以实现一类相似的业务需求；</li>
+</ul>
+</li>
+<li>决策引擎是什么？
+<ul>
+<li>如果用最简单的说，对某一类型的事件进行加工处理后得到一个决策结果；</li>
+<li>从这句话看起来，和规则引擎很像，确实很像，或者说决策引擎是一种高级的规则引擎（是基于规则引擎的提升改造以适应更加复杂的流程）；</li>
+</ul>
+</li>
+<li>怎么会自己开发出一个决策引擎
+<ul>
+<li>罗列业务上的诉求</li>
+<li>时间线</li>
+<li>所以一个东西并不是一蹴而就的，也是因为业务的复杂逐渐提升，引擎也在随之提升变化</li>
+</ul>
+</li>
+<li>如何设计
+<ul>
+<li>原则
+<ul>
+<li>组合>继承</li>
+<li>单一责任</li>
+<li>每一个类应该和尽可能少的类交互，对象的层次设计</li>
+</ul>
+</li>
+<li>主要对象
+<ul>
+<li>Filter</li>
+<li>TaskNode</li>
+<li>Task</li>
+<li>FlowEngine</li>
+<li>IFlowContext</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>效果
+<ul>
+<li>代码工程可读性、可测试性（可维护性）强；</li>
+<li>不同决策模型均适应</li>
+<li>易扩展
+<ul>
+<li>方便查问题（日志落表与业务逻辑完全解耦）</li>
+<li>可以在大数据环境运行（不基于Spring）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>应用
+<ul>
+<li>同业预警财务模型V2</li>
+</ul>
+</li>
+<li>未来规划
+<ul>
+<li>支持并发</li>
+<li>支持节点超时配置</li>
+<li>前端展示转换层，配置与执行流可视化，便于运维</li>
+</ul>
+</li>
+<li>启示
+<ul>
+<li>原型能力
+<ul>
+<li>从规则引擎&ndash;>规则引擎V2&ndash;>决策引擎</li>
+</ul>
+</li>
+<li>产品需要打磨</li>
+<li>其他</li>
+</ul>
+</li>
+</ul>
+<hr width=100% id=EOF>
+<p style=color:#777>最后修改于 2022-03-25</p>
+</div>
+</div>
+<nav class=post-pagination>
+<a class=newer-posts href=/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/>
+下回<br>读书笔记--用数据讲故事
+</a>
+<a class=older-posts href=/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/>
+上回<br>LeetCode 刷题指南
+</a>
+</nav>
+<div class=post-comment-wrapper>
+<script src=https://utteranc.es/client.js repo=Akelio-zhang/akelio-zhang.github.io issue-term=pathname label=Comment theme=github-light crossorigin=anonymous async></script>
+</div>
+</div>
+</div>
+</div>
+</div><div id=single-column-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div>
+<script src=/js/journal.js></script>
+</body>
+</html>

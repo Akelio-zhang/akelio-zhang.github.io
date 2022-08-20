@@ -1,0 +1,245 @@
+<!doctype html><html><head>
+<title>Java传值方式讨论</title>
+<meta charset=utf-8>
+<meta name=X-UA-Compatible content="IE=edge">
+<meta name=google-site-verification content>
+<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport>
+<meta content="telephone=no" name=format-detection>
+<meta name=description content>
+<meta name=renderer content="webkit">
+<meta name=theme-color content="#ffffff">
+<meta property="og:title" content="Java传值方式讨论">
+<meta property="og:description" content="起因是一次华为面试题
+ Java在进行函数调用时，参数时传值还是传引用？
+ 当时，我考虑的是Java变量只有两类，基本类型与引用类型，引用类型本质应该是属于指针。所以基本类型与引用类型的实参传递都是值本身，即创建一个副本赋予形参。面试官给的仅仅是笑而不语……
+而后在工作了一段时间回想这个问题并没有那么简单。
+碰到问题首先要给好定义才能进一步做分析。通过Wiki上关于Evaluation strategy的介绍，其中本文主要关注的这三种方式：call by value, call by reference and call by sharing。
+ call by value即按值传参，将实参创建一个新副本赋予形参，供函数使用，并且函数对参数的操作，对caller而言是不可见的，即immutable。 call by reference即传引用，函数中的参数就是对实参的直接引用，而不再是一份拷贝（也可以理解成是对实参的一个常量指针），因此是mutable的。 call by sharing，认为该编程语言中所有值都基于对象而非原始类型。在传参过程中赋予形参的是引用的拷贝。因为是引用的拷贝，所以函数体内只能对原对象进行操作，但是不能修改实参引用本身。所以对对象而言，这种传参方式是mutable的，但是对于引用本身，又是immutable的。   现在回头来看下C，C++和Java。
+C语言中策略很简单，一切均位call by value，尽管它有指针变量，但是它也是传的实参的拷贝。
+C++中出现了引用类型的变量，并且传参时也可以指定call by reference。如，void func(int& n)
+Java当中考虑到指针的复杂性，于是直接砍掉了指针变量，只剩下了基本变量与引用变量，另外也不允许选择不同的传参方式。首先看基本变量，比较简单，就是call by value的表现。其次，对于引用变量而言，我们在函数可以对引用的对象进行操作，并且对caller是可见的，但是无法让实参引用到一个新的对象上去，即我们无法在函数中对实参进行assignment相关的操作，即引用本身是immutable的。这就是call by sharing。
+这里附上知乎一位答主的回答：
+ 综上所述，对于Java的函数调用方式最准确的描述是：参数藉由值传递方式，传递的值是个引用。（句中两个“值”不是一个意思，第一个值是evaluation result，第二个值是value content）
+由于这个描述太绕，而且在字面上与Java总是传引用的事实冲突。于是对于Java，Python、Ruby、JavaScript等语言使用的这种求值策略，起了一个更贴切名字，叫Call by sharing。这个名字诞生于40年前。
+作者：Yolanda
+链接：https://www.zhihu.com/question/31203609/answer/112157038
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+  参考文献：
+ https://en.wikipedia.org/wiki/Evaluation_strategy https://en.wikipedia.org/wiki/Reference_(computer_science)  ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2019-10-27T18:00:00+08:00">
+<meta property="article:modified_time" content="2019-10-27T18:00:00+08:00"><meta property="og:site_name" content="My Blog">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Java传值方式讨论">
+<meta name=twitter:description content="起因是一次华为面试题
+ Java在进行函数调用时，参数时传值还是传引用？
+ 当时，我考虑的是Java变量只有两类，基本类型与引用类型，引用类型本质应该是属于指针。所以基本类型与引用类型的实参传递都是值本身，即创建一个副本赋予形参。面试官给的仅仅是笑而不语……
+而后在工作了一段时间回想这个问题并没有那么简单。
+碰到问题首先要给好定义才能进一步做分析。通过Wiki上关于Evaluation strategy的介绍，其中本文主要关注的这三种方式：call by value, call by reference and call by sharing。
+ call by value即按值传参，将实参创建一个新副本赋予形参，供函数使用，并且函数对参数的操作，对caller而言是不可见的，即immutable。 call by reference即传引用，函数中的参数就是对实参的直接引用，而不再是一份拷贝（也可以理解成是对实参的一个常量指针），因此是mutable的。 call by sharing，认为该编程语言中所有值都基于对象而非原始类型。在传参过程中赋予形参的是引用的拷贝。因为是引用的拷贝，所以函数体内只能对原对象进行操作，但是不能修改实参引用本身。所以对对象而言，这种传参方式是mutable的，但是对于引用本身，又是immutable的。   现在回头来看下C，C++和Java。
+C语言中策略很简单，一切均位call by value，尽管它有指针变量，但是它也是传的实参的拷贝。
+C++中出现了引用类型的变量，并且传参时也可以指定call by reference。如，void func(int& n)
+Java当中考虑到指针的复杂性，于是直接砍掉了指针变量，只剩下了基本变量与引用变量，另外也不允许选择不同的传参方式。首先看基本变量，比较简单，就是call by value的表现。其次，对于引用变量而言，我们在函数可以对引用的对象进行操作，并且对caller是可见的，但是无法让实参引用到一个新的对象上去，即我们无法在函数中对实参进行assignment相关的操作，即引用本身是immutable的。这就是call by sharing。
+这里附上知乎一位答主的回答：
+ 综上所述，对于Java的函数调用方式最准确的描述是：参数藉由值传递方式，传递的值是个引用。（句中两个“值”不是一个意思，第一个值是evaluation result，第二个值是value content）
+由于这个描述太绕，而且在字面上与Java总是传引用的事实冲突。于是对于Java，Python、Ruby、JavaScript等语言使用的这种求值策略，起了一个更贴切名字，叫Call by sharing。这个名字诞生于40年前。
+作者：Yolanda
+链接：https://www.zhihu.com/question/31203609/answer/112157038
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+  参考文献：
+ https://en.wikipedia.org/wiki/Evaluation_strategy https://en.wikipedia.org/wiki/Reference_(computer_science)  ">
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
+<link rel=stylesheet href=/scss/journal.min.c5d92f380bf10f6849c7ac487c7df2b22c081e0851e5339224f1ae29210b20d2.css integrity="sha256-xdkvOAvxD2hJx6xIfH3ysiwIHghR5TOSJPGuKSELINI=" media=screen>
+<link rel=stylesheet href=/scss/dark-mode.min.9f8d8c2df9285089d141edd4a50cb7506c7948e6ab79a29968dced1bd0ab7d22.css integrity="sha256-n42MLfkoUInRQe3UpQy3UGx5SOareaKZaNztG9CrfSI=" media=screen>
+<script src=/vendor/js/loadCSS.js></script>
+<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
+<script src=/js/toc.js></script>
+</head>
+<body>
+<div id=app><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/posts/about-me/>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
+</div>
+</div>
+<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div class=drawer-content>
+<div class=drawer-menu>
+<a class="a-block drawer-menu-item active" href=/posts>
+Archive
+</a>
+<a class="a-block drawer-menu-item false" href=/categories>
+Categories
+</a>
+<a class="a-block drawer-menu-item false" href=/tags>
+Tags
+</a>
+<a class="a-block drawer-menu-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block drawer-menu-item false" href=/posts/about-me/>
+About
+</a>
+<div class=toc>
+</div>
+</div>
+</div>
+</div>
+<transition name=fade>
+<div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div>
+</transition>
+<nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container">
+<div id=navBackground class=nav-background></div>
+<div class="container container-narrow nav-content">
+<button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
+<i class=material-icons>
+menu
+</i>
+</button>
+<a id=navTitle class=navbar-brand href=https://akelio-zhang.github.io/>
+LIFE CODER
+</a>
+<button type=button class=nav-darkmode-toggle id=darkModeToggleButton2>
+<i class=material-icons id=darkModeToggleIcon2>
+dark_mode
+</i>
+</button>
+</div>
+</nav>
+<div class=single-column-header-container id=pageHead v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+<a href=https://akelio-zhang.github.io/>
+<div class=single-column-header-title>LIFE CODER</div>
+<div class=single-column-header-subtitle>Akelio's Blog</div>
+</a>
+</div>
+<div id=content>
+<div id=streamContainer class=stream-container>
+<div class="post-list-container post-list-container-shadow">
+<div class=post>
+<div class=post-head-wrapper-text-only>
+<div class=post-title>
+Java传值方式讨论
+<div class=post-meta>
+<time itemprop=datePublished>
+2019-10-27 18:00
+</time>
+<i class=material-icons>folder</i>
+<a href=/categories/%E7%BC%96%E7%A8%8B/java>编程/Java</a>
+&nbsp;
+<i class=material-icons>label</i>
+<a href=/tags/java>Java</a>
+&nbsp;
+</div>
+</div>
+</div>
+<div class=post-body-wrapper>
+<div class=post-body v-pre>
+<p>起因是一次华为面试题</p>
+<blockquote>
+<p>Java在进行函数调用时，参数时传值还是传引用？</p>
+</blockquote>
+<p>当时，我考虑的是Java变量只有两类，基本类型与引用类型，引用类型本质应该是属于指针。所以基本类型与引用类型的实参传递都是值本身，即创建一个副本赋予形参。面试官给的仅仅是笑而不语……</p>
+<p>而后在工作了一段时间回想这个问题并没有那么简单。</p>
+<p>碰到问题首先要给好定义才能进一步做分析。通过Wiki上关于<a href=https://en.wikipedia.org/wiki/Evaluation_strategy>Evaluation strategy</a>的介绍，其中本文主要关注的这三种方式：call by value, call by reference and call by sharing。</p>
+<ol>
+<li>call by value即按值传参，将<strong>实参创建一个新副本赋予形参</strong>，供函数使用，并且函数对参数的操作，对caller而言是不可见的，即immutable。</li>
+<li>call by reference即传引用，函数中的参数就是<strong>对实参的直接引用</strong>，而不再是一份拷贝（也可以理解成是对实参的一个常量指针），因此是mutable的。</li>
+<li>call by sharing，认为该编程语言中所有值都基于对象而非原始类型。在传参过程中赋予形参的是<strong>引用的拷贝</strong>。因为是引用的拷贝，所以函数体内只能对原对象进行操作，但是不能修改实参引用本身。所以对对象而言，这种传参方式是mutable的，但是对于引用本身，又是immutable的。</li>
+</ol>
+<hr>
+<p>现在回头来看下C，C++和Java。</p>
+<p>C语言中策略很简单，一切均位call by value，尽管它有指针变量，但是它也是传的实参的拷贝。</p>
+<p>C++中出现了引用类型的变量，并且传参时也可以指定call by reference。如，<code>void func(int& n)</code></p>
+<p>Java当中考虑到指针的复杂性，于是直接砍掉了指针变量，只剩下了基本变量与引用变量，另外也不允许选择不同的传参方式。首先看基本变量，比较简单，就是call by value的表现。其次，对于引用变量而言，我们在函数可以对引用的对象进行操作，并且对caller是可见的，但是无法让实参引用到一个新的对象上去，即我们无法在函数中对实参进行assignment相关的操作，即引用本身是immutable的。这就是call by sharing。</p>
+<p>这里附上知乎一位答主的回答：</p>
+<blockquote>
+<p>综上所述，对于Java的函数调用方式最准确的描述是：<strong>参数藉由值传递方式，传递的值是个引用。（句中两个“值”不是一个意思，第一个值是evaluation result，第二个值是value content）</strong></p>
+<p>由于这个描述太绕，而且在字面上与Java总是传引用的事实冲突。于是对于Java，Python、Ruby、JavaScript等语言使用的这种求值策略，起了一个更贴切名字，叫<a href=#Call_by_sharing>Call by sharing</a>。这个名字诞生于40年前。</p>
+<p>作者：Yolanda</p>
+<p>链接：https://www.zhihu.com/question/31203609/answer/112157038</p>
+<p>来源：知乎</p>
+<p>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</blockquote>
+<hr>
+<p>参考文献：</p>
+<ol>
+<li><a href=https://en.wikipedia.org/wiki/Evaluation_strategy>https://en.wikipedia.org/wiki/Evaluation_strategy</a></li>
+<li><a href=https://en.wikipedia.org/wiki/Reference_(computer_science)>https://en.wikipedia.org/wiki/Reference_(computer_science)</a></li>
+</ol>
+<hr width=100% id=EOF>
+<p style=color:#777>最后修改于 2019-10-27</p>
+</div>
+</div>
+<nav class=post-pagination>
+<a class=newer-posts href=/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/>
+下回<br>Clean系统读书笔记——两年项目回顾
+</a>
+<a class=older-posts>
+上回<br>这是最旧的文章了。
+</a>
+</nav>
+<div class=post-comment-wrapper>
+<script src=https://utteranc.es/client.js repo=Akelio-zhang/akelio-zhang.github.io issue-term=pathname label=Comment theme=github-light crossorigin=anonymous async></script>
+</div>
+</div>
+</div>
+</div>
+</div><div id=single-column-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div>
+<script src=/js/journal.js></script>
+</body>
+</html>

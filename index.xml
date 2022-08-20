@@ -1,4 +1,4 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 26 Jun 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>CS自学 Roadmap</title><link>https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/</link><pubDate>Sun, 26 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/ -&lt;h1 id="cs自学-roadmap">CS自学 Roadmap&lt;/h1>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 26 Jun 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>CS自学 Roadmap</title><link>https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/</link><pubDate>Sun, 26 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/ -&lt;h1 id="cs自学-roadmap">CS自学 Roadmap&lt;/h1>
 &lt;blockquote>
 &lt;p>这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。&lt;/p>
 &lt;/blockquote>
@@ -73,6 +73,7 @@
 &lt;li>编译原理
 &lt;ul>
 &lt;li>CS143&lt;/li>
+&lt;li>(&lt;a href="https://craftinginterpreters.com/introduction.html">Introduction · Crafting Interpreters&lt;/a>)&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -103,6 +104,39 @@
 &lt;/ul>
 &lt;/li>
 &lt;li>TBD&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>领域分支
+&lt;ul>
+&lt;li>Theoretical computer science 
+&lt;ul>
+&lt;li>算法与数据结构 &lt;/li>
+&lt;li>计算理论 &lt;/li>
+&lt;li>信息与编码理论 &lt;/li>
+&lt;li>编程语言理论 &lt;/li>
+&lt;li>形式化方法formal methods &lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Computer systems计算机系统 
+&lt;ul>
+&lt;li>计算机架构与系统工程 ARCHITECTURE &lt;/li>
+&lt;li>计算机性能分析 PERFORMANCE &lt;/li>
+&lt;li>并发，并行，分布式系统 （DISTRIBUTED） &lt;/li>
+&lt;li>计算机网络 （NETWORK） &lt;/li>
+&lt;li>信息安全与加密 (SECURITY) &lt;/li>
+&lt;li>数据库 （STORAGE） &lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Computer application  
+&lt;ul>
+&lt;li>图形学、可视化 &lt;/li>
+&lt;li>人机交互 &lt;/li>
+&lt;li>科学计算 &lt;/li>
+&lt;li>AI &lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>软件工程
+&lt;img src="https://s2.loli.net/2022/08/20/4tFMPhyqJpQLwEu.png" alt="image/Pasted-image-20220805140624.png">&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -193,7 +227,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022cs%E8%87%AA%E5%AD%A6-roadmap/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>单元测试减少心智负担</title><link>https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</link><pubDate>Wed, 15 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ -&lt;h1 id="单元测试减少心智负担">单元测试减少心智负担&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>单元测试减少心智负担</title><link>https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</link><pubDate>Wed, 15 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ -&lt;h1 id="单元测试减少心智负担">单元测试减少心智负担&lt;/h1>
 &lt;hr>
 &lt;h2 id="责任意识">责任意识&lt;/h2>
 &lt;ul>
@@ -277,7 +311,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ -&lt;h1 id="读书笔记--用数据讲故事">读书笔记&amp;ndash;用数据讲故事&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ -&lt;h1 id="读书笔记--用数据讲故事">读书笔记&amp;ndash;用数据讲故事&lt;/h1>
 &lt;ul>
 &lt;li>第二章 选择有效的图表
 &lt;ul>
@@ -347,7 +381,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>决策引擎 Note</title><link>https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</link><pubDate>Fri, 25 Mar 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ -&lt;h1 id="决策引擎-note">决策引擎 Note&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>决策引擎 Note</title><link>https://akelio-zhang.github.io/posts/2022-%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</link><pubDate>Fri, 25 Mar 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ -&lt;h1 id="决策引擎-note">决策引擎 Note&lt;/h1>
 &lt;ul>
 &lt;li>开场
 &lt;ul>
@@ -428,12 +462,13 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>LeetCode 刷题指南</title><link>https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</link><pubDate>Fri, 18 Feb 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ -&lt;h1 id="刷题的意义">“刷题”的意义&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022-%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>LeetCode 刷题指南</title><link>https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</link><pubDate>Fri, 18 Feb 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ -&lt;h1 id="leetcode-刷题指南">LeetCode 刷题指南&lt;/h1>
+&lt;h2 id="刷题的意义">“刷题”的意义&lt;/h2>
 &lt;p>刷题确实可能会让非常多人嗤之以鼻，但是没有办法，这一切都是市场决定的。如果要在这个市场生存，你只有两个选择，适应这条规则或者打破这条规则。如果我们可以打破这条规则，那说明我们拥有更大的价值，这当然很好。但是对于大多数人而言，可能或多或少会得刷一刷题。刷题一方面能让我们面试通过，另一方面也在过程中重温一些基础知识（可以不用再面对繁冗复杂的业务诉求）。&lt;/p>
-&lt;h1 id="如何刷">如何刷&lt;/h1>
+&lt;h2 id="如何刷">如何刷&lt;/h2>
 &lt;p>笔者自己是从两条线分别出发刷题。一，按数据结构类型；二，按算法策略。从这两条线组织刷题顺序可以帮我们更快地构建起题与知识的映射关系。其实在面试解题过程中，关键要解决的就是破除题目本身的外壳，发现本质问题，属于什么类型的问题，需要用怎么样的数据结构与算法来解决。&lt;/p>
 &lt;p>现在LeetCode刷题已经非常方便了，并且本身社区也比较活跃。但是，额外的一些参考书籍对于我们的帮助也会非常大。下面罗列两本LeetCode题解。第一本101，是采用C++解题的，这本书的算法写的很容易理解，不像LC社区中很多人追求花哨——一行解题，意义不是很大。在面试过程，清晰的算法过程也是会给面试官比较好的音响。另一本Go写的题解，追求是算法性能，可以给我们拓宽思路，因为一道题解出来现在可能已经不是100分了，最佳的性能会让我们的面试更加突出。&lt;/p>
-&lt;h1 id="leetcode-题解参考">LeetCode 题解参考&lt;/h1>
+&lt;h2 id="leetcode-题解参考">LeetCode 题解参考&lt;/h2>
 &lt;ol>
 &lt;li>
 &lt;p>&lt;a href="https://www.changgy.com/leetcode-101">Doing positive things. - LeetCode 101 (changgy.com)&lt;/a>&lt;/p>
@@ -442,7 +477,7 @@
 &lt;p>&lt;a href="https://books.halfrost.com/leetcode/">序 | LeetCode Cookbook (halfrost.com)&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-&lt;h1 id="算法参考书">算法参考书&lt;/h1>
+&lt;h2 id="算法参考书">算法参考书&lt;/h2>
 &lt;ol>
 &lt;li>
 &lt;p>⭐&lt;a href="https://algs4.cs.princeton.edu/home/">Algorithms, 4th Edition by Robert Sedgewick and Kevin Wayne (princeton.edu)&lt;/a>&lt;/p>
@@ -454,7 +489,7 @@
 &lt;p>⭐&lt;a href="https://jeffe.cs.illinois.edu/teaching/algorithms/#book">Algorithms by Jeff Erickson (illinois.edu)&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2022leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>MacBook Pro到手设置</title><link>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ -&lt;h1 id="macbook-pro到手设置">MacBook Pro到手设置&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>MacBook Pro到手设置</title><link>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ -&lt;h1 id="macbook-pro到手设置">MacBook Pro到手设置&lt;/h1>
 &lt;h2 id="效率">效率&lt;/h2>
 &lt;ol>
 &lt;li>Office 365, Microsoft edge, Onedrive, Todo, Outlook&lt;/li>
@@ -510,10 +545,7 @@
 &lt;/ol>
 &lt;/li>
 &lt;li>KX
-&lt;ol>
-&lt;li>Clash X Pro: &lt;a href="https://github.com/yichengchen/clashX">https://github.com/yichengchen/clashX&lt;/a>&lt;/li>
-&lt;/ol>
-&lt;/li>
+    1. Clash X Pro: &lt;a href="https://github.com/yichengchen/clashX">https://github.com/yichengchen/clashX&lt;/a>&lt;/li>
 &lt;/ol>
 &lt;h2 id="娱乐">娱乐&lt;/h2>
 &lt;ol>
@@ -541,7 +573,7 @@
 &lt;li>&lt;a href="https://www.bilibili.com/video/BV1sD4y1X7MQ">学生党M1 Mac入门指北_哔哩哔哩_bilibili&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.youtube.com/watch?v=67keaaWOKzE">Mac Tutorial for Beginners - Switching from Windows to macOS - YouTube&lt;/a>&lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2022macbook-pro%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
+- https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021-notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
 &lt;ol>
 &lt;li>有道云笔记（markdown支持太弱）&lt;/li>
 &lt;li>Microsoft Todo（不太适合大量文字记载）&lt;/li>
@@ -577,43 +609,24 @@
 &lt;/ol>
 &lt;h2 id="0x4-目前的文字工作方式">0x4 目前的文字工作方式&lt;/h2>
 &lt;ol>
-&lt;li>
-&lt;p>DASHBOARD是所有内容的入口。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>DASHBOARD展示的内容尽可能少，一般就是日常要做的、工作追踪、学习提升的三个入口。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Notion主要做有一些计划性的、需要有结果输出的文字工作。&lt;/p>
+&lt;li>DASHBOARD是所有内容的入口。&lt;/li>
+&lt;li>DASHBOARD展示的内容尽可能少，一般就是日常要做的、工作追踪、学习提升的三个入口。&lt;/li>
+&lt;li>Notion主要做有一些计划性的、需要有结果输出的文字工作。
 &lt;ol>
 &lt;li>每天使用Github进行备份&lt;/li>
 &lt;/ol>
 &lt;/li>
-&lt;li>
-&lt;p>[H1]Todo来承载一些紧急类的工作记录（往往重要性不会太强）【可以用便利贴替代】&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>[H2]Xmind承担思维脑图，基本无可替代，数据用Onedrive管理。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>[H3]备忘录只做个人信息备忘录，待办事项直接用todo/cubox解决。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>[IN]cubox承载信息流的记录（手机、PC浏览器），替代之前的微信收藏、知乎收藏。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>[OUT]微信公众号、知乎专栏用来做对外输出。（Notion本身也提供了链接分享，但是有墙，并没有什么x用）&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>&lt;del>放弃语雀&lt;/del>，是因为流量还是小了一点。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>&lt;del>Onenote暂时处于停止使用的状态&lt;/del>，主要原因是格式版本比较心累，markdown不好用，跨平台能力有限。但是对于一些图、画较多的场景，Onenote有他自由排版的优势。&lt;/p>
-&lt;/li>
+&lt;li>[H1]Todo来承载一些紧急类的工作记录（往往重要性不会太强）【可以用便利贴替代】&lt;/li>
+&lt;li>[H2]Xmind承担思维脑图，基本无可替代，数据用Onedrive管理。&lt;/li>
+&lt;li>[H3]备忘录只做个人信息备忘录，待办事项直接用todo/cubox解决。&lt;/li>
+&lt;li>[IN]cubox承载信息流的记录（手机、PC浏览器），替代之前的微信收藏、知乎收藏。&lt;/li>
+&lt;li>[OUT]微信公众号、知乎专栏用来做对外输出。（Notion本身也提供了链接分享，但是有墙，并没有什么x用）&lt;/li>
+&lt;li>&lt;del>放弃语雀&lt;/del>，是因为流量还是小了一点。&lt;/li>
+&lt;li>&lt;del>Onenote暂时处于停止使用的状态&lt;/del>，主要原因是格式版本比较心累，markdown不好用，跨平台能力有限。但是对于一些图、画较多的场景，Onenote有他自由排版的优势。&lt;/li>
+&lt;li>当然，目前在使用Notion还有一些不舒服的地方：1）DASHBOARD呈现的内容过多，会分散注意力；2）Notion中很多已经完成的内容，目前只是简单放在database置为完成状态，或者移入存档Page。这些内容在较长不会做更新，却依旧占据了较多的篇幅，也会分散注意力。目前使用toggle或者database filter来隐藏。&lt;/li>
 &lt;/ol>
-&lt;p>&lt;img src="https://akelio-zhang.github.io/images/notion-station.webp" alt="文字工作流2022">&lt;/p>
-&lt;p>当然，目前在使用Notion还有一些不舒服的地方：1）DASHBOARD呈现的内容过多，会分散注意力；2）Notion中很多已经完成的内容，目前只是简单放在database置为完成状态，或者移入存档Page。这些内容在较长不会做更新，却依旧占据了较多的篇幅，也会分散注意力。目前使用toggle或者database filter来隐藏。&lt;/p>
-- https://akelio-zhang.github.io/posts/2021notion/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>About Me</title><link>https://akelio-zhang.github.io/posts/about-me/</link><pubDate>Wed, 26 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/about-me/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/about-me/ -&lt;p>&lt;strong>Coder &amp;amp; Photographer&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://s2.loli.net/2022/08/20/IG97nj3AkKQacL2.png" alt="/images/notion-station.webp">&lt;/p>
+- https://akelio-zhang.github.io/posts/2021-notion/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>About Me</title><link>https://akelio-zhang.github.io/posts/about-me/</link><pubDate>Wed, 26 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/about-me/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/about-me/ -&lt;p>&lt;strong>Coder &amp;amp; Photographer&lt;/strong>&lt;/p>
 &lt;h2 id="我的设备">我的设备&lt;/h2>
 &lt;p>[工作]&lt;/p>
 &lt;ul>
@@ -727,100 +740,65 @@
 &lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
 &lt;/ol>
 &lt;p>Last edited on 2022/07/07&lt;/p>
-- https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
+- https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
 &lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>
 &lt;li>掌握各类场景下如何更好使用Git。&lt;/li>
-&lt;li>减少因为代码提交问题带来的生产环境问题。&lt;/li>
+&lt;li>减少因为代码提交问题带来的生产环境问题。
+&lt;img src="https://s2.loli.net/2022/08/20/OfV5qM2WQ4BrGwI.png" alt="/images/git-zoo.jpg">&lt;/li>
 &lt;/ol>
-&lt;p>&lt;img src="https://akelio-zhang.github.io/images/git-zoo.jpg" alt="Git几大工作区域一览">&lt;/p>
-&lt;p>Git几大工作区域一览&lt;/p>
-&lt;h2 id="一了解git">一、了解Git&lt;/h2>
+&lt;h2 id="一了解git">一、了解[[Git]]&lt;/h2>
 &lt;ol>
 &lt;li>什么是Git？
-&lt;ol>
-&lt;li>一款分布式版本管理系统&lt;/li>
-&lt;li>优点：分布式、性能、版本的文件完整性
-&lt;ol>
-&lt;li>分布式，可以让你在本地提交代码（对于SVN而言没有网络就无法提交代码，在家也能愉快地写代码）；&lt;/li>
-&lt;li>性能，对于我们的一般项目而言，你感受不到合并时性能的差别（与SVN比较）；&lt;/li>
-&lt;li>版本的文件完整性：git背后设计理念是快照思想。&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;/ol>
-&lt;/li>
+    1. 一款分布式版本管理系统
+    2. 优点：分布式、性能、版本的文件完整性
+        1. 分布式，可以让你在本地提交代码（对于SVN而言没有网络就无法提交代码，在家也能愉快地写代码）；
+        2. 性能，对于我们的一般项目而言，你感受不到合并时性能的差别（与SVN比较）；
+        3. 版本的文件完整性：git背后设计理念是快照思想。&lt;/li>
 &lt;li>Git概念
-&lt;ol>
-&lt;li>仓库(repository)
-&lt;ol>
-&lt;li>用于代码版本管理&lt;/li>
-&lt;li>一个git仓库管理了三棵“树”，分别是
-&lt;ol>
-&lt;li>Working Directory（工作目录）&lt;/li>
-&lt;li>Index（暂存区）&lt;/li>
-&lt;li>HEAD（本地仓库）&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;li>大多数时候你通过编辑器只能对工作目录操作，操作其他两个“树”（区域）必须使用git命令才可以。&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;li>分支(branch)
-&lt;ol>
-&lt;li>用于并行独立开发，更方便管理不同开发任务的进度&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;/ol>
-&lt;/li>
+    1. 仓库(repository)
+        1. 用于代码版本管理
+        2. 一个git仓库管理了三棵“树”，分别是
+            1. Working Directory（工作目录）
+            2. Index（暂存区）
+            3. HEAD（本地仓库）
+        3. 大多数时候你通过编辑器只能对工作目录操作，操作其他两个“树”（区域）必须使用git命令才可以。
+    2. 分支(branch)
+        1. 用于并行独立开发，更方便管理不同开发任务的进度&lt;/li>
 &lt;li>Git常用命令
-&lt;ol>
-&lt;li>git add&lt;/li>
-&lt;li>git commit&lt;/li>
-&lt;li>git push&lt;/li>
-&lt;li>git pull&lt;/li>
-&lt;li>git branch&lt;/li>
-&lt;li>git switch&lt;/li>
-&lt;li>git restore&lt;/li>
-&lt;/ol>
-&lt;/li>
+    1. git add
+    2. git commit
+    3. git push
+    4. git pull
+    5. git branch
+    6. git switch
+    7. git restore&lt;/li>
 &lt;/ol>
 &lt;h2 id="二最常见的一种使用场景">二、最常见的一种使用场景&lt;/h2>
+&lt;blockquote>
 &lt;p>陈主管说他已经开发好了整个架构，需要我去把几个功能实现一下，并提交到dev分支让他方便Review。&lt;/p>
+&lt;/blockquote>
 &lt;ul>
 &lt;li>基本流程
-&lt;ol>
-&lt;li>先从远程服务器把代码拉到本地：&lt;code>git clone http://197.68.6.70/demo-project&lt;/code>&lt;/li>
-&lt;li>此时你拥有的是主干master分支的代码，我们需要切换到dev分支进行开发：
-&lt;ol>
-&lt;li>&lt;code>git fetch --all&lt;/code>&lt;/li>
-&lt;li>&lt;code>git switch --track origin/dev&lt;/code>&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;li>在&lt;strong>工作目录&lt;/strong>写代码&lt;/li>
-&lt;li>提交变更的文件到&lt;strong>暂存区&lt;/strong>：&lt;code>git add &amp;lt;somefile&amp;gt;&lt;/code>&lt;/li>
-&lt;li>提交文件到&lt;strong>本地仓库&lt;/strong>：&lt;code>git commit -m &amp;quot;xxx&amp;quot;&lt;/code>&lt;/li>
-&lt;li>把我的代码推送到远程仓库（同步）：&lt;code>git push&lt;/code>&lt;/li>
-&lt;/ol>
-&lt;/li>
+    1. 先从远程服务器把代码拉到本地：&lt;code>git clone http://197.68.6.70/demo-project&lt;/code>
+    2. 此时你拥有的是主干master分支的代码，我们需要切换到dev分支进行开发：
+        1. &lt;code>git fetch --all&lt;/code>
+        2. &lt;code>git switch --track origin/dev&lt;/code>
+    3. 在&lt;strong>工作目录&lt;/strong>写代码
+    4. 提交变更的文件到&lt;strong>暂存区&lt;/strong>：&lt;code>git add &amp;lt;somefile&amp;gt;&lt;/code>
+    5. 提交文件到&lt;strong>本地仓库&lt;/strong>：&lt;code>git commit -m &amp;quot;xxx&amp;quot;&lt;/code>
+    6. 把我的代码推送到远程仓库（同步）：&lt;code>git push&lt;/code>&lt;/li>
 &lt;/ul>
 &lt;h2 id="三最佳实践git里的后悔药">三、最佳实践——Git里的后悔药&lt;/h2>
 &lt;ol>
 &lt;li>我提交到暂存区的代码搞错了：&lt;code>git restore -S &amp;lt;files or dir&amp;gt;&lt;/code> （在使用IDEA时，这个场景不太会出现，因为IDEA往往是把add 和 commit的操作会合并成一个处理）&lt;/li>
 &lt;li>我提交到本地仓库的代码搞错了：
-&lt;ol>
-&lt;li>最近的一个commit：&lt;code>git reset -mixed HEAD~1&lt;/code>&lt;/li>
-&lt;li>历史中的一个commit：
-&lt;ol>
-&lt;li>使用 &lt;code>git reset --mixed &amp;lt;commit_id&amp;gt;&lt;/code>，然后重新提交正确的代码（ ❗从最新commit到指定commit的代码都需要重新提交）&lt;/li>
-&lt;li>使用 &lt;code>git revert &amp;lt;commit_id&amp;gt;&lt;/code> ，这个操作近似于自己重新提交代码&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;/ol>
-&lt;/li>
+    1. 最近的一个commit：&lt;code>git reset -mixed HEAD~1&lt;/code>
+    2. 历史中的一个commit：
+        1. 使用 &lt;code>git reset --mixed &amp;lt;commit_id&amp;gt;&lt;/code>，然后重新提交正确的代码（ ❗从最新commit到指定commit的代码都需要重新提交）
+        2. 使用 &lt;code>git revert &amp;lt;commit_id&amp;gt;&lt;/code> ，这个操作近似于自己重新提交代码&lt;/li>
 &lt;li>我提交到远程仓库的代码搞错了：
-&lt;ol>
-&lt;li>只有一个建议：&lt;strong>请写出正确的代码，重新提交！所以，请在每次push之前谨慎！&lt;/strong>&lt;/li>
-&lt;/ol>
-&lt;/li>
+    1. 只有一个建议：&lt;strong>请写出正确的代码，重新提交！所以，请在每次push之前谨慎！&lt;/strong>&lt;/li>
 &lt;/ol>
 &lt;h2 id="四最佳实践与他人同步">四、最佳实践——与他人同步&lt;/h2>
 &lt;ol>
@@ -836,17 +814,11 @@
 &lt;h2 id="六其他">六、其他&lt;/h2>
 &lt;ol>
 &lt;li>⭐准备上线前
-&lt;ol>
-&lt;li>和上一个版本代码对比(&lt;code>git diff release master&lt;/code>)，确认release分支是&lt;strong>正确的需要上线的代码&lt;/strong>&lt;/li>
-&lt;li>使用Jenkins对release分支进行自动打包与部署，在工作空间获取上线代码包（禁止本地打包）&lt;/li>
-&lt;/ol>
-&lt;/li>
+    1. 和上一个版本代码对比(&lt;code>git diff release master&lt;/code>)，确认release分支是&lt;strong>正确的需要上线的代码&lt;/strong>
+    2. 使用Jenkins对release分支进行自动打包与部署，在工作空间获取上线代码包（禁止本地打包）&lt;/li>
 &lt;li>上线完成后
-&lt;ol>
-&lt;li>在gitlab上提交release合并至master分支的merge request，由技术经理确认合并；&lt;/li>
-&lt;li>对最新的master分支进行tag，方便反查源码；&lt;/li>
-&lt;/ol>
-&lt;/li>
+    1. 在gitlab上提交release合并至master分支的merge request，由技术经理确认合并；
+    2. 对最新的master分支进行tag，方便反查源码；&lt;/li>
 &lt;/ol>
 &lt;h2 id="七几个原则">七、几个原则&lt;/h2>
 &lt;h3 id="强制">强制&lt;/h3>
@@ -857,27 +829,25 @@
 &lt;h3 id="建议">建议&lt;/h3>
 &lt;ol>
 &lt;li>建议分支命名：master、release、dev、dev_xx
-&lt;ol>
-&lt;li>master分支为线上正在运行的代码；不允许手动提交；只能通过页面的merge request进行代码合并；每次上完线后把分支(release)代码合并到master&lt;/li>
-&lt;li>release为测试环境对应的代码，jenkins均从该分支进行自动构建与部署&lt;/li>
-&lt;li>dev，以及其他分支为开发分支，较为自由。&lt;/li>
-&lt;/ol>
-&lt;/li>
+    1. master分支为线上正在运行的代码；不允许手动提交；只能通过页面的merge request进行代码合并；每次上完线后把分支(release)代码合并到master
+    2. release为测试环境对应的代码，jenkins均从该分支进行自动构建与部署
+    3. dev，以及其他分支为开发分支，较为自由。&lt;/li>
 &lt;li>减少对&lt;code>git checkout&lt;/code>的使用，已经拆分为 &lt;code>git switch&lt;/code> 和 &lt;code>git restore&lt;/code>&lt;/li>
 &lt;li>不要把二进制文件放到git仓库中进行版本管理&lt;/li>
 &lt;/ol>
 &lt;h2 id="八实现方式之数据结构">八、实现方式之数据结构&lt;/h2>
 &lt;p>在Git当中，&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-markdown" data-lang="markdown">// 一个文件就是字节数组
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-markdown" data-lang="markdown">
+// 一个文件就是字节数组
 type blob = array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">byte&lt;/span>&amp;gt;
 // 一个目录包含文件或者其他目录
 type tree = map&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">string&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">,&lt;/span> &lt;span style="color:#658b00">tree&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">|&lt;/span> &lt;span style="color:#658b00">blob&lt;/span>&amp;gt;
 // 一个commit包含它的父节点，原始信息，顶级目录（快）
 type commit = struct {
-parents: array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">commit&lt;/span>&amp;gt;
-author: string
-message: string
-snapshot: tree
+    parents: array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">commit&lt;/span>&amp;gt;
+    author: string
+    message: string
+    snapshot: tree
 }
 // 文件、目录、commit最终都以object类型进行存储
 type object = blob | tree | commit
@@ -897,7 +867,8 @@ type object = blob | tree | commit
 &lt;li>&lt;a href="https://missing.csail.mit.edu/2020/version-control/">Version Control (Git) · the missing semester of your cs education (mit.edu)&lt;/a>&lt;/li>
 &lt;/ol>
 &lt;h2 id="some-code">Some code&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">git clone
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">
+git clone
 git branch --track dev origin/dev
 git checkout dev
 git add &amp;amp; git commit
@@ -914,7 +885,8 @@ git checkout -b &amp;lt;branch_name&amp;gt;
 git merge dev
 git stash
 git stash pop
-&lt;/code>&lt;/pre>&lt;/div>- https://akelio-zhang.github.io/posts/2021git%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>互联网技术社招总结</title><link>https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</link><pubDate>Sun, 28 Mar 2021 18:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/ -&lt;h1 id="准备">准备&lt;/h1>
+&lt;/code>&lt;/pre>&lt;/div>- https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>2020社招互联网技术面试总结</title><link>https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/</link><pubDate>Sun, 28 Mar 2021 18:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/ -&lt;h1 id="2020社招互联网技术面试总结">2020社招互联网技术面试总结&lt;/h1>
+&lt;h2 id="准备">准备&lt;/h2>
 &lt;h3 id="用人单位招聘诉求">用人单位招聘诉求&lt;/h3>
 &lt;p>对于每个用人单位来说，他们有两个诉求：1.招聘到能够立马(尽快)胜任工作并解决业务痛点的人；2.减少用人成本。&lt;/p>
 &lt;p>往往第二点是和招聘人利益是冲突的，所以我们只能通过第一点来进行突破，也就是大家常说的你要和你的岗位有较高的匹配度。&lt;/p>
@@ -929,37 +901,44 @@ git stash pop
 &lt;/ol>
 &lt;h3 id="个人状况">个人状况&lt;/h3>
 &lt;p>在做面试准备之前，先要了解个人的软硬技能方面的状况来发现匹配度上的差异，以做针对性的准备。&lt;/p>
+&lt;ol>
+&lt;li>对技术的掌握范围较窄，没有形成对一些问题的统一解决方案。（武器库的理解还比较浅）&lt;/li>
+&lt;li>缺少团队管理的经验。&lt;/li>
+&lt;li>对业务的理解较浅，没有主动进行抽象转换。&lt;/li>
+&lt;/ol>
 &lt;h3 id="面试准备">面试准备&lt;/h3>
 &lt;p>在面试中，往往会有以下几块内容的沟通：&lt;strong>个人介绍、项目介绍、算法题、系统设计题、专业知识、技术方案、向面试官提问&lt;/strong>。系统设计题往往出现在后面几轮部门领导的面试，算法、专业知识则通常出现在第一二轮。技术方案则都会有所涉及。&lt;/p>
 &lt;p>在社招中，大部分公司会更注重你&lt;strong>过往的项目经历&lt;/strong>，且会在项目上挖掘你的专业知识以及难点技术方案。所以这一块需要深入剖析，包括技术方案、业务场景、拥抱变化的能力(高可用、高并发)等常见的互联网应用的问题。&lt;/p>
 &lt;p>由于近些年计算机大厂竞争愈发激烈，算法题与专业知识也经常单独进行考察。算法题一般就刷LeetCode中等就可以；专业知识包括数据结构、操作系统、网络、你的主语言使用理解等。&lt;/p>
 &lt;p>对于向面试官提问，有人说很重要，但是我认为这往往是锦上添花的效果。主导你拿到offer的还是前面提到的基本面。这一块通常体现了你对这份工作的向往程度。&lt;/p>
+&lt;blockquote>
 &lt;p>贵司一天工作的时间线大概是怎么样的？&lt;/p>
 &lt;p>印象最深的一次工作内容是什么？&lt;/p>
 &lt;p>最近加班频繁吗？&lt;/p>
+&lt;/blockquote>
 &lt;p>最后，一场面试，当你说话的时间占比越大，往往就越有可能顺利通过。&lt;/p>
-&lt;h1 id="过程">过程&lt;/h1>
+&lt;h2 id="过程">过程&lt;/h2>
 &lt;ol>
 &lt;li>中小厂&lt;/li>
 &lt;/ol>
 &lt;p>中小厂对人的要求很直白，能干活，最好技术栈比较贴合，如果面试者过往接触的业务一致性一样就更好了。笔者经历了杭州的一家互联网券商的面试，整体体验感难度适中，问题也都比较贴合实际开发过程会碰到的问题。这也可能是因为整体技术栈重合度较高的原因。算法题、专业知识、技术方案（并发、消息、缓存、Scala）。没有涉及系统设计。&lt;/p>
-&lt;ol>
+&lt;ol start="2">
 &lt;li>大厂&lt;/li>
 &lt;/ol>
 &lt;p>国内大厂面试风格分为两派，项目技术方案为主与算法为主。前者主要在于项目这一块会问的非常深入，并随之伴随各类技术方案的讨论，强调实战经验。后者对于社招也要提出相当的算法与专业知识的要求，以便于进行高效的过滤。&lt;/p>
 &lt;p>大厂的算法题会结合更实际的场景来出题，而非LeetCode的原题。比如，提供一天登录登出日志文件(time, uid, action)，问如何计算得到在线人数峰值时间点以及90%峰位时间点。&lt;/p>
 &lt;p>大厂的项目介绍与技术方案往往是大头部分，面试官会从各个角度来测试你工作的含金量与价值。业务问题如何抽象设计、系统如何拆分设计、如何应对未来的大流量、中间件的选择考虑点等。这块可以参考&lt;a href="https://github.com/donnemartin/system-design-primer">system-design-primer&lt;/a>。&lt;/p>
-&lt;ol>
+&lt;ol start="3">
 &lt;li>外企&lt;/li>
 &lt;/ol>
 &lt;p>外企确实与国内企业差别很大，面试体验感很不错，你会感觉到你被认真对待。往往会在1天完成所有的面试。面试轮次会在3-4次。笔者面试的岗位更偏向于业务部门，所有问题都围绕实际场景展开。比如，算法题是设计一个类，提供两个操作：记录当前系统的负载和返回近5分钟的平均负载。另一个是设计一个命令行工具，实现对参数的读取与处理。&lt;/p>
 &lt;p>外企社招时对员工的要求普遍较高，并非单靠刷题就可以。比如在系统题中会考察如何进行项目管理，如何测试，如何运维等等非常全面的问题。另一方面，由于外企的产品往往面向全球，会有诸如如何解决多地数据中心同步的问题、攻击网关设计等国际化的问题。&lt;/p>
-&lt;h1 id="结论">结论&lt;/h1>
+&lt;h2 id="结论">结论&lt;/h2>
 &lt;p>在面试的准备与进行过程中，是对我们自己过往的一次总结与提升。面试失败也不必过于难过，不是每个面试官都是那么专业，也可能是你与这家公司这个岗位目前仍然不那么契合。&lt;/p>
 &lt;p>每一个人有每一个人的特色与优劣势，每一家公司有每一家公司的喜好。我们能做的就是保持自信，扬长避短，以一种积极友善的态度把握整个面试过程的主动性（比如有些面试官说让你简单说说xxx，此时若是你擅长的，你应该抓住机会表现出你的特色）&lt;/p>
-&lt;h1 id="站在巨人的肩膀上">站在巨人的肩膀上&lt;/h1>
+&lt;h2 id="站在巨人的肩膀上">站在巨人的肩膀上&lt;/h2>
 &lt;ol>
 &lt;li>&lt;a href="https://www.imwzk.com/posts/2020-10-05-an-incomplete-guide-to-campus-recruitment-interviews/">校招面试不完全指南&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://mindhacks.cn/2011/11/04/how-to-interview-a-person-for-two-years/">怎样花两年时间去面试一个人&lt;/a>&lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2020%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E7%A4%BE%E6%8B%9B%E6%80%BB%E7%BB%93/ - 2019-2022 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/ - 2019-2022 Akelio All rights reserved.</description></item></channel></rss>

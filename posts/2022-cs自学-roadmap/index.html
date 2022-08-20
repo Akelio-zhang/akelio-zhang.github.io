@@ -1,0 +1,476 @@
+<!doctype html><html><head>
+<title>CS自学 Roadmap</title>
+<meta charset=utf-8>
+<meta name=X-UA-Compatible content="IE=edge">
+<meta name=google-site-verification content>
+<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport>
+<meta content="telephone=no" name=format-detection>
+<meta name=description content>
+<meta name=renderer content="webkit">
+<meta name=theme-color content="#ffffff">
+<meta property="og:title" content="CS自学 Roadmap">
+<meta property="og:description" content="CS自学 Roadmap  这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。
+ Roadmap  快速版  CS61A + CS61B + CS61C 这三个课程都来自于UCB，能让你最快判断自己是否适应CS的内容，并帮助你找到还不错的工作(maybe)。   循序渐进版  入门  （Crash Course Computer Science）   数据基础  微积分/线性代数/信息理论/概率统计/离散数学   基本原理  程序抽象  CS61A   计算机架构入门  （Build a Modern Computer from First Principles: From Nand to Tetris (Project-Centered Course) | Coursera） 15-213/CS61C   数据结构与算法  CS61B/6.006/普林斯顿红宝书     领域基础  通览  6.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2022-06-26T12:00:00+08:00">
+<meta property="article:modified_time" content="2022-06-26T12:00:00+08:00"><meta property="og:site_name" content="My Blog">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="CS自学 Roadmap">
+<meta name=twitter:description content="CS自学 Roadmap  这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。
+ Roadmap  快速版  CS61A + CS61B + CS61C 这三个课程都来自于UCB，能让你最快判断自己是否适应CS的内容，并帮助你找到还不错的工作(maybe)。   循序渐进版  入门  （Crash Course Computer Science）   数据基础  微积分/线性代数/信息理论/概率统计/离散数学   基本原理  程序抽象  CS61A   计算机架构入门  （Build a Modern Computer from First Principles: From Nand to Tetris (Project-Centered Course) | Coursera） 15-213/CS61C   数据结构与算法  CS61B/6.006/普林斯顿红宝书     领域基础  通览  6.">
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
+<link rel=stylesheet href=/scss/journal.min.c5d92f380bf10f6849c7ac487c7df2b22c081e0851e5339224f1ae29210b20d2.css integrity="sha256-xdkvOAvxD2hJx6xIfH3ysiwIHghR5TOSJPGuKSELINI=" media=screen>
+<link rel=stylesheet href=/scss/dark-mode.min.9f8d8c2df9285089d141edd4a50cb7506c7948e6ab79a29968dced1bd0ab7d22.css integrity="sha256-n42MLfkoUInRQe3UpQy3UGx5SOareaKZaNztG9CrfSI=" media=screen>
+<script src=/vendor/js/loadCSS.js></script>
+<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
+<script src=/js/toc.js></script>
+</head>
+<body>
+<div id=app><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/posts/about-me/>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#cs%e8%87%aa%e5%ad%a6-roadmap onclick="onNavClick(`#cs自学-roadmap-nav`)" id=cs自学-roadmap-nav>
+CS自学 Roadmap
+</a>
+</li>
+<ul>
+<li>
+<a href=#roadmap onclick="onNavClick(`#roadmap-nav`)" id=roadmap-nav>
+Roadmap
+</a>
+</li>
+<li>
+<a href=#%e5%8f%82%e8%80%83 onclick="onNavClick(`#参考-nav`)" id=参考-nav>
+参考
+</a>
+</li>
+<ul>
+<li>
+<a href=#course-table onclick="onNavClick(`#course-table-nav`)" id=course-table-nav>
+Course Table
+</a>
+</li>
+<li>
+<a href=#%e5%9b%9b%e5%a4%a7%e5%90%8d%e6%a0%a1%e7%9a%84%e8%af%be%e7%a8%8b%e6%8e%a8%e8%8d%90 onclick="onNavClick(`#四大名校的课程推荐-nav`)" id=四大名校的课程推荐-nav>
+四大名校的课程推荐
+</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
+</div>
+</div>
+<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div class=drawer-content>
+<div class=drawer-menu>
+<a class="a-block drawer-menu-item active" href=/posts>
+Archive
+</a>
+<a class="a-block drawer-menu-item false" href=/categories>
+Categories
+</a>
+<a class="a-block drawer-menu-item false" href=/tags>
+Tags
+</a>
+<a class="a-block drawer-menu-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block drawer-menu-item false" href=/posts/about-me/>
+About
+</a>
+<div class=toc>
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#cs%e8%87%aa%e5%ad%a6-roadmap onclick="onNavClick(`#cs自学-roadmap-nav`)" id=cs自学-roadmap-nav>
+CS自学 Roadmap
+</a>
+</li>
+<ul>
+<li>
+<a href=#roadmap onclick="onNavClick(`#roadmap-nav`)" id=roadmap-nav>
+Roadmap
+</a>
+</li>
+<li>
+<a href=#%e5%8f%82%e8%80%83 onclick="onNavClick(`#参考-nav`)" id=参考-nav>
+参考
+</a>
+</li>
+<ul>
+<li>
+<a href=#course-table onclick="onNavClick(`#course-table-nav`)" id=course-table-nav>
+Course Table
+</a>
+</li>
+<li>
+<a href=#%e5%9b%9b%e5%a4%a7%e5%90%8d%e6%a0%a1%e7%9a%84%e8%af%be%e7%a8%8b%e6%8e%a8%e8%8d%90 onclick="onNavClick(`#四大名校的课程推荐-nav`)" id=四大名校的课程推荐-nav>
+四大名校的课程推荐
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<transition name=fade>
+<div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div>
+</transition>
+<nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container">
+<div id=navBackground class=nav-background></div>
+<div class="container container-narrow nav-content">
+<button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
+<i class=material-icons>
+menu
+</i>
+</button>
+<a id=navTitle class=navbar-brand href=https://akelio-zhang.github.io/>
+LIFE CODER
+</a>
+<button type=button class=nav-darkmode-toggle id=darkModeToggleButton2>
+<i class=material-icons id=darkModeToggleIcon2>
+dark_mode
+</i>
+</button>
+</div>
+</nav>
+<div class=single-column-header-container id=pageHead v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+<a href=https://akelio-zhang.github.io/>
+<div class=single-column-header-title>LIFE CODER</div>
+<div class=single-column-header-subtitle>Akelio's Blog</div>
+</a>
+</div>
+<div id=content>
+<div id=streamContainer class=stream-container>
+<div class="post-list-container post-list-container-shadow">
+<div class=post>
+<div class=post-head-wrapper-text-only>
+<div class=post-title>
+CS自学 Roadmap
+<div class=post-meta>
+<time itemprop=datePublished>
+2022-06-26 12:00
+</time>
+<i class=material-icons>folder</i>
+<a href=/categories/%E5%AD%A6%E4%B9%A0/cs>学习/CS</a>
+&nbsp;
+<i class=material-icons>label</i>
+<a href=/tags/roadmap>roadmap</a>
+&nbsp;
+<a href=/tags/%E8%AF%BE%E7%A8%8B>课程</a>
+&nbsp;
+</div>
+</div>
+</div>
+<div class=post-body-wrapper>
+<div class=post-body v-pre>
+<h1 id=cs自学-roadmap>CS自学 Roadmap</h1>
+<blockquote>
+<p>这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。</p>
+</blockquote>
+<h2 id=roadmap>Roadmap</h2>
+<ul>
+<li>快速版
+<ul>
+<li>CS61A + CS61B + CS61C</li>
+<li>这三个课程都来自于UCB，能让你最快判断自己是否适应CS的内容，并帮助你找到还不错的工作(maybe)。</li>
+</ul>
+</li>
+<li>循序渐进版
+<ul>
+<li>入门
+<ul>
+<li>（<a href=https://www.bilibili.com/video/BV1EW411u7th>Crash Course Computer Science</a>）</li>
+</ul>
+</li>
+<li>数据基础
+<ul>
+<li>微积分/线性代数/信息理论/概率统计/离散数学</li>
+</ul>
+</li>
+<li>基本原理
+<ul>
+<li>程序抽象
+<ul>
+<li>CS61A</li>
+</ul>
+</li>
+<li>计算机架构入门
+<ul>
+<li>（<a href=https://www.coursera.org/learn/build-a-computer#syllabus>Build a Modern Computer from First Principles: From Nand to Tetris (Project-Centered Course) | Coursera</a>）</li>
+<li>15-213/CS61C</li>
+</ul>
+</li>
+<li>数据结构与算法
+<ul>
+<li>CS61B/6.006/普林斯顿红宝书</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>领域基础
+<ul>
+<li>通览
+<ul>
+<li>6.033</li>
+<li>6.NULL（工具课）</li>
+</ul>
+</li>
+<li>操作系统
+<ul>
+<li><a href=http://jyywiki.cn/OS/2022/>操作系统：设计与实现@南京大学</a>/6.S081/CS162</li>
+</ul>
+</li>
+<li>网络
+<ul>
+<li>CS144</li>
+</ul>
+</li>
+<li>数据库
+<ul>
+<li>CS186(Java)/15-445(C++)</li>
+</ul>
+</li>
+<li>分布式系统
+<ul>
+<li>6.824</li>
+</ul>
+</li>
+<li>编译原理
+<ul>
+<li>CS143</li>
+<li>(<a href=https://craftinginterpreters.com/introduction.html>Introduction · Crafting Interpreters</a>)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>高级课程
+<ul>
+<li>软件工程
+<ul>
+<li>6.031</li>
+<li>CS169</li>
+</ul>
+</li>
+<li>AI
+<ul>
+<li>CS188</li>
+</ul>
+</li>
+<li>图形学
+<ul>
+<li>GAMES101</li>
+</ul>
+</li>
+<li>信息安全
+<ul>
+<li>CS161</li>
+</ul>
+</li>
+<li>TBD</li>
+</ul>
+</li>
+<li>领域分支
+<ul>
+<li>Theoretical computer science 
+<ul>
+<li>算法与数据结构 </li>
+<li>计算理论 </li>
+<li>信息与编码理论 </li>
+<li>编程语言理论 </li>
+<li>形式化方法formal methods </li>
+</ul>
+</li>
+<li>Computer systems计算机系统 
+<ul>
+<li>计算机架构与系统工程 ARCHITECTURE </li>
+<li>计算机性能分析 PERFORMANCE </li>
+<li>并发，并行，分布式系统 （DISTRIBUTED） </li>
+<li>计算机网络 （NETWORK） </li>
+<li>信息安全与加密 (SECURITY) </li>
+<li>数据库 （STORAGE） </li>
+</ul>
+</li>
+<li>Computer application  
+<ul>
+<li>图形学、可视化 </li>
+<li>人机交互 </li>
+<li>科学计算 </li>
+<li>AI </li>
+</ul>
+</li>
+<li>软件工程
+<img src=https://s2.loli.net/2022/08/20/4tFMPhyqJpQLwEu.png alt=image/Pasted-image-20220805140624.png></li>
+</ul>
+</li>
+</ul>
+<h2 id=参考>参考</h2>
+<h3 id=course-table>Course Table</h3>
+<table>
+<thead>
+<tr>
+<th>课程</th>
+<th>内容</th>
+<th>url</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CS186</td>
+<td>数据库</td>
+<td><a href=http://cs186berkeley.net/fa20/>http://cs186berkeley.net/fa20/</a></td>
+</tr>
+<tr>
+<td>15-445</td>
+<td>数据库</td>
+<td><a href=https://www.bilibili.com/video/BV1f7411z7dw>https://www.bilibili.com/video/BV1f7411z7dw</a></td>
+</tr>
+<tr>
+<td>6.S081</td>
+<td>操作系统</td>
+<td><a href=https://www.bilibili.com/video/BV19k4y1C7kA>https://www.bilibili.com/video/BV19k4y1C7kA</a></td>
+</tr>
+<tr>
+<td>rCore</td>
+<td>操作系统</td>
+<td><a href=https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html>https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html</a></td>
+</tr>
+<tr>
+<td>6.NULL</td>
+<td>基础</td>
+<td><a href=https://missing.csail.mit.edu/>https://missing.csail.mit.edu/</a></td>
+</tr>
+<tr>
+<td>CS229T</td>
+<td>统计学习</td>
+<td><a href="https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650754066&idx=1&sn=8dc9c75a1326ce885f594f8f9bca0ff9&chksm=871a886cb06d017af9ca42a381abc0fef218233ec6a7f5546061ccfeefa43f37453515a96320&mpshare=1&scene=1&srcid=1216s7HO0KtAYi06epv1ZBdV&sharer_sharetime=1639646339745&sharer_shareid=4f5e972d431ca863bcb02b778677068c#rd">斯坦福统计学习理论笔记：Percy Liang带你搞定「贼难」的理论基础 (qq.com)</a></td>
+</tr>
+<tr>
+<td>15-213</td>
+<td>计算机系统基础</td>
+<td><a href=https://www.cs.cmu.edu/~213/>https://www.cs.cmu.edu/~213/</a></td>
+</tr>
+<tr>
+<td>CS61A</td>
+<td>程序抽象</td>
+<td><a href=https://cs61a.org/>https://cs61a.org/</a></td>
+</tr>
+<tr>
+<td>CS61B</td>
+<td>数据结构与算法</td>
+<td><a href=https://inst.eecs.berkeley.edu/~cs61b/sp22/>https://inst.eecs.berkeley.edu/~cs61b/sp22/</a></td>
+</tr>
+<tr>
+<td>CS61C</td>
+<td>计算机体系结构</td>
+<td><a href=https://cs61c.org/sp22/>https://cs61c.org/sp22/</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id=四大名校的课程推荐>四大名校的课程推荐</h3>
+<ul>
+<li>CMU
+<ul>
+<li>课程介绍：<a href=http://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/undergraduatecomputerscience/#bscurriculumtextcontainer>Computer Science Program &lt; Carnegie Mellon University (cmu.edu)</a></li>
+</ul>
+</li>
+<li>Berkeley
+<ul>
+<li>EECS培养方案地图，并且有前置关系：<a href=https://hkn.eecs.berkeley.edu/courseguides>Eta Kappa Nu (HKN), Mu Chapter (berkeley.edu)</a></li>
+<li>课程介绍：<a href=https://www2.eecs.berkeley.edu/Courses/CS/>CS Courses | EECS at UC Berkeley</a></li>
+</ul>
+</li>
+<li>MIT
+<ul>
+<li>课程介绍：<a href=http://student.mit.edu/catalog/m6a.html>Fall 2022 Course 6: Electrical Engineering and Computer Science (mit.edu)</a></li>
+</ul>
+</li>
+<li>Stanford
+<ul>
+<li>课程介绍：<a href=https://cs.stanford.edu/academicz/courses>Courses | Stanford Computer Science</a></li>
+</ul>
+</li>
+</ul>
+<hr width=100% id=EOF>
+<p style=color:#777>最后修改于 2022-06-26</p>
+</div>
+</div>
+<nav class=post-pagination>
+<a class=newer-posts>
+下回<br>已经到头啦。
+</a>
+<a class=older-posts href=/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/>
+上回<br>单元测试减少心智负担
+</a>
+</nav>
+<div class=post-comment-wrapper>
+<script src=https://utteranc.es/client.js repo=Akelio-zhang/akelio-zhang.github.io issue-term=pathname label=Comment theme=github-light crossorigin=anonymous async></script>
+</div>
+</div>
+</div>
+</div>
+</div><div id=single-column-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div>
+<script src=/js/journal.js></script>
+</body>
+</html>

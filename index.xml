@@ -632,18 +632,19 @@
 &lt;ul>
 &lt;li>Computing
 &lt;ul>
-&lt;li>*PC (i7-8700 + 32G + GTX 1066)&lt;/li>
-&lt;li>*NUC 11 (16G) for ESXi (Homelab: win10 + Manjaro)&lt;/li>
-&lt;li>*QNAP T453D mini with (512G + 256G + 4T)&lt;/li>
-&lt;li>*ThinkPad T460s (i7-6600U + 8G)&lt;/li>
-&lt;li>*RaspBerry 3 (for scheduling)&lt;/li>
+&lt;li>Macbook Pro (M1 Pro + 32G), Year 2022&lt;/li>
+&lt;li>*PC (i7-8700 + 32G + GTX 1066), Year 2020&lt;/li>
+&lt;li>*NUC 11 (16G) for ESXi (Homelab: win10 + Manjaro), Year 2021&lt;/li>
+&lt;li>*QNAP T453D mini with (512G + 256G + 4T), Year 2021&lt;/li>
+&lt;li>*ThinkPad T460s (i7-6600U + 8G), Year 2016&lt;/li>
+&lt;li>*RaspBerry 3 (for scheduling), Year 2015&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Monitor
 &lt;ul>
-&lt;li>*Dell 2720Q&lt;/li>
-&lt;li>*Dell 2414H&lt;/li>
-&lt;li>Dell 2520DR&lt;/li>
+&lt;li>*Dell 2720Q, Year 2020&lt;/li>
+&lt;li>*Dell 2414H, Year 2015&lt;/li>
+&lt;li>Dell 2520DR, Year 2020&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Keyboard
@@ -676,9 +677,10 @@
 &lt;ul>
 &lt;li>Computing
 &lt;ul>
-&lt;li>iPhone 11 Pro Max (256G)&lt;/li>
-&lt;li>iPhone X (64G)&lt;/li>
-&lt;li>iPad Pro 2019 12.9'&lt;/li>
+&lt;li>iPhone 11 Pro Max (256G), Year 2020&lt;/li>
+&lt;li>iPhone X (64G), Year 2018&lt;/li>
+&lt;li>iPad Pro 2019 12.9', Year 2019&lt;/li>
+&lt;li>[[Homelab方案]], Year 2021&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Speaker &amp;amp; Headphone
@@ -739,7 +741,7 @@
 &lt;li>Outlook&lt;/li>
 &lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
 &lt;/ol>
-&lt;p>Last edited on 2022/07/07&lt;/p>
+&lt;p>Last edited on 2022/10/22&lt;/p>
 - https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
 &lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>

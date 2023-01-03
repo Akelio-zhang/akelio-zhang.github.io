@@ -1,5 +1,22 @@
 <?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Fri, 30 Dec 2022 23:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>软件工程师的能力</title><link>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</link><pubDate>Fri, 30 Dec 2022 23:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/ -&lt;p>&lt;em>网上看到的一则关于软件工程师的能力模型图，觉得非常通俗易懂，拿出来分享。若有版权问题，请联系。&lt;/em>&lt;/p>
 &lt;p>&lt;img src="https://akelio-zhang.github.io/images/ability-model.svg" alt="">&lt;/p>
+&lt;ul>
+&lt;li>基础
+&lt;ul>
+&lt;li>计算机知识体系&lt;/li>
+&lt;li>软能力&amp;mdash;-沟通/协调/心理/个人管理&lt;/li>
+&lt;li>业务能力&amp;mdash;-商业、业务降本增效&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>几个搞定
+&lt;ul>
+&lt;li>搞定事情&amp;mdash;-项目管理&lt;/li>
+&lt;li>搞定代码&amp;mdash;-架构设计与自动化&lt;/li>
+&lt;li>搞定机器&amp;mdash;-运维与监控（devops）&lt;/li>
+&lt;li>搞定人员&amp;mdash;-团队建设&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
 - https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>CS自学 Roadmap</title><link>https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/</link><pubDate>Sun, 26 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/ -&lt;h1 id="cs自学-roadmap">CS自学 Roadmap&lt;/h1>
 &lt;blockquote>
 &lt;p>这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。&lt;/p>

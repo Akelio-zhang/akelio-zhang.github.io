@@ -59,111 +59,15 @@
 0x4 重构 重构与重写都是试图优化系统复杂度的方式，在不同的场景（代码状况、工期等）会选择不同的方式，但是大多时候会采用重构的方式来实现。
 先来看一下wikipedia对重构的定义：
  In computer programming and software design, code refactoring is the process of restructuring existing computer code—changing the factoring*—without changing its external behavior.">
-<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen>
-<script src=/vendor/js/loadCSS.js></script>
-<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
 <script src=/js/toc.js></script>
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
+<link rel=stylesheet href=/scss/journal.min.7c01e9f6fb2f6083d79d2f3a32ec6b7901e262e94a52a64a542aef98bc5bda64.css integrity="sha256-fAHp9vsvYIPXnS86MuxreQHiYulKUqZKVCrvmLxb2mQ=" media=screen>
+<link rel=stylesheet href=/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen>
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons">
+<script>function _howxm(){_howxmQueue.push(arguments)}window._howxmQueue=window._howxmQueue||[],_howxm('setAppID','1505365a-b8ae-4806-9cd6-38502af8cefc'),function(){var b='howxm_script',a,c;document.getElementById(b)||(a=document.createElement('script'),c=document.getElementsByTagName('script')[0],a.setAttribute('id',b),a.type='text/javascript',a.async=!0,a.src='https://static.howxm.com/sdk.js',c.parentNode.insertBefore(a,c))}()</script>
 </head>
 <body>
-<div id=app><div id=sideContainer class=side-container>
-<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
-<div class=nav-title>
-LIFE CODER
-</div>
-<div class=nav-subtitle>
-Akelio's Blog
-</div>
-</a>
-<div class=nav-link-list>
-<a class="a-block nav-link-item active" href=/posts>
-Archive
-</a>
-<a class="a-block nav-link-item false" href=/categories>
-Categories
-</a>
-<a class="a-block nav-link-item false" href=/tags>
-Tags
-</a>
-<a class="a-block nav-link-item false" href=/index.xml>
-RSS Feed
-</a>
-<a class="a-block nav-link-item false" href=/posts/about-me/>
-About
-</a>
-</div>
-<div class=nav-footer>
-Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
-<br>
-移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
-<br>
-&copy;
-2019-2022 Akelio All rights reserved.
-</div>
-</div><div id=extraContainer class=extra-container>
-<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
-<div class=toc-content>
-<center>- 目录 -</center>
-<ul>
-<li>
-<a href=#%e7%b3%bb%e7%bb%9f%e5%a4%8d%e6%9d%82%e5%ba%a6-part-i onclick="onNavClick(`#系统复杂度-part-i-nav`)" id=系统复杂度-part-i-nav>
-系统复杂度 Part I
-</a>
-</li>
-<ul>
-<li>
-<a href=#%e5%85%b3%e9%94%ae%e8%af%8d onclick="onNavClick(`#关键词-nav`)" id=关键词-nav>
-关键词
-</a>
-</li>
-<li>
-<a href=#0x1-introduction onclick="onNavClick(`#0x1-introduction-nav`)" id=0x1-introduction-nav>
-0x1 Introduction
-</a>
-</li>
-<li>
-<a href=#0x2-%e7%b3%bb%e7%bb%9f%e5%a4%8d%e6%9d%82%e5%ba%a6 onclick="onNavClick(`#0x2-系统复杂度-nav`)" id=0x2-系统复杂度-nav>
-0x2 系统复杂度
-</a>
-</li>
-<li>
-<a href=#0x3-%e6%b5%8b%e8%af%95 onclick="onNavClick(`#0x3-测试-nav`)" id=0x3-测试-nav>
-0x3 测试
-</a>
-</li>
-<li>
-<a href=#0x4-%e9%87%8d%e6%9e%84 onclick="onNavClick(`#0x4-重构-nav`)" id=0x4-重构-nav>
-0x4 重构
-</a>
-</li>
-<li>
-<a href=#0x5-%e7%bb%93%e8%ae%ba onclick="onNavClick(`#0x5-结论-nav`)" id=0x5-结论-nav>
-0x5 结论
-</a>
-</li>
-<li>
-<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a onclick="onNavClick(`#站在巨人的肩膀上-nav`)" id=站在巨人的肩膀上-nav>
-站在巨人的肩膀上
-</a>
-</li>
-</ul>
-</div>
-</div>
-<div class=pagination>
-<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
-<i class="material-icons pagination-action-icon">
-keyboard_arrow_up
-</i>
-</a>
-<a type=button class=pagination-action id=darkModeToggleButton>
-<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
-dark_mode
-</span>
-</a>
-</div>
-</div>
-<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
 <div class=drawer-content>
 <div class=drawer-menu>
 <a class="a-block drawer-menu-item active" href=/posts>
@@ -186,43 +90,43 @@ About
 <center>- 目录 -</center>
 <ul>
 <li>
-<a href=#%e7%b3%bb%e7%bb%9f%e5%a4%8d%e6%9d%82%e5%ba%a6-part-i onclick="onNavClick(`#系统复杂度-part-i-nav`)" id=系统复杂度-part-i-nav>
+<a href=#%e7%b3%bb%e7%bb%9f%e5%a4%8d%e6%9d%82%e5%ba%a6-part-i class=nav-系统复杂度-part-i>
 系统复杂度 Part I
 </a>
 </li>
 <ul>
 <li>
-<a href=#%e5%85%b3%e9%94%ae%e8%af%8d onclick="onNavClick(`#关键词-nav`)" id=关键词-nav>
+<a href=#%e5%85%b3%e9%94%ae%e8%af%8d class=nav-关键词>
 关键词
 </a>
 </li>
 <li>
-<a href=#0x1-introduction onclick="onNavClick(`#0x1-introduction-nav`)" id=0x1-introduction-nav>
+<a href=#0x1-introduction class=nav-0x1-introduction>
 0x1 Introduction
 </a>
 </li>
 <li>
-<a href=#0x2-%e7%b3%bb%e7%bb%9f%e5%a4%8d%e6%9d%82%e5%ba%a6 onclick="onNavClick(`#0x2-系统复杂度-nav`)" id=0x2-系统复杂度-nav>
+<a href=#0x2-%e7%b3%bb%e7%bb%9f%e5%a4%8d%e6%9d%82%e5%ba%a6 class=nav-0x2-系统复杂度>
 0x2 系统复杂度
 </a>
 </li>
 <li>
-<a href=#0x3-%e6%b5%8b%e8%af%95 onclick="onNavClick(`#0x3-测试-nav`)" id=0x3-测试-nav>
+<a href=#0x3-%e6%b5%8b%e8%af%95 class=nav-0x3-测试>
 0x3 测试
 </a>
 </li>
 <li>
-<a href=#0x4-%e9%87%8d%e6%9e%84 onclick="onNavClick(`#0x4-重构-nav`)" id=0x4-重构-nav>
+<a href=#0x4-%e9%87%8d%e6%9e%84 class=nav-0x4-重构>
 0x4 重构
 </a>
 </li>
 <li>
-<a href=#0x5-%e7%bb%93%e8%ae%ba onclick="onNavClick(`#0x5-结论-nav`)" id=0x5-结论-nav>
+<a href=#0x5-%e7%bb%93%e8%ae%ba class=nav-0x5-结论>
 0x5 结论
 </a>
 </li>
 <li>
-<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a onclick="onNavClick(`#站在巨人的肩膀上-nav`)" id=站在巨人的肩膀上-nav>
+<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a class=nav-站在巨人的肩膀上>
 站在巨人的肩膀上
 </a>
 </li>
@@ -355,10 +259,10 @@ dark_mode
 </div>
 </div>
 <nav class=post-pagination>
-<a class=newer-posts href=https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/>
+<a class=newer-posts href=/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/>
 下回<br>2020社招互联网技术面试总结
 </a>
-<a class=older-posts href=https://akelio-zhang.github.io/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/>
+<a class=older-posts href=/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/>
 上回<br>Clean系统读书笔记——两年项目回顾
 </a>
 </nav>
@@ -367,6 +271,103 @@ dark_mode
 </div>
 </div>
 </div>
+</div>
+</div><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/posts/about-me/>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class=toc-wrapper>
+<div class=toc>
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#%e7%b3%bb%e7%bb%9f%e5%a4%8d%e6%9d%82%e5%ba%a6-part-i class=nav-系统复杂度-part-i>
+系统复杂度 Part I
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e5%85%b3%e9%94%ae%e8%af%8d class=nav-关键词>
+关键词
+</a>
+</li>
+<li>
+<a href=#0x1-introduction class=nav-0x1-introduction>
+0x1 Introduction
+</a>
+</li>
+<li>
+<a href=#0x2-%e7%b3%bb%e7%bb%9f%e5%a4%8d%e6%9d%82%e5%ba%a6 class=nav-0x2-系统复杂度>
+0x2 系统复杂度
+</a>
+</li>
+<li>
+<a href=#0x3-%e6%b5%8b%e8%af%95 class=nav-0x3-测试>
+0x3 测试
+</a>
+</li>
+<li>
+<a href=#0x4-%e9%87%8d%e6%9e%84 class=nav-0x4-重构>
+0x4 重构
+</a>
+</li>
+<li>
+<a href=#0x5-%e7%bb%93%e8%ae%ba class=nav-0x5-结论>
+0x5 结论
+</a>
+</li>
+<li>
+<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a class=nav-站在巨人的肩膀上>
+站在巨人的肩膀上
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
 </div>
 </div><div id=single-column-footer>
 Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
@@ -377,6 +378,5 @@ Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by 
 2019-2022 Akelio All rights reserved.
 </div>
 </div>
-<script src=/js/journal.js></script>
-</body>
+<script src=/js/journal.js></script></body>
 </html>

@@ -19,97 +19,15 @@
 <meta name=twitter:title content="CS自学 Roadmap">
 <meta name=twitter:description content="CS自学 Roadmap  这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。
  Roadmap  快速版  CS61A + CS61B + CS61C 这三个课程都来自于UCB，能让你最快判断自己是否适应CS的内容，并帮助你找到还不错的工作(maybe)。   循序渐进版  入门  （Crash Course Computer Science）   数据基础  微积分/线性代数/信息理论/概率统计/离散数学   基本原理  程序抽象  CS61A   计算机架构入门  （Build a Modern Computer from First Principles: From Nand to Tetris (Project-Centered Course) | Coursera） 15-213/CS61C   数据结构与算法  CS61B/6.006/普林斯顿红宝书     领域基础  通览  6.">
-<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen>
-<script src=/vendor/js/loadCSS.js></script>
-<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
 <script src=/js/toc.js></script>
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
+<link rel=stylesheet href=/scss/journal.min.7c01e9f6fb2f6083d79d2f3a32ec6b7901e262e94a52a64a542aef98bc5bda64.css integrity="sha256-fAHp9vsvYIPXnS86MuxreQHiYulKUqZKVCrvmLxb2mQ=" media=screen>
+<link rel=stylesheet href=/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen>
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons">
+<script>function _howxm(){_howxmQueue.push(arguments)}window._howxmQueue=window._howxmQueue||[],_howxm('setAppID','1505365a-b8ae-4806-9cd6-38502af8cefc'),function(){var b='howxm_script',a,c;document.getElementById(b)||(a=document.createElement('script'),c=document.getElementsByTagName('script')[0],a.setAttribute('id',b),a.type='text/javascript',a.async=!0,a.src='https://static.howxm.com/sdk.js',c.parentNode.insertBefore(a,c))}()</script>
 </head>
 <body>
-<div id=app><div id=sideContainer class=side-container>
-<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
-<div class=nav-title>
-LIFE CODER
-</div>
-<div class=nav-subtitle>
-Akelio's Blog
-</div>
-</a>
-<div class=nav-link-list>
-<a class="a-block nav-link-item active" href=/posts>
-Archive
-</a>
-<a class="a-block nav-link-item false" href=/categories>
-Categories
-</a>
-<a class="a-block nav-link-item false" href=/tags>
-Tags
-</a>
-<a class="a-block nav-link-item false" href=/index.xml>
-RSS Feed
-</a>
-<a class="a-block nav-link-item false" href=/posts/about-me/>
-About
-</a>
-</div>
-<div class=nav-footer>
-Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
-<br>
-移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
-<br>
-&copy;
-2019-2022 Akelio All rights reserved.
-</div>
-</div><div id=extraContainer class=extra-container>
-<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
-<div class=toc-content>
-<center>- 目录 -</center>
-<ul>
-<li>
-<a href=#cs%e8%87%aa%e5%ad%a6-roadmap onclick="onNavClick(`#cs自学-roadmap-nav`)" id=cs自学-roadmap-nav>
-CS自学 Roadmap
-</a>
-</li>
-<ul>
-<li>
-<a href=#roadmap onclick="onNavClick(`#roadmap-nav`)" id=roadmap-nav>
-Roadmap
-</a>
-</li>
-<li>
-<a href=#%e5%8f%82%e8%80%83 onclick="onNavClick(`#参考-nav`)" id=参考-nav>
-参考
-</a>
-</li>
-<ul>
-<li>
-<a href=#course-table onclick="onNavClick(`#course-table-nav`)" id=course-table-nav>
-Course Table
-</a>
-</li>
-<li>
-<a href=#%e5%9b%9b%e5%a4%a7%e5%90%8d%e6%a0%a1%e7%9a%84%e8%af%be%e7%a8%8b%e6%8e%a8%e8%8d%90 onclick="onNavClick(`#四大名校的课程推荐-nav`)" id=四大名校的课程推荐-nav>
-四大名校的课程推荐
-</a>
-</li>
-</ul>
-</div>
-</div>
-<div class=pagination>
-<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
-<i class="material-icons pagination-action-icon">
-keyboard_arrow_up
-</i>
-</a>
-<a type=button class=pagination-action id=darkModeToggleButton>
-<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
-dark_mode
-</span>
-</a>
-</div>
-</div>
-<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
 <div class=drawer-content>
 <div class=drawer-menu>
 <a class="a-block drawer-menu-item active" href=/posts>
@@ -132,29 +50,29 @@ About
 <center>- 目录 -</center>
 <ul>
 <li>
-<a href=#cs%e8%87%aa%e5%ad%a6-roadmap onclick="onNavClick(`#cs自学-roadmap-nav`)" id=cs自学-roadmap-nav>
+<a href=#cs%e8%87%aa%e5%ad%a6-roadmap class=nav-cs自学-roadmap>
 CS自学 Roadmap
 </a>
 </li>
 <ul>
 <li>
-<a href=#roadmap onclick="onNavClick(`#roadmap-nav`)" id=roadmap-nav>
+<a href=#roadmap class=nav-roadmap>
 Roadmap
 </a>
 </li>
 <li>
-<a href=#%e5%8f%82%e8%80%83 onclick="onNavClick(`#参考-nav`)" id=参考-nav>
+<a href=#%e5%8f%82%e8%80%83 class=nav-参考>
 参考
 </a>
 </li>
 <ul>
 <li>
-<a href=#course-table onclick="onNavClick(`#course-table-nav`)" id=course-table-nav>
+<a href=#course-table class=nav-course-table>
 Course Table
 </a>
 </li>
 <li>
-<a href=#%e5%9b%9b%e5%a4%a7%e5%90%8d%e6%a0%a1%e7%9a%84%e8%af%be%e7%a8%8b%e6%8e%a8%e8%8d%90 onclick="onNavClick(`#四大名校的课程推荐-nav`)" id=四大名校的课程推荐-nav>
+<a href=#%e5%9b%9b%e5%a4%a7%e5%90%8d%e6%a0%a1%e7%9a%84%e8%af%be%e7%a8%8b%e6%8e%a8%e8%8d%90 class=nav-四大名校的课程推荐>
 四大名校的课程推荐
 </a>
 </li>
@@ -449,10 +367,10 @@ CS自学 Roadmap
 </div>
 </div>
 <nav class=post-pagination>
-<a class=newer-posts href=https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/>
+<a class=newer-posts href=/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/>
 下回<br>软件工程师的能力
 </a>
-<a class=older-posts href=https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/>
+<a class=older-posts href=/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/>
 上回<br>单元测试减少心智负担
 </a>
 </nav>
@@ -461,6 +379,89 @@ CS自学 Roadmap
 </div>
 </div>
 </div>
+</div>
+</div><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/posts/about-me/>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class=toc-wrapper>
+<div class=toc>
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#cs%e8%87%aa%e5%ad%a6-roadmap class=nav-cs自学-roadmap>
+CS自学 Roadmap
+</a>
+</li>
+<ul>
+<li>
+<a href=#roadmap class=nav-roadmap>
+Roadmap
+</a>
+</li>
+<li>
+<a href=#%e5%8f%82%e8%80%83 class=nav-参考>
+参考
+</a>
+</li>
+<ul>
+<li>
+<a href=#course-table class=nav-course-table>
+Course Table
+</a>
+</li>
+<li>
+<a href=#%e5%9b%9b%e5%a4%a7%e5%90%8d%e6%a0%a1%e7%9a%84%e8%af%be%e7%a8%8b%e6%8e%a8%e8%8d%90 class=nav-四大名校的课程推荐>
+四大名校的课程推荐
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
 </div>
 </div><div id=single-column-footer>
 Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
@@ -471,6 +472,5 @@ Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by 
 2019-2022 Akelio All rights reserved.
 </div>
 </div>
-<script src=/js/journal.js></script>
-</body>
+<script src=/js/journal.js></script></body>
 </html>

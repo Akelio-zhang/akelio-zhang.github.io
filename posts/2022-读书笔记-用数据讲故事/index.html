@@ -17,75 +17,15 @@
 <meta name=twitter:card content="summary">
 <meta name=twitter:title content="读书笔记--用数据讲故事">
 <meta name=twitter:description content="读书笔记&ndash;用数据讲故事  第二章 选择有效的图表  图表类型  简单文本 表格（不利于展示你的观点）  热力图   点图  散点图（往往需要配合辅助线、辅助文本）   线图  折线图（可以增加最大值、最小值的同图展示） 斜率图   条形图  直方图（竖直条形图） 堆叠竖直条形图（一般是最下一层能够比较有效对比） 瀑布图 水平条形图（适合阅读，分类标签可以很长）   面积图   图表使用建议  不要使用饼图 不要使用3D图 尽量不要使用双Y轴     第三章 杂乱是你的敌人 第四章 聚焦受众的视线（引导到核心的数据）  前属性 颜色 大小   第五章 像设计师一样思考（通过可视化，让读者观众明白你的结论，第四章的升级版）  可供性  突出重要内容 消除干扰   无障碍  不要过于复杂 擅长使用文字突出结论   美观 接受度    ">
-<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen>
-<script src=/vendor/js/loadCSS.js></script>
-<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
 <script src=/js/toc.js></script>
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
+<link rel=stylesheet href=/scss/journal.min.7c01e9f6fb2f6083d79d2f3a32ec6b7901e262e94a52a64a542aef98bc5bda64.css integrity="sha256-fAHp9vsvYIPXnS86MuxreQHiYulKUqZKVCrvmLxb2mQ=" media=screen>
+<link rel=stylesheet href=/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen>
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons">
+<script>function _howxm(){_howxmQueue.push(arguments)}window._howxmQueue=window._howxmQueue||[],_howxm('setAppID','1505365a-b8ae-4806-9cd6-38502af8cefc'),function(){var b='howxm_script',a,c;document.getElementById(b)||(a=document.createElement('script'),c=document.getElementsByTagName('script')[0],a.setAttribute('id',b),a.type='text/javascript',a.async=!0,a.src='https://static.howxm.com/sdk.js',c.parentNode.insertBefore(a,c))}()</script>
 </head>
 <body>
-<div id=app><div id=sideContainer class=side-container>
-<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
-<div class=nav-title>
-LIFE CODER
-</div>
-<div class=nav-subtitle>
-Akelio's Blog
-</div>
-</a>
-<div class=nav-link-list>
-<a class="a-block nav-link-item active" href=/posts>
-Archive
-</a>
-<a class="a-block nav-link-item false" href=/categories>
-Categories
-</a>
-<a class="a-block nav-link-item false" href=/tags>
-Tags
-</a>
-<a class="a-block nav-link-item false" href=/index.xml>
-RSS Feed
-</a>
-<a class="a-block nav-link-item false" href=/posts/about-me/>
-About
-</a>
-</div>
-<div class=nav-footer>
-Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
-<br>
-移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
-<br>
-&copy;
-2019-2022 Akelio All rights reserved.
-</div>
-</div><div id=extraContainer class=extra-container>
-<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
-<div class=toc-content>
-<center>- 目录 -</center>
-<ul>
-<li>
-<a href=#%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0--%e7%94%a8%e6%95%b0%e6%8d%ae%e8%ae%b2%e6%95%85%e4%ba%8b onclick="onNavClick(`#读书笔记--用数据讲故事-nav`)" id=读书笔记--用数据讲故事-nav>
-读书笔记–用数据讲故事
-</a>
-</li>
-</ul>
-</div>
-</div>
-<div class=pagination>
-<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
-<i class="material-icons pagination-action-icon">
-keyboard_arrow_up
-</i>
-</a>
-<a type=button class=pagination-action id=darkModeToggleButton>
-<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
-dark_mode
-</span>
-</a>
-</div>
-</div>
-<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
 <div class=drawer-content>
 <div class=drawer-menu>
 <a class="a-block drawer-menu-item active" href=/posts>
@@ -108,7 +48,7 @@ About
 <center>- 目录 -</center>
 <ul>
 <li>
-<a href=#%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0--%e7%94%a8%e6%95%b0%e6%8d%ae%e8%ae%b2%e6%95%85%e4%ba%8b onclick="onNavClick(`#读书笔记--用数据讲故事-nav`)" id=读书笔记--用数据讲故事-nav>
+<a href=#%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0--%e7%94%a8%e6%95%b0%e6%8d%ae%e8%ae%b2%e6%95%85%e4%ba%8b class=nav-读书笔记--用数据讲故事>
 读书笔记–用数据讲故事
 </a>
 </li>
@@ -244,10 +184,10 @@ dark_mode
 </div>
 </div>
 <nav class=post-pagination>
-<a class=newer-posts href=https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/>
+<a class=newer-posts href=/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/>
 下回<br>单元测试减少心智负担
 </a>
-<a class=older-posts href=https://akelio-zhang.github.io/posts/2022-%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/>
+<a class=older-posts href=/posts/2022-%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/>
 上回<br>决策引擎 Note
 </a>
 </nav>
@@ -256,6 +196,67 @@ dark_mode
 </div>
 </div>
 </div>
+</div>
+</div><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/posts/about-me/>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class=toc-wrapper>
+<div class=toc>
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0--%e7%94%a8%e6%95%b0%e6%8d%ae%e8%ae%b2%e6%95%85%e4%ba%8b class=nav-读书笔记--用数据讲故事>
+读书笔记–用数据讲故事
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
 </div>
 </div><div id=single-column-footer>
 Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
@@ -266,6 +267,5 @@ Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by 
 2019-2022 Akelio All rights reserved.
 </div>
 </div>
-<script src=/js/journal.js></script>
-</body>
+<script src=/js/journal.js></script></body>
 </html>

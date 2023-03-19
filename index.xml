@@ -1,4 +1,32 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Fri, 30 Dec 2022 23:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>软件工程师的能力</title><link>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</link><pubDate>Fri, 30 Dec 2022 23:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/ -&lt;p>&lt;em>网上看到的一则关于软件工程师的能力模型图，觉得非常通俗易懂，拿出来分享。若有版权问题，请联系。&lt;/em>&lt;/p>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2022 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 19 Mar 2023 18:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>我的P.A.R.A实践记录</title><link>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</link><pubDate>Sun, 19 Mar 2023 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/ -&lt;h1 id="我的para实践记录">我的P.A.R.A实践记录&lt;/h1>
+&lt;h2 id="什么是para">什么是P.A.R.A&lt;/h2>
+&lt;blockquote>
+&lt;p>&lt;strong>The P.A.R.A. (Projects, Areas, Resources, Archives) method is a method for organizing digital information.&lt;/strong>&lt;/p>
+&lt;p>It was developed by &lt;a href="https://fortelabs.co/about-forte-labs">Forte Labs&lt;/a>, a company that creates content to help increase productivity through technology.&lt;/p>
+&lt;p>&lt;img src="https://s2.loli.net/2023/03/19/8QDcPAhmZYqRLw6.png" alt="image.png|600">&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>Project: 短期、长期项目，用于Area的&lt;strong>实践落地&lt;/strong>。&lt;/li>
+&lt;li>Area: 关注的&lt;strong>核心领域与能力提升&lt;/strong>。&lt;/li>
+&lt;li>Resource: 用于Area相关联的信息整理以及其他可能感兴趣的内容。&lt;/li>
+&lt;li>Archive: 另外三项不活跃的内容移入这个地方，减少对活跃项目的干扰。&lt;/li>
+&lt;/ul>
+&lt;h2 id="practice">Practice&lt;/h2>
+&lt;ul>
+&lt;li>Data Collection: &lt;strong>Cubox&lt;/strong>
+&lt;ul>
+&lt;li>Send to Obsidian through &amp;ldquo;自定义动作&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Information Station and Writing: &lt;strong>Obsidian&lt;/strong>
+&lt;ul>
+&lt;li>Publish to github.io: A Python script to copy blog files to &lt;code>blog_source&lt;/code>&lt;/li>
+&lt;li>Publish to Wechat Official Account: A web converter to make blog files suitable to wechat&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Knowledge Output: &lt;strong>github.io; Wechat Official Account&lt;/strong>.&lt;/li>
+&lt;/ul>
+- https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>软件工程师的能力</title><link>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</link><pubDate>Fri, 30 Dec 2022 23:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/ -&lt;p>&lt;em>网上看到的一则关于软件工程师的能力模型图，觉得非常通俗易懂，拿出来分享。若有版权问题，请联系。&lt;/em>&lt;/p>
 &lt;p>&lt;img src="https://akelio-zhang.github.io/images/ability-model.svg" alt="">&lt;/p>
 &lt;ul>
 &lt;li>基础
@@ -761,149 +789,4 @@
 &lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
 &lt;/ol>
 &lt;p>Last edited on 2022/10/22&lt;/p>
-- https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
-&lt;h2 id="零目的">零、目的&lt;/h2>
-&lt;ol>
-&lt;li>掌握各类场景下如何更好使用Git。&lt;/li>
-&lt;li>减少因为代码提交问题带来的生产环境问题。
-&lt;img src="https://s2.loli.net/2022/08/20/OfV5qM2WQ4BrGwI.png" alt="/images/git-zoo.jpg">&lt;/li>
-&lt;/ol>
-&lt;h2 id="一了解git">一、了解[[Git]]&lt;/h2>
-&lt;ol>
-&lt;li>什么是Git？
-    1. 一款分布式版本管理系统
-    2. 优点：分布式、性能、版本的文件完整性
-        1. 分布式，可以让你在本地提交代码（对于SVN而言没有网络就无法提交代码，在家也能愉快地写代码）；
-        2. 性能，对于我们的一般项目而言，你感受不到合并时性能的差别（与SVN比较）；
-        3. 版本的文件完整性：git背后设计理念是快照思想。&lt;/li>
-&lt;li>Git概念
-    1. 仓库(repository)
-        1. 用于代码版本管理
-        2. 一个git仓库管理了三棵“树”，分别是
-            1. Working Directory（工作目录）
-            2. Index（暂存区）
-            3. HEAD（本地仓库）
-        3. 大多数时候你通过编辑器只能对工作目录操作，操作其他两个“树”（区域）必须使用git命令才可以。
-    2. 分支(branch)
-        1. 用于并行独立开发，更方便管理不同开发任务的进度&lt;/li>
-&lt;li>Git常用命令
-    1. git add
-    2. git commit
-    3. git push
-    4. git pull
-    5. git branch
-    6. git switch
-    7. git restore&lt;/li>
-&lt;/ol>
-&lt;h2 id="二最常见的一种使用场景">二、最常见的一种使用场景&lt;/h2>
-&lt;blockquote>
-&lt;p>陈主管说他已经开发好了整个架构，需要我去把几个功能实现一下，并提交到dev分支让他方便Review。&lt;/p>
-&lt;/blockquote>
-&lt;ul>
-&lt;li>基本流程
-    1. 先从远程服务器把代码拉到本地：&lt;code>git clone http://197.68.6.70/demo-project&lt;/code>
-    2. 此时你拥有的是主干master分支的代码，我们需要切换到dev分支进行开发：
-        1. &lt;code>git fetch --all&lt;/code>
-        2. &lt;code>git switch --track origin/dev&lt;/code>
-    3. 在&lt;strong>工作目录&lt;/strong>写代码
-    4. 提交变更的文件到&lt;strong>暂存区&lt;/strong>：&lt;code>git add &amp;lt;somefile&amp;gt;&lt;/code>
-    5. 提交文件到&lt;strong>本地仓库&lt;/strong>：&lt;code>git commit -m &amp;quot;xxx&amp;quot;&lt;/code>
-    6. 把我的代码推送到远程仓库（同步）：&lt;code>git push&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;h2 id="三最佳实践git里的后悔药">三、最佳实践——Git里的后悔药&lt;/h2>
-&lt;ol>
-&lt;li>我提交到暂存区的代码搞错了：&lt;code>git restore -S &amp;lt;files or dir&amp;gt;&lt;/code> （在使用IDEA时，这个场景不太会出现，因为IDEA往往是把add 和 commit的操作会合并成一个处理）&lt;/li>
-&lt;li>我提交到本地仓库的代码搞错了：
-    1. 最近的一个commit：&lt;code>git reset -mixed HEAD~1&lt;/code>
-    2. 历史中的一个commit：
-        1. 使用 &lt;code>git reset --mixed &amp;lt;commit_id&amp;gt;&lt;/code>，然后重新提交正确的代码（ ❗从最新commit到指定commit的代码都需要重新提交）
-        2. 使用 &lt;code>git revert &amp;lt;commit_id&amp;gt;&lt;/code> ，这个操作近似于自己重新提交代码&lt;/li>
-&lt;li>我提交到远程仓库的代码搞错了：
-    1. 只有一个建议：&lt;strong>请写出正确的代码，重新提交！所以，请在每次push之前谨慎！&lt;/strong>&lt;/li>
-&lt;/ol>
-&lt;h2 id="四最佳实践与他人同步">四、最佳实践——与他人同步&lt;/h2>
-&lt;ol>
-&lt;li>我想把别人在dev分支上开发的代码同步下来看看：&lt;code>git pull --rebase&lt;/code> 或者 &lt;code>git pull&lt;/code> （前者会让你的commit log更加清爽一些，没有一些额外的merge commit log）&lt;/li>
-&lt;li>如果你开发的分支和多人一同开发，建议每天进行一次 &lt;code>git pull --rebase&lt;/code> 与 &lt;code>git push&lt;/code>&lt;/li>
-&lt;/ol>
-&lt;h2 id="五最佳实践我的改动比较大">五、最佳实践——我的改动比较大&lt;/h2>
-&lt;ol>
-&lt;li>建议自己拉一个分支进行开发 &lt;code>git switch -c &amp;lt;new_branch_name&amp;gt;&lt;/code> 。&lt;/li>
-&lt;li>开发结束后，先把&lt;strong>主开发分支&lt;/strong>合并到你的分支：&lt;code>git merge dev&lt;/code>&lt;/li>
-&lt;li>没问题后再把你的分支合并到主开发分支：&lt;code>git switch dev&lt;/code> ，&lt;code>git merge &amp;lt;new_branch_name&amp;gt;&lt;/code>&lt;/li>
-&lt;/ol>
-&lt;h2 id="六其他">六、其他&lt;/h2>
-&lt;ol>
-&lt;li>⭐准备上线前
-    1. 和上一个版本代码对比(&lt;code>git diff release master&lt;/code>)，确认release分支是&lt;strong>正确的需要上线的代码&lt;/strong>
-    2. 使用Jenkins对release分支进行自动打包与部署，在工作空间获取上线代码包（禁止本地打包）&lt;/li>
-&lt;li>上线完成后
-    1. 在gitlab上提交release合并至master分支的merge request，由技术经理确认合并；
-    2. 对最新的master分支进行tag，方便反查源码；&lt;/li>
-&lt;/ol>
-&lt;h2 id="七几个原则">七、几个原则&lt;/h2>
-&lt;h3 id="强制">强制&lt;/h3>
-&lt;ol>
-&lt;li>禁止&lt;code>git push -f&lt;/code>&lt;/li>
-&lt;li>禁止&lt;code>git push master&lt;/code>&lt;/li>
-&lt;/ol>
-&lt;h3 id="建议">建议&lt;/h3>
-&lt;ol>
-&lt;li>建议分支命名：master、release、dev、dev_xx
-    1. master分支为线上正在运行的代码；不允许手动提交；只能通过页面的merge request进行代码合并；每次上完线后把分支(release)代码合并到master
-    2. release为测试环境对应的代码，jenkins均从该分支进行自动构建与部署
-    3. dev，以及其他分支为开发分支，较为自由。&lt;/li>
-&lt;li>减少对&lt;code>git checkout&lt;/code>的使用，已经拆分为 &lt;code>git switch&lt;/code> 和 &lt;code>git restore&lt;/code>&lt;/li>
-&lt;li>不要把二进制文件放到git仓库中进行版本管理&lt;/li>
-&lt;/ol>
-&lt;h2 id="八实现方式之数据结构">八、实现方式之数据结构&lt;/h2>
-&lt;p>在Git当中，&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-markdown" data-lang="markdown">
-// 一个文件就是字节数组
-type blob = array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">byte&lt;/span>&amp;gt;
-// 一个目录包含文件或者其他目录
-type tree = map&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">string&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">,&lt;/span> &lt;span style="color:#658b00">tree&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">|&lt;/span> &lt;span style="color:#658b00">blob&lt;/span>&amp;gt;
-// 一个commit包含它的父节点，原始信息，顶级目录（快）
-type commit = struct {
-    parents: array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">commit&lt;/span>&amp;gt;
-    author: string
-    message: string
-    snapshot: tree
-}
-// 文件、目录、commit最终都以object类型进行存储
-type object = blob | tree | commit
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样看起来，每一次修改文件并提交git仓库后，都会新建一个blob对象，并作为新的快照内部的文件使用，因此，git仓库存储空间可能会越来越大，特别是对于那些二进制文件（非文本文件，难以压缩）。这时候可以通过&lt;code>git gc&lt;/code>进行git仓库压缩，这里面的算法大家可以自己去探索一下。根据我的经验，能大概缩小到原本的1/3~1/2。&lt;/p>
-&lt;h2 id="九参考">九、参考&lt;/h2>
-&lt;h3 id="cheatsheet">Cheatsheet&lt;/h3>
-&lt;ol>
-&lt;li>&lt;a href="https://ndpsoftware.com/git-cheatsheet.html#loc=index;">一个可视化的Git Cheatsheet&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://about.gitlab.com/images/press/git-cheat-sheet.pdf">Gitlab官方Cheatsheet&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/k88hudson/git-flight-rules">https://github.com/k88hudson/git-flight-rules&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E9%AB%98%E7%BA%A7%E5%90%88%E5%B9%B6">Git - 高级合并 (git-scm.com)&lt;/a>&lt;/li>
-&lt;/ol>
-&lt;h3 id="原理学习">原理学习&lt;/h3>
-&lt;ol>
-&lt;li>&lt;a href="https://draveness.me/whys-the-design-git-the-best/">为什么你应该使用 Git 进行版本控制 - 面向信仰编程 (draveness.me)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.progit.cn/">Pro Git 中文版（第二版）&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://missing.csail.mit.edu/2020/version-control/">Version Control (Git) · the missing semester of your cs education (mit.edu)&lt;/a>&lt;/li>
-&lt;/ol>
-&lt;h2 id="some-code">Some code&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">
-git clone
-git branch --track dev origin/dev
-git checkout dev
-git add &amp;amp; git commit
-git push
-Merge Request (MR)
-git restore -S &amp;lt;files or dir&amp;gt;
-git reset -mixed HEAD~1
-git reset --mixed &amp;lt;commit_id&amp;gt;
-git revert &amp;lt;commit_id&amp;gt;
-git pull --rebase
-git pull
-git checkout -b &amp;lt;branch_name&amp;gt;
-...
-git merge dev
-git stash
-git stash pop
-&lt;/code>&lt;/pre>&lt;/div>- https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ - 2019-2022 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/about-me/ - 2019-2022 Akelio All rights reserved.</description></item></channel></rss>

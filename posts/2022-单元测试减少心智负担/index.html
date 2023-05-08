@@ -17,15 +17,112 @@
 <meta name=twitter:card content="summary">
 <meta name=twitter:title content="单元测试减少心智负担">
 <meta name=twitter:description content="单元测试减少心智负担  责任意识  案例1: 错误的空判断，导致错误放款上百万； 案例2: 使用本地环境打包，部署到线上环境后异常，官网无法访问； 线上问题，第一责任人基本都是软件开发人员，不是测试、也不是运维人员；   什么是单元测试  在计算机编程中，单元测试（英语：Unit Testing）又称为模块测试 ，是针对程序模块（软件设计的最小单位）来进行正确性检验的测试工作。程序单元是应用的最小可测试部件。在过程化编程中，一个单元就是单个程序、函数、过程等；对于面向对象编程，最小单元就是方法，包括基类（超类）、抽象类、或者派生类（子类）中的方法。 通常来说，程序员每修改一次程序就会进行最少一次单元测试，在编写程序的过程中前后很可能要进行多次单元测试，以证实程序达到软件规格书要求的工作目标，没有程序错误；虽然单元测试不是必须的，但也不坏，这牵涉到项目管理的政策决定。 每个理想的测试案例独立于其它案例；为测试时隔离模块，经常使用stubs、mock或fake等测试马甲程序。单元测试通常由软件开发人员编写，用于确保他们所写的代码符合软件需求和遵循开发目标。它的实施方式可以是非常手动的（透过纸笔），或者是做成构建自动化的一部分。   为什么要做单元测试  保证功能的正确性； 适应于代码改造、重构； 对功能的一种文档记录（包括一次BUG，对应一个单元测试） 从使用者的角度先行设计（参考——测试驱动开发TDD） 收益  更短的修复时间 更少的开发成本 更高的代码质量     哪些代码要做单元测试  最理想，100%的代码覆盖率以及分支覆盖率。  覆盖率好不等价于代码合格   时间有限  核心功能代码 逻辑复杂的代码 分支较多的代码 数据状态变化较多的代码     怎么做单元测试  从一个Java程序开始 怎么做Spring容器的单元测试？  @SpringBootTest   数据库数据怎么办？  @DbUnit     单元测试的建议  日志或者System.out.println对测试无意义 如依赖数据库，建议使用非测试数据库，并用spring-test-dbunit来做数据初始化准备。 如依赖外部接口，建议有相应的测试接口，保证其接口输入与响应保持一致性 了解一下测试驱动开发，能提高对代码可测试性、模块设计的理解。   参考  单元测试 - 维基百科，自由的百科全书 (wikipedia.">
-<script src=/js/toc.js></script>
 <link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
-<link rel=stylesheet href=/scss/journal.min.7c01e9f6fb2f6083d79d2f3a32ec6b7901e262e94a52a64a542aef98bc5bda64.css integrity="sha256-fAHp9vsvYIPXnS86MuxreQHiYulKUqZKVCrvmLxb2mQ=" media=screen>
-<link rel=stylesheet href=/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen>
-<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons">
+<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen>
+<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen>
+<script src=/vendor/js/loadCSS.js></script>
+<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
+<script src=/js/toc.js></script>
 <script>function _howxm(){_howxmQueue.push(arguments)}window._howxmQueue=window._howxmQueue||[],_howxm('setAppID','1505365a-b8ae-4806-9cd6-38502af8cefc'),function(){var b='howxm_script',a,c;document.getElementById(b)||(a=document.createElement('script'),c=document.getElementsByTagName('script')[0],a.setAttribute('id',b),a.type='text/javascript',a.async=!0,a.src='https://static.howxm.com/sdk.js',c.parentNode.insertBefore(a,c))}()</script>
 </head>
 <body>
-<div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div id=app><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/about>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95%e5%87%8f%e5%b0%91%e5%bf%83%e6%99%ba%e8%b4%9f%e6%8b%85 onclick="onNavClick(`#单元测试减少心智负担-nav`)" id=单元测试减少心智负担-nav>
+单元测试减少心智负担
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e8%b4%a3%e4%bb%bb%e6%84%8f%e8%af%86 onclick="onNavClick(`#责任意识-nav`)" id=责任意识-nav>
+责任意识
+</a>
+</li>
+<li>
+<a href=#%e4%bb%80%e4%b9%88%e6%98%af%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 onclick="onNavClick(`#什么是单元测试-nav`)" id=什么是单元测试-nav>
+什么是单元测试
+</a>
+</li>
+<li>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 onclick="onNavClick(`#为什么要做单元测试-nav`)" id=为什么要做单元测试-nav>
+为什么要做单元测试
+</a>
+</li>
+<li>
+<a href=#%e5%93%aa%e4%ba%9b%e4%bb%a3%e7%a0%81%e8%a6%81%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 onclick="onNavClick(`#哪些代码要做单元测试-nav`)" id=哪些代码要做单元测试-nav>
+哪些代码要做单元测试
+</a>
+</li>
+<li>
+<a href=#%e6%80%8e%e4%b9%88%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 onclick="onNavClick(`#怎么做单元测试-nav`)" id=怎么做单元测试-nav>
+怎么做单元测试
+</a>
+</li>
+<li>
+<a href=#%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95%e7%9a%84%e5%bb%ba%e8%ae%ae onclick="onNavClick(`#单元测试的建议-nav`)" id=单元测试的建议-nav>
+单元测试的建议
+</a>
+</li>
+<li>
+<a href=#%e5%8f%82%e8%80%83 onclick="onNavClick(`#参考-nav`)" id=参考-nav>
+参考
+</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
+</div>
+</div>
+<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
 <div class=drawer-content>
 <div class=drawer-menu>
 <a class="a-block drawer-menu-item active" href=/posts>
@@ -40,7 +137,7 @@ Tags
 <a class="a-block drawer-menu-item false" href=/index.xml>
 RSS Feed
 </a>
-<a class="a-block drawer-menu-item false" href=/posts/about-me/>
+<a class="a-block drawer-menu-item false" href=/about>
 About
 </a>
 <div class=toc>
@@ -48,43 +145,43 @@ About
 <center>- 目录 -</center>
 <ul>
 <li>
-<a href=#%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95%e5%87%8f%e5%b0%91%e5%bf%83%e6%99%ba%e8%b4%9f%e6%8b%85 class=nav-单元测试减少心智负担>
+<a href=#%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95%e5%87%8f%e5%b0%91%e5%bf%83%e6%99%ba%e8%b4%9f%e6%8b%85 onclick="onNavClick(`#单元测试减少心智负担-nav`)" id=单元测试减少心智负担-nav>
 单元测试减少心智负担
 </a>
 </li>
 <ul>
 <li>
-<a href=#%e8%b4%a3%e4%bb%bb%e6%84%8f%e8%af%86 class=nav-责任意识>
+<a href=#%e8%b4%a3%e4%bb%bb%e6%84%8f%e8%af%86 onclick="onNavClick(`#责任意识-nav`)" id=责任意识-nav>
 责任意识
 </a>
 </li>
 <li>
-<a href=#%e4%bb%80%e4%b9%88%e6%98%af%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 class=nav-什么是单元测试>
+<a href=#%e4%bb%80%e4%b9%88%e6%98%af%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 onclick="onNavClick(`#什么是单元测试-nav`)" id=什么是单元测试-nav>
 什么是单元测试
 </a>
 </li>
 <li>
-<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 class=nav-为什么要做单元测试>
+<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 onclick="onNavClick(`#为什么要做单元测试-nav`)" id=为什么要做单元测试-nav>
 为什么要做单元测试
 </a>
 </li>
 <li>
-<a href=#%e5%93%aa%e4%ba%9b%e4%bb%a3%e7%a0%81%e8%a6%81%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 class=nav-哪些代码要做单元测试>
+<a href=#%e5%93%aa%e4%ba%9b%e4%bb%a3%e7%a0%81%e8%a6%81%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 onclick="onNavClick(`#哪些代码要做单元测试-nav`)" id=哪些代码要做单元测试-nav>
 哪些代码要做单元测试
 </a>
 </li>
 <li>
-<a href=#%e6%80%8e%e4%b9%88%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 class=nav-怎么做单元测试>
+<a href=#%e6%80%8e%e4%b9%88%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 onclick="onNavClick(`#怎么做单元测试-nav`)" id=怎么做单元测试-nav>
 怎么做单元测试
 </a>
 </li>
 <li>
-<a href=#%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95%e7%9a%84%e5%bb%ba%e8%ae%ae class=nav-单元测试的建议>
+<a href=#%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95%e7%9a%84%e5%bb%ba%e8%ae%ae onclick="onNavClick(`#单元测试的建议-nav`)" id=单元测试的建议-nav>
 单元测试的建议
 </a>
 </li>
 <li>
-<a href=#%e5%8f%82%e8%80%83 class=nav-参考>
+<a href=#%e5%8f%82%e8%80%83 onclick="onNavClick(`#参考-nav`)" id=参考-nav>
 参考
 </a>
 </li>
@@ -234,10 +331,10 @@ dark_mode
 </div>
 </div>
 <nav class=post-pagination>
-<a class=newer-posts href=/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/>
+<a class=newer-posts href=https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/>
 下回<br>CS自学 Roadmap
 </a>
-<a class=older-posts href=/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/>
+<a class=older-posts href=https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/>
 上回<br>读书笔记--用数据讲故事
 </a>
 </nav>
@@ -246,103 +343,6 @@ dark_mode
 </div>
 </div>
 </div>
-</div>
-</div><div id=sideContainer class=side-container>
-<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
-<div class=nav-title>
-LIFE CODER
-</div>
-<div class=nav-subtitle>
-Akelio's Blog
-</div>
-</a>
-<div class=nav-link-list>
-<a class="a-block nav-link-item active" href=/posts>
-Archive
-</a>
-<a class="a-block nav-link-item false" href=/categories>
-Categories
-</a>
-<a class="a-block nav-link-item false" href=/tags>
-Tags
-</a>
-<a class="a-block nav-link-item false" href=/index.xml>
-RSS Feed
-</a>
-<a class="a-block nav-link-item false" href=/posts/about-me/>
-About
-</a>
-</div>
-<div class=nav-footer>
-Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
-<br>
-移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
-<br>
-&copy;
-2019-2022 Akelio All rights reserved.
-</div>
-</div><div id=extraContainer class=extra-container>
-<div class=toc-wrapper>
-<div class=toc>
-<div class=toc-content>
-<center>- 目录 -</center>
-<ul>
-<li>
-<a href=#%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95%e5%87%8f%e5%b0%91%e5%bf%83%e6%99%ba%e8%b4%9f%e6%8b%85 class=nav-单元测试减少心智负担>
-单元测试减少心智负担
-</a>
-</li>
-<ul>
-<li>
-<a href=#%e8%b4%a3%e4%bb%bb%e6%84%8f%e8%af%86 class=nav-责任意识>
-责任意识
-</a>
-</li>
-<li>
-<a href=#%e4%bb%80%e4%b9%88%e6%98%af%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 class=nav-什么是单元测试>
-什么是单元测试
-</a>
-</li>
-<li>
-<a href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 class=nav-为什么要做单元测试>
-为什么要做单元测试
-</a>
-</li>
-<li>
-<a href=#%e5%93%aa%e4%ba%9b%e4%bb%a3%e7%a0%81%e8%a6%81%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 class=nav-哪些代码要做单元测试>
-哪些代码要做单元测试
-</a>
-</li>
-<li>
-<a href=#%e6%80%8e%e4%b9%88%e5%81%9a%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95 class=nav-怎么做单元测试>
-怎么做单元测试
-</a>
-</li>
-<li>
-<a href=#%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95%e7%9a%84%e5%bb%ba%e8%ae%ae class=nav-单元测试的建议>
-单元测试的建议
-</a>
-</li>
-<li>
-<a href=#%e5%8f%82%e8%80%83 class=nav-参考>
-参考
-</a>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class=pagination>
-<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
-<i class="material-icons pagination-action-icon">
-keyboard_arrow_up
-</i>
-</a>
-<a type=button class=pagination-action id=darkModeToggleButton>
-<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
-dark_mode
-</span>
-</a>
 </div>
 </div><div id=single-column-footer>
 Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
@@ -353,5 +353,6 @@ Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by 
 2019-2022 Akelio All rights reserved.
 </div>
 </div>
-<script src=/js/journal.js></script></body>
+<script src=/js/journal.js></script>
+</body>
 </html>

@@ -1,7 +1,5 @@
 var spy = function () {
-  var elems = document.querySelectorAll(Array.from(Array(6).keys(), x => ".post-body h"+(x+1).toString()));
-  // ":is()" was not supported until Chrome 88+
-  // Here is a backfill
+  var elems = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
   if (elems.length == 0) {
     return;
   }
@@ -9,37 +7,68 @@ var spy = function () {
   var isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
 
   var currentTop = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
-  var currentBottom = currentTop + window.height;
+  var currentBottom =  currentTop + window.height;
   var pageBottom = window.pageBottom;
 
   var meetUnread = false
-  let lastElemName = elems[elems.length - 1].id;
+  var lastId = ""
   elems.forEach(function (elem, idx) {
     var elemTop = elem.offsetTop;
     var id = elem.getAttribute('id');
-    var navElems = document.getElementsByClassName("nav-"+id);
-    if (navElems.length == 0) {
+    //console.log(id,elem.offsetTop)
+    var navElem = document.getElementById(id + '-nav');
+    if (navElem==null) {
       return
     }
     if (currentTop >= elemTop || currentBottom >= pageBottom) {
-      Array.from(navElems).forEach((e) => {
-        e.classList.add('toc-active');
-      });
+      navElem.classList.add('toc-active');
     } else {
       if (meetUnread == false) {
         meetUnread = true;
-        if (idx > 0) {
-          lastElemName = elems[idx - 1].id; 
+        try{
+          document.getElementById(elems[idx-1].id+"-nav").scrollIntoView({ block:"center", behavior: 'smooth' });
+        } catch {
+
         }
+        
       }
-      Array.from(navElems).forEach((e) => {
-        e.classList.remove('toc-active');
-      });
+      navElem.classList.remove('toc-active');
     }
   })
-  let selector = ".nav-" + lastElemName;
-  // Two toc elements here
-  document.querySelectorAll(selector).forEach(e => {
-    e.scrollIntoView({ block: "center", behavior: 'smooth' });
+
+}
+
+var onNavClick = function () {
+  
+}
+
+
+/*$().ready(function () {
+  $(".collapse").each(function (idx) {
+    $(this).collapse("show");
   });
+  //spy();
+  //$(window).bind('scroll', throttle(spy));
+});*/
+
+function throttle(func, timeout = 250) {
+  let last;
+  let timer;
+
+  return function () {
+    const context = this;
+    const args = arguments;
+    const now = +new Date();
+
+    if (last && now < last + timeout) {
+      clearTimeout(timer)
+      timer = setTimeout(function () {
+        last = now
+        func.apply(context, args)
+      }, timeout)
+    } else {
+      last = now
+      func.apply(context, args)
+    }
+  }
 }

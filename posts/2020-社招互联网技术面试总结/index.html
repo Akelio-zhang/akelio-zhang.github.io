@@ -59,15 +59,119 @@
 结论 在面试的准备与进行过程中，是对我们自己过往的一次总结与提升。面试失败也不必过于难过，不是每个面试官都是那么专业，也可能是你与这家公司这个岗位目前仍然不那么契合。
 每一个人有每一个人的特色与优劣势，每一家公司有每一家公司的喜好。我们能做的就是保持自信，扬长避短，以一种积极友善的态度把握整个面试过程的主动性（比如有些面试官说让你简单说说xxx，此时若是你擅长的，你应该抓住机会表现出你的特色）
 站在巨人的肩膀上  校招面试不完全指南 怎样花两年时间去面试一个人  ">
-<script src=/js/toc.js></script>
 <link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
-<link rel=stylesheet href=/scss/journal.min.7c01e9f6fb2f6083d79d2f3a32ec6b7901e262e94a52a64a542aef98bc5bda64.css integrity="sha256-fAHp9vsvYIPXnS86MuxreQHiYulKUqZKVCrvmLxb2mQ=" media=screen>
-<link rel=stylesheet href=/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen>
-<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons">
+<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen>
+<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen>
+<script src=/vendor/js/loadCSS.js></script>
+<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
+<script src=/js/toc.js></script>
 <script>function _howxm(){_howxmQueue.push(arguments)}window._howxmQueue=window._howxmQueue||[],_howxm('setAppID','1505365a-b8ae-4806-9cd6-38502af8cefc'),function(){var b='howxm_script',a,c;document.getElementById(b)||(a=document.createElement('script'),c=document.getElementsByTagName('script')[0],a.setAttribute('id',b),a.type='text/javascript',a.async=!0,a.src='https://static.howxm.com/sdk.js',c.parentNode.insertBefore(a,c))}()</script>
 </head>
 <body>
-<div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div id=app><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/about>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#2020%e7%a4%be%e6%8b%9b%e4%ba%92%e8%81%94%e7%bd%91%e6%8a%80%e6%9c%af%e9%9d%a2%e8%af%95%e6%80%bb%e7%bb%93 onclick="onNavClick(`#2020社招互联网技术面试总结-nav`)" id=2020社招互联网技术面试总结-nav>
+2020社招互联网技术面试总结
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e5%87%86%e5%a4%87 onclick="onNavClick(`#准备-nav`)" id=准备-nav>
+准备
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e7%94%a8%e4%ba%ba%e5%8d%95%e4%bd%8d%e6%8b%9b%e8%81%98%e8%af%89%e6%b1%82 onclick="onNavClick(`#用人单位招聘诉求-nav`)" id=用人单位招聘诉求-nav>
+用人单位招聘诉求
+</a>
+</li>
+<li>
+<a href=#%e7%ae%80%e5%8e%86%e5%ae%8c%e5%96%84 onclick="onNavClick(`#简历完善-nav`)" id=简历完善-nav>
+简历完善
+</a>
+</li>
+<li>
+<a href=#%e4%b8%aa%e4%ba%ba%e7%8a%b6%e5%86%b5 onclick="onNavClick(`#个人状况-nav`)" id=个人状况-nav>
+个人状况
+</a>
+</li>
+<li>
+<a href=#%e9%9d%a2%e8%af%95%e5%87%86%e5%a4%87 onclick="onNavClick(`#面试准备-nav`)" id=面试准备-nav>
+面试准备
+</a>
+</li>
+</ul>
+<li>
+<a href=#%e8%bf%87%e7%a8%8b onclick="onNavClick(`#过程-nav`)" id=过程-nav>
+过程
+</a>
+</li>
+<li>
+<a href=#%e7%bb%93%e8%ae%ba onclick="onNavClick(`#结论-nav`)" id=结论-nav>
+结论
+</a>
+</li>
+<li>
+<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a onclick="onNavClick(`#站在巨人的肩膀上-nav`)" id=站在巨人的肩膀上-nav>
+站在巨人的肩膀上
+</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
+</div>
+</div>
+<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
 <div class=drawer-content>
 <div class=drawer-menu>
 <a class="a-block drawer-menu-item active" href=/posts>
@@ -82,7 +186,7 @@ Tags
 <a class="a-block drawer-menu-item false" href=/index.xml>
 RSS Feed
 </a>
-<a class="a-block drawer-menu-item false" href=/posts/about-me/>
+<a class="a-block drawer-menu-item false" href=/about>
 About
 </a>
 <div class=toc>
@@ -90,50 +194,50 @@ About
 <center>- 目录 -</center>
 <ul>
 <li>
-<a href=#2020%e7%a4%be%e6%8b%9b%e4%ba%92%e8%81%94%e7%bd%91%e6%8a%80%e6%9c%af%e9%9d%a2%e8%af%95%e6%80%bb%e7%bb%93 class=nav-2020社招互联网技术面试总结>
+<a href=#2020%e7%a4%be%e6%8b%9b%e4%ba%92%e8%81%94%e7%bd%91%e6%8a%80%e6%9c%af%e9%9d%a2%e8%af%95%e6%80%bb%e7%bb%93 onclick="onNavClick(`#2020社招互联网技术面试总结-nav`)" id=2020社招互联网技术面试总结-nav>
 2020社招互联网技术面试总结
 </a>
 </li>
 <ul>
 <li>
-<a href=#%e5%87%86%e5%a4%87 class=nav-准备>
+<a href=#%e5%87%86%e5%a4%87 onclick="onNavClick(`#准备-nav`)" id=准备-nav>
 准备
 </a>
 </li>
 <ul>
 <li>
-<a href=#%e7%94%a8%e4%ba%ba%e5%8d%95%e4%bd%8d%e6%8b%9b%e8%81%98%e8%af%89%e6%b1%82 class=nav-用人单位招聘诉求>
+<a href=#%e7%94%a8%e4%ba%ba%e5%8d%95%e4%bd%8d%e6%8b%9b%e8%81%98%e8%af%89%e6%b1%82 onclick="onNavClick(`#用人单位招聘诉求-nav`)" id=用人单位招聘诉求-nav>
 用人单位招聘诉求
 </a>
 </li>
 <li>
-<a href=#%e7%ae%80%e5%8e%86%e5%ae%8c%e5%96%84 class=nav-简历完善>
+<a href=#%e7%ae%80%e5%8e%86%e5%ae%8c%e5%96%84 onclick="onNavClick(`#简历完善-nav`)" id=简历完善-nav>
 简历完善
 </a>
 </li>
 <li>
-<a href=#%e4%b8%aa%e4%ba%ba%e7%8a%b6%e5%86%b5 class=nav-个人状况>
+<a href=#%e4%b8%aa%e4%ba%ba%e7%8a%b6%e5%86%b5 onclick="onNavClick(`#个人状况-nav`)" id=个人状况-nav>
 个人状况
 </a>
 </li>
 <li>
-<a href=#%e9%9d%a2%e8%af%95%e5%87%86%e5%a4%87 class=nav-面试准备>
+<a href=#%e9%9d%a2%e8%af%95%e5%87%86%e5%a4%87 onclick="onNavClick(`#面试准备-nav`)" id=面试准备-nav>
 面试准备
 </a>
 </li>
 </ul>
 <li>
-<a href=#%e8%bf%87%e7%a8%8b class=nav-过程>
+<a href=#%e8%bf%87%e7%a8%8b onclick="onNavClick(`#过程-nav`)" id=过程-nav>
 过程
 </a>
 </li>
 <li>
-<a href=#%e7%bb%93%e8%ae%ba class=nav-结论>
+<a href=#%e7%bb%93%e8%ae%ba onclick="onNavClick(`#结论-nav`)" id=结论-nav>
 结论
 </a>
 </li>
 <li>
-<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a class=nav-站在巨人的肩膀上>
+<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a onclick="onNavClick(`#站在巨人的肩膀上-nav`)" id=站在巨人的肩膀上-nav>
 站在巨人的肩膀上
 </a>
 </li>
@@ -250,10 +354,10 @@ dark_mode
 </div>
 </div>
 <nav class=post-pagination>
-<a class=newer-posts href=/posts/2021-git%E6%8C%87%E5%8D%97/>
+<a class=newer-posts href=https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/>
 下回<br>Git指南
 </a>
-<a class=older-posts href=/posts/2020-%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/>
+<a class=older-posts href=https://akelio-zhang.github.io/posts/2020-%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/>
 上回<br>系统复杂度 Part I
 </a>
 </nav>
@@ -262,110 +366,6 @@ dark_mode
 </div>
 </div>
 </div>
-</div>
-</div><div id=sideContainer class=side-container>
-<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
-<div class=nav-title>
-LIFE CODER
-</div>
-<div class=nav-subtitle>
-Akelio's Blog
-</div>
-</a>
-<div class=nav-link-list>
-<a class="a-block nav-link-item active" href=/posts>
-Archive
-</a>
-<a class="a-block nav-link-item false" href=/categories>
-Categories
-</a>
-<a class="a-block nav-link-item false" href=/tags>
-Tags
-</a>
-<a class="a-block nav-link-item false" href=/index.xml>
-RSS Feed
-</a>
-<a class="a-block nav-link-item false" href=/posts/about-me/>
-About
-</a>
-</div>
-<div class=nav-footer>
-Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
-<br>
-移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
-<br>
-&copy;
-2019-2022 Akelio All rights reserved.
-</div>
-</div><div id=extraContainer class=extra-container>
-<div class=toc-wrapper>
-<div class=toc>
-<div class=toc-content>
-<center>- 目录 -</center>
-<ul>
-<li>
-<a href=#2020%e7%a4%be%e6%8b%9b%e4%ba%92%e8%81%94%e7%bd%91%e6%8a%80%e6%9c%af%e9%9d%a2%e8%af%95%e6%80%bb%e7%bb%93 class=nav-2020社招互联网技术面试总结>
-2020社招互联网技术面试总结
-</a>
-</li>
-<ul>
-<li>
-<a href=#%e5%87%86%e5%a4%87 class=nav-准备>
-准备
-</a>
-</li>
-<ul>
-<li>
-<a href=#%e7%94%a8%e4%ba%ba%e5%8d%95%e4%bd%8d%e6%8b%9b%e8%81%98%e8%af%89%e6%b1%82 class=nav-用人单位招聘诉求>
-用人单位招聘诉求
-</a>
-</li>
-<li>
-<a href=#%e7%ae%80%e5%8e%86%e5%ae%8c%e5%96%84 class=nav-简历完善>
-简历完善
-</a>
-</li>
-<li>
-<a href=#%e4%b8%aa%e4%ba%ba%e7%8a%b6%e5%86%b5 class=nav-个人状况>
-个人状况
-</a>
-</li>
-<li>
-<a href=#%e9%9d%a2%e8%af%95%e5%87%86%e5%a4%87 class=nav-面试准备>
-面试准备
-</a>
-</li>
-</ul>
-<li>
-<a href=#%e8%bf%87%e7%a8%8b class=nav-过程>
-过程
-</a>
-</li>
-<li>
-<a href=#%e7%bb%93%e8%ae%ba class=nav-结论>
-结论
-</a>
-</li>
-<li>
-<a href=#%e7%ab%99%e5%9c%a8%e5%b7%a8%e4%ba%ba%e7%9a%84%e8%82%a9%e8%86%80%e4%b8%8a class=nav-站在巨人的肩膀上>
-站在巨人的肩膀上
-</a>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class=pagination>
-<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
-<i class="material-icons pagination-action-icon">
-keyboard_arrow_up
-</i>
-</a>
-<a type=button class=pagination-action id=darkModeToggleButton>
-<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
-dark_mode
-</span>
-</a>
 </div>
 </div><div id=single-column-footer>
 Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
@@ -376,5 +376,6 @@ Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by 
 2019-2022 Akelio All rights reserved.
 </div>
 </div>
-<script src=/js/journal.js></script></body>
+<script src=/js/journal.js></script>
+</body>
 </html>

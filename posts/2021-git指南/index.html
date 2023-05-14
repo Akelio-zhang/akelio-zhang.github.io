@@ -19,156 +19,16 @@
 <meta name=twitter:title content="Git指南">
 <meta name=twitter:description content="Git指南 零、目的  掌握各类场景下如何更好使用Git。 减少因为代码提交问题带来的生产环境问题。   一、了解[[Git]]  什么是Git？ 1. 一款分布式版本管理系统 2. 优点：分布式、性能、版本的文件完整性 1. 分布式，可以让你在本地提交代码（对于SVN而言没有网络就无法提交代码，在家也能愉快地写代码）； 2. 性能，对于我们的一般项目而言，你感受不到合并时性能的差别（与SVN比较）； 3. 版本的文件完整性：git背后设计理念是快照思想。 Git概念 1. 仓库(repository) 1. 用于代码版本管理 2. 一个git仓库管理了三棵“树”，分别是 1. Working Directory（工作目录） 2. Index（暂存区） 3. HEAD（本地仓库） 3. 大多数时候你通过编辑器只能对工作目录操作，操作其他两个“树”（区域）必须使用git命令才可以。 2. 分支(branch) 1. 用于并行独立开发，更方便管理不同开发任务的进度 Git常用命令 1. git add 2. git commit 3. git push 4. git pull 5. git branch 6. git switch 7. git restore  二、最常见的一种使用场景  陈主管说他已经开发好了整个架构，需要我去把几个功能实现一下，并提交到dev分支让他方便Review。
   基本流程 1. 先从远程服务器把代码拉到本地：git clone http://197.">
-<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen>
-<script src=/vendor/js/loadCSS.js></script>
-<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
 <script src=/js/toc.js></script>
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
+<link rel=stylesheet href=/scss/journal.min.7c01e9f6fb2f6083d79d2f3a32ec6b7901e262e94a52a64a542aef98bc5bda64.css integrity="sha256-fAHp9vsvYIPXnS86MuxreQHiYulKUqZKVCrvmLxb2mQ=" media=screen>
+<link rel=stylesheet href=/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen>
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons">
 <script>function _howxm(){_howxmQueue.push(arguments)}window._howxmQueue=window._howxmQueue||[],_howxm('setAppID','1505365a-b8ae-4806-9cd6-38502af8cefc'),function(){var b='howxm_script',a,c;document.getElementById(b)||(a=document.createElement('script'),c=document.getElementsByTagName('script')[0],a.setAttribute('id',b),a.type='text/javascript',a.async=!0,a.src='https://static.howxm.com/sdk.js',c.parentNode.insertBefore(a,c))}()</script>
+<script defer data-domain=akelio-zhang.github.io src=https://plausible.io/js/script.js></script>
 </head>
 <body>
-<div id=app><div id=sideContainer class=side-container>
-<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
-<div class=nav-title>
-LIFE CODER
-</div>
-<div class=nav-subtitle>
-Akelio's Blog
-</div>
-</a>
-<div class=nav-link-list>
-<a class="a-block nav-link-item active" href=/posts>
-Archive
-</a>
-<a class="a-block nav-link-item false" href=/categories>
-Categories
-</a>
-<a class="a-block nav-link-item false" href=/tags>
-Tags
-</a>
-<a class="a-block nav-link-item false" href=/index.xml>
-RSS Feed
-</a>
-<a class="a-block nav-link-item false" href=/about>
-About
-</a>
-</div>
-<div class=nav-footer>
-Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
-<br>
-移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
-<br>
-&copy;
-2019-2022 Akelio All rights reserved.
-</div>
-</div><div id=extraContainer class=extra-container>
-<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
-<div class=toc-content>
-<center>- 目录 -</center>
-<ul>
-<li>
-<a href=#git%e6%8c%87%e5%8d%97 onclick="onNavClick(`#git指南-nav`)" id=git指南-nav>
-Git指南
-</a>
-</li>
-<ul>
-<li>
-<a href=#%e9%9b%b6%e7%9b%ae%e7%9a%84 onclick="onNavClick(`#零目的-nav`)" id=零目的-nav>
-零、目的
-</a>
-</li>
-<li>
-<a href=#%e4%b8%80%e4%ba%86%e8%a7%a3git onclick="onNavClick(`#一了解git-nav`)" id=一了解git-nav>
-一、了解[[Git]]
-</a>
-</li>
-<li>
-<a href=#%e4%ba%8c%e6%9c%80%e5%b8%b8%e8%a7%81%e7%9a%84%e4%b8%80%e7%a7%8d%e4%bd%bf%e7%94%a8%e5%9c%ba%e6%99%af onclick="onNavClick(`#二最常见的一种使用场景-nav`)" id=二最常见的一种使用场景-nav>
-二、最常见的一种使用场景
-</a>
-</li>
-<li>
-<a href=#%e4%b8%89%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5git%e9%87%8c%e7%9a%84%e5%90%8e%e6%82%94%e8%8d%af onclick="onNavClick(`#三最佳实践git里的后悔药-nav`)" id=三最佳实践git里的后悔药-nav>
-三、最佳实践——Git里的后悔药
-</a>
-</li>
-<li>
-<a href=#%e5%9b%9b%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5%e4%b8%8e%e4%bb%96%e4%ba%ba%e5%90%8c%e6%ad%a5 onclick="onNavClick(`#四最佳实践与他人同步-nav`)" id=四最佳实践与他人同步-nav>
-四、最佳实践——与他人同步
-</a>
-</li>
-<li>
-<a href=#%e4%ba%94%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5%e6%88%91%e7%9a%84%e6%94%b9%e5%8a%a8%e6%af%94%e8%be%83%e5%a4%a7 onclick="onNavClick(`#五最佳实践我的改动比较大-nav`)" id=五最佳实践我的改动比较大-nav>
-五、最佳实践——我的改动比较大
-</a>
-</li>
-<li>
-<a href=#%e5%85%ad%e5%85%b6%e4%bb%96 onclick="onNavClick(`#六其他-nav`)" id=六其他-nav>
-六、其他
-</a>
-</li>
-<li>
-<a href=#%e4%b8%83%e5%87%a0%e4%b8%aa%e5%8e%9f%e5%88%99 onclick="onNavClick(`#七几个原则-nav`)" id=七几个原则-nav>
-七、几个原则
-</a>
-</li>
-<ul>
-<li>
-<a href=#%e5%bc%ba%e5%88%b6 onclick="onNavClick(`#强制-nav`)" id=强制-nav>
-强制
-</a>
-</li>
-<li>
-<a href=#%e5%bb%ba%e8%ae%ae onclick="onNavClick(`#建议-nav`)" id=建议-nav>
-建议
-</a>
-</li>
-</ul>
-<li>
-<a href=#%e5%85%ab%e5%ae%9e%e7%8e%b0%e6%96%b9%e5%bc%8f%e4%b9%8b%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84 onclick="onNavClick(`#八实现方式之数据结构-nav`)" id=八实现方式之数据结构-nav>
-八、实现方式之数据结构
-</a>
-</li>
-<li>
-<a href=#%e4%b9%9d%e5%8f%82%e8%80%83 onclick="onNavClick(`#九参考-nav`)" id=九参考-nav>
-九、参考
-</a>
-</li>
-<ul>
-<li>
-<a href=#cheatsheet onclick="onNavClick(`#cheatsheet-nav`)" id=cheatsheet-nav>
-Cheatsheet
-</a>
-</li>
-<li>
-<a href=#%e5%8e%9f%e7%90%86%e5%ad%a6%e4%b9%a0 onclick="onNavClick(`#原理学习-nav`)" id=原理学习-nav>
-原理学习
-</a>
-</li>
-</ul>
-<li>
-<a href=#some-code onclick="onNavClick(`#some-code-nav`)" id=some-code-nav>
-Some code
-</a>
-</li>
-</ul>
-</div>
-</div>
-<div class=pagination>
-<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
-<i class="material-icons pagination-action-icon">
-keyboard_arrow_up
-</i>
-</a>
-<a type=button class=pagination-action id=darkModeToggleButton>
-<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
-dark_mode
-</span>
-</a>
-</div>
-</div>
-<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
 <div class=drawer-content>
 <div class=drawer-menu>
 <a class="a-block drawer-menu-item active" href=/posts>
@@ -191,87 +51,87 @@ About
 <center>- 目录 -</center>
 <ul>
 <li>
-<a href=#git%e6%8c%87%e5%8d%97 onclick="onNavClick(`#git指南-nav`)" id=git指南-nav>
+<a href=#git%e6%8c%87%e5%8d%97 class=nav-git指南>
 Git指南
 </a>
 </li>
 <ul>
 <li>
-<a href=#%e9%9b%b6%e7%9b%ae%e7%9a%84 onclick="onNavClick(`#零目的-nav`)" id=零目的-nav>
+<a href=#%e9%9b%b6%e7%9b%ae%e7%9a%84 class=nav-零目的>
 零、目的
 </a>
 </li>
 <li>
-<a href=#%e4%b8%80%e4%ba%86%e8%a7%a3git onclick="onNavClick(`#一了解git-nav`)" id=一了解git-nav>
+<a href=#%e4%b8%80%e4%ba%86%e8%a7%a3git class=nav-一了解git>
 一、了解[[Git]]
 </a>
 </li>
 <li>
-<a href=#%e4%ba%8c%e6%9c%80%e5%b8%b8%e8%a7%81%e7%9a%84%e4%b8%80%e7%a7%8d%e4%bd%bf%e7%94%a8%e5%9c%ba%e6%99%af onclick="onNavClick(`#二最常见的一种使用场景-nav`)" id=二最常见的一种使用场景-nav>
+<a href=#%e4%ba%8c%e6%9c%80%e5%b8%b8%e8%a7%81%e7%9a%84%e4%b8%80%e7%a7%8d%e4%bd%bf%e7%94%a8%e5%9c%ba%e6%99%af class=nav-二最常见的一种使用场景>
 二、最常见的一种使用场景
 </a>
 </li>
 <li>
-<a href=#%e4%b8%89%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5git%e9%87%8c%e7%9a%84%e5%90%8e%e6%82%94%e8%8d%af onclick="onNavClick(`#三最佳实践git里的后悔药-nav`)" id=三最佳实践git里的后悔药-nav>
+<a href=#%e4%b8%89%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5git%e9%87%8c%e7%9a%84%e5%90%8e%e6%82%94%e8%8d%af class=nav-三最佳实践git里的后悔药>
 三、最佳实践——Git里的后悔药
 </a>
 </li>
 <li>
-<a href=#%e5%9b%9b%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5%e4%b8%8e%e4%bb%96%e4%ba%ba%e5%90%8c%e6%ad%a5 onclick="onNavClick(`#四最佳实践与他人同步-nav`)" id=四最佳实践与他人同步-nav>
+<a href=#%e5%9b%9b%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5%e4%b8%8e%e4%bb%96%e4%ba%ba%e5%90%8c%e6%ad%a5 class=nav-四最佳实践与他人同步>
 四、最佳实践——与他人同步
 </a>
 </li>
 <li>
-<a href=#%e4%ba%94%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5%e6%88%91%e7%9a%84%e6%94%b9%e5%8a%a8%e6%af%94%e8%be%83%e5%a4%a7 onclick="onNavClick(`#五最佳实践我的改动比较大-nav`)" id=五最佳实践我的改动比较大-nav>
+<a href=#%e4%ba%94%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5%e6%88%91%e7%9a%84%e6%94%b9%e5%8a%a8%e6%af%94%e8%be%83%e5%a4%a7 class=nav-五最佳实践我的改动比较大>
 五、最佳实践——我的改动比较大
 </a>
 </li>
 <li>
-<a href=#%e5%85%ad%e5%85%b6%e4%bb%96 onclick="onNavClick(`#六其他-nav`)" id=六其他-nav>
+<a href=#%e5%85%ad%e5%85%b6%e4%bb%96 class=nav-六其他>
 六、其他
 </a>
 </li>
 <li>
-<a href=#%e4%b8%83%e5%87%a0%e4%b8%aa%e5%8e%9f%e5%88%99 onclick="onNavClick(`#七几个原则-nav`)" id=七几个原则-nav>
+<a href=#%e4%b8%83%e5%87%a0%e4%b8%aa%e5%8e%9f%e5%88%99 class=nav-七几个原则>
 七、几个原则
 </a>
 </li>
 <ul>
 <li>
-<a href=#%e5%bc%ba%e5%88%b6 onclick="onNavClick(`#强制-nav`)" id=强制-nav>
+<a href=#%e5%bc%ba%e5%88%b6 class=nav-强制>
 强制
 </a>
 </li>
 <li>
-<a href=#%e5%bb%ba%e8%ae%ae onclick="onNavClick(`#建议-nav`)" id=建议-nav>
+<a href=#%e5%bb%ba%e8%ae%ae class=nav-建议>
 建议
 </a>
 </li>
 </ul>
 <li>
-<a href=#%e5%85%ab%e5%ae%9e%e7%8e%b0%e6%96%b9%e5%bc%8f%e4%b9%8b%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84 onclick="onNavClick(`#八实现方式之数据结构-nav`)" id=八实现方式之数据结构-nav>
+<a href=#%e5%85%ab%e5%ae%9e%e7%8e%b0%e6%96%b9%e5%bc%8f%e4%b9%8b%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84 class=nav-八实现方式之数据结构>
 八、实现方式之数据结构
 </a>
 </li>
 <li>
-<a href=#%e4%b9%9d%e5%8f%82%e8%80%83 onclick="onNavClick(`#九参考-nav`)" id=九参考-nav>
+<a href=#%e4%b9%9d%e5%8f%82%e8%80%83 class=nav-九参考>
 九、参考
 </a>
 </li>
 <ul>
 <li>
-<a href=#cheatsheet onclick="onNavClick(`#cheatsheet-nav`)" id=cheatsheet-nav>
+<a href=#cheatsheet class=nav-cheatsheet>
 Cheatsheet
 </a>
 </li>
 <li>
-<a href=#%e5%8e%9f%e7%90%86%e5%ad%a6%e4%b9%a0 onclick="onNavClick(`#原理学习-nav`)" id=原理学习-nav>
+<a href=#%e5%8e%9f%e7%90%86%e5%ad%a6%e4%b9%a0 class=nav-原理学习>
 原理学习
 </a>
 </li>
 </ul>
 <li>
-<a href=#some-code onclick="onNavClick(`#some-code-nav`)" id=some-code-nav>
+<a href=#some-code class=nav-some-code>
 Some code
 </a>
 </li>
@@ -527,10 +387,10 @@ git stash pop
 </div>
 </div>
 <nav class=post-pagination>
-<a class=newer-posts href=https://akelio-zhang.github.io/about/>
+<a class=newer-posts href=/about/>
 下回<br>About Me
 </a>
-<a class=older-posts href=https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/>
+<a class=older-posts href=/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/>
 上回<br>2020社招互联网技术面试总结
 </a>
 </nav>
@@ -539,6 +399,147 @@ git stash pop
 </div>
 </div>
 </div>
+</div>
+</div><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/about>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class=toc-wrapper>
+<div class=toc>
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#git%e6%8c%87%e5%8d%97 class=nav-git指南>
+Git指南
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e9%9b%b6%e7%9b%ae%e7%9a%84 class=nav-零目的>
+零、目的
+</a>
+</li>
+<li>
+<a href=#%e4%b8%80%e4%ba%86%e8%a7%a3git class=nav-一了解git>
+一、了解[[Git]]
+</a>
+</li>
+<li>
+<a href=#%e4%ba%8c%e6%9c%80%e5%b8%b8%e8%a7%81%e7%9a%84%e4%b8%80%e7%a7%8d%e4%bd%bf%e7%94%a8%e5%9c%ba%e6%99%af class=nav-二最常见的一种使用场景>
+二、最常见的一种使用场景
+</a>
+</li>
+<li>
+<a href=#%e4%b8%89%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5git%e9%87%8c%e7%9a%84%e5%90%8e%e6%82%94%e8%8d%af class=nav-三最佳实践git里的后悔药>
+三、最佳实践——Git里的后悔药
+</a>
+</li>
+<li>
+<a href=#%e5%9b%9b%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5%e4%b8%8e%e4%bb%96%e4%ba%ba%e5%90%8c%e6%ad%a5 class=nav-四最佳实践与他人同步>
+四、最佳实践——与他人同步
+</a>
+</li>
+<li>
+<a href=#%e4%ba%94%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5%e6%88%91%e7%9a%84%e6%94%b9%e5%8a%a8%e6%af%94%e8%be%83%e5%a4%a7 class=nav-五最佳实践我的改动比较大>
+五、最佳实践——我的改动比较大
+</a>
+</li>
+<li>
+<a href=#%e5%85%ad%e5%85%b6%e4%bb%96 class=nav-六其他>
+六、其他
+</a>
+</li>
+<li>
+<a href=#%e4%b8%83%e5%87%a0%e4%b8%aa%e5%8e%9f%e5%88%99 class=nav-七几个原则>
+七、几个原则
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e5%bc%ba%e5%88%b6 class=nav-强制>
+强制
+</a>
+</li>
+<li>
+<a href=#%e5%bb%ba%e8%ae%ae class=nav-建议>
+建议
+</a>
+</li>
+</ul>
+<li>
+<a href=#%e5%85%ab%e5%ae%9e%e7%8e%b0%e6%96%b9%e5%bc%8f%e4%b9%8b%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84 class=nav-八实现方式之数据结构>
+八、实现方式之数据结构
+</a>
+</li>
+<li>
+<a href=#%e4%b9%9d%e5%8f%82%e8%80%83 class=nav-九参考>
+九、参考
+</a>
+</li>
+<ul>
+<li>
+<a href=#cheatsheet class=nav-cheatsheet>
+Cheatsheet
+</a>
+</li>
+<li>
+<a href=#%e5%8e%9f%e7%90%86%e5%ad%a6%e4%b9%a0 class=nav-原理学习>
+原理学习
+</a>
+</li>
+</ul>
+<li>
+<a href=#some-code class=nav-some-code>
+Some code
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
 </div>
 </div><div id=single-column-footer>
 Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
@@ -549,6 +550,5 @@ Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by 
 2019-2022 Akelio All rights reserved.
 </div>
 </div>
-<script src=/js/journal.js></script>
-</body>
+<script src=/js/journal.js></script></body>
 </html>

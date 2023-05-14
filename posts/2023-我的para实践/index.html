@@ -21,87 +21,16 @@ It was developed by Forte Labs, a company that creates content to help increase
 <meta name=twitter:description content="我的P.A.R.A实践记录 什么是P.A.R.A  The P.A.R.A. (Projects, Areas, Resources, Archives) method is a method for organizing digital information.
 It was developed by Forte Labs, a company that creates content to help increase productivity through technology.
   Project: 短期、长期项目，用于Area的实践落地。 Area: 关注的核心领域与能力提升。 Resource: 用于Area相关联的信息整理以及其他可能感兴趣的内容。 Archive: 另外三项不活跃的内容移入这个地方，减少对活跃项目的干扰。  Practice  Data Collection: Cubox  Send to Obsidian through &ldquo;自定义动作&rdquo;   Information Station and Writing: Obsidian  Publish to github.io: A Python script to copy blog files to blog_source Publish to Wechat Official Account: A web converter to make blog files suitable to wechat   Knowledge Output: github.">
-<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen>
-<link rel=stylesheet href=https://akelio-zhang.github.io/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen>
-<script src=/vendor/js/loadCSS.js></script>
-<script>loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons")</script>
 <script src=/js/toc.js></script>
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css>
+<link rel=stylesheet href=/scss/journal.min.7c01e9f6fb2f6083d79d2f3a32ec6b7901e262e94a52a64a542aef98bc5bda64.css integrity="sha256-fAHp9vsvYIPXnS86MuxreQHiYulKUqZKVCrvmLxb2mQ=" media=screen>
+<link rel=stylesheet href=/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen>
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons">
 <script>function _howxm(){_howxmQueue.push(arguments)}window._howxmQueue=window._howxmQueue||[],_howxm('setAppID','1505365a-b8ae-4806-9cd6-38502af8cefc'),function(){var b='howxm_script',a,c;document.getElementById(b)||(a=document.createElement('script'),c=document.getElementsByTagName('script')[0],a.setAttribute('id',b),a.type='text/javascript',a.async=!0,a.src='https://static.howxm.com/sdk.js',c.parentNode.insertBefore(a,c))}()</script>
+<script defer data-domain=akelio-zhang.github.io src=https://plausible.io/js/script.js></script>
 </head>
 <body>
-<div id=app><div id=sideContainer class=side-container>
-<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
-<div class=nav-title>
-LIFE CODER
-</div>
-<div class=nav-subtitle>
-Akelio's Blog
-</div>
-</a>
-<div class=nav-link-list>
-<a class="a-block nav-link-item active" href=/posts>
-Archive
-</a>
-<a class="a-block nav-link-item false" href=/categories>
-Categories
-</a>
-<a class="a-block nav-link-item false" href=/tags>
-Tags
-</a>
-<a class="a-block nav-link-item false" href=/index.xml>
-RSS Feed
-</a>
-<a class="a-block nav-link-item false" href=/about>
-About
-</a>
-</div>
-<div class=nav-footer>
-Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
-<br>
-移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
-<br>
-&copy;
-2019-2022 Akelio All rights reserved.
-</div>
-</div><div id=extraContainer class=extra-container>
-<div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
-<div class=toc-content>
-<center>- 目录 -</center>
-<ul>
-<li>
-<a href=#%e6%88%91%e7%9a%84para%e5%ae%9e%e8%b7%b5%e8%ae%b0%e5%bd%95 onclick="onNavClick(`#我的para实践记录-nav`)" id=我的para实践记录-nav>
-我的P.A.R.A实践记录
-</a>
-</li>
-<ul>
-<li>
-<a href=#%e4%bb%80%e4%b9%88%e6%98%afpara onclick="onNavClick(`#什么是para-nav`)" id=什么是para-nav>
-什么是P.A.R.A
-</a>
-</li>
-<li>
-<a href=#practice onclick="onNavClick(`#practice-nav`)" id=practice-nav>
-Practice
-</a>
-</li>
-</ul>
-</div>
-</div>
-<div class=pagination>
-<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
-<i class="material-icons pagination-action-icon">
-keyboard_arrow_up
-</i>
-</a>
-<a type=button class=pagination-action id=darkModeToggleButton>
-<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
-dark_mode
-</span>
-</a>
-</div>
-</div>
-<div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+<div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
 <div class=drawer-content>
 <div class=drawer-menu>
 <a class="a-block drawer-menu-item active" href=/posts>
@@ -124,18 +53,18 @@ About
 <center>- 目录 -</center>
 <ul>
 <li>
-<a href=#%e6%88%91%e7%9a%84para%e5%ae%9e%e8%b7%b5%e8%ae%b0%e5%bd%95 onclick="onNavClick(`#我的para实践记录-nav`)" id=我的para实践记录-nav>
+<a href=#%e6%88%91%e7%9a%84para%e5%ae%9e%e8%b7%b5%e8%ae%b0%e5%bd%95 class=nav-我的para实践记录>
 我的P.A.R.A实践记录
 </a>
 </li>
 <ul>
 <li>
-<a href=#%e4%bb%80%e4%b9%88%e6%98%afpara onclick="onNavClick(`#什么是para-nav`)" id=什么是para-nav>
+<a href=#%e4%bb%80%e4%b9%88%e6%98%afpara class=nav-什么是para>
 什么是P.A.R.A
 </a>
 </li>
 <li>
-<a href=#practice onclick="onNavClick(`#practice-nav`)" id=practice-nav>
+<a href=#practice class=nav-practice>
 Practice
 </a>
 </li>
@@ -236,7 +165,7 @@ dark_mode
 <a class=newer-posts>
 下回<br>已经到头啦。
 </a>
-<a class=older-posts href=https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/>
+<a class=older-posts href=/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/>
 上回<br>软件工程师的能力
 </a>
 </nav>
@@ -245,6 +174,78 @@ dark_mode
 </div>
 </div>
 </div>
+</div>
+</div><div id=sideContainer class=side-container>
+<a class="a-block nav-head false" href=https://akelio-zhang.github.io/>
+<div class=nav-title>
+LIFE CODER
+</div>
+<div class=nav-subtitle>
+Akelio's Blog
+</div>
+</a>
+<div class=nav-link-list>
+<a class="a-block nav-link-item active" href=/posts>
+Archive
+</a>
+<a class="a-block nav-link-item false" href=/categories>
+Categories
+</a>
+<a class="a-block nav-link-item false" href=/tags>
+Tags
+</a>
+<a class="a-block nav-link-item false" href=/index.xml>
+RSS Feed
+</a>
+<a class="a-block nav-link-item false" href=/about>
+About
+</a>
+</div>
+<div class=nav-footer>
+Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
+<br>
+移植自 <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a> <br>
+<br>
+&copy;
+2019-2022 Akelio All rights reserved.
+</div>
+</div><div id=extraContainer class=extra-container>
+<div class=toc-wrapper>
+<div class=toc>
+<div class=toc-content>
+<center>- 目录 -</center>
+<ul>
+<li>
+<a href=#%e6%88%91%e7%9a%84para%e5%ae%9e%e8%b7%b5%e8%ae%b0%e5%bd%95 class=nav-我的para实践记录>
+我的P.A.R.A实践记录
+</a>
+</li>
+<ul>
+<li>
+<a href=#%e4%bb%80%e4%b9%88%e6%98%afpara class=nav-什么是para>
+什么是P.A.R.A
+</a>
+</li>
+<li>
+<a href=#practice class=nav-practice>
+Practice
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class=pagination>
+<a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }">
+<i class="material-icons pagination-action-icon">
+keyboard_arrow_up
+</i>
+</a>
+<a type=button class=pagination-action id=darkModeToggleButton>
+<span class="material-icons pagination-action-icon" id=darkModeToggleIcon>
+dark_mode
+</span>
+</a>
 </div>
 </div><div id=single-column-footer>
 Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a>
@@ -255,6 +256,5 @@ Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by 
 2019-2022 Akelio All rights reserved.
 </div>
 </div>
-<script src=/js/journal.js></script>
-</body>
+<script src=/js/journal.js></script></body>
 </html>

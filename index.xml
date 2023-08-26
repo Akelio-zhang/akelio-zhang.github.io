@@ -192,61 +192,71 @@
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th>课程&lt;/th>
-&lt;th>内容&lt;/th>
-&lt;th>url&lt;/th>
+&lt;th>课程  &lt;/th>
+&lt;th>内容          &lt;/th>
+&lt;th>url                                                                    &lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td>CS186&lt;/td>
-&lt;td>数据库&lt;/td>
-&lt;td>&lt;a href="http://cs186berkeley.net/fa20/">http://cs186berkeley.net/fa20/&lt;/a>&lt;/td>
+&lt;td>CS61A  &lt;/td>
+&lt;td>程序抽象      &lt;/td>
+&lt;td>&lt;a href="https://cs61a.org/">https://cs61a.org/&lt;/a>                                                      &lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>15-445&lt;/td>
-&lt;td>数据库&lt;/td>
-&lt;td>&lt;a href="https://www.bilibili.com/video/BV1f7411z7dw">https://www.bilibili.com/video/BV1f7411z7dw&lt;/a>&lt;/td>
+&lt;td>CS61B  &lt;/td>
+&lt;td>数据结构与算法&lt;/td>
+&lt;td>&lt;a href="https://inst.eecs.berkeley.edu/~cs61b/sp22/">https://inst.eecs.berkeley.edu/~cs61b/sp22/&lt;/a>                              &lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>6.S081&lt;/td>
-&lt;td>操作系统&lt;/td>
-&lt;td>&lt;a href="https://www.bilibili.com/video/BV19k4y1C7kA">https://www.bilibili.com/video/BV19k4y1C7kA&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>rCore&lt;/td>
-&lt;td>操作系统&lt;/td>
-&lt;td>&lt;a href="https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html">https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html&lt;/a>&lt;/td>
+&lt;td>CS61C  &lt;/td>
+&lt;td>计算机体系结构&lt;/td>
+&lt;td>&lt;a href="https://cs61c.org/sp22/">https://cs61c.org/sp22/&lt;/a>                                                  &lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>6.NULL&lt;/td>
-&lt;td>基础&lt;/td>
-&lt;td>&lt;a href="https://missing.csail.mit.edu/">https://missing.csail.mit.edu/&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>CS229T&lt;/td>
-&lt;td>统计学习&lt;/td>
-&lt;td>&lt;a href="https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;amp;mid=2650754066&amp;amp;idx=1&amp;amp;sn=8dc9c75a1326ce885f594f8f9bca0ff9&amp;amp;chksm=871a886cb06d017af9ca42a381abc0fef218233ec6a7f5546061ccfeefa43f37453515a96320&amp;amp;mpshare=1&amp;amp;scene=1&amp;amp;srcid=1216s7HO0KtAYi06epv1ZBdV&amp;amp;sharer_sharetime=1639646339745&amp;amp;sharer_shareid=4f5e972d431ca863bcb02b778677068c#rd">斯坦福统计学习理论笔记：Percy Liang带你搞定「贼难」的理论基础 (qq.com)&lt;/a>&lt;/td>
+&lt;td>基础          &lt;/td>
+&lt;td>&lt;a href="https://missing.csail.mit.edu/">https://missing.csail.mit.edu/&lt;/a>                                        &lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>15-213&lt;/td>
 &lt;td>计算机系统基础&lt;/td>
-&lt;td>&lt;a href="https://www.cs.cmu.edu/~213/">https://www.cs.cmu.edu/~213/&lt;/a>&lt;/td>
+&lt;td>&lt;a href="https://www.cs.cmu.edu/~213/">https://www.cs.cmu.edu/~213/&lt;/a>                                              &lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>CS61A&lt;/td>
-&lt;td>程序抽象&lt;/td>
-&lt;td>&lt;a href="https://cs61a.org/">https://cs61a.org/&lt;/a>&lt;/td>
+&lt;td>6.S081&lt;/td>
+&lt;td>操作系统      &lt;/td>
+&lt;td>&lt;a href="https://www.bilibili.com/video/BV19k4y1C7kA">https://www.bilibili.com/video/BV19k4y1C7kA&lt;/a>            &lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>CS61B&lt;/td>
-&lt;td>数据结构与算法&lt;/td>
-&lt;td>&lt;a href="https://inst.eecs.berkeley.edu/~cs61b/sp22/">https://inst.eecs.berkeley.edu/~cs61b/sp22/&lt;/a>&lt;/td>
+&lt;td>rCore  &lt;/td>
+&lt;td>操作系统      &lt;/td>
+&lt;td>&lt;a href="https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html">https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html&lt;/a>          &lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>CS61C&lt;/td>
-&lt;td>计算机体系结构&lt;/td>
-&lt;td>&lt;a href="https://cs61c.org/sp22/">https://cs61c.org/sp22/&lt;/a>&lt;/td>
+&lt;td>CS186  &lt;/td>
+&lt;td>数据库        &lt;/td>
+&lt;td>&lt;a href="http://cs186berkeley.net/fa20/">http://cs186berkeley.net/fa20/&lt;/a>                                        &lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>15-445&lt;/td>
+&lt;td>数据库        &lt;/td>
+&lt;td>&lt;a href="https://www.bilibili.com/video/BV1f7411z7dw">https://www.bilibili.com/video/BV1f7411z7dw&lt;/a>                            &lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>6.S191&lt;/td>
+&lt;td>深度学习      &lt;/td>
+&lt;td>&lt;a href="http://introtodeeplearning.com/">http://introtodeeplearning.com/&lt;/a>  &lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>CS25  &lt;/td>
+&lt;td>深度学习      &lt;/td>
+&lt;td>&lt;a href="https://web.stanford.edu/class/cs25/">https://web.stanford.edu/class/cs25/&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>CS229T&lt;/td>
+&lt;td>统计学习      &lt;/td>
+&lt;td>&lt;a href="https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;amp;mid=2650754066&amp;amp;idx=1&amp;amp;sn=8dc9c75a1326ce885f594f8f9bca0ff9&amp;amp;chksm=871a886cb06d017af9ca42a381abc0fef218233ec6a7f5546061ccfeefa43f37453515a96320&amp;amp;mpshare=1&amp;amp;scene=1&amp;amp;srcid=1216s7HO0KtAYi06epv1ZBdV&amp;amp;sharer_sharetime=1639646339745&amp;amp;sharer_shareid=4f5e972d431ca863bcb02b778677068c#rd">斯坦福统计学习理论笔记：Percy Liang带你搞定「贼难」的理论基础 (qq.com)&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>

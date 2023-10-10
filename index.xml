@@ -787,25 +787,101 @@
 &lt;/ul>
 &lt;h2 id="我的自动化">我的自动化&lt;/h2>
 &lt;ul>
+&lt;li>backup
+&lt;ul>
 &lt;li>Github: awesome-list&lt;/li>
-&lt;li>Github: notion-backup&lt;/li>
-&lt;li>Github: blog deploy by hugo when push&lt;/li>
-&lt;li>iOS: Apple Watch (wakeup; 9:00; arrive at home)&lt;/li>
-&lt;li>iOS: clock switch (by Calendar)&lt;/li>
-&lt;li>iOS: wife&amp;rsquo;s clock (by feishu Calendar)&lt;/li>
+&lt;li>&lt;del>Github: notion-backup&lt;/del>&lt;/li>
+&lt;li>NAS: OneDrive to NAS&lt;/li>
 &lt;/ul>
-&lt;h2 id="我的存储">我的存储&lt;/h2>
-&lt;ol>
-&lt;li>OneDrive（文档，扫描件）&lt;/li>
-&lt;li>&lt;del>坚果云&lt;/del>（存量 books与文献）&lt;/li>
-&lt;li>阿里云盘（相册）&lt;/li>
-&lt;li>百度网盘（各类资源）&lt;/li>
-&lt;/ol>
+&lt;/li>
+&lt;li>Blog
+&lt;ul>
+&lt;li>Github: blog deploy by hugo when push&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Work
+&lt;ul>
+&lt;li>iOS-提醒事项同步到日历&lt;/li>
+&lt;li>iOS-工作日闹钟开关切换&lt;/li>
+&lt;li>iOS-发送待办到备忘录（今日、本周、10工作日内）&lt;/li>
+&lt;li>iOS-工作地点：手机profile切换&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Life
+&lt;ul>
+&lt;li>Bark-6:30 天气预报&lt;/li>
+&lt;li>Bark-14:30 Tesla check&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="toolbase">ToolBase&lt;/h2>
+&lt;h3 id="生产力">生产力&lt;/h3>
+&lt;ul>
+&lt;li>Terminal
+&lt;ul>
+&lt;li>warp AI+&lt;/li>
+&lt;li>Iterm2&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>CLI
+&lt;ul>
+&lt;li>fzf：文件搜索&lt;/li>
+&lt;li>ag：全文搜索&lt;/li>
+&lt;li>nali：IP查询&lt;/li>
+&lt;li>bat：cat in Rust&lt;/li>
+&lt;li>typst：文档渲染（现代latex？）&lt;/li>
+&lt;li>pandoc：通用文档转换器&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Container
+&lt;ul>
+&lt;li>Lima (virtual machine)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Mac Apps
+&lt;ul>
+&lt;li>Podman desktop：提供容器管理的GUI&lt;/li>
+&lt;li>Raycast (quick action) ：快捷操作中心，支持插件&lt;/li>
+&lt;li>Rectangle：提供类似Windows的分屏&lt;/li>
+&lt;li>Ollama：提供本地模型访问能力&lt;/li>
+&lt;li>AI Dente：电池管理&lt;/li>
+&lt;li>Stats：系统监控&lt;/li>
+&lt;li>Kawa：中日输入法快捷切换&lt;/li>
+&lt;li>mos：鼠标操控优化&lt;/li>
+&lt;li>keka：解压缩&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Other
+&lt;ul>
+&lt;li>Database
+&lt;ul>
+&lt;li>Ducked&lt;/li>
+&lt;li>Databend AI+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="其他">其他&lt;/h3>
+&lt;ul>
+&lt;li>摄影
+&lt;ul>
+&lt;li>Lightroom
+&lt;ul>
+&lt;li>平替：dxo photolab&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>外语学习
+&lt;ul>
+&lt;li>Language refactor/relingo/trancy&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
 &lt;h2 id="联系我">联系我&lt;/h2>
-&lt;ol>
-&lt;li>Gmail&lt;/li>
-&lt;li>Outlook&lt;/li>
+&lt;ul>
 &lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
-&lt;/ol>
-&lt;p>Last edited on 2023/05/08&lt;/p>
+&lt;/ul>
+&lt;p>Last edited on 2023/10/10&lt;/p>
 - https://akelio-zhang.github.io/about/ - 2019-2023 Akelio All rights reserved.</description></item></channel></rss>

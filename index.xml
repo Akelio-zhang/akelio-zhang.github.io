@@ -268,8 +268,14 @@
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;h3 id="四大名校的课程推荐">四大名校的课程推荐&lt;/h3>
+&lt;h3 id="课程与阅读推荐">课程与阅读推荐&lt;/h3>
 &lt;ul>
+&lt;li>阅读推荐
+&lt;ul>
+&lt;li>&lt;a href="https://csdiy.wiki/">CS自学指南&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/112763953">替你总结一份MIT计算机课程 - 知乎 (zhihu.com)&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>CMU
 &lt;ul>
 &lt;li>课程介绍：&lt;a href="http://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/undergraduatecomputerscience/#bscurriculumtextcontainer">Computer Science Program &amp;lt; Carnegie Mellon University (cmu.edu)&lt;/a>&lt;/li>
@@ -289,6 +295,81 @@
 &lt;li>Stanford
 &lt;ul>
 &lt;li>课程介绍：&lt;a href="https://cs.stanford.edu/academicz/courses">Courses | Stanford Computer Science&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="ps-css-courses-vs-ces-courses">PS. CS&amp;rsquo;s Courses Vs CE&amp;rsquo;s Courses&lt;/h2>
+&lt;ul>
+&lt;li>计算机科学
+&lt;ul>
+&lt;li>基本原理
+&lt;ul>
+&lt;li>数据结构与算法（ CS61A , CS61B ）&lt;/li>
+&lt;li>计算机体系架构（ CS61C , 15-213 ）
+&lt;ul>
+&lt;li>从小我就一直听说，计算机的世界是由 01 构成的，我不理解但大受震撼。如果你的内心也怀有这份好奇，不妨花一到两个月的时间学习 &lt;a href="https://csdiy.wiki/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/N2T/">Coursera: Nand2Tetris&lt;/a> 这门无门槛的计算机课程。这门麻雀虽小五脏俱全的课程会从 01 开始让你亲手造出一台计算机，并在上面运行俄罗斯方块小游戏。一门课里涵盖了编译、虚拟机、汇编、体系结构、数字电路、逻辑门等等从上至下、从软至硬的各类知识，非常全面。难度上也是通过精心的设计，略去了众多现代计算机复杂的细节，提取出了最核心本质的东西，力图让每个人都能理解。在低年级，如果就能从宏观上建立对整个计算机体系的鸟瞰图，是大有裨益的。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>电子基础（电路基础 EE16A &amp;amp; B 、信号与系统 EE120 ）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>领域基础
+&lt;ul>
+&lt;li>操作系统（ 6.S081 , CS162 ）&lt;/li>
+&lt;li>编译原理（ CS143 ）&lt;/li>
+&lt;li>网络（ CS144 ）&lt;/li>
+&lt;li>数据库（ 15-445 , CS186 ）&lt;/li>
+&lt;li>信息安全与加密&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>应用分支
+&lt;ul>
+&lt;li>软件工程（ CS169 ）&lt;/li>
+&lt;li>分布式系统（ 6.824 , 15-418 ）&lt;/li>
+&lt;li>科学计算&lt;/li>
+&lt;li>人机交互 HIC&lt;/li>
+&lt;li>图形学与可视化（ GAMES101 ）&lt;/li>
+&lt;li>AI&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>土木
+&lt;ul>
+&lt;li>基本原理
+&lt;ul>
+&lt;li>力学&lt;/li>
+&lt;li>材料&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>领域基础
+&lt;ul>
+&lt;li>概论&lt;/li>
+&lt;li>结构力学&lt;/li>
+&lt;li>工程结构设计原理（混凝土、钢结构）&lt;/li>
+&lt;li>弹性力学、土力学、水力学、工程经济学、工程测量&lt;/li>
+&lt;li>基础工程&lt;/li>
+&lt;li>工程施工&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>应用
+&lt;ul>
+&lt;li>建筑结构设计&lt;/li>
+&lt;li>桥梁工程&lt;/li>
+&lt;li>施工组织与预算&lt;/li>
+&lt;li>高级拓展课程
+&lt;ul>
+&lt;li>工程结构抗震与防灾&lt;/li>
+&lt;li>桥梁抗震与抗风&lt;/li>
+&lt;li>大跨空间结构设计与施工&lt;/li>
+&lt;li>高层钢结构&lt;/li>
+&lt;li>结构可靠性分析&lt;/li>
+&lt;li>结构检验&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>

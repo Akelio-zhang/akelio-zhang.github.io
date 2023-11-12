@@ -1,4 +1,56 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2023 Akelio All rights reserved.</copyright><lastBuildDate>Wed, 18 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>玩“谁”的游戏</title><link>https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/</link><pubDate>Wed, 18 Oct 2023 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/ -&lt;p>每个公司、行业都有其规则，这个世界也有自己的规则。有了规则就产生了对应的游戏。&lt;/p>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2023 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 12 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>心血来潮之「字体设计」</title><link>https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/</link><pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/ -&lt;h2 id="-起因">&amp;raquo; 起因&lt;/h2>
+&lt;p>今年下半年开始，一直觉得毕业开始工作后的几年一直拘泥于工作相关的知识汲取，其他知识大多游走于史政经相关领域。在 7 、 9 月集中做了几次 PPT 汇报后，越发觉得自己对字体选择的纠结与执着。相反，看到大多数人可能对字体的衬线、非衬线选择都是非常混乱。于是，就想看能不能系统地了解一下字体相关的知识；同时，还发现图书馆可以免费地借到这些专业书籍（省了一大笔费用）。就在 10 月的午后，开始了字体设计学习之旅。&lt;/p>
+&lt;h2 id="-结果">&amp;laquo; 结果&lt;/h2>
+&lt;blockquote>
+&lt;p>如果你是初学者，想了解字体设计相关的内容，从 &lt;a href="https://www.thetype.com/booklist/">The Type — 文字 / 设计 / 文化 » 相关书单&lt;/a> 开始。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>字体与生活
+&lt;ul>
+&lt;li>&lt;a href="https://book.douban.com/subject/36140138/">从字体开始 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>这本书写的非常贴合当前生活，让你感受到字体设计的魅力。对于我而言，我特别关注到在公共环境的字体应用非常有讲究：路牌字体、地铁站字体、奢侈品品牌字体，等等；其中，&lt;a href="https://www.mtr.com.hk/ch/customer/jp/index.php">港铁&lt;/a> 的字体是我觉得最具有吸引力的。
+&lt;ul>
+&lt;li>&lt;a href="https://railmapgen.gitlab.io/">地铁线路图设计&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>汉字设计
+&lt;ul>
+&lt;li>&lt;a href="https://book.douban.com/subject/36415619/">方寸之间 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>这本书算是从 19 世纪开始到现在的汉字设计方法及工具相关专业学术文章合辑。汉字字体设计这个领域整体来说，还是以日文学术文章为多。还有每年一届的 &lt;a href="https://tokyotypedirectorsclub.org/en/"> Tokyo TDC&lt;/a>。&lt;/li>
+&lt;li>&lt;a href="https://book.douban.com/subject/26844052/">字體設計100+1 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>这本书算是汉字设计的一些案例讨论，广而不深的感觉。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>西文字体设计
+&lt;ul>
+&lt;li>&lt;a href="https://book.douban.com/subject/25836269/">西文字体 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>入门书籍，让你了解整个字体设计的全貌（现代字体设计整体还是从西文字体发展起来的）。&lt;/li>
+&lt;li>&lt;a href="https://book.douban.com/subject/36540477/">西文字体设计方法 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://book.douban.com/subject/25842572/">字体设计的规则与艺术 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>以上两本都是西文字体的具体设计方法介绍，比较详实。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>好的字体也需要好的排版设计
+&lt;ul>
+&lt;li>&lt;a href="https://book.douban.com/subject/26664522/">写给大家看的设计书（第4版）&lt;/a> | 强烈推荐！&lt;/li>
+&lt;li>&lt;a href="https://book.douban.com/subject/26896124/">设计入门教室：设计的基本规则 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://static.googleusercontent.com/media/fonts.google.com/zh-CN//knowledge/stop_stealing_sheep.pdf">stop_stealing_sheep.pdf&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="-推荐">|| 推荐&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.thetype.com/">The Type — 文字 / 设计 / 文化&lt;/a>（有书单、 Podcast 、 Blog ）
+&lt;ul>
+&lt;li>&lt;a href="https://www.thetype.com/kongque/">孔雀计划：中文字体排印的思路&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://space.bilibili.com/38053181">六蛋老师的B站视频&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://book.douban.com/subject/30325780/">PPT设计的艺术——人人都用得上的PPT设计书（全彩） (豆瓣)&lt;/a>&lt;/li>
+&lt;/ul>
+- https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/ - 2019-2023 Akelio All rights reserved.</description></item><item><title>玩“谁”的游戏</title><link>https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/</link><pubDate>Wed, 18 Oct 2023 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/ -&lt;p>每个公司、行业都有其规则，这个世界也有自己的规则。有了规则就产生了对应的游戏。&lt;/p>
 &lt;p>如果你在行业的 Tier 1 企业，那么自然这个行业大大多数公司的游戏你都玩得转，反之，你可以只玩头当前这个游戏，换个游戏你就会很不适应。&lt;/p>
 &lt;p>规则终有人（们）来制定，那么，你在玩“谁”的游戏呢？&lt;/p>
 - https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/ - 2019-2023 Akelio All rights reserved.</description></item><item><title>我的P.A.R.A实践记录</title><link>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</link><pubDate>Sun, 19 Mar 2023 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/ -&lt;h1 id="我的para实践记录">我的P.A.R.A实践记录&lt;/h1>
@@ -719,57 +771,4 @@
 &lt;li>&lt;a href="https://www.bilibili.com/video/BV1sD4y1X7MQ">学生党M1 Mac入门指北_哔哩哔哩_bilibili&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.youtube.com/watch?v=67keaaWOKzE">Mac Tutorial for Beginners - Switching from Windows to macOS - YouTube&lt;/a>&lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ - 2019-2023 Akelio All rights reserved.</description></item><item><title>Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021-notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
-&lt;ol>
-&lt;li>有道云笔记（markdown支持太弱）&lt;/li>
-&lt;li>Microsoft Todo（不太适合大量文字记载）&lt;/li>
-&lt;li>语雀（不适合临时想法记录）&lt;/li>
-&lt;li>Typora/VS Code + Onedrive（文件之间的关联比较麻烦，没有统一的入口）&lt;/li>
-&lt;li>微信公众号（不适合个人内容记载，且使用起来比较麻烦，适合做推广）&lt;/li>
-&lt;/ol>
-&lt;h2 id="0x2-场景整理">0x2 场景整理&lt;/h2>
-&lt;p>问题的解决方案往往要追溯到需求本身，不然只是在为了使用而使用，缺乏了创造力。&lt;/p>
-&lt;ol>
-&lt;li>工作上对项目、系统的设计、开发、运维的文档落地与持续运维追踪。&lt;/li>
-&lt;li>读书笔记记录。&lt;/li>
-&lt;li>CS一些技术的学习笔记。&lt;/li>
-&lt;li>生活的一些行程安排或记录。&lt;/li>
-&lt;li>Todo List。&lt;/li>
-&lt;/ol>
-&lt;h2 id="0x3-notion最大好处就是all-in-one">0x3 Notion，最大好处就是ALL IN ONE。&lt;/h2>
-&lt;ol>
-&lt;li>良好的Markdown支持&lt;/li>
-&lt;li>UI符合我的审美需求&lt;/li>
-&lt;li>能够支持大量文字输入&lt;/li>
-&lt;li>因为是web，天生跨平台&lt;/li>
-&lt;li>block，database，link的设计，能够满足绝大部分的知识库使用场景（场景2-4）&lt;/li>
-&lt;li>支持项目管理，可部分替代teambition（场景1）&lt;/li>
-&lt;li>支持Todo，可部分替代todo app（场景5）&lt;/li>
-&lt;li>有些遗憾
-&lt;ol>
-&lt;li>所有数据在线，尽管有了Github的备份和导出，但是没有一套本地持久化的方案总觉得并不安心。&lt;/li>
-&lt;li>没有标签系统&lt;/li>
-&lt;li>不支持快速的外部文章导入&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;/ol>
-&lt;h2 id="0x4-目前的文字工作方式">0x4 目前的文字工作方式&lt;/h2>
-&lt;ol>
-&lt;li>DASHBOARD是所有内容的入口。&lt;/li>
-&lt;li>DASHBOARD展示的内容尽可能少，一般就是日常要做的、工作追踪、学习提升的三个入口。&lt;/li>
-&lt;li>Notion主要做有一些计划性的、需要有结果输出的文字工作。
-&lt;ol>
-&lt;li>每天使用Github进行备份&lt;/li>
-&lt;/ol>
-&lt;/li>
-&lt;li>[H1]Todo来承载一些紧急类的工作记录（往往重要性不会太强）【可以用便利贴替代】&lt;/li>
-&lt;li>[H2]Xmind承担思维脑图，基本无可替代，数据用Onedrive管理。&lt;/li>
-&lt;li>[H3]备忘录只做个人信息备忘录，待办事项直接用todo/cubox解决。&lt;/li>
-&lt;li>[IN]cubox承载信息流的记录（手机、PC浏览器），替代之前的微信收藏、知乎收藏。&lt;/li>
-&lt;li>[OUT]微信公众号、知乎专栏用来做对外输出。（Notion本身也提供了链接分享，但是有墙，并没有什么x用）&lt;/li>
-&lt;li>&lt;del>放弃语雀&lt;/del>，是因为流量还是小了一点。&lt;/li>
-&lt;li>&lt;del>Onenote暂时处于停止使用的状态&lt;/del>，主要原因是格式版本比较心累，markdown不好用，跨平台能力有限。但是对于一些图、画较多的场景，Onenote有他自由排版的优势。&lt;/li>
-&lt;li>当然，目前在使用Notion还有一些不舒服的地方：1）DASHBOARD呈现的内容过多，会分散注意力；2）Notion中很多已经完成的内容，目前只是简单放在database置为完成状态，或者移入存档Page。这些内容在较长不会做更新，却依旧占据了较多的篇幅，也会分散注意力。目前使用toggle或者database filter来隐藏。&lt;/li>
-&lt;/ol>
-&lt;p>&lt;img src="https://s2.loli.net/2022/08/20/IG97nj3AkKQacL2.png" alt="/images/notion-station.webp">&lt;/p>
-- https://akelio-zhang.github.io/posts/2021-notion/ - 2019-2023 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E8%AE%BE%E7%BD%AE/ - 2019-2023 Akelio All rights reserved.</description></item></channel></rss>

@@ -1,4 +1,57 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2023 Akelio All rights reserved.</copyright><lastBuildDate>Wed, 18 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>About Me</title><link>https://akelio-zhang.github.io/about/</link><pubDate>Wed, 26 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/about/</guid><description>LIFE CODER https://akelio-zhang.github.io/about/ -&lt;blockquote>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2023 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 12 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021-notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
+&lt;ol>
+&lt;li>有道云笔记（markdown支持太弱）&lt;/li>
+&lt;li>Microsoft Todo（不太适合大量文字记载）&lt;/li>
+&lt;li>语雀（不适合临时想法记录）&lt;/li>
+&lt;li>Typora/VS Code + Onedrive（文件之间的关联比较麻烦，没有统一的入口）&lt;/li>
+&lt;li>微信公众号（不适合个人内容记载，且使用起来比较麻烦，适合做推广）&lt;/li>
+&lt;/ol>
+&lt;h2 id="0x2-场景整理">0x2 场景整理&lt;/h2>
+&lt;p>问题的解决方案往往要追溯到需求本身，不然只是在为了使用而使用，缺乏了创造力。&lt;/p>
+&lt;ol>
+&lt;li>工作上对项目、系统的设计、开发、运维的文档落地与持续运维追踪。&lt;/li>
+&lt;li>读书笔记记录。&lt;/li>
+&lt;li>CS一些技术的学习笔记。&lt;/li>
+&lt;li>生活的一些行程安排或记录。&lt;/li>
+&lt;li>Todo List。&lt;/li>
+&lt;/ol>
+&lt;h2 id="0x3-notion最大好处就是all-in-one">0x3 Notion，最大好处就是ALL IN ONE。&lt;/h2>
+&lt;ol>
+&lt;li>良好的Markdown支持&lt;/li>
+&lt;li>UI符合我的审美需求&lt;/li>
+&lt;li>能够支持大量文字输入&lt;/li>
+&lt;li>因为是web，天生跨平台&lt;/li>
+&lt;li>block，database，link的设计，能够满足绝大部分的知识库使用场景（场景2-4）&lt;/li>
+&lt;li>支持项目管理，可部分替代teambition（场景1）&lt;/li>
+&lt;li>支持Todo，可部分替代todo app（场景5）&lt;/li>
+&lt;li>有些遗憾
+&lt;ol>
+&lt;li>所有数据在线，尽管有了Github的备份和导出，但是没有一套本地持久化的方案总觉得并不安心。&lt;/li>
+&lt;li>没有标签系统&lt;/li>
+&lt;li>不支持快速的外部文章导入&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="0x4-目前的文字工作方式">0x4 目前的文字工作方式&lt;/h2>
+&lt;ol>
+&lt;li>DASHBOARD是所有内容的入口。&lt;/li>
+&lt;li>DASHBOARD展示的内容尽可能少，一般就是日常要做的、工作追踪、学习提升的三个入口。&lt;/li>
+&lt;li>Notion主要做有一些计划性的、需要有结果输出的文字工作。
+&lt;ol>
+&lt;li>每天使用Github进行备份&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>[H1]Todo来承载一些紧急类的工作记录（往往重要性不会太强）【可以用便利贴替代】&lt;/li>
+&lt;li>[H2]Xmind承担思维脑图，基本无可替代，数据用Onedrive管理。&lt;/li>
+&lt;li>[H3]备忘录只做个人信息备忘录，待办事项直接用todo/cubox解决。&lt;/li>
+&lt;li>[IN]cubox承载信息流的记录（手机、PC浏览器），替代之前的微信收藏、知乎收藏。&lt;/li>
+&lt;li>[OUT]微信公众号、知乎专栏用来做对外输出。（Notion本身也提供了链接分享，但是有墙，并没有什么x用）&lt;/li>
+&lt;li>&lt;del>放弃语雀&lt;/del>，是因为流量还是小了一点。&lt;/li>
+&lt;li>&lt;del>Onenote暂时处于停止使用的状态&lt;/del>，主要原因是格式版本比较心累，markdown不好用，跨平台能力有限。但是对于一些图、画较多的场景，Onenote有他自由排版的优势。&lt;/li>
+&lt;li>当然，目前在使用Notion还有一些不舒服的地方：1）DASHBOARD呈现的内容过多，会分散注意力；2）Notion中很多已经完成的内容，目前只是简单放在database置为完成状态，或者移入存档Page。这些内容在较长不会做更新，却依旧占据了较多的篇幅，也会分散注意力。目前使用toggle或者database filter来隐藏。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://s2.loli.net/2022/08/20/IG97nj3AkKQacL2.png" alt="/images/notion-station.webp">&lt;/p>
+- https://akelio-zhang.github.io/posts/2021-notion/ - 2019-2023 Akelio All rights reserved.</description></item><item><title>About Me</title><link>https://akelio-zhang.github.io/about/</link><pubDate>Wed, 26 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/about/</guid><description>LIFE CODER https://akelio-zhang.github.io/about/ -&lt;blockquote>
 &lt;p>绝大多数软件都为生产活动在数字世界的投射。&lt;/p>
 &lt;/blockquote>
 &lt;p>&lt;strong>Coder &amp;amp; Photographer&lt;/strong>&lt;/p>

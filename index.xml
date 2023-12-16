@@ -140,7 +140,7 @@
 &lt;ul>
 &lt;li>入门
 &lt;ul>
-&lt;li>（&lt;a href="https://www.bilibili.com/video/BV1EW411u7th">Crash Course Computer Science&lt;/a>）&lt;/li>
+&lt;li>&lt;a href="https://www.bilibili.com/video/BV1EW411u7th">Crash Course Computer Science&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>数据基础
@@ -157,7 +157,7 @@
 &lt;/li>
 &lt;li>计算机架构入门
 &lt;ul>
-&lt;li>（&lt;a href="https://www.coursera.org/learn/build-a-computer#syllabus">Build a Modern Computer from First Principles: From Nand to Tetris (Project-Centered Course) | Coursera&lt;/a>）&lt;/li>
+&lt;li>&lt;a href="https://www.coursera.org/learn/build-a-computer#syllabus">Build a Modern Computer from First Principles: From Nand to Tetris (Project-Centered Course) | Coursera&lt;/a>&lt;/li>
 &lt;li>15-213/CS61C&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -178,12 +178,8 @@
 &lt;/li>
 &lt;li>操作系统
 &lt;ul>
-&lt;li>&lt;a href="http://jyywiki.cn/OS/2022/">操作系统：设计与实现@南京大学&lt;/a>/6.S081/CS162&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>网络
-&lt;ul>
-&lt;li>CS144&lt;/li>
+&lt;li>Cn: &lt;a href="http://jyywiki.cn/OS/2022/">操作系统：设计与实现@南京大学&lt;/a>&lt;/li>
+&lt;li>En: 6.S081/CS162&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>数据库
@@ -199,7 +195,12 @@
 &lt;li>编译原理
 &lt;ul>
 &lt;li>CS143&lt;/li>
-&lt;li>(&lt;a href="https://craftinginterpreters.com/introduction.html">Introduction · Crafting Interpreters&lt;/a>)&lt;/li>
+&lt;li>&lt;a href="https://craftinginterpreters.com/introduction.html">Introduction · Crafting Interpreters&lt;/a>；中文翻译：&lt;a href="https://readonly.link/books/https://raw.githubusercontent.com/GuoYaxiang/craftinginterpreters_zh/main/book.json?front-matter=contents">Crafting Interpreters-CN&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>网络
+&lt;ul>
+&lt;li>CS144&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -343,6 +344,7 @@
 &lt;ul>
 &lt;li>阅读推荐
 &lt;ul>
+&lt;li>&lt;a href="https://jyywiki.cn/Reading_List.md">JYY阅读推荐&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://csdiy.wiki/">CS自学指南&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/112763953">替你总结一份MIT计算机课程 - 知乎 (zhihu.com)&lt;/a>&lt;/li>
 &lt;/ul>
@@ -424,7 +426,7 @@
 &lt;li>工程施工&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>应用
+&lt;li>应用分支
 &lt;ul>
 &lt;li>建筑结构设计&lt;/li>
 &lt;li>桥梁工程&lt;/li>

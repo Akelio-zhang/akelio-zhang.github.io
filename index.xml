@@ -1,4 +1,56 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2023 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 12 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>心血来潮之「字体设计」</title><link>https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/</link><pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/ -&lt;h2 id="-起因">&amp;raquo; 起因&lt;/h2>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2023 Akelio All rights reserved.</copyright><lastBuildDate>Sat, 01 Jun 2024 15:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>软件开发的一些思考与Hint</title><link>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</link><pubDate>Sat, 01 Jun 2024 15:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/ -&lt;h2 id="业务价值与驱动力">业务价值与驱动力&lt;/h2>
+&lt;ul>
+&lt;li>大局观&amp;amp;格局（森林）//  细节 （树木）&lt;/li>
+&lt;li>代码不是资产/财富，代码是负债。代码实现的那个背后的需求才是资产/财富。&lt;/li>
+&lt;li>代码本身并没有价值，运行、数据沉淀才是价值。&lt;/li>
+&lt;li>结合上面两个，在大多数业务场景里面，想法起点和运营成果才是价值&lt;/li>
+&lt;li>软件行业中，代码目前看起来并不具备护城河能力（开源、复制），数据才是护城河，特别是与社会资源强关联的那些（社交、金融资产、生产活动）&lt;/li>
+&lt;li>要做有门槛的事，建立自己的护城河和影响力&lt;/li>
+&lt;li>制定标准与构建生态（apple，sony）&lt;/li>
+&lt;li>数据驱动，数智赋能，价值在外的思维（业务）&lt;/li>
+&lt;/ul>
+&lt;h2 id="软件工程">软件工程&lt;/h2>
+&lt;ul>
+&lt;li>操作系统是一个程序，这个程序的用户是程序员或者一般人员。那我们做系统（某种意义上程序的集合）需要充分考虑我们的用户，做好对外的提供的api和对象。内部做好实现。&lt;/li>
+&lt;li>Unix环境高级编程：从应用系统深入到操作系统；几乎所有的性能优化，都在CA、OS能找到相同的思想理念。&lt;/li>
+&lt;li>编程、计算机是来解决问题，提升效率的。&lt;/li>
+&lt;li>系统功能正确性（输入与输出、内在状态变更）系统内外 VS 函数内外&lt;/li>
+&lt;li>Meta method：抽象 分层 组合&lt;/li>
+&lt;/ul>
+&lt;h2 id="系统选型">系统选型&lt;/h2>
+&lt;ul>
+&lt;li>没有银弹，所有系统架构都有优势、劣势。最典型的就是批处理系统与实时流处理系统的优劣势。&lt;/li>
+&lt;li>系统选型时，首先明确（业务、科技）需求优先级，再考虑系统的长期性（考虑未来迁移、运维的成本）。&lt;/li>
+&lt;/ul>
+&lt;h2 id="年度经验">年度经验&lt;/h2>
+&lt;ul>
+&lt;li>2023经验
+&lt;ul>
+&lt;li>五年工作经历，需要更多的是深度与解决问题的能力（很多问题可能是没碰到过，应该做出正确的方案选择）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>2022经验
+&lt;ul>
+&lt;li>重要的是个人能力提升与影响力，金钱是副产物&lt;/li>
+&lt;li>重要的是脚踏实地，能够解决具体的问题，并且保持大方向与积极反馈修正。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="其他人的思考引用">其他人的思考引用&lt;/h2>
+&lt;h3 id="南大老师的话">南大老师的话&lt;/h3>
+&lt;p>来源：&lt;a href="https://www.bilibili.com/video/BV1uR4y167pA/">“大学除了专业知识，还应该学些什么？” 南京大学《SICP》课堂李樾老师的絮絮叨叨_哔哩哔哩_bilibili&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;ol>
+&lt;li>有限时间内快速（搜索）汲取知识并化为己用的能力&lt;/li>
+&lt;li>这种能力需要训练，系统性地向他人介绍一块知识内容（往往自顶向下）&lt;/li>
+&lt;li>通过实践，实现一个具体的系统来综合运用知识（使用概念与抽象）&lt;/li>
+&lt;li>面对压力困难迷茫时，接纳自己，认同自己，积极应对和拿出勇气&lt;/li>
+&lt;li>理解他人、包容他人、博爱他人&lt;/li>
+&lt;li>学会原谅自己，爱自己&lt;/li>
+&lt;li>be different，做自己，让自己幸福&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+- https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/ - 2019-2023 Akelio All rights reserved.</description></item><item><title>心血来潮之「字体设计」</title><link>https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/</link><pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/ -&lt;h2 id="-起因">&amp;raquo; 起因&lt;/h2>
 &lt;p>今年下半年开始，一直觉得毕业开始工作后的几年一直拘泥于工作相关的知识汲取，其他知识大多游走于史政经相关领域。在 7 、 9 月集中做了几次 PPT 汇报后，越发觉得自己对字体选择的纠结与执着。相反，看到大多数人可能对字体的衬线、非衬线选择都是非常混乱。于是，就想看能不能系统地了解一下字体相关的知识；同时，还发现图书馆可以免费地借到这些专业书籍（省了一大笔费用）。就在 10 月的午后，开始了字体设计学习之旅。&lt;/p>
 &lt;h2 id="-结果">&amp;laquo; 结果&lt;/h2>
 &lt;blockquote>
@@ -716,109 +768,4 @@
 &lt;p>⭐&lt;a href="https://jeffe.cs.illinois.edu/teaching/algorithms/#book">Algorithms by Jeff Erickson (illinois.edu)&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2023 Akelio All rights reserved.</description></item><item><title>MacBook Pro到手配置</title><link>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ -&lt;h1 id="macbook-pro-到手配置">MacBook Pro 到手配置&lt;/h1>
-&lt;blockquote>
-&lt;p>14' | M1 Pro | 32G | 512GB&lt;/p>
-&lt;/blockquote>
-&lt;h2 id="setup">Setup&lt;/h2>
-&lt;ol>
-&lt;li>Hot corner&lt;/li>
-&lt;li>程序坞的大小与缩小&lt;/li>
-&lt;li>Apple Watch 解锁&lt;/li>
-&lt;li>触控板手势&lt;/li>
-&lt;li>iCloud 设置&lt;/li>
-&lt;li>桌面使用叠放&lt;/li>
-&lt;li>finder 显示状态栏&lt;/li>
-&lt;/ol>
-&lt;h2 id="application">Application&lt;/h2>
-&lt;ul>
-&lt;li>Productivity
-&lt;ul>
-&lt;li>Microsoft Series
-&lt;ul>
-&lt;li>Office 365&lt;/li>
-&lt;li>Outlook&lt;/li>
-&lt;li>Edge&lt;/li>
-&lt;li>OneDrive&lt;/li>
-&lt;li>Todo&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Information Manager
-&lt;ul>
-&lt;li>( I ) Cubox&lt;/li>
-&lt;li>( K / W ) Obsidian&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>UI
-&lt;ul>
-&lt;li>Xmind&lt;/li>
-&lt;li>Sketch&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Enhancement
-&lt;ul>
-&lt;li>Raycast&lt;/li>
-&lt;li>Stats&lt;/li>
-&lt;li>AIDente&lt;/li>
-&lt;li>Mos&lt;/li>
-&lt;li>Rectangle&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Developer
-&lt;ul>
-&lt;li>Homebrew , &lt;a href="https://brew.idayer.com/guide/">https://brew.idayer.com/guide/&lt;/a>&lt;/li>
-&lt;li>VS code
-&lt;ul>
-&lt;li>Tongyi Lingma&lt;/li>
-&lt;li>Markdown All in One&lt;/li>
-&lt;li>Wakatime&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Terminal
-&lt;ul>
-&lt;li>item2 + ayu // Warp&lt;/li>
-&lt;li>&lt;a href="https://wyydsb.xin/Operations/terminal.html#zsh-sh">https://wyydsb.xin/Operations/terminal.html#zsh-sh&lt;/a>&lt;/li>
-&lt;li>Zsh-syntax-highlighting&lt;/li>
-&lt;li>Zsh-autosuggestions&lt;/li>
-&lt;li>Fzf with vim plugin&lt;/li>
-&lt;li>vimrc + vim plug&lt;/li>
-&lt;li>tabnine by coc.nvim&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Java
-&lt;ul>
-&lt;li>JDK by SDKman
-&lt;ul>
-&lt;li>&lt;a href="https://whichjdk.com/">Which Version of JDK Should I Use? | whichjdk.com&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>JetBrains IDEA&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Go
-&lt;ul>
-&lt;li>brew install golang&lt;/li>
-&lt;li>go proxy setup&lt;/li>
-&lt;li>Goland&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Entermaint
-&lt;ul>
-&lt;li>IINA&lt;/li>
-&lt;li>Maipo&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h2 id="参考">参考&lt;/h2>
-&lt;ol>
-&lt;li>⭐️ &lt;a href="https://www.sqlsec.com/macsoft.html">MAC 常用软件清单 | 国光&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://zhuye.notion.site/Macbook-M1-9c908ba2946440aeb02d63609c9990ae">Macbook环境配置（含M1） (notion.site)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://rualc.com/workspace/mac/#brew">Mac 环境（M1 + Monterey） | 前端指南 (rualc.com)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.bilibili.com/video/BV1sD4y1X7MQ">学生党M1 Mac入门指北_哔哩哔哩_bilibili&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.youtube.com/watch?v=67keaaWOKzE">Mac Tutorial for Beginners - Switching from Windows to macOS - YouTube&lt;/a>&lt;/li>
-&lt;/ol>
-- https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ - 2019-2023 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2023 Akelio All rights reserved.</description></item></channel></rss>

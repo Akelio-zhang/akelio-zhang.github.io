@@ -1,6 +1,6 @@
 <?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2023 Akelio All rights reserved.</copyright><lastBuildDate>Sat, 01 Jun 2024 15:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>MacBook Pro到手配置</title><link>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ -&lt;h1 id="macbook-pro-到手配置">MacBook Pro 到手配置&lt;/h1>
 &lt;blockquote>
-&lt;p>14' | M1 Pro | 32G | 512GB&lt;/p>
+&lt;p>14&amp;rsquo; | M1 Pro | 32G | 512GB&lt;/p>
 &lt;/blockquote>
 &lt;h2 id="setup">Setup&lt;/h2>
 &lt;ol>
@@ -212,7 +212,7 @@
 &lt;ul>
 &lt;li>iPhone 14 Pro Max (256G), Year 2022&lt;/li>
 &lt;li>iPhone X (64G), Year 2018&lt;/li>
-&lt;li>iPad Pro 2019 12.9', Year 2019&lt;/li>
+&lt;li>iPad Pro 2019 12.9&amp;rsquo;, Year 2019&lt;/li>
 &lt;li>[[Homelab方案]], Year 2021&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -449,21 +449,39 @@
 &lt;/ol>
 &lt;h2 id="八实现方式之数据结构">八、实现方式之数据结构&lt;/h2>
 &lt;p>在Git当中，&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-markdown" data-lang="markdown">
-// 一个文件就是字节数组
-type blob = array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">byte&lt;/span>&amp;gt;
-// 一个目录包含文件或者其他目录
-type tree = map&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">string&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">,&lt;/span> &lt;span style="color:#658b00">tree&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">|&lt;/span> &lt;span style="color:#658b00">blob&lt;/span>&amp;gt;
-// 一个commit包含它的父节点，原始信息，顶级目录（快）
-type commit = struct {
-    parents: array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">commit&lt;/span>&amp;gt;
-    author: string
-    message: string
-    snapshot: tree
-}
-// 文件、目录、commit最终都以object类型进行存储
-type object = blob | tree | commit
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样看起来，每一次修改文件并提交git仓库后，都会新建一个blob对象，并作为新的快照内部的文件使用，因此，git仓库存储空间可能会越来越大，特别是对于那些二进制文件（非文本文件，难以压缩）。这时候可以通过&lt;code>git gc&lt;/code>进行git仓库压缩，这里面的算法大家可以自己去探索一下。根据我的经验，能大概缩小到原本的1/3~1/2。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 一个文件就是字节数组
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>type blob = array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">byte&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 一个目录包含文件或者其他目录
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>type tree = map&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">string&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">,&lt;/span> &lt;span style="color:#658b00">tree&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">|&lt;/span> &lt;span style="color:#658b00">blob&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 一个commit包含它的父节点，原始信息，顶级目录（快）
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>type commit = struct {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>    parents: array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">commit&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>    author: string
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>    message: string
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>    snapshot: tree
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 文件、目录、commit最终都以object类型进行存储
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>type object = blob | tree | commit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样看起来，每一次修改文件并提交git仓库后，都会新建一个blob对象，并作为新的快照内部的文件使用，因此，git仓库存储空间可能会越来越大，特别是对于那些二进制文件（非文本文件，难以压缩）。这时候可以通过&lt;code>git gc&lt;/code>进行git仓库压缩，这里面的算法大家可以自己去探索一下。根据我的经验，能大概缩小到原本的1/3~1/2。&lt;/p>
 &lt;h2 id="九参考">九、参考&lt;/h2>
 &lt;h3 id="cheatsheet">Cheatsheet&lt;/h3>
 &lt;ol>
@@ -479,25 +497,49 @@ type object = blob | tree | commit
 &lt;li>&lt;a href="https://missing.csail.mit.edu/2020/version-control/">Version Control (Git) · the missing semester of your cs education (mit.edu)&lt;/a>&lt;/li>
 &lt;/ol>
 &lt;h2 id="some-code">Some code&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">
-git clone
-git branch --track dev origin/dev
-git checkout dev
-git add &amp;amp; git commit
-git push
-Merge Request (MR)
-git restore -S &amp;lt;files or dir&amp;gt;
-git reset -mixed HEAD~1
-git reset --mixed &amp;lt;commit_id&amp;gt;
-git revert &amp;lt;commit_id&amp;gt;
-git pull --rebase
-git pull
-git checkout -b &amp;lt;branch_name&amp;gt;
-...
-git merge dev
-git stash
-git stash pop
-&lt;/code>&lt;/pre>&lt;/div>- https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ - 2019-2023 Akelio All rights reserved.</description></item><item><title>2020社招互联网技术面试总结</title><link>https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/</link><pubDate>Sun, 28 Mar 2021 18:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/ -&lt;h1 id="2020社招互联网技术面试总结">2020社招互联网技术面试总结&lt;/h1>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git clone
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git branch --track dev origin/dev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git checkout dev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add &amp;amp; git commit
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git push
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Merge Request (MR)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git restore -S &amp;lt;files or dir&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git reset -mixed HEAD~1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git reset --mixed &amp;lt;commit_id&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git revert &amp;lt;commit_id&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git pull --rebase
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git pull
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git checkout -b &amp;lt;branch_name&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git merge dev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git stash
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git stash pop
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>- https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ - 2019-2023 Akelio All rights reserved.</description></item><item><title>2020社招互联网技术面试总结</title><link>https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/</link><pubDate>Sun, 28 Mar 2021 18:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020-%E7%A4%BE%E6%8B%9B%E4%BA%92%E8%81%94%E7%BD%91%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/ -&lt;h1 id="2020社招互联网技术面试总结">2020社招互联网技术面试总结&lt;/h1>
 &lt;h2 id="准备">准备&lt;/h2>
 &lt;h3 id="用人单位招聘诉求">用人单位招聘诉求&lt;/h3>
 &lt;p>对于每个用人单位来说，他们有两个诉求：1.招聘到能够立马(尽快)胜任工作并解决业务痛点的人；2.减少用人成本。&lt;/p>

@@ -161,72 +161,71 @@
 &lt;/blockquote>
 &lt;p>&lt;strong>Coder &amp;amp; Photographer&lt;/strong>&lt;/p>
 &lt;h2 id="我的设备">我的设备&lt;/h2>
-&lt;p>[工作]&lt;/p>
+&lt;h3 id="office">@Office&lt;/h3>
 &lt;ul>
 &lt;li>Computing
 &lt;ul>
-&lt;li>Macbook Pro (M1 Pro + 32G), Year 2022&lt;/li>
-&lt;li>*PC (i7-8700 + 32G + GTX 1066), Year 2020&lt;/li>
-&lt;li>*NUC 11 (16G) for ESXi (Homelab: win10 + Manjaro), Year 2021&lt;/li>
-&lt;li>*QNAP T453D mini with (512G + 256G + 4T), Year 2021&lt;/li>
-&lt;li>*ThinkPad T460s (i7-6600U + 8G), Year 2016&lt;/li>
-&lt;li>*RaspBerry 3 (for scheduling), Year 2015&lt;/li>
+&lt;li>Year 2022, Macbook Pro (M1 Pro + 32G)&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Monitor
 &lt;ul>
-&lt;li>*Dell 2720Q, Year 2020&lt;/li>
-&lt;li>*Dell 2414H, Year 2015&lt;/li>
-&lt;li>Dell 2520DR, Year 2020&lt;/li>
+&lt;li>Year 2020, Dell 2520DR&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>Keyboard
+&lt;li>IO
 &lt;ul>
-&lt;li>Max Keys&lt;/li>
-&lt;li>*Filco 87 Black&lt;/li>
-&lt;li>Anne Pro II&lt;/li>
+&lt;li>Year 2024, GPW 2&lt;/li>
+&lt;li>Year 2021, Max Keys&lt;/li>
+&lt;li>Year 2021, Anne Pro II&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>Mouse
-&lt;ul>
-&lt;li>*GPW&lt;/li>
-&lt;li>G304&lt;/li>
 &lt;/ul>
-&lt;/li>
-&lt;li>Speaker
-&lt;ul>
-&lt;li>*Bose SoundLink Resolve&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Lighter
-&lt;ul>
-&lt;li>*BenQ ScreenBar Halo&lt;/li>
-&lt;li>Xiaomi ScreenBar&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>star(*) for home use&lt;/li>
-&lt;/ul>
-&lt;p>[生活]&lt;/p>
+&lt;h3 id="in-life">in Life&lt;/h3>
 &lt;ul>
 &lt;li>Computing
 &lt;ul>
-&lt;li>iPhone 14 Pro Max (256G), Year 2022&lt;/li>
-&lt;li>iPhone X (64G), Year 2018&lt;/li>
-&lt;li>iPad Pro 2019 12.9&amp;rsquo;, Year 2019&lt;/li>
-&lt;li>[[Homelab方案]], Year 2021&lt;/li>
+&lt;li>Year 2020, PC (i7-8700 + 32G + GTX 1066)&lt;/li>
+&lt;li>Year 2021, NUC 11 (16G) for ESXi (Homelab: win10 + Manjaro)&lt;/li>
+&lt;li>Year 2021, QNAP T453D mini with (512G + 256G + 4T)-[[Homelab方案]]&lt;/li>
+&lt;li>Year 2016, ThinkPad T460s (i7-6600U + 8G)&lt;/li>
+&lt;li>Year 2015, RaspBerry 3 (for scheduling)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Mobile Computing
+&lt;ul>
+&lt;li>Year 2022, iPhone 14 Pro Max (256G),&lt;/li>
+&lt;li>Year 2018, iPhone X (64G),&lt;/li>
+&lt;li>Year 2019, iPad Pro 2019 12.9'&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Speaker &amp;amp; Headphone
 &lt;ul>
+&lt;li>Year 2024, Bose Quite Ultra&lt;/li>
 &lt;li>Year 2022, Marshall Stanmore II&lt;/li>
 &lt;li>Year 2020, Airpods Pro&lt;/li>
+&lt;li>Year 2019, Bose SoundLink Resolve&lt;/li>
 &lt;li>Year 2017, Bose QC30&lt;/li>
 &lt;li>Year 2016, Sony 1A-DAC&lt;/li>
 &lt;li>Year 2015, Sennheiser MOMENTUM&lt;/li>
 &lt;/ul>
 &lt;/li>
+&lt;li>Monitor
+&lt;ul>
+&lt;li>Year 2023, LG 27GP95R&lt;/li>
+&lt;li>Year 2020, Dell 2720Q&lt;/li>
+&lt;li>Year 2015, Dell 2414H&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>IO
+&lt;ul>
+&lt;li>Year 2020, GPW&lt;/li>
+&lt;li>Year 2019, Filco 87&lt;/li>
+&lt;/ul>
+&lt;/li>
 &lt;li>Camera
 &lt;ul>
+&lt;li>Year 2024, A7C2 + 2070F4&lt;/li>
 &lt;li>Year 2013, Fujifilm X10&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -234,6 +233,12 @@
 &lt;ul>
 &lt;li>Year 2022, PlayStation 5&lt;/li>
 &lt;li>Year 2018, Nintendo Switch&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Lighter
+&lt;ul>
+&lt;li>Year 2021, BenQ ScreenBar Halo&lt;/li>
+&lt;li>Year 2020, Xiaomi ScreenBar&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -265,11 +270,12 @@
 &lt;li>Blog
 &lt;ul>
 &lt;li>Github: blog deploy by hugo when push&lt;/li>
+&lt;li>Cloudflare static website&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>Work
 &lt;ul>
-&lt;li>iOS-提醒事项同步到日历&lt;/li>
+&lt;li>&lt;del>iOS-提醒事项同步到日历&lt;/del>(iOS 18 has this feature)&lt;/li>
 &lt;li>iOS-工作日闹钟开关切换&lt;/li>
 &lt;li>iOS-发送待办到备忘录（今日、本周、10工作日内）&lt;/li>
 &lt;li>iOS-工作地点：手机profile切换&lt;/li>
@@ -351,7 +357,7 @@
 &lt;ul>
 &lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;p>Last edited on 2023/10/10&lt;/p>
+&lt;p>Last edited on 2024/11/03&lt;/p>
 - https://akelio-zhang.github.io/about/ - 2019-2023 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
 &lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>

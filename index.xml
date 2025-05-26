@@ -1,4 +1,6 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sat, 01 Jun 2024 15:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>软件开发的一些思考与Hint</title><link>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</link><pubDate>Sat, 01 Jun 2024 15:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/ -&lt;h2 id="业务价值与驱动力">业务价值与驱动力&lt;/h2>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Fri, 23 May 2025 15:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>产品力</title><link>https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/</link><pubDate>Fri, 23 May 2025 15:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/ -&lt;p>理工科人总是会关注到技术细节，但产品并不是简单的技术细节叠加，而是一个综合结果。譬如车辆、手机、甚至键盘、音响。&lt;/p>
+&lt;p>那对于软件系统（产品）而言更是如此，如何打造一个有产品力的软件系统？&lt;/p>
+- https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>软件开发的一些思考与Hint</title><link>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</link><pubDate>Sat, 01 Jun 2024 15:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/ -&lt;h2 id="业务价值与驱动力">业务价值与驱动力&lt;/h2>
 &lt;ul>
 &lt;li>大局观&amp;amp;格局（森林）//  细节 （树木）&lt;/li>
 &lt;li>代码不是资产/财富，代码是负债。代码实现的那个背后的需求才是资产/财富。&lt;/li>
@@ -48,14 +50,12 @@
 &lt;li>理解他人、包容他人、博爱他人&lt;/li>
 &lt;li>学会原谅自己，爱自己&lt;/li>
 &lt;li>be different，做自己，让自己幸福&lt;/li>
-&lt;/ol>
-&lt;/blockquote>
+&lt;/ol>&lt;/blockquote>
 - https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>心血来潮之「字体设计」</title><link>https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/</link><pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/ -&lt;h2 id="-起因">&amp;raquo; 起因&lt;/h2>
 &lt;p>今年下半年开始，一直觉得毕业开始工作后的几年一直拘泥于工作相关的知识汲取，其他知识大多游走于史政经相关领域。在 7 、 9 月集中做了几次 PPT 汇报后，越发觉得自己对字体选择的纠结与执着。相反，看到大多数人可能对字体的衬线、非衬线选择都是非常混乱。于是，就想看能不能系统地了解一下字体相关的知识；同时，还发现图书馆可以免费地借到这些专业书籍（省了一大笔费用）。就在 10 月的午后，开始了字体设计学习之旅。&lt;/p>
 &lt;h2 id="-结果">&amp;laquo; 结果&lt;/h2>
 &lt;blockquote>
-&lt;p>如果你是初学者，想了解字体设计相关的内容，从 &lt;a href="https://www.thetype.com/booklist/">The Type — 文字 / 设计 / 文化 » 相关书单&lt;/a> 开始。&lt;/p>
-&lt;/blockquote>
+&lt;p>如果你是初学者，想了解字体设计相关的内容，从 &lt;a href="https://www.thetype.com/booklist/">The Type — 文字 / 设计 / 文化 » 相关书单&lt;/a> 开始。&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>字体与生活
 &lt;ul>
@@ -110,8 +110,7 @@
 &lt;blockquote>
 &lt;p>&lt;strong>The P.A.R.A. (Projects, Areas, Resources, Archives) method is a method for organizing digital information.&lt;/strong>&lt;/p>
 &lt;p>It was developed by &lt;a href="https://fortelabs.co/about-forte-labs">Forte Labs&lt;/a>, a company that creates content to help increase productivity through technology.&lt;/p>
-&lt;p>&lt;img src="https://s2.loli.net/2023/03/19/8QDcPAhmZYqRLw6.png" alt="image.png|600">&lt;/p>
-&lt;/blockquote>
+&lt;p>&lt;img src="https://s2.loli.net/2023/03/19/8QDcPAhmZYqRLw6.png" alt="image.png|600">&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>Project: 短期、长期项目，用于Area的&lt;strong>实践落地&lt;/strong>。&lt;/li>
 &lt;li>Area: 关注的&lt;strong>核心领域与能力提升&lt;/strong>。&lt;/li>
@@ -178,8 +177,7 @@
 &lt;/ul>
 - https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>CS自学 Roadmap</title><link>https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/</link><pubDate>Sun, 26 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/ -&lt;h1 id="cs自学-roadmap">CS自学 Roadmap&lt;/h1>
 &lt;blockquote>
-&lt;p>这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。&lt;/p>
-&lt;/blockquote>
+&lt;p>这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。&lt;/p>&lt;/blockquote>
 &lt;h2 id="roadmap">Roadmap&lt;/h2>
 &lt;ul>
 &lt;li>快速版
@@ -591,7 +589,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ -&lt;h1 id="读书笔记--用数据讲故事">读书笔记&amp;ndash;用数据讲故事&lt;/h1>
+- https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ -&lt;h1 id="读书笔记用数据讲故事">读书笔记&amp;ndash;用数据讲故事&lt;/h1>
 &lt;ul>
 &lt;li>第二章 选择有效的图表
 &lt;ul>
@@ -742,31 +740,4 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022-%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>LeetCode 刷题指南</title><link>https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</link><pubDate>Fri, 18 Feb 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ -&lt;h1 id="leetcode-刷题指南">LeetCode 刷题指南&lt;/h1>
-&lt;h2 id="刷题的意义">“刷题”的意义&lt;/h2>
-&lt;p>刷题确实可能会让非常多人嗤之以鼻，但是没有办法，这一切都是市场决定的。如果要在这个市场生存，你只有两个选择，适应这条规则或者打破这条规则。如果我们可以打破这条规则，那说明我们拥有更大的价值，这当然很好。但是对于大多数人而言，可能或多或少会得刷一刷题。刷题一方面能让我们面试通过，另一方面也在过程中重温一些基础知识（可以不用再面对繁冗复杂的业务诉求）。&lt;/p>
-&lt;h2 id="如何刷">如何刷&lt;/h2>
-&lt;p>笔者自己是从两条线分别出发刷题。一，按数据结构类型；二，按算法策略。从这两条线组织刷题顺序可以帮我们更快地构建起题与知识的映射关系。其实在面试解题过程中，关键要解决的就是破除题目本身的外壳，发现本质问题，属于什么类型的问题，需要用怎么样的数据结构与算法来解决。&lt;/p>
-&lt;p>现在LeetCode刷题已经非常方便了，并且本身社区也比较活跃。但是，额外的一些参考书籍对于我们的帮助也会非常大。下面罗列两本LeetCode题解。第一本101，是采用C++解题的，这本书的算法写的很容易理解，不像LC社区中很多人追求花哨——一行解题，意义不是很大。在面试过程，清晰的算法过程也是会给面试官比较好的音响。另一本Go写的题解，追求是算法性能，可以给我们拓宽思路，因为一道题解出来现在可能已经不是100分了，最佳的性能会让我们的面试更加突出。&lt;/p>
-&lt;h2 id="leetcode-题解参考">LeetCode 题解参考&lt;/h2>
-&lt;ol>
-&lt;li>
-&lt;p>&lt;a href="https://www.changgy.com/leetcode-101">Doing positive things. - LeetCode 101 (changgy.com)&lt;/a>&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>&lt;a href="https://books.halfrost.com/leetcode/">序 | LeetCode Cookbook (halfrost.com)&lt;/a>&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;h2 id="算法参考书">算法参考书&lt;/h2>
-&lt;ol>
-&lt;li>
-&lt;p>⭐&lt;a href="https://algs4.cs.princeton.edu/home/">Algorithms, 4th Edition by Robert Sedgewick and Kevin Wayne (princeton.edu)&lt;/a>&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>&lt;a href="https://www.algorist.com/">The Algorithm Design Manual (algorist.com)&lt;/a>&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>⭐&lt;a href="https://jeffe.cs.illinois.edu/teaching/algorithms/#book">Algorithms by Jeff Erickson (illinois.edu)&lt;/a>&lt;/p>
-&lt;/li>
-&lt;/ol>
-- https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2022-%E5%86%B3%E7%AD%96%E5%BC%95%E6%93%8E-note/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>

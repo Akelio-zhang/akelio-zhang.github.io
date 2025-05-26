@@ -1,7 +1,33 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sat, 01 Jun 2024 15:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>MacBook Pro到手配置</title><link>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ -&lt;h1 id="macbook-pro-到手配置">MacBook Pro 到手配置&lt;/h1>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Fri, 23 May 2025 15:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>LeetCode 刷题指南</title><link>https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</link><pubDate>Fri, 18 Feb 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ -&lt;h1 id="leetcode-刷题指南">LeetCode 刷题指南&lt;/h1>
+&lt;h2 id="刷题的意义">“刷题”的意义&lt;/h2>
+&lt;p>刷题确实可能会让非常多人嗤之以鼻，但是没有办法，这一切都是市场决定的。如果要在这个市场生存，你只有两个选择，适应这条规则或者打破这条规则。如果我们可以打破这条规则，那说明我们拥有更大的价值，这当然很好。但是对于大多数人而言，可能或多或少会得刷一刷题。刷题一方面能让我们面试通过，另一方面也在过程中重温一些基础知识（可以不用再面对繁冗复杂的业务诉求）。&lt;/p>
+&lt;h2 id="如何刷">如何刷&lt;/h2>
+&lt;p>笔者自己是从两条线分别出发刷题。一，按数据结构类型；二，按算法策略。从这两条线组织刷题顺序可以帮我们更快地构建起题与知识的映射关系。其实在面试解题过程中，关键要解决的就是破除题目本身的外壳，发现本质问题，属于什么类型的问题，需要用怎么样的数据结构与算法来解决。&lt;/p>
+&lt;p>现在LeetCode刷题已经非常方便了，并且本身社区也比较活跃。但是，额外的一些参考书籍对于我们的帮助也会非常大。下面罗列两本LeetCode题解。第一本101，是采用C++解题的，这本书的算法写的很容易理解，不像LC社区中很多人追求花哨——一行解题，意义不是很大。在面试过程，清晰的算法过程也是会给面试官比较好的音响。另一本Go写的题解，追求是算法性能，可以给我们拓宽思路，因为一道题解出来现在可能已经不是100分了，最佳的性能会让我们的面试更加突出。&lt;/p>
+&lt;h2 id="leetcode-题解参考">LeetCode 题解参考&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;a href="https://www.changgy.com/leetcode-101">Doing positive things. - LeetCode 101 (changgy.com)&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://books.halfrost.com/leetcode/">序 | LeetCode Cookbook (halfrost.com)&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="算法参考书">算法参考书&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>⭐&lt;a href="https://algs4.cs.princeton.edu/home/">Algorithms, 4th Edition by Robert Sedgewick and Kevin Wayne (princeton.edu)&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://www.algorist.com/">The Algorithm Design Manual (algorist.com)&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>⭐&lt;a href="https://jeffe.cs.illinois.edu/teaching/algorithms/#book">Algorithms by Jeff Erickson (illinois.edu)&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+- https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>MacBook Pro到手配置</title><link>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ -&lt;h1 id="macbook-pro-到手配置">MacBook Pro 到手配置&lt;/h1>
 &lt;blockquote>
-&lt;p>14&amp;rsquo; | M1 Pro | 32G | 512GB&lt;/p>
-&lt;/blockquote>
+&lt;p>14&amp;rsquo; | M1 Pro | 32G | 512GB&lt;/p>&lt;/blockquote>
 &lt;h2 id="setup">Setup&lt;/h2>
 &lt;ol>
 &lt;li>Hot corner&lt;/li>
@@ -157,8 +183,7 @@
 &lt;/ol>
 &lt;p>&lt;img src="https://s2.loli.net/2022/08/20/IG97nj3AkKQacL2.png" alt="/images/notion-station.webp">&lt;/p>
 - https://akelio-zhang.github.io/posts/2021-notion/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>About Me</title><link>https://akelio-zhang.github.io/about/</link><pubDate>Wed, 26 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/about/</guid><description>LIFE CODER https://akelio-zhang.github.io/about/ -&lt;blockquote>
-&lt;p>绝大多数软件都为生产活动在数字世界的投射。&lt;/p>
-&lt;/blockquote>
+&lt;p>绝大多数软件都为生产活动在数字世界的投射。&lt;/p>&lt;/blockquote>
 &lt;p>&lt;strong>Coder &amp;amp; Photographer&lt;/strong>&lt;/p>
 &lt;h2 id="我的设备">我的设备&lt;/h2>
 &lt;h3 id="office">@Office&lt;/h3>
@@ -394,8 +419,7 @@
 &lt;/ol>
 &lt;h2 id="二最常见的一种使用场景">二、最常见的一种使用场景&lt;/h2>
 &lt;blockquote>
-&lt;p>陈主管说他已经开发好了整个架构，需要我去把几个功能实现一下，并提交到dev分支让他方便Review。&lt;/p>
-&lt;/blockquote>
+&lt;p>陈主管说他已经开发好了整个架构，需要我去把几个功能实现一下，并提交到dev分支让他方便Review。&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>基本流程
     1. 先从远程服务器把代码拉到本地：&lt;code>git clone http://197.68.6.70/demo-project&lt;/code>
@@ -574,8 +598,7 @@
 &lt;blockquote>
 &lt;p>贵司一天工作的时间线大概是怎么样的？&lt;/p>
 &lt;p>印象最深的一次工作内容是什么？&lt;/p>
-&lt;p>最近加班频繁吗？&lt;/p>
-&lt;/blockquote>
+&lt;p>最近加班频繁吗？&lt;/p>&lt;/blockquote>
 &lt;p>最后，一场面试，当你说话的时间占比越大，往往就越有可能顺利通过。&lt;/p>
 &lt;h2 id="过程">过程&lt;/h2>
 &lt;ol>
@@ -635,15 +658,13 @@
 &lt;li>运行所有测试，是否有失败&lt;/li>
 &lt;li>一旦有失败的测试，就开始写生产代码，直到该测试通过为止。&lt;/li>
 &lt;li>所有测试通过后，就必须开始写测试代码，直到有一个测试无法通过。&lt;/li>
-&lt;/ol>
-&lt;/blockquote>
+&lt;/ol>&lt;/blockquote>
 &lt;p>可能，你会觉得这样非常耗时，但是你得明确，你在一个功能开发的耗时并不仅仅是写了那一堆生产代码而已，还包括测试、代码修复等等。所以，这种方式只是将一些顺序进行了调换，却能为最终的正确性铺垫很多。&lt;/p>
 &lt;h2 id="0x4-重构">0x4 重构&lt;/h2>
 &lt;p>重构与重写都是试图优化系统复杂度的方式，在不同的场景（代码状况、工期等）会选择不同的方式，但是大多时候会采用重构的方式来实现。&lt;/p>
 &lt;p>先来看一下wikipedia对重构的定义：&lt;/p>
 &lt;blockquote>
-&lt;p>In &lt;a href="https://en.wikipedia.org/wiki/Computer_programming">computer programming&lt;/a> and &lt;a href="https://en.wikipedia.org/wiki/Software_design">software design&lt;/a>, &lt;strong>code refactoring&lt;/strong> is the process of restructuring existing &lt;a href="https://en.wikipedia.org/wiki/Computer_code">computer code&lt;/a>—changing the &lt;em>&lt;a href="https://en.wikipedia.org/wiki/Decomposition_(computer_science)">factoring&lt;/a>*—without changing its external behavior. Refactoring is intended to improve the design, structure, and/or implementation of the &lt;a href="https://en.wikipedia.org/wiki/Software">software&lt;/a> (its *&lt;a href="https://en.wikipedia.org/wiki/Non-functional_requirement">non-functional&lt;/a>&lt;/em> attributes), while preserving its &lt;a href="https://en.wikipedia.org/wiki/Functional_requirement">functionality&lt;/a>. Potential advantages of refactoring may include improved code &lt;a href="https://en.wikipedia.org/wiki/Readability">readability&lt;/a> and reduced &lt;a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">complexity&lt;/a>; these can improve the &lt;a href="https://en.wikipedia.org/wiki/Source_code">source code&lt;/a>&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Maintainability">maintainability&lt;/a> and create a simpler, cleaner, or more expressive internal &lt;a href="https://en.wikipedia.org/wiki/Software_architecture">architecture&lt;/a> or &lt;a href="https://en.wikipedia.org/wiki/Object_model">object model&lt;/a> to improve &lt;a href="https://en.wikipedia.org/wiki/Extensibility">extensibility&lt;/a>.&lt;/p>
-&lt;/blockquote>
+&lt;p>In &lt;a href="https://en.wikipedia.org/wiki/Computer_programming">computer programming&lt;/a> and &lt;a href="https://en.wikipedia.org/wiki/Software_design">software design&lt;/a>, &lt;strong>code refactoring&lt;/strong> is the process of restructuring existing &lt;a href="https://en.wikipedia.org/wiki/Computer_code">computer code&lt;/a>—changing the &lt;em>&lt;a href="https://en.wikipedia.org/wiki/Decomposition_(computer_science)">factoring&lt;/a>*—without changing its external behavior. Refactoring is intended to improve the design, structure, and/or implementation of the &lt;a href="https://en.wikipedia.org/wiki/Software">software&lt;/a> (its *&lt;a href="https://en.wikipedia.org/wiki/Non-functional_requirement">non-functional&lt;/a>&lt;/em> attributes), while preserving its &lt;a href="https://en.wikipedia.org/wiki/Functional_requirement">functionality&lt;/a>. Potential advantages of refactoring may include improved code &lt;a href="https://en.wikipedia.org/wiki/Readability">readability&lt;/a> and reduced &lt;a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">complexity&lt;/a>; these can improve the &lt;a href="https://en.wikipedia.org/wiki/Source_code">source code&lt;/a>&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Maintainability">maintainability&lt;/a> and create a simpler, cleaner, or more expressive internal &lt;a href="https://en.wikipedia.org/wiki/Software_architecture">architecture&lt;/a> or &lt;a href="https://en.wikipedia.org/wiki/Object_model">object model&lt;/a> to improve &lt;a href="https://en.wikipedia.org/wiki/Extensibility">extensibility&lt;/a>.&lt;/p>&lt;/blockquote>
 &lt;p>在系统复杂度膨胀到一定程度后，添加功能异常困难、系统变得难以理解、修改的时候，重构往往就需要开始执行，从而降低系统的复杂度，让我们能够更高效地开发、修改代码。所以重构并不是某一个开发阶段，而是一种开发工具，帮助我们提升效率。&lt;/p>
 &lt;p>在《重构》这本书中，提到很多地坏味道，本质就是一些让系统复杂度变高的地方，你可以发现它与第二节中的那些症状很类似。&lt;/p>
 &lt;p>这里特别想说的是，重构的过程中，其实会采用不少设计模式，但是并不能说设计模式就是万能药。设计模式是我们需要了解的，但是我们需要记住的是它们出现的目的是什么，我这里可以列举几个：&lt;/p>
@@ -674,8 +695,7 @@
 &lt;p>在很早很早时候，开始准备转CS的时候就知道了Refactoring这本书，当时很简单地扫了一眼，就感觉很多东西都不明所以，要么就觉得，这不是本该就这样吗？于是就一直扔在网盘没再看过。&lt;/p>
 &lt;p>软件工程 VS 建筑工程&lt;/p>
 &lt;blockquote>
-&lt;p>深思，结构设计与IT系统设计，都是一种系统设计，但是结构设计相对来说 约束比较明确，量化也很明确，干嘛的，负载多少，并且建筑设计已经进一步做了一层约束，所以到结构这边，整个外界的条件已经很丰富了，所以针对这个相对来说 应该有比较容易的解答了。相反，在IT系统这边，往往需求开始就是模糊的，体量也是预计的，往往后期会增加，还会有那些“灰色”流量。这些难以量化的约束，使得在整个系统设计上就变得很困难，因为没有万能的系统。并且系统能够承载的东西，往往随着时间会变得越来越丰富，这时候如果早期的设计比较局限，就可能要整体重构等等。在这种宽约束下的系统设计能力，需要好好锻炼。「一次交付和不断迭代的产品」—— by C. Gen&lt;/p>
-&lt;/blockquote>
+&lt;p>深思，结构设计与IT系统设计，都是一种系统设计，但是结构设计相对来说 约束比较明确，量化也很明确，干嘛的，负载多少，并且建筑设计已经进一步做了一层约束，所以到结构这边，整个外界的条件已经很丰富了，所以针对这个相对来说 应该有比较容易的解答了。相反，在IT系统这边，往往需求开始就是模糊的，体量也是预计的，往往后期会增加，还会有那些“灰色”流量。这些难以量化的约束，使得在整个系统设计上就变得很困难，因为没有万能的系统。并且系统能够承载的东西，往往随着时间会变得越来越丰富，这时候如果早期的设计比较局限，就可能要整体重构等等。在这种宽约束下的系统设计能力，需要好好锻炼。「一次交付和不断迭代的产品」—— by C. Gen&lt;/p>&lt;/blockquote>
 &lt;p>那么，就先从2018年开始回顾。&lt;/p>
 &lt;h2 id="0x2-2018-function-works">0x2 &lt;strong>2018 Function works!&lt;/strong>&lt;/h2>
 &lt;p>18年开始工作之后，一开始只是做一些很简单地Feature的增加，大约一个Feature只设计100行代码左右。所以基本就是在1-2个函数可以解决问题，也不太涉及OO方向的变更（采用系统本身的设计即可），所以在18年这个时间点上，主要是在函数层面做工作，各种类也是相对独立地使用，更多关注的是功能正常和简单的单元测试。&lt;/p>
@@ -683,8 +703,7 @@
 &lt;p>总结来说，2018年在熟悉基本工作外，在不断地打开(broaden)自己的知识网络。&lt;/p>
 &lt;h2 id="0x3-2019-流程系统痛点解决大数据起步">0x3 &lt;strong>2019 流程系统，痛点解决，大数据起步&lt;/strong>&lt;/h2>
 &lt;blockquote>
-&lt;p>设计文档，流程图，UML，DDD&lt;/p>
-&lt;/blockquote>
+&lt;p>设计文档，流程图，UML，DDD&lt;/p>&lt;/blockquote>
 &lt;p>2019年开始，阴差阳错处于空档期，接了一个项目（当时其实就是很迫切地想做一些大一点的项目，来提升自己的能力，也没有对需求去做直接的评估）。现在回头再看，这个项目属于一个非常偏向业务的功能模块开发（从技术角度并没有太多需要考量的点，流量也是比较小的）。涉及到要开发的点有前端页面，中后台运营平台的开发，后台系统的业务流程（较复杂，场景较多）处理。&lt;/p>
 &lt;p>当时，基本就和同事定了一下大体的功能点放在哪些模块，以及表结构的设计，就直接开始动手写了。设计文档无，流程图无，这导致后期开发维护都变得很困难，好在是在第三期的时候补充了不少。&lt;/p>
 &lt;p>相比18年的函数级别的开发，这项目涉及到了多个系统，一条业务请求的多次变更，各种异步处理。要考虑地就更多了：核心类如何设计，每个流程的具体设计（需要由哪些类来支撑），系统与系统之间的交互设计等等（项目中涉及到Redis、MQ、RPC、DB这样四种方式来进行数据交互）。&lt;/p>
@@ -696,8 +715,7 @@
 &lt;p>总结来说，2019年在拓展知识（大数据）的同时，发现了自己的系统设计这一块的不足，简单了解了设计文档、UML、流程图、DDD、贫血模型等。此外，还算是比较努力地尝试改善了当前系统中地一些顽固点（职责收拢、提高性能）。&lt;/p>
 &lt;h2 id="0x3-2020-高流量的实时系统设计">0x3 &lt;strong>2020 高流量的实时系统设计&lt;/strong>&lt;/h2>
 &lt;blockquote>
-&lt;p>实现细节文档，TDD，类单一职责（只有一个原因发生变更）、减少类之间的知识(class, function and etc.)共享坏味道的嗅觉开发指导&lt;/p>
-&lt;/blockquote>
+&lt;p>实现细节文档，TDD，类单一职责（只有一个原因发生变更）、减少类之间的知识(class, function and etc.)共享坏味道的嗅觉开发指导&lt;/p>&lt;/blockquote>
 &lt;p>先提一嘴，在2020参与的一些面试中，发现对于Spring这一块的问题已经非常非常少了，问的最多的可能也就是AOP和事务实现这一块了。一方面是可能大家对于Spring这块较为熟悉了，另一方面是Spring在我看来已经越来越不适合目前大流量的场景（相对来说比较臃肿，对分布式这一块的原生支持也比较弱，尽管已经有了Spring Cloud），一些新的框架（如Vert.x、Micronaut等）在分布式这一块是在设计初期就考虑进去的。&lt;/p>
 &lt;p>同时，在知乎一个问题上的一个问题——&lt;em>Spring是否代表着目前Java技术的顶峰，未来的Java将如何发展？&lt;/em>。我觉得这个问题下面有个回答很有意思，php之于Web开发，Spring之于Java是很类似的地位。&lt;/p>
 &lt;p>总的一句话，不要抱着老的东西不放，但也要取其精华。&lt;/p>
@@ -744,8 +762,7 @@
 &lt;p>相关大佬: Kent Beck; Martin Fowler; R. C. Martin&lt;/p>
 - https://akelio-zhang.github.io/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>Java传值方式讨论</title><link>https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</link><pubDate>Sun, 27 Oct 2019 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/ -&lt;p>起因是一次华为面试题&lt;/p>
 &lt;blockquote>
-&lt;p>Java在进行函数调用时，参数时传值还是传引用？&lt;/p>
-&lt;/blockquote>
+&lt;p>Java在进行函数调用时，参数时传值还是传引用？&lt;/p>&lt;/blockquote>
 &lt;p>当时，我考虑的是Java变量只有两类，基本类型与引用类型，引用类型本质应该是属于指针。所以基本类型与引用类型的实参传递都是值本身，即创建一个副本赋予形参。面试官给的仅仅是笑而不语……&lt;/p>
 &lt;p>而后在工作了一段时间回想这个问题并没有那么简单。&lt;/p>
 &lt;p>碰到问题首先要给好定义才能进一步做分析。通过Wiki上关于&lt;a href="https://en.wikipedia.org/wiki/Evaluation_strategy">Evaluation strategy&lt;/a>的介绍，其中本文主要关注的这三种方式：call by value, call by reference and call by sharing。&lt;/p>
@@ -766,8 +783,7 @@
 &lt;p>作者：Yolanda&lt;/p>
 &lt;p>链接：https://www.zhihu.com/question/31203609/answer/112157038&lt;/p>
 &lt;p>来源：知乎&lt;/p>
-&lt;p>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。&lt;/p>
-&lt;/blockquote>
+&lt;p>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。&lt;/p>&lt;/blockquote>
 &lt;hr>
 &lt;p>参考文献：&lt;/p>
 &lt;ol>

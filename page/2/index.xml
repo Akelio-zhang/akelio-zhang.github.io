@@ -540,6 +540,7 @@
 &lt;li&gt;&lt;a href="https://draveness.me/whys-the-design-git-the-best/"&gt;为什么你应该使用 Git 进行版本控制 - 面向信仰编程 (draveness.me)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.progit.cn/"&gt;Pro Git 中文版（第二版）&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://missing.csail.mit.edu/2020/version-control/"&gt;Version Control (Git) · the missing semester of your cs education (mit.edu)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://chuquan.me/2022/05/21/understand-principle-of-git/"&gt;深入理解 Git 底层实现原理 | 楚权的世界&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2 id="some-code"&gt;Some code&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
@@ -774,6 +775,7 @@
 &lt;p&gt;目前看完我觉得可以多做参考是函数、对象和数据结构、类、单元测试这四章。&lt;/p&gt;
 &lt;p&gt;我这次读完，感受最深的是单元测试这一章，它很大程度上提升了coder的信心。test之于生产代码，就像结构模型之于设计图，它能够验证你的想法，验证你的系统的可靠性（一定程度）。&lt;/p&gt;
 &lt;p&gt;关于单元测试，首先是TDD以及它的实践三大定律。第二，测试代码的可读性。第三，每一个测试仅做一个概念的测试。其他，F.I.R.S.T，快速、独立、可重复、自验性、及时。&lt;/p&gt;
+&lt;p&gt;Notes: &lt;a href="https://gist.github.com/wojteklu/73c6914cc446146b8b533c0988cf8d29"&gt;Summary of &amp;lsquo;Clean code&amp;rsquo; by Robert C. Martin · GitHub&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id="clean-coder"&gt;Clean Coder（⭐⭐⭐）&lt;/h3&gt;
 &lt;p&gt;这本书，很多东西可能不太适应国内的当前环境。我把写的比较有共鸣的几章拿出来说一说。&lt;/p&gt;
 &lt;p&gt;验收测试。需求的沟通细节，过早精细化（通用性较差），迟到的模糊性（无法实践，影响进度）。对完成的定义，有些认为写完代码=完成，有些认为测试通过=完成。如果采用TDD，其实写完代码也就意味着大部分测试已经通过了。&lt;/p&gt;

@@ -112,7 +112,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;The P.A.R.A. (Projects, Areas, Resources, Archives) method is a method for organizing digital information.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;It was developed by &lt;a href="https://fortelabs.co/about-forte-labs"&gt;Forte Labs&lt;/a&gt;, a company that creates content to help increase productivity through technology.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://s2.loli.net/2023/03/19/8QDcPAhmZYqRLw6.png" alt="image.png|600"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://s2.loli.net/2023/03/19/8QDcPAhmZYqRLw6.png" alt="image.png|800"&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;Project: 短期、长期项目，用于Area的&lt;strong&gt;实践落地&lt;/strong&gt;。&lt;/li&gt;
@@ -136,7 +136,7 @@
 &lt;li&gt;Knowledge Output: &lt;strong&gt;github.io; Wechat Official Account&lt;/strong&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 - https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>软件工程师的能力</title><link>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</link><pubDate>Fri, 30 Dec 2022 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/ -&lt;p&gt;&lt;em&gt;网上看到的一则关于软件工程师的能力模型图，觉得非常通俗易懂，拿出来分享。若有版权问题，请联系。&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://akelio-zhang.github.io/images/ability-model.svg" alt="|1000"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://akelio-zhang.github.io/images/ability-model.svg" alt="能力模型|800"&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;基础
 &lt;ul&gt;
@@ -182,6 +182,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;p&gt;![[CS-KB-Graph.excalidraw|800]]&lt;/p&gt;
 &lt;h2 id="roadmap"&gt;Roadmap&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;快速版
@@ -254,7 +255,11 @@
 &lt;/li&gt;
 &lt;li&gt;网络
 &lt;ul&gt;
-&lt;li&gt;CS144&lt;/li&gt;
+&lt;li&gt;CS144
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://zhuanlan.zhihu.com/p/772352941"&gt;# CS144：带你手搓TCP/IP协议栈&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

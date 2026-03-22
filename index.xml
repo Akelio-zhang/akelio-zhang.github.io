@@ -1,4 +1,164 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Wed, 18 Mar 2026 14:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>再读《人月神话》</title><link>https://akelio-zhang.github.io/posts/2026-%E5%86%8D%E8%AF%BB%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/</link><pubDate>Wed, 18 Mar 2026 14:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2026-%E5%86%8D%E8%AF%BB%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E5%86%8D%E8%AF%BB%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/ -&lt;h1 id="从人月神话到-ai-agent">从《人月神话》到 AI Agent&lt;/h1>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 22 Mar 2026 22:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>计算机中的各种“一致性”</title><link>https://akelio-zhang.github.io/posts/2026-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E4%B8%80%E8%87%B4%E6%80%A7/</link><pubDate>Sun, 22 Mar 2026 22:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2026-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E4%B8%80%E8%87%B4%E6%80%A7/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E4%B8%80%E8%87%B4%E6%80%A7/ -&lt;h1 id="计算机中的各种一致性">计算机中的各种“一致性”&lt;/h1>
+&lt;blockquote>
+&lt;p>Written with Claude.&lt;/p>&lt;/blockquote>
+&lt;h2 id="0x00-引子">0x00 引子&lt;/h2>
+&lt;p>我曾希望我的多活应用在进行配置更新时，能做到对外的一致性——某一时刻之后，所有节点均以新配置提供服务；如果有节点更新失败，则所有节点都继续沿用旧配置。我以为这只是一个系统的某种“特性”，实现起来应该不难。&lt;/p>
+&lt;p>查阅资料后，我发现这个需求牵扯到三个相互独立却又彼此依赖的概念：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>线性一致性（Linearizability）&lt;/strong>：保证外部观察者看到的行为符合“某时刻切换”的语义&lt;/li>
+&lt;li>&lt;strong>原子提交（Atomic Commit）&lt;/strong>：保证所有节点要么全部更新成功，要么全部回滚&lt;/li>
+&lt;li>&lt;strong>共识（Consensus）&lt;/strong>：让分布式节点对“是否提交”达成统一决定&lt;/li>
+&lt;/ul>
+&lt;p>这让我意识到，“一致性”在计算机不同领域里的含义差异极大。本文试图梳理这些含义，厘清它们之间的关系。&lt;/p>
+&lt;hr>
+&lt;h2 id="0x01-一致性在哪里出现">0x01 一致性在哪里出现？&lt;/h2>
+&lt;p>“一致性”这个词在计算机领域至少出现在以下四个语境中：&lt;/p>
+&lt;h3 id="1-硬件cpu-缓存一致性">1. 硬件：CPU 缓存一致性&lt;/h3>
+&lt;p>现代多核 CPU 中，每个核心都有自己的 L1/L2 缓存。当多个核心同时读写同一内存地址时，如何保证各核心缓存中的数据不产生矛盾？这是**缓存一致性（Cache Coherence）**问题，通常由硬件协议（如 MESI）解决。&lt;/p>
+&lt;p>MESI 协议为每个缓存行定义四种状态：Modified、Exclusive、Shared、Invalid。当一个核心写入数据时，协议会将其他核心中该行的状态标记为 Invalid，从而强制它们下次从内存或发出写请求的核心处重新获取数据。&lt;/p>
+&lt;p>与缓存一致性密切相关的是**内存序（Memory Ordering）**问题。即使缓存一致，编译器和CPU 的乱序执行仍可能导致另一个线程看到“不合逻辑”的操作顺序。这催生了各语言的内存模型规范（JMM、Go Memory Model、C++ Memory Model），以及 &lt;code>volatile&lt;/code>、&lt;code>fence&lt;/code>、&lt;code>atomic&lt;/code> 等语言原语。&lt;/p>
+&lt;blockquote>
+&lt;p>伪共享（False Sharing）是一个经典陷阱：两个不相关的变量恰好位于同一缓存行，导致频繁的缓存失效，严重影响性能。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>延伸阅读&lt;/strong>：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://lotabout.me/2022/MESI-Protocol-Introduction/">MESI 协议学习笔记&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://jia.je/hardware/2024/09/04/memory_model_and_memory_ordering/">内存模型和内存序&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://jia.je/kb/hardware/cache_coherence_protocol.html">CPU缓存一致性&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://gee.cs.oswego.edu/dl/jmm/cookbook.html">The JSR-133 Cookbook（Java 内存模型实现指南）&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="2-数据库acid-中的-c">2. 数据库：ACID 中的 C&lt;/h3>
+&lt;p>数据库事务的 ACID 中，C 代表 &lt;strong>Consistency（一致性）&lt;/strong>，但这里的含义与分布式系统中的“一致性”完全不同。ACID 的 C 是指：&lt;strong>事务执行前后，数据库必须满足所有预定义的业务约束&lt;/strong>（如账户余额不能为负、外键引用必须有效）。&lt;/p>
+&lt;p>换句话说，这里的“一致性”是&lt;strong>业务语义层面的正确性&lt;/strong>，由应用开发者定义，由数据库的AID（原子性、隔离性、持久性）保证。C 不是独立的机制，而是 AID 的结果。&lt;/p>
+&lt;p>单机事务的隔离性本身又是一个复杂的话题，涉及不同的隔离级别（读未提交、读已提交、可重复读、串行化）和实现机制（锁、MVCC）。不同的隔离级别对应不同的并发异常（脏读、不可重复读、幻读），这也可以视为一种“一致性模型”。&lt;/p>
+&lt;hr>
+&lt;h3 id="3-分布式系统一致性模型与共识">3. 分布式系统：一致性模型与共识&lt;/h3>
+&lt;p>这是本文的重点。分布式系统中的“一致性”通常指&lt;strong>多个节点在读写共享数据时表现出的行为规范&lt;/strong>，有一个从强到弱的谱系：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>线性一致性（Linearizability）&lt;/strong>：最强。所有操作看起来像是在某个单一时间点上原子完成的，且顺序与真实时间吻合。代价是需要协调，延迟高。&lt;/li>
+&lt;li>&lt;strong>顺序一致性（Sequential Consistency）&lt;/strong>：所有操作有一个一致的全局顺序，但这个顺序不必与真实时间完全吻合。&lt;/li>
+&lt;li>&lt;strong>因果一致性（Causal Consistency）&lt;/strong>：只要求有因果关系的操作保持顺序。&lt;/li>
+&lt;li>&lt;strong>最终一致性（Eventual Consistency）&lt;/strong>：最弱。只保证在没有新写入的情况下，所有副本最终会收敛到相同值。DNS 是经典例子。&lt;/li>
+&lt;/ul>
+&lt;p>一致性强度越强，可用性和性能的代价越大，这正是 &lt;strong>CAP 定理&lt;/strong>和 &lt;strong>PACELC 模型&lt;/strong>所描述的权衡。&lt;/p>
+&lt;p>与一致性模型相关但不同的是**共识（Consensus）**问题：让分布式节点对某个值（如“是否提交事务”、“谁是 leader”）达成统一决定，且即使部分节点宕机也能正常工作。Paxos 和Raft 是解决共识问题的两种经典算法。&lt;/p>
+&lt;blockquote>
+&lt;p>Paxos 先提出（理论更优雅），Raft 后来（工程更易理解）。两者的核心思想一致：通过多数派（quorum）投票来容忍少数节点故障。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>延伸阅读&lt;/strong>：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://jepsen.io/consistency">Consistency Models - Jepsen&lt;/a>（一致性模型全景）&lt;/li>
+&lt;li>&lt;a href="https://ying-zhang.cn/dist/2001-paxos-simple-cn/">[译]简说Paxos（Paxos Made Simple） &amp;gt;&amp;gt; Ying ZHANG&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mp.weixin.qq.com/s?__biz=MzIwODA2NjIxOA==&amp;amp;mid=2247484559&amp;amp;idx=1&amp;amp;sn=f6848bbd79fabe0d9adb9a96aa0159e9&amp;amp;chksm=9709874aa07e0e5c73cf68de1006dbef5a949331b4d948e5a1c82dbefefab9300df23b4f5440&amp;amp;mpshare=1&amp;amp;scene=1&amp;amp;srcid=0605DkylPG3F4FdL0cmHRzZo&amp;amp;sharer_sharetime=1654414159391&amp;amp;sharer_shareid=3e6718b33428d5a54bb716a730c9ee8c#rd">Paxos vs. Raft：共识算法的异同&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mp.weixin.qq.com/s?__biz=MjM5OTMwNjg5OA==&amp;amp;mid=2247483755&amp;amp;idx=1&amp;amp;sn=a003733b34de44e6df5b8b609cd90397&amp;amp;chksm=a73c3296904bbb807a617e188124d980c8b7dcae583d8615436b41f9b3b3d05a0aa3a274877b&amp;amp;mpshare=1&amp;amp;scene=1&amp;amp;srcid=0605TCCn7oZsRtclUm8cbg9w&amp;amp;sharer_sharetime=1654413483224&amp;amp;sharer_shareid=3e6718b33428d5a54bb716a730c9ee8c#rd">可靠分布式系统：Paxos 的直观解释&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="4-分布式数据库两种一致性的交汇">4. 分布式数据库：两种“一致性”的交汇&lt;/h3>
+&lt;p>分布式数据库（如 TiDB、CockroachDB、Spanner）同时面对上述两个维度的问题：&lt;/p>
+&lt;ul>
+&lt;li>从&lt;strong>数据库&lt;/strong>角度，它要提供 ACID 事务语义&lt;/li>
+&lt;li>从&lt;strong>分布式&lt;/strong>角度，它需要在多个节点间保证线性一致性或其他一致性模型&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>分布式事务&lt;/strong>就是在这个交汇处诞生的：如何让跨节点的事务也满足 ACID？常见方案有：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>2PC（两阶段提交）&lt;/strong>：经典方案，有协调者单点问题，且阻塞&lt;/li>
+&lt;li>&lt;strong>Saga&lt;/strong>：将长事务拆解为一系列可补偿的短事务，适合业务层面的最终一致性&lt;/li>
+&lt;li>&lt;strong>Calvin / Deterministic DB&lt;/strong>：通过提前确定事务顺序（借助共识算法）来避免传统锁&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>延伸阅读&lt;/strong>：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://thiscute.world/posts/consistency-and-consensus-algorithm/">分布式数据库的一致性问题与共识算法&lt;/a>&lt;/li>
+&lt;li>DDIA（《Designing Data-Intensive Applications》）第 7、9 章&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="5-应用层缓存与数据库的一致性">5. 应用层：缓存与数据库的一致性&lt;/h3>
+&lt;p>这是最贴近日常业务开发的场景。当应用同时使用 Redis 等缓存和 MySQL 等数据库时，如何保证两者数据不出现“缓存有、DB 没有”或“缓存旧、DB 新”的不一致？&lt;/p>
+&lt;p>常见策略：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Cache Aside&lt;/strong>（旁路缓存）：先更新 DB，再删除（而非更新）缓存，利用缓存重建保证最终一致&lt;/li>
+&lt;li>&lt;strong>Write Through&lt;/strong>：同步写穿，保证强一致，但写延迟高&lt;/li>
+&lt;li>&lt;strong>Write Behind（Write Back）&lt;/strong>：异步写回，性能好，但有数据丢失风险&lt;/li>
+&lt;/ul>
+&lt;p>在并发场景下，即使是“先更新 DB 再删除缓存”也存在极端情况下的竞态，需要结合版本号、消息队列（Canal + MQ）等方案进一步保障。&lt;/p>
+&lt;hr>
+&lt;h2 id="0x02-几个关键问题">0x02 几个关键问题&lt;/h2>
+&lt;p>&lt;strong>Q：ACID 的 C 和分布式的一致性有什么关系？&lt;/strong>&lt;/p>
+&lt;p>几乎没有。ACID 的 C 是业务正确性，由单机事务机制保证；分布式的一致性是多副本数据的可见性规范，由复制协议保证。两者用了同一个词，但含义完全不同。DDIA 的作者 Kleppmann认为 ACID 的 C 放在这里其实是“凑首字母”。&lt;/p>
+&lt;p>&lt;strong>Q：共识和一致性是同一回事吗？&lt;/strong>&lt;/p>
+&lt;p>不是。一致性（Consistency）描述系统对外呈现的行为规范；共识（Consensus）是分布式节点之间达成协议的过程。共识是实现强一致性的一种手段，但不是唯一手段（如Zab、Viewstamped Replication 也可以实现线性一致性）。&lt;/p>
+&lt;p>&lt;strong>Q：线性一致性和串行化（Serializability）有什么区别？&lt;/strong>&lt;/p>
+&lt;p>串行化是数据库事务隔离的最强级别（操作顺序等价于某种串行执行）；线性一致性是分布式系统单个操作的实时性要求。两者结合称为&lt;strong>严格串行化（Strict Serializability）&lt;/strong>，是分布式数据库能提供的最强保证，也是代价最高的。&lt;/p>
+&lt;hr>
+&lt;h2 id="0x03-总结">0x03 总结&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>语境&lt;/th>
+&lt;th>术语&lt;/th>
+&lt;th>核心问题&lt;/th>
+&lt;th>典型机制&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>CPU 硬件&lt;/td>
+&lt;td>缓存一致性&lt;/td>
+&lt;td>多核缓存数据矛盾&lt;/td>
+&lt;td>MESI 协议&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>编程语言&lt;/td>
+&lt;td>内存模型&lt;/td>
+&lt;td>指令重排序的可见范围&lt;/td>
+&lt;td>fence / atomic&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>单机数据库&lt;/td>
+&lt;td>ACID-C&lt;/td>
+&lt;td>业务约束不被破坏&lt;/td>
+&lt;td>约束检查&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>分布式系统&lt;/td>
+&lt;td>一致性模型&lt;/td>
+&lt;td>多副本数据的可见规范&lt;/td>
+&lt;td>复制协议&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>分布式协调&lt;/td>
+&lt;td>共识&lt;/td>
+&lt;td>节点间统一决策&lt;/td>
+&lt;td>Paxos / Raft&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>分布式数据库&lt;/td>
+&lt;td>分布式事务&lt;/td>
+&lt;td>跨节点 ACID&lt;/td>
+&lt;td>2PC / Saga&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>应用缓存&lt;/td>
+&lt;td>缓存一致性&lt;/td>
+&lt;td>缓存与 DB 数据同步&lt;/td>
+&lt;td>Cache Aside&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2 id="参考资料">参考资料&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://jepsen.io/consistency">Consistency Models - Jepsen&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://research.swtch.com/mm">Memory Models by Russ Cox&lt;/a>&lt;/li>
+&lt;li>LKMM（&lt;a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p0124r7.html">Linux-Kernel Memory Model&lt;/a>）&lt;/li>
+&lt;li>&lt;a href="https://thiscute.world/posts/consistency-and-consensus-algorithm/">分布式数据库的一致性问题与共识算法&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://lotabout.me/2022/MESI-Protocol-Introduction/">MESI 协议学习笔记&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mp.weixin.qq.com/s?__biz=MzU5ODUwNzY1Nw==&amp;amp;mid=2247487562&amp;amp;idx=1&amp;amp;sn=8e78cfbff2e7f3a5f560c95b7712ec03&amp;amp;chksm=fe4279acc935f0ba1dc7ab89de8309b2f584265d16385f3d0472fb4e6f270c975083a78e0a0f&amp;amp;mpshare=1&amp;amp;scene=1&amp;amp;srcid=1204yRWqBuUiTqQcerpIdI10&amp;amp;sharer_sharetime=1638617686601&amp;amp;sharer_shareid=4f5e972d431ca863bcb02b778677068c#rd">缓存与数据库一致性问题深度剖析&lt;/a>&lt;/li>
+&lt;li>Designing Data-Intensive Applications（DDIA）- Martin Kleppmann&lt;/li>
+&lt;li>&lt;a href="https://www.v2ex.com/t/821980">高并发情况下如何保证金额加减的一致性 - V2EX&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mp.weixin.qq.com/s/cgRjth8O9fWga07FAqWZHw"># 看懂这篇，才能说了解并发底层技术&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mp.weixin.qq.com/s/Mp1SH33BCabrsQrkHrTwow"># 并发扣款，如何保证一致性？&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.one-tab.com/page/bJ_mRfYATxO6fmGYYQC6Iw">A list of links&lt;/a>&lt;/li>
+&lt;/ul>
+- https://akelio-zhang.github.io/posts/2026-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E4%B8%80%E8%87%B4%E6%80%A7/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>再读《人月神话》</title><link>https://akelio-zhang.github.io/posts/2026-%E5%86%8D%E8%AF%BB%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/</link><pubDate>Wed, 18 Mar 2026 14:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2026-%E5%86%8D%E8%AF%BB%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E5%86%8D%E8%AF%BB%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/ -&lt;h1 id="从人月神话到-ai-agent">从《人月神话》到 AI Agent&lt;/h1>
 &lt;blockquote>
 &lt;p>Written with Gemini.&lt;/p>&lt;/blockquote>
 &lt;h2 id="引言半个世纪的回响">引言：半个世纪的回响&lt;/h2>
@@ -675,88 +835,4 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>单元测试减少心智负担</title><link>https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</link><pubDate>Wed, 15 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ -&lt;h1 id="单元测试减少心智负担">单元测试减少心智负担&lt;/h1>
-&lt;hr>
-&lt;h2 id="责任意识">责任意识&lt;/h2>
-&lt;ul>
-&lt;li>案例1: 错误的空判断，导致错误放款上百万；&lt;/li>
-&lt;li>案例2: 使用本地环境打包，部署到线上环境后异常，官网无法访问；&lt;/li>
-&lt;li>线上问题，第一责任人基本都是软件开发人员，不是测试、也不是运维人员；&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2 id="什么是单元测试">什么是单元测试&lt;/h2>
-&lt;ul>
-&lt;li>在计算机编程中，单元测试（英语：Unit Testing）又称为模块测试  ，是针对程序模块（软件设计的最小单位）来进行正确性检验的测试工作。程序单元是应用的最小可测试部件。在过程化编程中，一个单元就是单个程序、函数、过程等；对于面向对象编程，最小单元就是方法，包括基类（超类）、抽象类、或者派生类（子类）中的方法。&lt;/li>
-&lt;li>通常来说，程序员每修改一次程序就会进行最少一次单元测试，在编写程序的过程中前后很可能要进行多次单元测试，以证实程序达到软件规格书要求的工作目标，没有程序错误；虽然单元测试不是必须的，但也不坏，这牵涉到项目管理的政策决定。&lt;/li>
-&lt;li>每个理想的测试案例独立于其它案例；为测试时隔离模块，经常使用stubs、mock或fake等测试马甲程序。单元测试通常由软件开发人员编写，用于确保他们所写的代码符合软件需求和遵循开发目标。它的实施方式可以是非常手动的（透过纸笔），或者是做成构建自动化的一部分。&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2 id="为什么要做单元测试">为什么要做单元测试&lt;/h2>
-&lt;ul>
-&lt;li>保证功能的正确性；&lt;/li>
-&lt;li>适应于代码改造、重构；&lt;/li>
-&lt;li>对功能的一种文档记录（包括一次BUG，对应一个单元测试）&lt;/li>
-&lt;li>从使用者的角度先行设计（参考——测试驱动开发TDD）&lt;/li>
-&lt;li>收益
-&lt;ul>
-&lt;li>更短的修复时间&lt;/li>
-&lt;li>更少的开发成本&lt;/li>
-&lt;li>更高的代码质量&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2 id="哪些代码要做单元测试">哪些代码要做单元测试&lt;/h2>
-&lt;ul>
-&lt;li>最理想，100%的代码覆盖率以及分支覆盖率。
-&lt;ul>
-&lt;li>覆盖率好不等价于代码合格&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>时间有限
-&lt;ul>
-&lt;li>核心功能代码&lt;/li>
-&lt;li>逻辑复杂的代码&lt;/li>
-&lt;li>分支较多的代码&lt;/li>
-&lt;li>数据状态变化较多的代码&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2 id="怎么做单元测试">怎么做单元测试&lt;/h2>
-&lt;ul>
-&lt;li>从一个Java程序开始&lt;/li>
-&lt;li>怎么做Spring容器的单元测试？
-&lt;ul>
-&lt;li>@SpringBootTest&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>数据库数据怎么办？
-&lt;ul>
-&lt;li>@DbUnit&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2 id="单元测试的建议">单元测试的建议&lt;/h2>
-&lt;ul>
-&lt;li>日志或者System.out.println对测试无意义&lt;/li>
-&lt;li>如依赖数据库，建议使用非测试数据库，并用spring-test-dbunit来做数据初始化准备。&lt;/li>
-&lt;li>如依赖外部接口，建议有相应的测试接口，保证其接口输入与响应保持一致性&lt;/li>
-&lt;li>了解一下测试驱动开发，能提高对代码可测试性、模块设计的理解。&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2 id="参考">参考&lt;/h2>
-&lt;ul>
-&lt;li>&lt;a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">单元测试&lt;/a> &lt;a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">-&lt;/a> &lt;a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">维基百科，自由的百科全书&lt;/a> &lt;a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">(&lt;/a>&lt;a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">wikipedia.org)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://mp.weixin.qq.com/s/okmWMOeBm7cCIZ1zzFr4KQ">从头到脚说单测&lt;/a>&lt;a href="https://mp.weixin.qq.com/s/okmWMOeBm7cCIZ1zzFr4KQ">——&lt;/a>&lt;a href="https://mp.weixin.qq.com/s/okmWMOeBm7cCIZ1zzFr4KQ">谈有效的单元测试&lt;/a> &lt;a href="https://mp.weixin.qq.com/s/okmWMOeBm7cCIZ1zzFr4KQ">(&lt;/a>&lt;a href="https://mp.weixin.qq.com/s/okmWMOeBm7cCIZ1zzFr4KQ">qq.com)&lt;/a>&lt;/li>
-&lt;li>关键词
-&lt;ul>
-&lt;li>测试开发&lt;/li>
-&lt;li>JUnit, xUNit, dbUnit&lt;/li>
-&lt;li>SpringBooTest&lt;/li>
-&lt;li>Mock, spy, stub&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-- https://akelio-zhang.github.io/posts/2022-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%87%8F%E5%B0%91%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>

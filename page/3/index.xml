@@ -1,4 +1,69 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 22 Mar 2026 22:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Clean系统读书笔记——两年项目回顾</title><link>https://akelio-zhang.github.io/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/</link><pubDate>Wed, 27 May 2020 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/ -&lt;h1 id="clean系统读书笔记两年项目回顾">Clean系统读书笔记——两年项目回顾&lt;/h1>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 22 Mar 2026 22:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>系统复杂度 Part I</title><link>https://akelio-zhang.github.io/posts/2020-%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/</link><pubDate>Sat, 06 Jun 2020 18:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2020-%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020-%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/ -&lt;h1 id="系统复杂度-part-i">系统复杂度 Part I&lt;/h1>
+&lt;h2 id="关键词">关键词&lt;/h2>
+&lt;p>系统复杂度、重构、设计模式、测试&lt;/p>
+&lt;h2 id="0x1-introduction">0x1 Introduction&lt;/h2>
+&lt;p>当你接手一个不熟悉的系统的时候，你可能想找一下系统文档（但是已经很久没更新了）；你可能想看一下有没有单元测试（很多根本跑不起来了）；这时候，除了问同事，只能自己从几千几万行代码中开始摸索。&lt;/p>
+&lt;p>当你开发一个新系统的时候，由于某些原因需要调整局部的逻辑，因为没有相应的单元测试，结果在移交给测试后才发现各种顾此失彼的bug出现了。&lt;/p>
+&lt;p>当你的系统性能已经无法再满足时，又或者系统的迭代成本异常大时，此时就会可能需要重写或重构。此时，由于没有单元测试，自动化集成测试，你不得不拉上更多的同事来参与此次系统优化，以保证系统的可靠性。&lt;/p>
+&lt;p>当你的系统需要有新的客户接入时，因为没有最新的系统文档或使用说明书，你只能电话、口头地来教别人怎么接入你的系统。&lt;/p>
+&lt;p>上述的几个场景，都是因为系统的配套设施（文档、测试）没有同步完善，引起接入、迭代、重构的成本显著增加。这不是我们想看到的。相对地，系统的快速迭代的开发模式已经受到了广泛的认同，我们怎么在这个过程能够一直保持高效、可靠的输出呢？对于这个问题，本文尝试从系统复杂度、重构、设计模式、测试这几个角度来讨论这个问题，希望能给大家一些新的思考。&lt;/p>
+&lt;p>插曲，在招联面试中，关于软件工程回答中，我的答案是说，它与结构工程一样，都需要在有限的资源条件下，用尽可能优化的设计，来实现降低成本地完成目标。经过了近2年的打磨，我对这个问题有了更多的理解。迭代，变化性，设计依据。&lt;/p>
+&lt;h2 id="0x2-系统复杂度">0x2 系统复杂度&lt;/h2>
+&lt;p>首先，算法有复杂度一说，在所有的算法课程基本都会在前1-2章围绕这个话题展开详细的定义与分析讨论。算法复杂度一般分为时间复杂度与空间复杂度，可以说是该算法解决问题的时间与空间成本。&lt;/p>
+&lt;p>在工作上，我们维护的往往是一个系统，一个工程。一个系统的复杂度定义，似乎并不是那么容易。本章节大多数内容来源于_A Philosiphy of Software Designing_。这本书中对于系统的复杂度定义非常的实际，&lt;strong>软件系统结构中让其变得难以理解且难以变更的部分组成了系统的复杂性&lt;/strong>。回顾本文引子部分，其实都是系统难以理解、难以修改导致的结果。&lt;/p>
+&lt;p>这个定义相对于算法复杂度而言，显得非常主观，没有客观的评估准则，各个人的理解也会大相径庭。因此，书中进一步展开了几种复杂性症状。&lt;/p>
+&lt;ol>
+&lt;li>变化放大(change amplication)：当你需要改动某一个逻辑时，会涉及到多处代码变更。&lt;/li>
+&lt;li>认知负担(cognitive load)：有时尽管只写了很少的代码，但是对于他人来说异常难以理解，请尝试将它改写成容易理解的方式。&lt;/li>
+&lt;li>不可知(unknown unknowns)：不知道哪里有坑存在，就算BUG出现了。&lt;/li>
+&lt;/ol>
+&lt;p>总的来说，控制住整个系统的复杂度，将是保障我们高效、可靠工作的核心。低复杂度的系统，大大降低了开发过程中的心智压力。&lt;/p>
+&lt;h2 id="0x3-测试">0x3 测试&lt;/h2>
+&lt;p>为什么要把测试放在靠前的位置呢？测试是将一直伴随在生产代码演进的，是软件的&lt;strong>可靠性&lt;/strong>保证的重要工具。&lt;/p>
+&lt;p>拿建筑工程做一个类比，设计一幢房屋时，对于设计人员，最终产出的是施工图。那么，它的设计依据是什么呢？《规范》与模型的承载能力分析。前者，描述了什么类型的结构需要怎么样的设计，这种属于基本要求。后者，通过基于物理建模软件进行专门的结构性能分析，来确保本次设计的&lt;strong>可靠性&lt;/strong>。&lt;/p>
+&lt;p>软件工程相比建筑工程，非常年轻，一方面没有条条框框地规则（P3C也仅仅是一些基础性条约）；另一方面，因为大部分软件工程不涉及生命财产，也可以通过快速更新来解决问题，所以导致大多数人对&lt;strong>可靠性&lt;/strong>的关注度远不如建筑工程。先不说这样的态度容易使生产问题频发，另外也会让你的工作开展体验感相对差劲，总是在返工。&lt;/p>
+&lt;p>因此，我们需要在注重软件的可靠性。我们的第一个工具就是（自动化）测试。好的测试，就能够有效地模拟真实地业务场景，来校验代码的正确性。好的测试，能够让新加入的开发人员更容易理解系统是如何使用的。好的测试，能够促进系统架构的合理化——高内聚低耦合。但是，好的测试代码并不容易写，因为测试代码的思考方式与一般的coding并不一样，它更像是生产代码的前置条件、运行场景。&lt;/p>
+&lt;p>测试通常分为四个层次：单元测试（Unit Testing）、集成测试（Integration Testing）、系统测试（System Testing）、验收测试（Acceptance Testing）。其中离开发最近的是单元测试，一般覆盖的是函数以及类的功能正确性。集成测试则是对系统内部的各模块之间的协作是否正确，通常按内部接口进行覆盖测试。系统测试则是验证对外接口能否在各种情况下能够正常地运行（性能测试也属于这一层次）。验收测试属于辅助性的测试，范围也相对更广，不同的系统也会需要不同的验收测试，例如安全测试、易用性测试、兼容性测试等等。&lt;/p>
+&lt;p>这里我们主要谈一下单元测试，因为这是所有测试的基本面，也是开发人员所需要特别关注的地方。先考虑一下是先写生产代码还是先写测试代码。第一个角度是，当然是先写生产代码了，没有生产代码怎么测试呢？第二个角度是，先写测试代码再写生产代码，因为测试代码是功能的运行场景，只有先把这些前置条件搞清楚了，才能写出正确的生产代码。也许你会说，我可以先大脑过一下基本场景，然后再写生产代码，再写测试代码，这应该是大部分人目前的方式，但是不知道你有没有发现，这种方式写出来的测试代码往往会因为前期的假设导致覆盖率很低。&lt;/p>
+&lt;p>在2003年，Kent Beck提出了Test-Driven development（TDD）这样一种开发模式。&lt;/p>
+&lt;blockquote>
+&lt;ol>
+&lt;li>添加一个测试&lt;/li>
+&lt;li>运行所有测试，是否有失败&lt;/li>
+&lt;li>一旦有失败的测试，就开始写生产代码，直到该测试通过为止。&lt;/li>
+&lt;li>所有测试通过后，就必须开始写测试代码，直到有一个测试无法通过。&lt;/li>
+&lt;/ol>&lt;/blockquote>
+&lt;p>可能，你会觉得这样非常耗时，但是你得明确，你在一个功能开发的耗时并不仅仅是写了那一堆生产代码而已，还包括测试、代码修复等等。所以，这种方式只是将一些顺序进行了调换，却能为最终的正确性铺垫很多。&lt;/p>
+&lt;h2 id="0x4-重构">0x4 重构&lt;/h2>
+&lt;p>重构与重写都是试图优化系统复杂度的方式，在不同的场景（代码状况、工期等）会选择不同的方式，但是大多时候会采用重构的方式来实现。&lt;/p>
+&lt;p>先来看一下wikipedia对重构的定义：&lt;/p>
+&lt;blockquote>
+&lt;p>In &lt;a href="https://en.wikipedia.org/wiki/Computer_programming">computer programming&lt;/a> and &lt;a href="https://en.wikipedia.org/wiki/Software_design">software design&lt;/a>, &lt;strong>code refactoring&lt;/strong> is the process of restructuring existing &lt;a href="https://en.wikipedia.org/wiki/Computer_code">computer code&lt;/a>—changing the &lt;em>&lt;a href="https://en.wikipedia.org/wiki/Decomposition_(computer_science)">factoring&lt;/a>*—without changing its external behavior. Refactoring is intended to improve the design, structure, and/or implementation of the &lt;a href="https://en.wikipedia.org/wiki/Software">software&lt;/a> (its *&lt;a href="https://en.wikipedia.org/wiki/Non-functional_requirement">non-functional&lt;/a>&lt;/em> attributes), while preserving its &lt;a href="https://en.wikipedia.org/wiki/Functional_requirement">functionality&lt;/a>. Potential advantages of refactoring may include improved code &lt;a href="https://en.wikipedia.org/wiki/Readability">readability&lt;/a> and reduced &lt;a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">complexity&lt;/a>; these can improve the &lt;a href="https://en.wikipedia.org/wiki/Source_code">source code&lt;/a>&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Maintainability">maintainability&lt;/a> and create a simpler, cleaner, or more expressive internal &lt;a href="https://en.wikipedia.org/wiki/Software_architecture">architecture&lt;/a> or &lt;a href="https://en.wikipedia.org/wiki/Object_model">object model&lt;/a> to improve &lt;a href="https://en.wikipedia.org/wiki/Extensibility">extensibility&lt;/a>.&lt;/p>&lt;/blockquote>
+&lt;p>在系统复杂度膨胀到一定程度后，添加功能异常困难、系统变得难以理解、修改的时候，重构往往就需要开始执行，从而降低系统的复杂度，让我们能够更高效地开发、修改代码。所以重构并不是某一个开发阶段，而是一种开发工具，帮助我们提升效率。&lt;/p>
+&lt;p>在《重构》这本书中，提到很多地坏味道，本质就是一些让系统复杂度变高的地方，你可以发现它与第二节中的那些症状很类似。&lt;/p>
+&lt;p>这里特别想说的是，重构的过程中，其实会采用不少设计模式，但是并不能说设计模式就是万能药。设计模式是我们需要了解的，但是我们需要记住的是它们出现的目的是什么，我这里可以列举几个：&lt;/p>
+&lt;ol>
+&lt;li>减少继承，多采用组合的方式来丰富类的功能。&lt;/li>
+&lt;li>面对各种功能的变更，能够将变化（影响）的范围尽可能的缩小到1个或者少量的类中。&lt;/li>
+&lt;li>面向接口编程。&lt;/li>
+&lt;/ol>
+&lt;h2 id="0x5-结论">0x5 结论&lt;/h2>
+&lt;ol>
+&lt;li>除了写好生产代码以外，我们要多多关注一些周边的工具：自动化测试、持续继承、文档等。&lt;/li>
+&lt;li>对于一个持续迭代的系统，系统复杂度是需要重点关注的。&lt;/li>
+&lt;li>尝试把你的测试代码前置。&lt;/li>
+&lt;li>重构能够帮助你降低系统复杂度。&lt;/li>
+&lt;li>三次原则：第一次做某件事时只管去做；第二次做类似的事会产生反感（蹩脚），但无论如何还是可以去做；第三次再做类似的事，你就应该重构/反思。&lt;/li>
+&lt;/ol>
+&lt;h2 id="站在巨人的肩膀上">站在巨人的肩膀上&lt;/h2>
+&lt;ol>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Software_testing#Testing_levels">https://en.wikipedia.org/wiki/Software_testing#Testing_levels&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Code_refactoring">https://en.wikipedia.org/wiki/Code_refactoring&lt;/a>&lt;/li>
+&lt;li>Ousterhout, John. &lt;em>A Philosophy of Software Design&lt;/em>. Yaknyam Press, 2018.&lt;/li>
+&lt;li>Fowler, Martin. &lt;em>Refactoring: improving the design of existing code&lt;/em>. Addison-Wesley Professional, 2018.&lt;/li>
+&lt;li>Martin, Robert C. &lt;em>The clean coder: a code of conduct for professional programmers&lt;/em>. Pearson Education, 2011.&lt;/li>
+&lt;/ol>
+- https://akelio-zhang.github.io/posts/2020-%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6-1/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>Clean系统读书笔记——两年项目回顾</title><link>https://akelio-zhang.github.io/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/</link><pubDate>Wed, 27 May 2020 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/ -&lt;h1 id="clean系统读书笔记两年项目回顾">Clean系统读书笔记——两年项目回顾&lt;/h1>
 &lt;h2 id="0x1-引子">0x1 引子&lt;/h2>
 &lt;p>这是一篇在快速浏览了一圈《Clean Code》《Refactoring》《Clean Coder》这三本书之后的读后感。仅作为一篇备忘录。&lt;/p>
 &lt;p>在很早很早时候，开始准备转CS的时候就知道了Refactoring这本书，当时很简单地扫了一眼，就感觉很多东西都不明所以，要么就觉得，这不是本该就这样吗？于是就一直扔在网盘没再看过。&lt;/p>
@@ -100,4 +165,230 @@
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Evaluation_strategy">https://en.wikipedia.org/wiki/Evaluation_strategy&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Reference_(computer_science)">https://en.wikipedia.org/wiki/Reference_(computer_science)&lt;/a>&lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>ZooKeeper笔记</title><link>https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/</link><pubDate>Wed, 01 May 2019 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/ -&lt;h1 id="zookeeper笔记">ZooKeeper笔记&lt;/h1>
+&lt;blockquote>
+&lt;p>logged in 2019 and written with Claude in 2026.&lt;/p>&lt;/blockquote>
+&lt;p>本文是学习 ZooKeeper 过程中的整理笔记，涵盖核心概念、Watcher 机制、ZAB 选举协议以及实践案例，主要参考官方文档与《从Paxos到ZooKeeper》。&lt;/p>
+&lt;hr>
+&lt;h2 id="what-is-zookeeper">What is ZooKeeper?&lt;/h2>
+&lt;blockquote>
+&lt;p>ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services.&lt;/p>&lt;/blockquote>
+&lt;p>ZooKeeper 是一个面向分布式应用的协调服务，核心能力包括：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>配置管理&lt;/strong>：集中存储和分发配置信息&lt;/li>
+&lt;li>&lt;strong>命名服务&lt;/strong>：为分布式资源提供统一命名&lt;/li>
+&lt;li>&lt;strong>分布式同步&lt;/strong>：实现分布式锁、屏障等同步原语&lt;/li>
+&lt;li>&lt;strong>集群管理&lt;/strong>：监控节点存活状态、Master 选举等&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>内部数据结构：ZNode&lt;/strong>&lt;/p>
+&lt;p>ZooKeeper 使用类 Linux 目录树结构组织数据，每个节点称为 ZNode，具有唯一路径名，并可存储少量数据。ZNode 支持变更通知（Watcher），使客户端能够感知数据变化。&lt;/p>
+&lt;p>在一致性方面，ZooKeeper 通过 ZAB 协议在集群内部保证强一致性与分区容忍性。&lt;/p>
+&lt;p>参考：&lt;a href="https://draveness.me/zookeeper-chubby">ZooKeeper 与 Chubby 对比&lt;/a>&lt;/p>
+&lt;hr>
+&lt;h2 id="zookeeper-能做什么">ZooKeeper 能做什么？&lt;/h2>
+&lt;p>参考：&lt;a href="https://blog.csdn.net/weijifeng_/article/details/79775738">ZooKeeper 应用场景总结&lt;/a>&lt;/p>
+&lt;p>常见应用场景包括：分布式锁、服务注册与发现、配置中心、Leader 选举、分布式队列等。&lt;/p>
+&lt;hr>
+&lt;h2 id="watcher-机制">Watcher 机制&lt;/h2>
+&lt;p>参考：&lt;a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-apache-zookeeper-watcher/index.html">IBM Developer - ZooKeeper Watcher 详解&lt;/a>&lt;/p>
+&lt;h3 id="watcher-的核心特性">Watcher 的核心特性&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>特性&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>一次性触发&lt;/strong>&lt;/td>
+&lt;td>Watcher 触发一次后自动失效，需重新注册才能继续监听&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>串行回调&lt;/strong>&lt;/td>
+&lt;td>客户端回调在单线程中顺序执行，避免并发问题，但回调逻辑不能阻塞&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>轻量级&lt;/strong>&lt;/td>
+&lt;td>服务端只存储 Watcher 的存在标记，WatchEvent 不携带变更后的数据，客户端需自行重新读取&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="watcher-基本流程">Watcher 基本流程&lt;/h3>
+&lt;ol>
+&lt;li>客户端通过 &lt;code>addWatch&lt;/code> 方法向服务端注册一个 Watcher&lt;/li>
+&lt;li>服务端检测到对应事件发生后，封装一个 &lt;code>WatchEvent&lt;/code> 发送给客户端&lt;/li>
+&lt;li>客户端通过 &lt;code>WatchManager&lt;/code> 中缓存的回调函数进行处理&lt;/li>
+&lt;/ol>
+&lt;p>&lt;code>WatchEvent&lt;/code> 可按 &lt;code>KeeperState&lt;/code>（连接状态）和 &lt;code>EventType&lt;/code>（事件类型）两个维度分类。&lt;/p>
+&lt;hr>
+&lt;h2 id="zookeeper-原理">ZooKeeper 原理&lt;/h2>
+&lt;h3 id="分布式系统的核心挑战">分布式系统的核心挑战&lt;/h3>
+&lt;p>在理解 ZooKeeper 的设计之前，需要先了解分布式系统面临的基本问题。&lt;/p>
+&lt;p>&lt;strong>CAP 定理&lt;/strong>&lt;/p>
+&lt;p>分布式系统无法同时满足以下三点，最多只能保证其中两项：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>属性&lt;/th>
+&lt;th>含义&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>C（Consistency）一致性&lt;/strong>&lt;/td>
+&lt;td>所有节点在同一时刻看到相同的数据&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>A（Availability）可用性&lt;/strong>&lt;/td>
+&lt;td>每个请求都能收到响应（不保证是最新数据）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>P（Partition Tolerance）分区容忍性&lt;/strong>&lt;/td>
+&lt;td>网络分区发生时系统仍能继续运行&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>网络分区在分布式环境中是不可避免的，因此实际系统通常在 &lt;strong>CP&lt;/strong> 或 &lt;strong>AP&lt;/strong> 之间做取舍。ZooKeeper 选择了 &lt;strong>CP&lt;/strong>：牺牲部分可用性（Leader 选举期间不提供服务），换取强一致性保证。&lt;/p>
+&lt;p>&lt;strong>拜占庭将军问题与故障模型&lt;/strong>&lt;/p>
+&lt;p>分布式系统中的节点故障分两类：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Crash Fault（崩溃故障）&lt;/strong>：节点宕机、停止响应，不会发送错误信息。ZooKeeper 假设只存在此类故障。&lt;/li>
+&lt;li>&lt;strong>Byzantine Fault（拜占庭故障）&lt;/strong>：节点可能发送任意错误或恶意消息。容忍此类故障需要 &lt;strong>N ≥ 3F+1&lt;/strong> 个节点（N 为总节点数，F 为故障节点数）。&lt;/li>
+&lt;/ul>
+&lt;p>ZooKeeper 不处理拜占庭故障，仅需 &lt;strong>N ≥ 2F+1&lt;/strong>（即超过半数存活即可），这也是为什么 ZK 集群通常部署奇数个节点（3、5、7）。&lt;/p>
+&lt;p>参考：&lt;a href="https://www.zhihu.com/question/52254063/answer/322188918">拜占庭容错为什么需要 N ≥ 3F+1&lt;/a>&lt;/p>
+&lt;p>&lt;strong>FLP 不可能定理&lt;/strong>&lt;/p>
+&lt;p>在异步网络环境中，即使只有一个节点可能崩溃，也不存在一个能在有限时间内保证达成共识的确定性算法。ZAB、Paxos、Raft 等协议的解决思路是：在实践中引入&lt;strong>超时机制&lt;/strong>，将异步网络假设放宽为部分同步模型，从而绕过这一理论限制。&lt;/p>
+&lt;hr>
+&lt;h3 id="共识算法简述">共识算法简述&lt;/h3>
+&lt;p>ZAB 并非凭空设计，其背后是一系列共识算法的演进：&lt;/p>
+&lt;p>&lt;strong>Paxos&lt;/strong>&lt;/p>
+&lt;p>Paxos 是分布式共识的理论基础，分为 Prepare 和 Accept 两个阶段，通过多数派投票达成一致。但原始 Paxos 描述的是单值共识，工程实现复杂，不直接支持日志复制场景。&lt;/p>
+&lt;p>&lt;strong>Multi-Paxos → Raft&lt;/strong>&lt;/p>
+&lt;p>为解决 Paxos 的工程复杂性，Raft 将共识过程拆分为 &lt;strong>Leader 选举、日志复制、安全性&lt;/strong> 三个相对独立的子问题，可读性更强，是目前最广泛实现的共识算法（etcd、TiKV 均基于 Raft）。&lt;/p>
+&lt;p>&lt;strong>ZAB vs Raft&lt;/strong>&lt;/p>
+&lt;p>ZAB 与 Raft 思路相近，核心差异在于：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>对比项&lt;/th>
+&lt;th>ZAB&lt;/th>
+&lt;th>Raft&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>设计目标&lt;/td>
+&lt;td>为 ZooKeeper 定制&lt;/td>
+&lt;td>通用共识算法&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>日志提交条件&lt;/td>
+&lt;td>超过半数 ACK&lt;/td>
+&lt;td>超过半数 ACK&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Leader 选举依据&lt;/td>
+&lt;td>epoch + zxid&lt;/td>
+&lt;td>term + log index&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>成员变更&lt;/td>
+&lt;td>不支持动态成员变更&lt;/td>
+&lt;td>支持（Joint Consensus）&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h3 id="zab-协议详解">ZAB 协议详解&lt;/h3>
+&lt;p>ZAB（ZooKeeper Atomic Broadcast，原子广播协议）是 ZooKeeper 的核心，保证所有事务在集群中以相同顺序被所有节点处理。&lt;/p>
+&lt;p>&lt;strong>ZAB 的两个核心阶段&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>① 崩溃恢复（Leader Election + Recovery）&lt;/strong>&lt;/p>
+&lt;p>当集群启动或 Leader 宕机时进入此阶段：&lt;/p>
+&lt;ol>
+&lt;li>所有节点进入 LOOKING 状态，开始投票&lt;/li>
+&lt;li>每个节点广播自己的投票：&lt;code>(myid, zxid, epoch)&lt;/code>&lt;/li>
+&lt;li>收到投票后按以下规则 PK，更新自己的投票：
+&lt;ul>
+&lt;li>优先选 &lt;code>epoch&lt;/code> 更大的节点&lt;/li>
+&lt;li>&lt;code>epoch&lt;/code> 相同则选 &lt;code>zxid&lt;/code> 更大的节点（数据更新）&lt;/li>
+&lt;li>&lt;code>zxid&lt;/code> 也相同则选 &lt;code>myid&lt;/code> 更大的节点&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>超过半数节点投给同一候选人，该节点成为新 Leader&lt;/li>
+&lt;li>新 Leader 与 Follower 同步数据，确保所有已提交事务不丢失&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>② 消息广播（Atomic Broadcast）&lt;/strong>&lt;/p>
+&lt;p>正常运行阶段，所有写请求统一由 Leader 处理：&lt;/p>
+&lt;pre tabindex="0">&lt;code>Client → (任意节点) → Leader
+↓ Propose（带 zxid）
+Follower × N
+↓ ACK（超过半数）
+Leader Commit
+↓ 广播 Commit
+Follower Commit → Client 响应
+&lt;/code>&lt;/pre>&lt;p>这个流程类似两阶段提交（2PC），但 Leader 不等待所有节点确认，只需&lt;strong>多数派&lt;/strong>即可提交，从而在容错性和性能之间取得平衡。&lt;/p>
+&lt;p>&lt;strong>zxid 的结构&lt;/strong>&lt;/p>
+&lt;p>&lt;code>zxid&lt;/code> 是一个 64 位整数，高 32 位为 &lt;code>epoch&lt;/code>（每次 Leader 切换递增），低 32 位为事务序号。这个设计保证了跨 Leader 周期的全局事务顺序。&lt;/p>
+&lt;p>&lt;strong>ZooKeeper 的一致性保证&lt;/strong>&lt;/p>
+&lt;p>ZooKeeper 提供的并非严格的线性一致性（Linearizability），而是&lt;strong>顺序一致性（Sequential Consistency）&lt;/strong>：&lt;/p>
+&lt;ul>
+&lt;li>写操作：由 Leader 统一处理，全局有序，保证强一致&lt;/li>
+&lt;li>读操作：可能从 Follower 读到旧数据（Follower 同步存在延迟）&lt;/li>
+&lt;li>如需读到最新数据，需在读之前调用 &lt;code>sync()&lt;/code> 强制同步&lt;/li>
+&lt;/ul>
+&lt;p>参考：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.jianshu.com/p/400a44edee88">ZAB 协议详解 - 简书&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/27335748">ZAB 协议原理 - 知乎&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="实践案例搭建-zookeeper-集群">实践案例：搭建 ZooKeeper 集群&lt;/h2>
+&lt;p>参考：&lt;a href="https://segmentfault.com/a/1190000006907443">Docker 搭建 ZK 集群 - SegmentFault&lt;/a>&lt;/p>
+&lt;h3 id="-搭建-zk-集群docker">① 搭建 ZK 集群（Docker）&lt;/h3>
+&lt;p>&lt;strong>方式一：逐个创建容器&lt;/strong>&lt;/p>
+&lt;p>拉取 ZooKeeper 镜像后，依次创建多个 ZK 容器，手动配置组成集群。&lt;/p>
+&lt;p>&lt;strong>方式二：使用 Docker Compose（推荐）&lt;/strong>&lt;/p>
+&lt;p>编写 &lt;code>docker-compose.yml&lt;/code> 配置集群拓扑，一键启动：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22"># 启动集群&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#00688b">COMPOSE_PROJECT_NAME&lt;/span>=zk_test docker-compose up -d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22"># 查看运行状态&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#00688b">COMPOSE_PROJECT_NAME&lt;/span>=zk_test docker-compose ps
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;img src="https://cdn.nlark.com/yuque/0/2020/png/726875/1595741434602-a9fc9846-91da-47bb-a9e3-f4ca702b3fec.png" alt="https://cdn.nlark.com/yuque/0/2020/png/726875/1595741434602-a9fc9846-91da-47bb-a9e3-f4ca702b3fec.png">&lt;/p>
+&lt;p>&lt;img src="https://cdn.nlark.com/yuque/0/2020/png/726875/1595741457323-ad45018b-658a-48de-b3f7-12caf47bf98e.png" alt="https://cdn.nlark.com/yuque/0/2020/png/726875/1595741457323-ad45018b-658a-48de-b3f7-12caf47bf98e.png">&lt;/p>
+&lt;h3 id="-连接集群验证">② 连接集群验证&lt;/h3>
+&lt;p>&lt;strong>通过 Docker 连接 ZK 集群：&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>docker run -it --rm &lt;span style="color:#cd5555">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555">&lt;/span> --link zk1 --link zk2 --link zk3 &lt;span style="color:#cd5555">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555">&lt;/span> --net zk_test_default &lt;span style="color:#cd5555">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555">&lt;/span> zookeeper zkCli.sh -server zk1:2181
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>本地使用 nc 快速检查节点状态：&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#658b00">echo&lt;/span> stat | nc 127.0.0.1 &lt;span style="color:#b452cd">2181&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#658b00">echo&lt;/span> stat | nc 127.0.0.1 &lt;span style="color:#b452cd">2182&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#658b00">echo&lt;/span> stat | nc 127.0.0.1 &lt;span style="color:#b452cd">2183&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>实测结果：&lt;code>zk3&lt;/code>（端口 2183）为 Leader，其余节点均为 Follower。&lt;/p>
+&lt;p>&lt;img src="https://cdn.nlark.com/yuque/0/2020/png/726875/1595741480312-67a471eb-9a50-452e-8f73-bb84a3a307af.png" alt="https://cdn.nlark.com/yuque/0/2020/png/726875/1595741480312-67a471eb-9a50-452e-8f73-bb84a3a307af.png">&lt;/p>
+&lt;h3 id="-java-客户端接入">③ Java 客户端接入&lt;/h3>
+&lt;p>常用客户端库：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Apache ZooKeeper 原生客户端&lt;/strong>：官方提供，功能完整&lt;/li>
+&lt;li>&lt;strong>101tec ZkClient&lt;/strong>：对原生客户端的封装，API 更友好&lt;/li>
+&lt;/ul>
+&lt;p>主要练习内容：&lt;/p>
+&lt;ul>
+&lt;li>节点的增删改查&lt;/li>
+&lt;li>多线程竞争 Master（分布式锁场景）&lt;/li>
+&lt;li>Watcher 的注册与回调&lt;/li>
+&lt;li>模拟服务器节点失效时的处理逻辑&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="参考资料">参考资料&lt;/h2>
+&lt;ol>
+&lt;li>&lt;a href="https://www.jianshu.com/p/eec133595c68">ZooKeeper 入门 - 简书&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://www.cnblogs.com/dimmacro/p/4457665.html">ZooKeeper 原理与实践 - 博客园&lt;/a>&lt;/li>
+&lt;li>《从Paxos到ZooKeeper》&lt;/li>
+&lt;li>&lt;a href="https://www.zhihu.com/question/52254063/answer/322188918">拜占庭容错为什么需要 N ≥ 3F+1 - 知乎&lt;/a>&lt;/li>
+&lt;/ol>
+- https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>

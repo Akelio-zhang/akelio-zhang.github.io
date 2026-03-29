@@ -1,4 +1,175 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 22 Mar 2026 22:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>计算机中的各种“一致性”</title><link>https://akelio-zhang.github.io/posts/2026-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E4%B8%80%E8%87%B4%E6%80%A7/</link><pubDate>Sun, 22 Mar 2026 22:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2026-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E4%B8%80%E8%87%B4%E6%80%A7/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E4%B8%80%E8%87%B4%E6%80%A7/ -&lt;h1 id="计算机中的各种一致性">计算机中的各种“一致性”&lt;/h1>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 29 Mar 2026 15:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>资源调度（Yarn&amp;K8s）</title><link>https://akelio-zhang.github.io/posts/2026-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6yarnk8s/</link><pubDate>Sun, 29 Mar 2026 15:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2026-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6yarnk8s/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6yarnk8s/ -&lt;h1 id="资源调度yarnk8s">资源调度（Yarn&amp;amp;K8s）&lt;/h1>
+&lt;blockquote>
+&lt;p>本文适合有一定 Linux 和分布式系统基础的读者，重点拆解 YARN、K8s 资源调度的宏观模型，以及 Cgroups 在内核层的实现细节。&lt;/p>&lt;/blockquote>
+&lt;p>在当今的分布式系统世界里，我们早已习惯了将成千上万台服务器视为一个整体。在这个&amp;quot;硅基大陆&amp;quot;上，每天都有无数的计算任务（Spark 作业、Nginx 服务、AI 训练模型）在抢夺生存空间。&lt;/p>
+&lt;p>如果将这些机器比作&lt;strong>国土&lt;/strong>，将任务比作&lt;strong>居民&lt;/strong>，那么决定哪个居民住进哪间房、能用多少电、吃多少粮的神秘力量，就是&lt;strong>资源调度系统（Resource Scheduler）&lt;/strong>。&lt;/p>
+&lt;p>今天，我们就从宏观和微观两个视角，拆解这股统治力量背后的奥秘，并深入 Linux 内核，围观其终极执行者——Cgroups 的运作原理。&lt;/p>
+&lt;hr>
+&lt;h2 id="一-宏观视角两栖霸主的治理策略">一、 宏观视角：两栖霸主的治理策略&lt;/h2>
+&lt;p>在大数据和云原生的世界里，YARN 和 Kubernetes (K8s) 是两股最强大的势力。它们虽然一个服务于大数据批处理，一个服务于微服务容器化，但在&amp;quot;如何协调资源&amp;quot;这件事上，殊途同归。&lt;/p>
+&lt;h3 id="1-yarn-精准的请求-分配模式">1. YARN: 精准的&amp;quot;请求-分配&amp;quot;模式&lt;/h3>
+&lt;p>YARN 像是一个极其严谨的&lt;strong>工程大总管&lt;/strong>。它不关心你的任务在干什么，只关心你用了多少资源。&lt;/p>
+&lt;p>其核心在于&lt;strong>解耦&lt;/strong>：ResourceManager 负责全局资源（内存、CPU）的调度分配，而 ApplicationMaster（任务包工头）负责向大总管申请资源，并指导机器上的 NodeManager 执行。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>它的风格：&lt;/strong> 严格按照配额办事，适合运行时间长、资源需求确定的大任务，强调资源的利用率。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-kubernetes-高可用的声明式治理">2. Kubernetes: 高可用的&amp;quot;声明式&amp;quot;治理&lt;/h3>
+&lt;p>K8s 像是一个&lt;strong>自动化城市市长&lt;/strong>。你不需要告诉它&amp;quot;怎么做&amp;quot;，只需要声明&amp;quot;我想要什么&amp;quot;（比如：我需要 3 个 Nginx 实例，每个 1G 内存）。&lt;/p>
+&lt;p>K8s 的核心是&lt;strong>控制循环（Control Loop）&lt;/strong>。它不断对比&amp;quot;理想状态&amp;quot;与&amp;quot;实际状态&amp;quot;，如果发现不一致（比如有个节点宕机，少了 1 个 Nginx），调度器就会自动在其他合适的机器上重建任务。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>它的风格：&lt;/strong> 自愈能力极强，追求最终一致性，特别适合需要 24 小时运行的服务。&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-yarn-vs-k8s-核心对比">3. YARN vs K8s 核心对比&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>YARN&lt;/th>
+&lt;th>Kubernetes&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>核心组件&lt;/td>
+&lt;td>ResourceManager / ApplicationMaster / NodeManager&lt;/td>
+&lt;td>API Server / Scheduler / Kubelet&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>调度模型&lt;/td>
+&lt;td>请求-分配（Pull）&lt;/td>
+&lt;td>声明式 + 控制循环（Reconcile）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>适用场景&lt;/td>
+&lt;td>大数据批处理（Spark/MapReduce）&lt;/td>
+&lt;td>长运行微服务、容器化工作负载&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>自愈能力&lt;/td>
+&lt;td>弱（依赖 ApplicationMaster 重试）&lt;/td>
+&lt;td>强（控制循环持续修复）&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2 id="二-微观视角资源调度是如何落地的">二、 微观视角：资源调度是如何落地的？&lt;/h2>
+&lt;p>无论 YARN 和 K8s 在顶层设计上多么精妙，它们最终都必须回到一台台具体的物理机上执行。它们不能只发号施令，还得有一种机制来&amp;quot;物理&amp;quot;隔离资源。&lt;/p>
+&lt;p>试想一下，如果没有隔离，一个写了 Bug 的任务发生了内存泄漏，占满了整台机器的资源，同机器上的其他核心业务（比如银行的实时交易拦截系统）就会瞬间瘫痪。&lt;/p>
+&lt;h3 id="k8s-resource-limits-与-cgroups-的对应关系">K8s Resource Limits 与 Cgroups 的对应关系&lt;/h3>
+&lt;p>下面这段 K8s Pod YAML 是大家日常最熟悉的配置，但它背后真正执行限制的，其实是 Cgroups：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b008b;font-weight:bold">resources&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">requests&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">memory&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#cd5555">&amp;#34;256Mi&amp;#34;&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">cpu&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#cd5555">&amp;#34;250m&amp;#34;&lt;/span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#228b22"># 对应 cfs_quota = 25ms / 100ms 周期&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">limits&lt;/span>:&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">memory&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#cd5555">&amp;#34;512Mi&amp;#34;&lt;/span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#228b22"># 对应 memory.limit_in_bytes = 512 * 1024 * 1024&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">cpu&lt;/span>:&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#cd5555">&amp;#34;500m&amp;#34;&lt;/span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#228b22"># 对应 cfs_quota = 50ms / 100ms 周期&lt;/span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>requests&lt;/code> 影响调度决策（Scheduler 用于选节点），&lt;code>limits&lt;/code> 才是真正写入 Cgroups 的硬约束。两者之差就是&amp;quot;超卖空间&amp;quot;，也是生产环境 OOM 事故的高发地带。&lt;/p>
+&lt;p>在 Linux 环境下，承担这一重任的底层基石就是 &lt;strong>Cgroups (Control Groups)&lt;/strong>。&lt;/p>
+&lt;hr>
+&lt;h2 id="三-cgroups-的实现原理linux-内核的紧箍咒">三、 Cgroups 的实现原理：Linux 内核的&amp;quot;紧箍咒&amp;quot;&lt;/h2>
+&lt;p>Cgroups 是 Linux 内核提供的一种机制，它可以对进程组使用的资源（如 CPU、内存、磁盘 I/O、网络带宽）进行精细化的限制、统计和隔离。&lt;/p>
+&lt;p>可以说，&lt;strong>没有 Cgroups，就没有现代的容器技术&lt;/strong>。Docker 的本质，不过是用 Namespace 做隔离、用 Cgroups 做限流的进程而已——容器并非虚拟机，它没有独立的内核，Cgroups 就是它与宿主机之间唯一的那道&amp;quot;栅栏&amp;quot;。没有这道栅栏，K8s 的资源保证也就无从谈起。&lt;/p>
+&lt;h3 id="1-核心架构层级组织-hierarchy-与子系统-subsystem">1. 核心架构：层级组织 (Hierarchy) 与子系统 (Subsystem)&lt;/h3>
+&lt;p>Cgroups 的设计非常巧妙，它将资源的控制视为一个&lt;strong>层级树状结构&lt;/strong>，并通过 Linux 著名的文件系统视图（Everything is a file）展现给用户。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>子系统 (Subsystem/Resource Controller)：&lt;/strong> 这是具体的资源控制器。Linux 内核提供了许多子系统，如：
+&lt;ul>
+&lt;li>&lt;code>cpu&lt;/code>: 限制进程对 CPU 时间的使用。&lt;/li>
+&lt;li>&lt;code>memory&lt;/code>: 限制进程的内存使用量（包括 RAM 和 Swap）。&lt;/li>
+&lt;li>&lt;code>blkio&lt;/code>: 限制磁盘 I/O。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>控制组 (Control Group)：&lt;/strong> 这就是树上的一个个节点。我们将一组进程放入一个控制组中，然后对这个组应用子系统的策略。&lt;/li>
+&lt;li>cgroup v2 的控制目录&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-plaintext" data-lang="plaintext">&lt;span style="display:flex;">&lt;span>/sys/fs/cgroup/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── cgroup.controllers # 当前系统支持哪些资源控制
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── cgroup.procs # 根组里的进程
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── cgroup.subtree_control # 哪些资源可以下放到子组
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── system.slice/ # 所有的资源（CPU/MEM/IO）都在这一个目录下
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── cgroup.controllers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── cpu.max # v2 里的 CPU 限制文件
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── memory.max # v2 里的内存限制文件
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── io.max # v2 里的 IO 限制文件
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── user.slice/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="2-实现原理深度细化">2. 实现原理深度细化&lt;/h3>
+&lt;p>Cgroups 是如何实实在在地限制住资源的使用呢？我们重点看 CPU 和内存的实现：&lt;/p>
+&lt;h4 id="a-cpu-限制原理时间片的魔术">A. CPU 限制原理：时间片的魔术&lt;/h4>
+&lt;p>CPU 的限制有两种常见的实现模式：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>完全公平调度 (CFS) 带宽限制 (The Hard Limit)：&lt;/strong> 这是 YARN 和 K8s 最常用的模式。内核通过两个参数来控制：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>cpu.cfs_period_us&lt;/code>: 一个周期的时间长度（默认 100,000 微秒，即 100ms）。&lt;/li>
+&lt;li>&lt;code>cpu.cfs_quota_us&lt;/code>: 在这个周期内，该组允许使用的 CPU 时间（单位：微秒）。&lt;/li>
+&lt;/ul>
+&lt;p>举个例子：若设置 &lt;code>cpu.cfs_quota_us = 50000&lt;/code>、&lt;code>cpu.cfs_period_us = 100000&lt;/code>，意味着该 Cgroup 每 100ms 只能跑 50ms，即最多使用 0.5 个 CPU 核。一旦配额耗尽，进程就会被&lt;strong>暂停（Throttle）&lt;/strong>，直到下一个周期配额重置。这是一个严格的硬限制——即使机器上其他核心完全空闲，该进程也不能&amp;quot;借用&amp;quot;。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>CPU Shares (The Soft Limit)：&lt;/strong> 这不是硬限制，而是权重的比拼。在 CPU 空闲时，谁都可以百分百使用；只有当多个进程&lt;strong>抢占&lt;/strong> CPU 时，内核才会按照 Shares 的比例来决定谁能获得更多的计算时间。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="b-内存限制原理红线与警报">B. 内存限制原理：红线与警报&lt;/h4>
+&lt;p>内存的限制比 CPU 更加严厉，因为它关系到系统的稳定性。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>核心文件：&lt;/strong> &lt;code>memory.limit_in_bytes&lt;/code>&lt;/p>
+&lt;p>&lt;strong>实现细节：&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>记账：&lt;/strong> 当 Cgroup 内的进程尝试申请内存时，内核的内存分配器（Page Allocator）会检查该 Cgroup 的内存计数器。&lt;/li>
+&lt;li>&lt;strong>红线检查：&lt;/strong> 如果新申请的内存使得该组的总使用量超过了 &lt;code>memory.limit_in_bytes&lt;/code> 设定的红线，内核就不会继续分配内存。&lt;/li>
+&lt;li>&lt;strong>最后的挣扎 (Reclaim)：&lt;/strong> 内核会首先尝试在这个 Cgroup 内部进行&lt;strong>内存回收&lt;/strong>（比如回收不再使用的文件缓存、将不常用的内存页交换到磁盘 Swap 上）。&lt;/li>
+&lt;li>&lt;strong>死刑 (OOM Killer)：&lt;/strong> 如果回收后内存依然不足，内核就会触发 &lt;strong>OOM Killer (Out Of Memory Killer)&lt;/strong> 机制。它会依据内核计算的 &lt;code>oom_score&lt;/code>（综合考量进程内存占用、运行时长、是否为特权进程等因素）在这个 Cgroup 内打分，将得分最高的进程直接杀掉（&lt;code>SIGKILL&lt;/code>），以此来保障整台机器不崩溃。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-动手验证用-cgroups-限制一个进程">3. 动手验证：用 Cgroups 限制一个进程&lt;/h3>
+&lt;p>理论之后，我们用几条命令直接验证。以下示例基于 Cgroups v1 接口（适用于大多数仍在使用 v1 的生产环境）。&lt;/p>
+&lt;p>&lt;strong>内存限制：&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22"># 创建一个新的 memory cgroup&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir /sys/fs/cgroup/memory/demo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22"># 限制内存上限为 50MB&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#658b00">echo&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">$((&lt;/span>&lt;span style="color:#b452cd">50&lt;/span> * &lt;span style="color:#b452cd">1024&lt;/span> * &lt;span style="color:#b452cd">1024&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">))&lt;/span> &amp;gt; /sys/fs/cgroup/memory/demo/memory.limit_in_bytes
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22"># 将当前 shell 加入该 cgroup&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#658b00">echo&lt;/span> &lt;span style="color:#00688b">$$&lt;/span> &amp;gt; /sys/fs/cgroup/memory/demo/cgroup.procs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22"># 此时在该 shell 内运行的任何进程，内存超过 50MB 将触发 OOM Killer&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>CPU 限速：&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>mkdir /sys/fs/cgroup/cpu/demo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22"># 每 100ms 周期内只允许使用 20ms，即 20% CPU&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#658b00">echo&lt;/span> &lt;span style="color:#b452cd">100000&lt;/span> &amp;gt; /sys/fs/cgroup/cpu/demo/cpu.cfs_period_us
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#658b00">echo&lt;/span> &lt;span style="color:#b452cd">20000&lt;/span> &amp;gt; /sys/fs/cgroup/cpu/demo/cpu.cfs_quota_us
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#658b00">echo&lt;/span> &amp;lt;PID&amp;gt; &amp;gt; /sys/fs/cgroup/cpu/demo/cgroup.procs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>配合 &lt;code>top&lt;/code> 观察 CPU 占用，或用以下命令查看 Throttle 计数是否上涨：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cat /sys/fs/cgroup/cpu/demo/cpu.stat
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22"># nr_throttled 字段会随着限速触发而递增&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h2 id="四-总结从理念到执行的闭环">四、 总结：从理念到执行的闭环&lt;/h2>
+&lt;p>资源调度是一个从宏观理念到微观执行的闭环：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>YARN/K8s&lt;/strong> 负责解决&amp;quot;在全局范围，我该把任务放到哪里&amp;quot;的问题（调度策略）。&lt;/li>
+&lt;li>&lt;strong>Cgroups&lt;/strong> 负责解决&amp;quot;当任务来到机器上，它能用多少资源&amp;quot;的问题（资源隔离）。&lt;/li>
+&lt;/ul>
+&lt;p>它们共同构成了现代分布式系统的基石，确保了我们的&amp;quot;硅基大陆&amp;quot;有序、高效地运转。&lt;/p>
+&lt;hr>
+&lt;p>&lt;strong>后记：&lt;/strong>
+在进行实际的开发或运维时（尤其是像银行风控系统这样对稳定性要求极高的环境），深入理解 Cgroups 限制会导致 OOM (Out Of Memory) 还是 Throttle (CPU 限速) 极其关键。正确地设置 Java 堆大小（&lt;code>-Xmx&lt;/code>）与 Cgroups 限制（Container limits）之间的差距，往往就是一个线上 Bug 和系统崩溃之间的差别。&lt;/p>
+&lt;hr>
+&lt;h2 id="参考资料">参考资料&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://docs.kernel.org/translations/zh_CN/scheduler/sched-design-CFS.html">完全公平调度器 — The Linux Kernel documentation&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://arthurchiao.art/blog/linux-cfs-design-and-implementation-zh/">Linux CFS 调度器：原理、设计与内核实现（2023）&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.kernel.org/admin-guide/cgroup-v1/cgroups.html">Control Groups — The Linux Kernel documentation&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.kernel.org/translations/zh_CN/scheduler/sched-bwc.html">CFS 带宽控制 — The Linux Kernel documentation&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">Resource Management for Pods and Containers | Kubernetes&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html">Apache Hadoop YARN — Apache Hadoop 3.4.3&lt;/a>&lt;/li>
+&lt;/ul>
+- https://akelio-zhang.github.io/posts/2026-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6yarnk8s/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>计算机中的各种“一致性”</title><link>https://akelio-zhang.github.io/posts/2026-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E4%B8%80%E8%87%B4%E6%80%A7/</link><pubDate>Sun, 22 Mar 2026 22:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2026-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E4%B8%80%E8%87%B4%E6%80%A7/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E4%B8%80%E8%87%B4%E6%80%A7/ -&lt;h1 id="计算机中的各种一致性">计算机中的各种“一致性”&lt;/h1>
 &lt;blockquote>
 &lt;p>Written with Claude.&lt;/p>&lt;/blockquote>
 &lt;h2 id="0x00-引子">0x00 引子&lt;/h2>
@@ -784,47 +955,4 @@
 &lt;ul>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Extract,_transform,_load">ETL 概念（Wikipedia）&lt;/a>&lt;/li>
 &lt;/ul>
-- https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>软件工程师的能力</title><link>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</link><pubDate>Fri, 30 Dec 2022 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/ -&lt;p>&lt;em>网上看到的一则关于软件工程师的能力模型图，觉得非常通俗易懂，拿出来分享。若有版权问题，请联系。&lt;/em>&lt;/p>
-&lt;p>&lt;img src="https://akelio-zhang.github.io/images/ability-model.svg" alt="能力模型|800">&lt;/p>
-&lt;ul>
-&lt;li>基础
-&lt;ul>
-&lt;li>计算机知识体系（本质：计算、存储、架构体系）&lt;/li>
-&lt;li>软能力&amp;mdash;-沟通/协调/心理/个人管理&lt;/li>
-&lt;li>业务能力 &amp;mdash;- 商业、业务降本增效&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>三个方向
-&lt;ul>
-&lt;li>技术下探（技术专业能力🆙）
-&lt;ul>
-&lt;li>架构：延展业务架构，系统架构，数据架构，运维架构&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>产品探索（技术转换能力🆙）
-&lt;ul>
-&lt;li>影响力&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>管理之路（执行协作能力🆙）
-&lt;ul>
-&lt;li>软实力：向上管理（沟通）、向下管理（领导力）、搞定人员、搞定事情&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>几个搞定
-&lt;ul>
-&lt;li>搞定事情&amp;mdash;-项目管理&lt;/li>
-&lt;li>搞定代码&amp;mdash;-架构设计与自动化&lt;/li>
-&lt;li>搞定机器&amp;mdash;-运维与监控（devops）&lt;/li>
-&lt;li>搞定人员&amp;mdash;-团队建设&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>五边形能力建设
-&lt;ul>
-&lt;li>&lt;img src="https://s2.loli.net/2023/09/30/zfj62rgdQsD4K5V.png" alt="|600">&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-- https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>

@@ -1,4 +1,331 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 29 Mar 2026 15:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>软件工程师的能力</title><link>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</link><pubDate>Fri, 30 Dec 2022 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/ -&lt;p>&lt;em>网上看到的一则关于软件工程师的能力模型图，觉得非常通俗易懂，拿出来分享。若有版权问题，请联系。&lt;/em>&lt;/p>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 29 Mar 2026 17:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Apache Spark 学习笔记</title><link>https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link><pubDate>Sun, 01 Jan 2023 00:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ -&lt;blockquote>
+&lt;p>logged in 2023 and written with Claude in 2026.&lt;/p>&lt;/blockquote>
+&lt;p>本文是学习 Apache Spark 过程中的系统性笔记，涵盖 Spark 编程模型（RDD / DataFrame / Dataset）、集群搭建、性能优化、内存管理，以及与 Hadoop / Hive / Impala / Kafka 等生态的集成。&lt;/p>
+&lt;hr>
+&lt;h2 id="1-概述">1. 概述&lt;/h2>
+&lt;p>Apache Spark 是一个面向大规模数据处理的统一分析引擎，具备以下特点：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>通用性&lt;/strong>：同时支持 SQL 查询、流式计算、机器学习、图计算等场景&lt;/li>
+&lt;li>&lt;strong>多数据源&lt;/strong>：可运行在 HDFS、Hive、HBase、Kafka、S3 等绝大多数数据源之上&lt;/li>
+&lt;li>&lt;strong>高性能&lt;/strong>：基于内存计算，相比 MapReduce 有数量级的性能提升&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="2-核心数据抽象rdd--dataset--dataframe">2. 核心数据抽象：RDD / Dataset / DataFrame&lt;/h2>
+&lt;p>Spark 提供三种核心数据抽象，三者均具备**惰性求值（Lazy Evaluation）**机制——在调用 &lt;code>map&lt;/code> 等 Transformation 时不会立即执行，只有遇到 &lt;code>foreach&lt;/code> 等 Action 时才真正触发计算。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>抽象&lt;/th>
+&lt;th>特点&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>RDD&lt;/strong>&lt;/td>
+&lt;td>最底层抽象，不支持 SQL；通过粗粒度变换构建数据血缘（Lineage），节点故障时可从血缘重算恢复&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Dataset&lt;/strong>&lt;/td>
+&lt;td>分布式数据集合，知道数据存在但不知道如何组织；强类型，编译期检查&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>DataFrame&lt;/strong>&lt;/td>
+&lt;td>&lt;code>Dataset[Row]&lt;/code> 的别名，每行按列名组织，类型固定；支持 SQL 查询，是最常用的抽象&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>DataFrame 与 Dataset 拥有完全相同的成员函数，区别仅在于每行数据类型：DataFrame 每行类型为 &lt;code>Row&lt;/code>，需通过 &lt;code>getAs&lt;/code> 方法或模式匹配取出特定字段。&lt;/p>
+&lt;blockquote>
+&lt;p>RDD 的设计参考了 DryadLINQ 的 API 风格。&lt;/p>&lt;/blockquote>
+&lt;p>参考：&lt;a href="https://zhuanlan.zhihu.com/p/29830732">Dataset vs DataFrame 对比（知乎）&lt;/a>&lt;/p>
+&lt;hr>
+&lt;h2 id="3-spark-编程模型">3. Spark 编程模型&lt;/h2>
+&lt;h3 id="31-入口sparksession">3.1 入口：SparkSession&lt;/h3>
+&lt;p>&lt;code>SparkSession&lt;/code> 是使用 Dataset / DataFrame API 进行 Spark 编程的统一入口，&lt;strong>只在 Driver（Master）进程中可见&lt;/strong>。&lt;/p>
+&lt;h3 id="32-transformation-vs-action">3.2 Transformation vs Action&lt;/h3>
+&lt;p>Spark 的所有操作分为两类：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Transformation&lt;/strong>：将一个 RDD/DataFrame 转换为另一个，仅记录 Lineage，不触发计算（如 &lt;code>map&lt;/code>、&lt;code>filter&lt;/code>、&lt;code>join&lt;/code>）&lt;/li>
+&lt;li>&lt;strong>Action&lt;/strong>：将 RDD/DataFrame 转换为其他数据形式，触发真正的计算（如 &lt;code>foreach&lt;/code>、&lt;code>count&lt;/code>、&lt;code>collect&lt;/code>）&lt;/li>
+&lt;/ul>
+&lt;p>每次 Action 调用对应一个 Spark &lt;strong>Job&lt;/strong>。&lt;/p>
+&lt;h3 id="33-job-分解application--job--stage--task">3.3 Job 分解：Application → Job → Stage → Task&lt;/h3>
+&lt;pre tabindex="0">&lt;code>Application
+└── Job（每次 Action 调用 = 一个 Job）
+└── Stage（每个 Shuffle 依赖 = 一个 Stage 边界）
+└── Task（每个并行计算单元；同一 Stage 内所有 Task 执行相同代码，处理不同数据分片）
+&lt;/code>&lt;/pre>&lt;p>每个 &lt;strong>Node&lt;/strong> 是一个独立的 JVM 进程，内部运行若干 &lt;strong>Executor&lt;/strong>，每个 Executor 将 Stage 内的任务拆分为多个 &lt;strong>Task&lt;/strong> 并行执行。&lt;/p>
+&lt;hr>
+&lt;h2 id="4-shuffle-机制与宽窄依赖">4. Shuffle 机制与宽窄依赖&lt;/h2>
+&lt;h3 id="41-宽依赖-vs-窄依赖">4.1 宽依赖 vs 窄依赖&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>窄依赖&lt;/strong>：子分区数据只依赖一个父分区，无需跨节点数据移动（如 &lt;code>map&lt;/code>、&lt;code>filter&lt;/code>）&lt;/li>
+&lt;li>&lt;strong>宽依赖&lt;/strong>：子分区依赖多个父分区，需要 Shuffle 数据（如 &lt;code>groupByKey&lt;/code>、&lt;code>join&lt;/code>）&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Shuffle 是划分 DAG Stage 的标识&lt;/strong>，会产生大量网络 I/O，是影响 Spark 性能的关键因素。&lt;/p>
+&lt;h3 id="42-会触发-shuffle-的-transformation">4.2 会触发 Shuffle 的 Transformation&lt;/h3>
+&lt;p>以下操作会引发 Shuffle，使用时需格外注意：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>repartition&lt;/code>&lt;/li>
+&lt;li>&lt;code>join&lt;/code>、&lt;code>cogroup&lt;/code>&lt;/li>
+&lt;li>所有 &lt;code>*By&lt;/code> / &lt;code>*ByKey&lt;/code> 系列操作（&lt;code>groupByKey&lt;/code>、&lt;code>reduceByKey&lt;/code>、&lt;code>sortByKey&lt;/code> 等）&lt;/li>
+&lt;/ul>
+&lt;h3 id="43-减少-shuffle-的常见优化手段">4.3 减少 Shuffle 的常见优化手段&lt;/h3>
+&lt;p>&lt;strong>① 用 &lt;code>reduceByKey&lt;/code> 替代 &lt;code>groupByKey&lt;/code>&lt;/strong>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-scala" data-lang="scala">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22">// 低效：全量数据通过网络传输后再聚合
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22">&lt;/span>rdd.groupByKey().mapValues(&lt;span style="color:#8b008b;font-weight:bold">_&lt;/span>.sum)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22">// 高效：先在各 partition 局部累积，Shuffle 后再合并
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22">&lt;/span>rdd.reduceByKey(&lt;span style="color:#8b008b;font-weight:bold">_&lt;/span> + &lt;span style="color:#8b008b;font-weight:bold">_&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>② 避免&amp;quot;新增列后 join 回来&amp;quot;的写法&lt;/strong>，直接在原数据上生成新列。&lt;/p>
+&lt;p>&lt;strong>③ 小表广播（Broadcast Join）&lt;/strong>&lt;/p>
+&lt;p>当 join 的一侧数据集足够小，可以用 &lt;code>broadcast&lt;/code> 将其复制到每个 Executor 内存，避免 Shuffle：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-scala" data-lang="scala">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b008b;font-weight:bold">val&lt;/span> broadcastSmall &lt;span style="color:#8b008b;font-weight:bold">=&lt;/span> spark.sparkContext.broadcast(smallRdd)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>largeRdd.map { row &lt;span style="color:#8b008b;font-weight:bold">=&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#8b008b;font-weight:bold">val&lt;/span> small &lt;span style="color:#8b008b;font-weight:bold">=&lt;/span> broadcastSmall.value
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#228b22">// ...
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22">&lt;/span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>参考：&lt;a href="https://zhuanlan.zhihu.com/p/34436165">Spark 优化（知乎）&lt;/a>&lt;/p>
+&lt;hr>
+&lt;h2 id="5-性能优化">5. 性能优化&lt;/h2>
+&lt;h3 id="51-cache-vs-persist">5.1 cache vs persist&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>cache()&lt;/code>：将 RDD/DataFrame 缓存到内存，等价于 &lt;code>persist(StorageLevel.MEMORY_ONLY)&lt;/code>&lt;/li>
+&lt;li>&lt;code>persist(level)&lt;/code>：支持指定存储级别（内存、磁盘、序列化等），灵活性更高&lt;/li>
+&lt;/ul>
+&lt;p>参考：&lt;a href="https://blog.csdn.net/aijiudu/article/details/55811464">cache vs persist 详解&lt;/a>&lt;/p>
+&lt;h3 id="52-broadcast-广播变量">5.2 broadcast 广播变量&lt;/h3>
+&lt;p>&lt;code>broadcast&lt;/code> 将变量复制到每个 Executor（而非每个 Task），大幅减少内存占用和网络传输。&lt;/p>
+&lt;ul>
+&lt;li>适用于 RDD、Dataset、DataFrame，也适用于普通 Scala / Java 对象&lt;/li>
+&lt;li>&lt;strong>限制&lt;/strong>：广播对象必须是 &lt;strong>不可变（immutable）&lt;/strong> 的&lt;/li>
+&lt;/ul>
+&lt;h3 id="53-foreachpartition">5.3 foreachPartition&lt;/h3>
+&lt;p>&lt;code>foreachPartition&lt;/code> 将数据分散到各 Slave 节点上执行，相比 &lt;code>foreach&lt;/code> 减少了 Driver 与 Executor 之间的通信开销，适合写数据库等场景。&lt;/p>
+&lt;h3 id="54-关注-stage-数量与耗时">5.4 关注 Stage 数量与耗时&lt;/h3>
+&lt;p>性能分析时，需重点关注：&lt;/p>
+&lt;ul>
+&lt;li>聚合操作产生的 Stage 数量及各 Stage 耗时&lt;/li>
+&lt;li>尽量减少宽依赖（即减少 Stage 数量）&lt;/li>
+&lt;li>了解数据特点，明确处理目标&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="6-内存管理">6. 内存管理&lt;/h2>
+&lt;p>Spark Executor 的内存被划分为多个区域（Storage Memory、Execution Memory、User Memory 等），理解内存模型对调优至关重要。&lt;/p>
+&lt;p>参考：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://arganzheng.life/spark-executor-memory-management.html">Spark Executor 内存管理（arganzheng）&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.ibm.com/developerworks/cn/analytics/library/ba-cn-apache-spark-memory-management/index.html">Apache Spark 内存管理详解（IBM Developer）&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="7-sparksql-实战示例">7. SparkSQL 实战示例&lt;/h2>
+&lt;h3 id="71-连接-hive-并执行查询">7.1 连接 Hive 并执行查询&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-scala" data-lang="scala">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b008b;font-weight:bold">val&lt;/span> spark &lt;span style="color:#8b008b;font-weight:bold">=&lt;/span> &lt;span style="color:#008b45;font-weight:bold">SparkSession&lt;/span>.builder()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .appName(&lt;span style="color:#cd5555">&amp;#34;MyApp&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .enableHiveSupport()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .getOrCreate()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22">// 查询任务表
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">val&lt;/span> df &lt;span style="color:#8b008b;font-weight:bold">=&lt;/span> spark.sql(&lt;span style="color:#cd5555">&amp;#34;SELECT * FROM demo_match_task WHERE status = 0&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>df.show()
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>参考：&lt;a href="https://spark.apache.org/docs/latest/sql-data-sources-hive-tables.html">Spark SQL Hive Tables 官方文档&lt;/a>&lt;/p>
+&lt;h3 id="72-读取-json-并注册临时视图">7.2 读取 JSON 并注册临时视图&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-scala" data-lang="scala">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b008b;font-weight:bold">val&lt;/span> df &lt;span style="color:#8b008b;font-weight:bold">=&lt;/span> spark.read.json(&lt;span style="color:#cd5555">&amp;#34;task.json&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>df.show()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b008b;font-weight:bold">val&lt;/span> t &lt;span style="color:#8b008b;font-weight:bold">=&lt;/span> df.filter(&lt;span style="color:#cd5555">&amp;#34;status == 0&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>t.show()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>t.createOrReplaceTempView(&lt;span style="color:#cd5555">&amp;#34;task&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>spark.sql(&lt;span style="color:#cd5555">&amp;#34;SELECT * FROM task&amp;#34;&lt;/span>).show()
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="73-典型-etl-流程示例">7.3 典型 ETL 流程示例&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sql" data-lang="sql">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22">-- 对任务表循环执行匹配逻辑
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">SELECT&lt;/span>&lt;span style="color:#bbb"> &lt;/span>*&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">FROM&lt;/span>&lt;span style="color:#bbb"> &lt;/span>user_tag&lt;span style="color:#bbb"> &lt;/span>t&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">LEFT&lt;/span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">JOIN&lt;/span>&lt;span style="color:#bbb"> &lt;/span>(&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">SELECT&lt;/span>&lt;span style="color:#bbb"> &lt;/span>*&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">FROM&lt;/span>&lt;span style="color:#bbb"> &lt;/span>match_orig_data&lt;span style="color:#bbb"> &lt;/span>a&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">WHERE&lt;/span>&lt;span style="color:#bbb"> &lt;/span>a.file_id&lt;span style="color:#bbb"> &lt;/span>=&lt;span style="color:#bbb"> &lt;/span>?&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">LEFT&lt;/span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">JOIN&lt;/span>&lt;span style="color:#bbb"> &lt;/span>user_table&lt;span style="color:#bbb"> &lt;/span>b&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">ON&lt;/span>&lt;span style="color:#bbb"> &lt;/span>a.user_id&lt;span style="color:#bbb"> &lt;/span>=&lt;span style="color:#bbb"> &lt;/span>b.user_id&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>)&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">c&lt;/span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">ON&lt;/span>&lt;span style="color:#bbb"> &lt;/span>t.user_id&lt;span style="color:#bbb"> &lt;/span>=&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">c&lt;/span>.user_id;&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">&lt;/span>&lt;span style="color:#228b22">-- 写入结果后更新任务状态
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">UPDATE&lt;/span>&lt;span style="color:#bbb"> &lt;/span>demo_match_task&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">SET&lt;/span>&lt;span style="color:#bbb"> &lt;/span>status&lt;span style="color:#bbb"> &lt;/span>=&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#b452cd">1&lt;/span>&lt;span style="color:#bbb"> &lt;/span>&lt;span style="color:#8b008b;font-weight:bold">WHERE&lt;/span>&lt;span style="color:#bbb"> &lt;/span>task_id&lt;span style="color:#bbb"> &lt;/span>=&lt;span style="color:#bbb"> &lt;/span>?;&lt;span style="color:#bbb">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h2 id="8-集群搭建hadoop--hive--spark">8. 集群搭建（Hadoop + Hive + Spark）&lt;/h2>
+&lt;h3 id="81-hadoop">8.1 Hadoop&lt;/h3>
+&lt;ul>
+&lt;li>注意将域名暴露为自己的 IP 或 &lt;code>0.0.0.0&lt;/code>&lt;/li>
+&lt;li>参考：&lt;a href="https://zhuanlan.zhihu.com/p/25015815">Hadoop 搭建（知乎）&lt;/a> | &lt;a href="https://segmentfault.com/a/1190000012484353">Hadoop 搭建（SegmentFault）&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>集群 Web UI 地址（示例）：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>服务&lt;/th>
+&lt;th>地址&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Hadoop NameNode&lt;/td>
+&lt;td>&lt;code>192.168.xx.1:50070&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>YARN ResourceManager&lt;/td>
+&lt;td>&lt;code>192.168.xx.1:8088&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Spark Master&lt;/td>
+&lt;td>&lt;code>192.168.xx.1:8080&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="82-hive采用-mysql-管理-metastore">8.2 Hive（采用 MySQL 管理 Metastore）&lt;/h3>
+&lt;p>参考：&lt;a href="https://www.cnblogs.com/dxxblog/p/8193967.html">Hive + MySQL Metastore 配置&lt;/a>&lt;/p>
+&lt;h3 id="83-spark-集成-hive">8.3 Spark 集成 Hive&lt;/h3>
+&lt;p>参考：&lt;a href="https://spark.apache.org/docs/latest/sql-data-sources-hive-tables.html">Spark Integration with Hive&lt;/a>&lt;/p>
+&lt;h3 id="84-spark-任务提交">8.4 Spark 任务提交&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>spark-submit &lt;span style="color:#cd5555">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555">&lt;/span> --class com.example.MyApp &lt;span style="color:#cd5555">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555">&lt;/span> --master spark://192.168.xx.1:7077 &lt;span style="color:#cd5555">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555">&lt;/span> --executor-memory 4G &lt;span style="color:#cd5555">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555">&lt;/span> --total-executor-cores &lt;span style="color:#b452cd">8&lt;/span> &lt;span style="color:#cd5555">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555">&lt;/span> /path/to/your_app.jar
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>重要参数说明：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>参数&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>--class&lt;/code>&lt;/td>
+&lt;td>主类全限定名&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--master&lt;/code>&lt;/td>
+&lt;td>Spark Master 地址&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--executor-memory&lt;/code>&lt;/td>
+&lt;td>每个 Executor 分配的内存&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--total-executor-cores&lt;/code>&lt;/td>
+&lt;td>总 CPU 核数&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>参考：&lt;a href="https://spark.apache.org/docs/latest/submitting-applications.html">Submitting Applications 官方文档&lt;/a>&lt;/p>
+&lt;h3 id="85-打包注意事项">8.5 打包注意事项&lt;/h3>
+&lt;ul>
+&lt;li>使用 &lt;code>maven-assembly-plugin&lt;/code> 打包任务 JAR&lt;/li>
+&lt;li>推荐使用 &lt;code>maven-shade-plugin&lt;/code> 打 Uber JAR，支持包重命名，避免类冲突&lt;/li>
+&lt;li>&lt;strong>Spark 客户端版本尽量与集群版本保持一致&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="9-生态集成">9. 生态集成&lt;/h2>
+&lt;h3 id="91-hadoop-与-mapreduce">9.1 Hadoop 与 MapReduce&lt;/h3>
+&lt;p>Hadoop 本质是：&lt;strong>HDFS 分布式文件系统 + MapReduce 计算引擎 + YARN 资源管理&lt;/strong>。&lt;/p>
+&lt;p>MapReduce 是一种面向分布式的底层编程模型（Programming Model，指通过类似库调用的方式触发执行），对复杂计算场景开发成本较高。Hive 本质是 &lt;strong>SQL → MapReduce → 任务解析&lt;/strong> 的中间件，降低了使用门槛。&lt;/p>
+&lt;h3 id="92-kafka-集成">9.2 Kafka 集成&lt;/h3>
+&lt;ul>
+&lt;li>接收 Kafka（Spark Streaming）：&lt;a href="https://spark.apache.org/docs/2.2.0/streaming-kafka-0-8-integration.html">官方文档（0.8）&lt;/a>&lt;/li>
+&lt;li>发送 Kafka：&lt;a href="https://www.jianshu.com/p/19c7a06d3997">参考文章（简书）&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="93-impala-vs-hive">9.3 Impala vs Hive&lt;/h3>
+&lt;p>Impala 是为解决 Hive 交互式查询性能问题而生的方案：复用 Hive 的元数据管理，但跳过 MapReduce，使用自研执行引擎直接读取数据，延迟更低。&lt;/p>
+&lt;p>使用 JDBC 连接 Hive / Impala 时，若集群开启 Kerberos，需在连接前完成认证。&lt;/p>
+&lt;p>参考：&lt;a href="https://www.cnblogs.com/beihang09/p/14224781.html">Impala和Hive的关系 - 山中何事 - 博客园&lt;/a>&lt;/p>
+&lt;h3 id="94-kudu-vs-hbase">9.4 Kudu vs HBase&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>维度&lt;/th>
+&lt;th>Kudu&lt;/th>
+&lt;th>HBase&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>存储模型&lt;/td>
+&lt;td>列式，支持随机读写&lt;/td>
+&lt;td>列式，优化随机读写&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>适用场景&lt;/td>
+&lt;td>同时有顺序和随机读写；数据更新时效性要求高&lt;/td>
+&lt;td>海量数据随机读写&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>典型场景&lt;/td>
+&lt;td>时序数据分析、实时报表、ODS&lt;/td>
+&lt;td>用户画像、日志存储&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>参考：&lt;a href="https://zhuanlan.zhihu.com/p/25928166">Kudu 介绍（知乎）&lt;/a> | &lt;a href="https://cloud.tencent.com/developer/news/391226">Kudu vs HBase（腾讯云）&lt;/a>&lt;/p>
+&lt;hr>
+&lt;h2 id="10-时间戳问题">10. 时间戳问题&lt;/h2>
+&lt;p>跨组件时间戳处理是大数据开发中的常见坑点，各层行为不一致。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>组件&lt;/th>
+&lt;th>时间戳行为&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>MySQL&lt;/td>
+&lt;td>&lt;code>TIMESTAMP&lt;/code> 类型与时区相关，存储时转换为 UTC&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Hive&lt;/td>
+&lt;td>&lt;code>TIMESTAMP&lt;/code> 无时区概念，Parquet 格式会影响其行为&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Spark&lt;/td>
+&lt;td>读取无时区时间戳时按 UTC 处理；写入 Hive 时可能因时区设置附加偏移&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>解决思路&lt;/strong>：统一将时间戳转换到 UTC 后再处理，避免跨层时区混乱。&lt;/p>
+&lt;p>参考：&lt;a href="https://cwiki.apache.org/confluence/display/Hive/Different+TIMESTAMP+types">Hive 不同 TIMESTAMP 类型说明&lt;/a>&lt;/p>
+&lt;hr>
+&lt;h2 id="参考文献">参考文献&lt;/h2>
+&lt;p>以下链接在正文中未直接引用，但均来自原始学习记录，供延伸阅读。&lt;/p>
+&lt;p>&lt;strong>Spark 官方文档&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html">RDD Programming Guide&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL and DataFrames - Spark 4.1.1 Documentation&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Hadoop 生态&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.jianshu.com/p/fe7573adc3fb">Hive + MySQL Metastore 配置（简书）&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.jianshu.com/p/60e7e16fb3ce">Spark Integration with Hive（简书）&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>列式存储&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.jianshu.com/p/3d3950c9fb06">列式存储介绍（简书）&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/35622907">列式存储详解（知乎）&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Kudu&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://kudu.apache.org/kudu.pdf">Kudu 白皮书（PDF）&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Kerberos 认证&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://blog.csdn.net/SimGenius/article/details/77081827">JDBC 连接 Hive/Impala 前的 Kerberos 认证&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>ETL&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Extract,_transform,_load">ETL 概念（Wikipedia）&lt;/a>&lt;/li>
+&lt;/ul>
+- https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>软件工程师的能力</title><link>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</link><pubDate>Fri, 30 Dec 2022 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84%E8%83%BD%E5%8A%9B/ -&lt;p>&lt;em>网上看到的一则关于软件工程师的能力模型图，觉得非常通俗易懂，拿出来分享。若有版权问题，请联系。&lt;/em>&lt;/p>
 &lt;p>&lt;img src="https://akelio-zhang.github.io/images/ability-model.svg" alt="能力模型|800">&lt;/p>
 &lt;ul>
 &lt;li>基础
@@ -1008,191 +1335,4 @@
 &lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;p>Last edited on 2025/11/04&lt;/p>
-- https://akelio-zhang.github.io/about/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
-&lt;h2 id="零目的">零、目的&lt;/h2>
-&lt;ol>
-&lt;li>掌握各类场景下如何更好使用Git。&lt;/li>
-&lt;li>减少因为代码提交问题带来的生产环境问题。
-&lt;img src="https://s2.loli.net/2022/08/20/OfV5qM2WQ4BrGwI.png" alt="/images/git-zoo.jpg">&lt;/li>
-&lt;/ol>
-&lt;h2 id="一了解git">一、了解[[Git]]&lt;/h2>
-&lt;ol>
-&lt;li>什么是Git？
-    1. 一款分布式版本管理系统
-    2. 优点：分布式、性能、版本的文件完整性
-        1. 分布式，可以让你在本地提交代码（对于SVN而言没有网络就无法提交代码，在家也能愉快地写代码）；
-        2. 性能，对于我们的一般项目而言，你感受不到合并时性能的差别（与SVN比较）；
-        3. 版本的文件完整性：git背后设计理念是快照思想。&lt;/li>
-&lt;li>Git概念
-    1. 仓库(repository)
-        1. 用于代码版本管理
-        2. 一个git仓库管理了三棵“树”，分别是
-            1. Working Directory（工作目录）
-            2. Index（暂存区）
-            3. HEAD（本地仓库）
-        3. 大多数时候你通过编辑器只能对工作目录操作，操作其他两个“树”（区域）必须使用git命令才可以。
-    2. 分支(branch)
-        1. 用于并行独立开发，更方便管理不同开发任务的进度&lt;/li>
-&lt;li>Git常用命令
-    1. git add
-    2. git commit
-    3. git push
-    4. git pull
-    5. git branch
-    6. git switch
-    7. git restore&lt;/li>
-&lt;/ol>
-&lt;h2 id="二最常见的一种使用场景">二、最常见的一种使用场景&lt;/h2>
-&lt;blockquote>
-&lt;p>陈主管说他已经开发好了整个架构，需要我去把几个功能实现一下，并提交到dev分支让他方便Review。&lt;/p>&lt;/blockquote>
-&lt;ul>
-&lt;li>基本流程
-    1. 先从远程服务器把代码拉到本地：&lt;code>git clone http://197.68.6.70/demo-project&lt;/code>
-    2. 此时你拥有的是主干master分支的代码，我们需要切换到dev分支进行开发：
-        1. &lt;code>git fetch --all&lt;/code>
-        2. &lt;code>git switch --track origin/dev&lt;/code>
-    3. 在&lt;strong>工作目录&lt;/strong>写代码
-    4. 提交变更的文件到&lt;strong>暂存区&lt;/strong>：&lt;code>git add &amp;lt;somefile&amp;gt;&lt;/code>
-    5. 提交文件到&lt;strong>本地仓库&lt;/strong>：&lt;code>git commit -m &amp;quot;xxx&amp;quot;&lt;/code>
-    6. 把我的代码推送到远程仓库（同步）：&lt;code>git push&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;h2 id="三最佳实践git里的后悔药">三、最佳实践——Git里的后悔药&lt;/h2>
-&lt;ol>
-&lt;li>我提交到暂存区的代码搞错了：&lt;code>git restore -S &amp;lt;files or dir&amp;gt;&lt;/code> （在使用IDEA时，这个场景不太会出现，因为IDEA往往是把add 和 commit的操作会合并成一个处理）&lt;/li>
-&lt;li>我提交到本地仓库的代码搞错了：
-    1. 最近的一个commit：&lt;code>git reset -mixed HEAD~1&lt;/code>
-    2. 历史中的一个commit：
-        1. 使用 &lt;code>git reset --mixed &amp;lt;commit_id&amp;gt;&lt;/code>，然后重新提交正确的代码（ ❗从最新commit到指定commit的代码都需要重新提交）
-        2. 使用 &lt;code>git revert &amp;lt;commit_id&amp;gt;&lt;/code> ，这个操作近似于自己重新提交代码&lt;/li>
-&lt;li>我提交到远程仓库的代码搞错了：
-    1. 只有一个建议：&lt;strong>请写出正确的代码，重新提交！所以，请在每次push之前谨慎！&lt;/strong>&lt;/li>
-&lt;/ol>
-&lt;h2 id="四最佳实践与他人同步">四、最佳实践——与他人同步&lt;/h2>
-&lt;ol>
-&lt;li>我想把别人在dev分支上开发的代码同步下来看看：&lt;code>git pull --rebase&lt;/code> 或者 &lt;code>git pull&lt;/code> （前者会让你的commit log更加清爽一些，没有一些额外的merge commit log）&lt;/li>
-&lt;li>如果你开发的分支和多人一同开发，建议每天进行一次 &lt;code>git pull --rebase&lt;/code> 与 &lt;code>git push&lt;/code>&lt;/li>
-&lt;/ol>
-&lt;h2 id="五最佳实践我的改动比较大">五、最佳实践——我的改动比较大&lt;/h2>
-&lt;ol>
-&lt;li>建议自己拉一个分支进行开发 &lt;code>git switch -c &amp;lt;new_branch_name&amp;gt;&lt;/code> 。&lt;/li>
-&lt;li>开发结束后，先把&lt;strong>主开发分支&lt;/strong>合并到你的分支：&lt;code>git merge dev&lt;/code>&lt;/li>
-&lt;li>没问题后再把你的分支合并到主开发分支：&lt;code>git switch dev&lt;/code> ，&lt;code>git merge &amp;lt;new_branch_name&amp;gt;&lt;/code>&lt;/li>
-&lt;/ol>
-&lt;h2 id="六其他">六、其他&lt;/h2>
-&lt;ol>
-&lt;li>⭐准备上线前
-    1. 和上一个版本代码对比(&lt;code>git diff release master&lt;/code>)，确认release分支是&lt;strong>正确的需要上线的代码&lt;/strong>
-    2. 使用Jenkins对release分支进行自动打包与部署，在工作空间获取上线代码包（禁止本地打包）&lt;/li>
-&lt;li>上线完成后
-    1. 在gitlab上提交release合并至master分支的merge request，由技术经理确认合并；
-    2. 对最新的master分支进行tag，方便反查源码；&lt;/li>
-&lt;/ol>
-&lt;h2 id="七几个原则">七、几个原则&lt;/h2>
-&lt;h3 id="强制">强制&lt;/h3>
-&lt;ol>
-&lt;li>禁止&lt;code>git push -f&lt;/code>&lt;/li>
-&lt;li>禁止&lt;code>git push master&lt;/code>&lt;/li>
-&lt;/ol>
-&lt;h3 id="建议">建议&lt;/h3>
-&lt;ol>
-&lt;li>建议分支命名：master、release、dev、dev_xx
-    1. master分支为线上正在运行的代码；不允许手动提交；只能通过页面的merge request进行代码合并；每次上完线后把分支(release)代码合并到master
-    2. release为测试环境对应的代码，jenkins均从该分支进行自动构建与部署
-    3. dev，以及其他分支为开发分支，较为自由。&lt;/li>
-&lt;li>减少对&lt;code>git checkout&lt;/code>的使用，已经拆分为 &lt;code>git switch&lt;/code> 和 &lt;code>git restore&lt;/code>&lt;/li>
-&lt;li>不要把二进制文件放到git仓库中进行版本管理&lt;/li>
-&lt;/ol>
-&lt;h2 id="八实现方式之数据结构">八、实现方式之数据结构&lt;/h2>
-&lt;p>在Git当中，&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 一个文件就是字节数组
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>type blob = array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">byte&lt;/span>&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 一个目录包含文件或者其他目录
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>type tree = map&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">string&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">,&lt;/span> &lt;span style="color:#658b00">tree&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">|&lt;/span> &lt;span style="color:#658b00">blob&lt;/span>&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 一个commit包含它的父节点，原始信息，顶级目录（快）
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>type commit = struct {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>    parents: array&amp;lt;&lt;span style="color:#8b008b;font-weight:bold">commit&lt;/span>&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>    author: string
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>    message: string
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>    snapshot: tree
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 文件、目录、commit最终都以object类型进行存储
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>type object = blob | tree | commit
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样看起来，每一次修改文件并提交git仓库后，都会新建一个blob对象，并作为新的快照内部的文件使用，因此，git仓库存储空间可能会越来越大，特别是对于那些二进制文件（非文本文件，难以压缩）。这时候可以通过&lt;code>git gc&lt;/code>进行git仓库压缩，这里面的算法大家可以自己去探索一下。根据我的经验，能大概缩小到原本的1/3~1/2。&lt;/p>
-&lt;h2 id="九参考">九、参考&lt;/h2>
-&lt;h3 id="cheatsheet">Cheatsheet&lt;/h3>
-&lt;ol>
-&lt;li>&lt;a href="https://ndpsoftware.com/git-cheatsheet.html#loc=index;">一个可视化的Git Cheatsheet&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://about.gitlab.com/images/press/git-cheat-sheet.pdf">Gitlab官方Cheatsheet&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/k88hudson/git-flight-rules">https://github.com/k88hudson/git-flight-rules&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E9%AB%98%E7%BA%A7%E5%90%88%E5%B9%B6">Git - 高级合并 (git-scm.com)&lt;/a>&lt;/li>
-&lt;/ol>
-&lt;h3 id="原理学习">原理学习&lt;/h3>
-&lt;ol>
-&lt;li>&lt;a href="https://draveness.me/whys-the-design-git-the-best/">为什么你应该使用 Git 进行版本控制 - 面向信仰编程 (draveness.me)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.progit.cn/">Pro Git 中文版（第二版）&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://missing.csail.mit.edu/2020/version-control/">Version Control (Git) · the missing semester of your cs education (mit.edu)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="http://chuquan.me/2022/05/21/understand-principle-of-git/">深入理解 Git 底层实现原理 | 楚权的世界&lt;/a>&lt;/li>
-&lt;/ol>
-&lt;h2 id="some-code">Some code&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git clone
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git branch --track dev origin/dev
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git checkout dev
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add &amp;amp; git commit
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git push
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Merge Request (MR)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git restore -S &amp;lt;files or dir&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git reset -mixed HEAD~1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git reset --mixed &amp;lt;commit_id&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git revert &amp;lt;commit_id&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git pull --rebase
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git pull
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git checkout -b &amp;lt;branch_name&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git merge dev
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git stash
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git stash pop
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>- https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/about/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>

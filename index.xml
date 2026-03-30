@@ -744,7 +744,91 @@
 &lt;p>整体来说，它们不是单个工具的拼凑，而是一套能持续迭代的工作流。关键在于保持复盘，把经验转成可复用的资产。&lt;/p>
 - https://akelio-zhang.github.io/posts/2026-claude-code%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>产品力</title><link>https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/</link><pubDate>Fri, 23 May 2025 15:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/ -&lt;p>理工科人总是会关注到技术细节，但产品并不是简单的技术细节叠加，而是一个综合结果。譬如车辆、手机、甚至键盘、音响。&lt;/p>
 &lt;p>那对于软件系统（产品）而言更是如此，如何打造一个有产品力的软件系统？&lt;/p>
-- https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>软件开发的一些思考与Hint</title><link>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</link><pubDate>Sat, 01 Jun 2024 15:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/ -&lt;h2 id="业务价值与驱动力">业务价值与驱动力&lt;/h2>
+- https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>Git原理与分支管理实践</title><link>https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link><pubDate>Mon, 30 Sep 2024 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/ -&lt;blockquote>
+&lt;p>Written with Claude.&lt;/p>&lt;/blockquote>
+&lt;p>理解 Git 不应止步于记住命令。本文记录了两个动手实验——把 &lt;code>.git&lt;/code> 目录的对象存进数据库、用 JS 重新实现 Git 核心操作——以此真正搞清楚 Git 在保存什么、操作什么。第二部分结合团队实际诉求，设计了一套基于 Git Flow 的分支管理方案。&lt;/p>
+&lt;h2 id="原理理解">原理理解&lt;/h2>
+&lt;h3 id="将-git-存储到数据库git-db">将 .git 存储到数据库（git-db）&lt;/h3>
+&lt;p>Git 的存储本质是一个内容寻址的 KV 数据库，所有对象（blob / tree / commit / tag）都以 SHA-1 为 key，以 zlib 压缩后的二进制为 value。这个实验将 &lt;code>.git/objects&lt;/code> 下的所有对象导入关系型数据库，直观地验证了这一点：每一次 &lt;code>git add&lt;/code> 产生一个 blob 对象，每一次 &lt;code>git commit&lt;/code> 产生一个 commit 对象和若干 tree 对象，分支和 HEAD 不过是指向某个 commit SHA-1 的指针文件。理解这一层之后，Git 的大多数&amp;quot;魔法&amp;quot;行为都变得可以推导。&lt;/p>
+&lt;h3 id="用-js-重新实现-gitgit-js">用 JS 重新实现 Git（git-js）&lt;/h3>
+&lt;p>在理解存储结构之后，用 JavaScript 重新实现 Git 的核心操作（&lt;code>init&lt;/code> / &lt;code>add&lt;/code> / &lt;code>commit&lt;/code> / &lt;code>log&lt;/code> / &lt;code>checkout&lt;/code>），目的是验证对操作语义的理解是否准确。这个过程中最重要的收获是：Git 的&amp;quot;分支切换&amp;quot;本质上只是修改 HEAD 指针 + 用目标 tree 对象还原工作区，与任何网络、服务端都无关；而 &lt;code>merge&lt;/code> 的核心是找到两个 commit 的公共祖先，再做三方合并。&lt;/p>
+&lt;h2 id="分支管理">分支管理&lt;/h2>
+&lt;h3 id="主流工作流对比">主流工作流对比&lt;/h3>
+&lt;p>分支管理策略大体分为两类：&lt;strong>Trunk Based Development&lt;/strong> 和 &lt;strong>Git Flow&lt;/strong>。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Git Flow&lt;/strong>：维持 &lt;code>master&lt;/code> 和 &lt;code>develop&lt;/code> 两个长期分支，分别对应生产和测试环境。多版本场景下可从对应节点再建新的主分支并行推进。节奏稳健，适合有明确发布窗口的团队。&lt;/li>
+&lt;li>&lt;strong>GitHub Flow&lt;/strong>：主干持续发布，feature 分支直接合入 main 并部署。是 Trunk Based 的精华版，对团队整体工程能力要求高，不适合多版本并行管理。&lt;/li>
+&lt;li>&lt;strong>GitLab Flow&lt;/strong>：GitHub Flow 的演进版，在主干之外增加环境分支（如 &lt;code>production&lt;/code>、&lt;code>staging&lt;/code>），主干代码向下游环境分支合并。相比 GitHub Flow 更适合有多套环境的团队，但对合并纪律要求较高。&lt;/li>
+&lt;/ul>
+&lt;h3 id="代码管理诉求">代码管理诉求&lt;/h3>
+&lt;ul>
+&lt;li>按窗口（功能清单）发布、单一生产版本&lt;/li>
+&lt;li>支持多版本并行开发&lt;/li>
+&lt;li>尽可能保留所有 commit&lt;/li>
+&lt;/ul>
+&lt;h3 id="操作方案基于-git-flow">操作方案：基于 Git Flow&lt;/h3>
+&lt;h4 id="多版本并行开发策略">多版本并行开发策略&lt;/h4>
+&lt;p>多版本并行开发通过以下约束保证代码继承关系的正确性：&lt;/p>
+&lt;p>&lt;strong>核心规则：所有测试分支不得落后于 &lt;code>master&lt;/code>&lt;/strong>&lt;/p>
+&lt;p>无论当前有多少个版本在并行开发，每个测试分支在提 MR 合入时，必须已将最新的 &lt;code>master&lt;/code> 内容 merge 进来。这一约束确保了：&lt;/p>
+&lt;ul>
+&lt;li>任何一个版本上线后，其他版本的测试分支都不会丢失已上线的内容&lt;/li>
+&lt;li>版本间的代码继承关系通过这条规则自然保证，不需要额外维护分支间的同步逻辑&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>执行时机&lt;/strong>：同步要求在&lt;strong>提 MR 合入测试分支时&lt;/strong>即生效，而非上线前才处理，避免冲突在打包阶段集中爆发。&lt;/p>
+&lt;p>&lt;strong>CR 注意事项&lt;/strong>：feature 分支 merge master 后，MR 的 diff 中会包含与本次功能无关的内容。开发者须在 MR 描述中注明是否包含 master 同步，方便 reviewer 聚焦在本次功能变更上，避免 CR 流于形式。&lt;/p>
+&lt;h4 id="分支命名">分支命名&lt;/h4>
+&lt;ul>
+&lt;li>&lt;code>master&lt;/code>：最新 commit id 等价于当前生产版本&lt;/li>
+&lt;li>&lt;code>develop&lt;/code>：单版本场景下的测试主分支&lt;/li>
+&lt;li>&lt;code>develop_vX&lt;/code>：多版本并行时各版本独立的测试分支，对应独立的测试环境&lt;/li>
+&lt;li>&lt;code>release_日期&lt;/code>：窗口裁剪的标准路径，当测试分支上同时存在多个功能但本次只上线部分时使用&lt;/li>
+&lt;/ul>
+&lt;h4 id="代码提交">代码提交&lt;/h4>
+&lt;p>所有分支合入测试主分支前须经过 Code Review。通过拓宽 CR 参与人数来分散审查压力，保证代码质量。feature 分支合入时禁止 squash merge，保留完整的 commit 历史。&lt;/p>
+&lt;h4 id="打包上线">打包上线&lt;/h4>
+&lt;p>若存在 &lt;code>release&lt;/code> 分支则以 &lt;code>release&lt;/code> 为打包源，否则以本次测试分支为打包分支。打包产物的后缀 commit id 即为 &lt;code>master&lt;/code> 合并与 tag 的目标节点。&lt;/p>
+&lt;p>&lt;code>master&lt;/code> 分支只允许 &lt;code>--ff-only&lt;/code> 合并，确保其仅作为映射指标存在——所有 commit 均来源于经过复核的测试主分支。&lt;/p>
+&lt;p>典型生命周期（单测试分支场景）：&lt;/p>
+&lt;pre tabindex="0">&lt;code>feature → develop → (build &amp;amp; verify) → master (ff-only) + tag
+&lt;/code>&lt;/pre>&lt;h4 id="平台配置">平台配置&lt;/h4>
+&lt;p>以下规则须在 GitLab/GitHub 分支保护里显式配置，不依赖约定：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>规则&lt;/th>
+&lt;th>作用&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>develop_*&lt;/code> 只允许 merge commit，禁止 squash&lt;/td>
+&lt;td>保留所有 commit 历史&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>master&lt;/code> 只允许 ff-only&lt;/td>
+&lt;td>保证 master 是线性映射&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>feature 分支合入 &lt;code>develop_*&lt;/code> 必须通过 MR + CR&lt;/td>
+&lt;td>保证上线质量&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>develop_*&lt;/code> 不允许直接 push，必须走 MR&lt;/td>
+&lt;td>防止绕过 CR&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="最终效果">最终效果&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>master&lt;/code> 与 tag 共同构成所有历史发布版本的完整索引，每个 tag 对应一次上线的代码与变更内容&lt;/li>
+&lt;li>打包的代码一定包含 &lt;code>master&lt;/code> 的全部提交（Jenkins 增加检查脚本保障）&lt;/li>
+&lt;li>所有上线代码均经过 Code Review&lt;/li>
+&lt;li>最小化 commit 在不同分支间的流动：仅有单测试分支时，整个流程只存在测试分支向 &lt;code>master&lt;/code> 的一次合并&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;p>这套方案的核心取舍是：以 Git Flow 的双主干结构换取发布安全性，以 &lt;code>--ff-only&lt;/code> 合并保证 &lt;code>master&lt;/code> 的可追溯性，以 CR 门禁换取上线质量。对于单一生产版本、按窗口发布的团队，这是目前成本最低、风险最可控的路径。&lt;/p>
+- https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>软件开发的一些思考与Hint</title><link>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</link><pubDate>Sat, 01 Jun 2024 15:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/ -&lt;h2 id="业务价值与驱动力">业务价值与驱动力&lt;/h2>
 &lt;ul>
 &lt;li>大局观&amp;amp;格局（森林）//  细节 （树木）&lt;/li>
 &lt;li>代码不是资产/财富，代码是负债。代码实现的那个背后的需求才是资产/财富。&lt;/li>
@@ -835,31 +919,4 @@
 - https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>玩“谁”的游戏</title><link>https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/</link><pubDate>Wed, 18 Oct 2023 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/ -&lt;p>每个公司、行业都有其规则，这个世界也有自己的规则。有了规则就产生了对应的游戏。&lt;/p>
 &lt;p>如果你在行业的 Tier 1 企业，那么自然这个行业大大多数公司的游戏你都玩得转，反之，你可以只玩头当前这个游戏，换个游戏你就会很不适应。&lt;/p>
 &lt;p>规则终有人（们）来制定，那么，你在玩“谁”的游戏呢？&lt;/p>
-- https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>我的P.A.R.A实践记录</title><link>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</link><pubDate>Sun, 19 Mar 2023 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/ -&lt;h1 id="我的para实践记录">我的P.A.R.A实践记录&lt;/h1>
-&lt;h2 id="什么是para">什么是P.A.R.A&lt;/h2>
-&lt;blockquote>
-&lt;p>&lt;strong>The P.A.R.A. (Projects, Areas, Resources, Archives) method is a method for organizing digital information.&lt;/strong>&lt;/p>
-&lt;p>It was developed by &lt;a href="https://fortelabs.co/about-forte-labs">Forte Labs&lt;/a>, a company that creates content to help increase productivity through technology.&lt;/p>
-&lt;p>&lt;img src="https://s2.loli.net/2023/03/19/8QDcPAhmZYqRLw6.png" alt="image.png|800">&lt;/p>&lt;/blockquote>
-&lt;ul>
-&lt;li>Project: 短期、长期项目，用于Area的&lt;strong>实践落地&lt;/strong>。&lt;/li>
-&lt;li>Area: 关注的&lt;strong>核心领域与能力提升&lt;/strong>。&lt;/li>
-&lt;li>Resource: 用于Area相关联的信息整理以及其他可能感兴趣的内容。&lt;/li>
-&lt;li>Archive: 另外三项不活跃的内容移入这个地方，减少对活跃项目的干扰。&lt;/li>
-&lt;/ul>
-&lt;h2 id="practice">Practice&lt;/h2>
-&lt;ul>
-&lt;li>Data Collection: &lt;strong>Cubox&lt;/strong>
-&lt;ul>
-&lt;li>Send to Obsidian through &amp;ldquo;自定义动作&amp;rdquo;&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Information Station and Writing: &lt;strong>Obsidian&lt;/strong>
-&lt;ul>
-&lt;li>Publish to github.io: A Python script to copy blog files to &lt;code>blog_source&lt;/code>&lt;/li>
-&lt;li>Publish to Wechat Official Account: A web converter to make blog files suitable to wechat&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Knowledge Output: &lt;strong>github.io; Wechat Official Account&lt;/strong>.&lt;/li>
-&lt;/ul>
-- https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>

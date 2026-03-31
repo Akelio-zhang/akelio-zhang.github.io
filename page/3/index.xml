@@ -590,7 +590,393 @@
 &lt;p>如何对时间、压力进行管理。&lt;/p>
 &lt;p>这本书，可以在碰到问题时找到相关的章节去看看有没有什么解决方案，不一定有用，至少可以帮助开拓一定的思路。&lt;/p>
 &lt;p>相关大佬: Kent Beck; Martin Fowler; R. C. Martin&lt;/p>
-- https://akelio-zhang.github.io/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>Java传值方式讨论</title><link>https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</link><pubDate>Sun, 27 Oct 2019 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/ -&lt;p>起因是一次华为面试题&lt;/p>
+- https://akelio-zhang.github.io/posts/2020-clean%E7%B3%BB%E7%BB%9F%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%A4%E5%B9%B4%E9%A1%B9%E7%9B%AE%E5%9B%9E%E9%A1%BE/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>设计模式：动机、取舍与语言相关性</title><link>https://akelio-zhang.github.io/posts/2020-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link><pubDate>Mon, 30 Mar 2020 20:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2020-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2020-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/ -&lt;h1 id="设计模式">设计模式&lt;/h1>
+&lt;blockquote>
+&lt;p>本文是设计模式的个人梳理笔记，不追求面面俱到，而是聚焦于动机（为什么）与取舍（何时不用）。适合有一定 Java/Spring 开发经验、想建立设计模式全局观的读者。文中&amp;quot;出现概率&amp;quot;均基于笔者在开发过程中的主观感受，仅供参考。&lt;/p>
+&lt;p>logged in 2020 and written with Claude.&lt;/p>&lt;/blockquote>
+&lt;p>设计模式是为了封装变化，让各个模块可以独立变化。多关注问题本身以及动机。&lt;/p>
+&lt;hr>
+&lt;h2 id="总纲">总纲&lt;/h2>
+&lt;ol>
+&lt;li>SOLID&lt;/li>
+&lt;li>介绍方式：What（这个模式做什么），Why（为什么选这个），How（怎么用这个模式），Related（与其他模式的关联）&lt;/li>
+&lt;li>设计模式的争议
+&lt;ol>
+&lt;li>&lt;strong>Abuse&lt;/strong>：只有一把铁锤，任何东西看上去都像钉子。&lt;/li>
+&lt;li>往往设计模式是在常规思路、&lt;em>编程语言&lt;/em>上没有很好的解决方案时需要采用的。
+&lt;ol>
+&lt;li>&lt;a href="http://t.cn/A6AtApg6">Are Design Patterns Missing Language Features&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.zhihu.com/question/23757906/answer/25567356">往往是 Java 的语言约束导致了这些设计模式的诞生&lt;/a>，例如：Java 不支持动态分派（访问者模式）。
+&lt;ul>
+&lt;li>如果语言支持类型能够当参数进行传递（或动态分派），创建型、Visitor 模式基本失去了意义。&lt;/li>
+&lt;li>如果语言支持函数作为参数传递（或函数为一等公民），行为型基本失去了意义。&lt;/li>
+&lt;li>大部分结构型的方案基本就是将&lt;strong>继承转换为组合&lt;/strong>。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>因此，在 Kotlin/Scala/Go 中，很多行为型模式可以直接用高阶函数或接口组合替代；本文的模式讨论以 Java/Spring 生态为主要背景。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>各模式的语言相关性一览：&lt;/strong>&lt;/p>
+&lt;blockquote>
+&lt;p>分为两类：「语言催生」的模式——本质上是对语言表达力不足的补丁，换一门语言可以天然消除；「问题催生」的模式——解决的是系统复杂度本身，任何语言都需要。&lt;/p>&lt;/blockquote>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>类型&lt;/th>
+&lt;th>模式&lt;/th>
+&lt;th>Java 中为何需要&lt;/th>
+&lt;th>可天然替代的语言 / 特性&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>语言催生&lt;/td>
+&lt;td>&lt;strong>策略&lt;/strong>&lt;/td>
+&lt;td>无一等函数，必须定义接口+实现类&lt;/td>
+&lt;td>Kotlin / Python / JS：直接传 lambda&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>语言催生&lt;/td>
+&lt;td>&lt;strong>命令&lt;/strong>&lt;/td>
+&lt;td>同上，参数化&amp;quot;动作&amp;quot;只能靠对象包装&lt;/td>
+&lt;td>同上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>语言催生&lt;/td>
+&lt;td>&lt;strong>模板方法&lt;/strong>&lt;/td>
+&lt;td>无高阶函数，只能靠继承参数化步骤&lt;/td>
+&lt;td>Kotlin：高阶函数直接作为参数传入&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>语言催生&lt;/td>
+&lt;td>&lt;strong>工厂方法 / 抽象工厂&lt;/strong>&lt;/td>
+&lt;td>类不能作为值传递，绕过编译期类型约束&lt;/td>
+&lt;td>Python / Ruby：类本身即对象，可直接传递&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>语言催生&lt;/td>
+&lt;td>&lt;strong>访问者&lt;/strong>&lt;/td>
+&lt;td>只支持单分派，双分派需手动模拟&lt;/td>
+&lt;td>Julia / Common Lisp：原生多分派，模式不再必要&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>语言催生&lt;/td>
+&lt;td>&lt;strong>装饰&lt;/strong>&lt;/td>
+&lt;td>无委托语法，每个方法都要手写转发&lt;/td>
+&lt;td>Kotlin：&lt;code>by&lt;/code> 委托一行搞定；Python：&lt;code>@decorator&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>语言催生&lt;/td>
+&lt;td>&lt;strong>建造者&lt;/strong>&lt;/td>
+&lt;td>无命名参数 / 默认参数，构造器难以表达可选项&lt;/td>
+&lt;td>Kotlin / Python：命名参数+默认值直接解决&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>语言催生&lt;/td>
+&lt;td>&lt;strong>单例&lt;/strong>&lt;/td>
+&lt;td>需要手动控制实例化和线程安全&lt;/td>
+&lt;td>Python 模块天然单例；Go：&lt;code>sync.Once&lt;/code> 惯用法&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>语言催生&lt;/td>
+&lt;td>&lt;strong>原型&lt;/strong>&lt;/td>
+&lt;td>&lt;code>Cloneable&lt;/code> 设计缺陷，深拷贝需手动实现&lt;/td>
+&lt;td>Python：&lt;code>copy.deepcopy&lt;/code>；JS：结构化克隆&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>问题催生&lt;/td>
+&lt;td>&lt;strong>观察者 / 责任链 / 中介者&lt;/strong>&lt;/td>
+&lt;td>解决通信拓扑复杂度&lt;/td>
+&lt;td>无语言可天然消除，只是写法（channel、signal）不同&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>问题催生&lt;/td>
+&lt;td>&lt;strong>状态 / 组合&lt;/strong>&lt;/td>
+&lt;td>解决领域建模中的状态爆炸 / 递归树结构问题&lt;/td>
+&lt;td>同上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>问题催生&lt;/td>
+&lt;td>&lt;strong>享元 / 代理&lt;/strong>&lt;/td>
+&lt;td>解决资源复用 / 访问控制&lt;/td>
+&lt;td>同上&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>问题催生&lt;/td>
+&lt;td>&lt;strong>适配器 / 桥接 / 外观&lt;/strong>&lt;/td>
+&lt;td>解决接口兼容、多维变化、子系统隔离&lt;/td>
+&lt;td>同上，换语言只是少写几行，问题本身不消失&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;pre>&lt;code>3. 设计模式可以说是为了弥补编程模型上的一些缺陷，并且各种设计模式往往比较适合局部、偏底层的地方。
+&lt;/code>&lt;/pre>
+&lt;ol start="4">
+&lt;li>减少继承&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h2 id="创建型对象的生成">创建型（对象的生成）&lt;/h2>
+&lt;h3 id="1-单例模式">1. 单例模式&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：全局只有一个实例对象。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：仅需要一个单一的实例对象就足够。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：99%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：管理方便容易。&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：多线程模式下改变单例对象，需要谨慎。&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：线程池、配置中心、连接池等全局唯一资源。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：把业务对象做成单例（如把 Service 的有状态字段放在单例里），多线程下出现数据竞争；测试时难以 mock，降低可测性。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-建造者模式">2. 建造者模式&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：使你能够分步骤创建复杂对象。该模式允许你使用相同的创建代码生成不同类型和形式的对象。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：减少过多的构造器实现 / 不同的参数，创建不同的对象。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：90%&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：&lt;code>Executors.newFixedThreadPool()&lt;/code> / &lt;code>ThreadPoolExecutor.Builder&lt;/code>&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：参数超过 4 个、有可选参数的复杂对象构建，如 &lt;code>ThreadPoolExecutor&lt;/code>、HTTP 请求体。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：对只有 1~2 个参数的简单对象引入 Builder，徒增模板代码；Builder 内部没有做参数校验，把错误延迟到 &lt;code>build()&lt;/code> 后才暴露。&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-工厂方法factory-method">3. 工厂方法（Factory Method）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：在父类中提供一个创建对象的接口，允许子类决定实例化对象的类型。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：容易扩展创建产品的方式。&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：解耦创建者和具体产品之间的关联。&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：引入了更多的子类。&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：框架需要允许扩展点，让调用方决定创建哪种实现，如日志框架 &lt;code>LoggerFactory&lt;/code>。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：每新增一种产品就要新增一个子类，产品类型稳定时用普通静态工厂即可，过度引入子类层级。&lt;/li>
+&lt;/ul>
+&lt;h3 id="4-抽象工厂模式">4. 抽象工厂模式&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：一个接口提供一套完整的产品，且不需要知道产品的具体种类。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：10%&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：每次新增一个产品时，所有子类都需要进行实现。&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：Spring 中的 &lt;code>BeanFactory&lt;/code>&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：需要同时切换一整套相关产品族（如跨数据库方言、跨平台 UI 组件）。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：产品种类频繁变动时使用——每次新增一种产品，所有工厂实现都要改，违反开闭原则。&lt;/li>
+&lt;/ul>
+&lt;h3 id="5-原型模式prototype">5. 原型模式（Prototype）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：使你能够复制已有对象，而又无需使代码依赖它们所属的类。&lt;/li>
+&lt;li>&lt;strong>结构&lt;/strong>：实现接口方法 &lt;code>clone()&lt;/code>&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：90%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：方便地复制对象。&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：Java 的序列化&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：对象创建成本高（深层嵌套、IO 初始化），需要频繁产出相似对象。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：浅拷贝当深拷贝用——共享了内部可变引用，导致&amp;quot;克隆体&amp;quot;互相干扰；Java 的 &lt;code>Cloneable&lt;/code> 接口本身设计存在缺陷，优先考虑拷贝构造函数或序列化方案。&lt;/li>
+&lt;/ul>
+&lt;h3 id="总结">总结&lt;/h3>
+&lt;p>将类的创建管理收拢到比较少的对象中，例如 Spring IoC 其实也是一种创建型的思路。&lt;/p>
+&lt;hr>
+&lt;h2 id="结构型对象如何组合">结构型（对象如何组合）&lt;/h2>
+&lt;h3 id="1-代理模式proxy">1. 代理模式（Proxy）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：用来修改对原对象方法的屏蔽或者增强。（对外暴露的接口保持一致）&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：RPC 框架代理原本的本地方法、AOP 机制切面增强。&lt;/li>
+&lt;li>&lt;strong>结构&lt;/strong>：实现一致接口，内部进行组合。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：99%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：开闭原则。&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：创建成本、调用成本增加。&lt;/li>
+&lt;li>&lt;strong>关联&lt;/strong>：装饰器、外观模式、适配器&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：Spring AOP 的核心实现。&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：RPC 透明调用、AOP 日志/鉴权/事务切面、懒加载。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：代理层中混入业务逻辑（代理不应该知道业务）；动态代理链过长导致栈帧膨胀，排查困难。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-适配器adapter">2. 适配器（Adapter）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：使得不兼容的接口之间能够进行合作。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：当某个对象无法直接访问另一个接口方法时，可以采用适配器进行衔接。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：50%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：单一职责原则 / 开闭原则。&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：复杂度增加，性能降低。&lt;/li>
+&lt;li>&lt;strong>关联&lt;/strong>：桥接模式往往用在开发初期阶段，适配器模式一般在维护阶段使用，保证重构的可靠性。&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：&lt;code>Arrays#asList()&lt;/code> / &lt;code>Collections#singletonList()&lt;/code>&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：集成第三方 SDK、遗留接口迁移、单元测试中替换外部依赖。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：在新系统开发初期就引入适配器——说明接口设计本身有问题，应先对齐接口；适配器套适配器，产生多层适配地狱。&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-桥接bridge">3. 桥接（Bridge）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：一个类有多个维度的变化时，需要让其进行独立变化。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：降低维护变化的成本，将每个变化隔离在一个具体的实现中。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：10%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：单一职责原则 / 开闭原则。&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：渲染引擎（形状 × 颜色）、消息发送（渠道 × 格式）等多维度正交扩展。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：只有一个维度变化时强行引入桥接，过度设计；与继承混用，导致类层级仍然爆炸。&lt;/li>
+&lt;/ul>
+&lt;h3 id="4-组合composite">4. 组合（Composite）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：对象按树状结构组织，并且可以独立地访问某个节点。（类比军队管理）&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：文件系统的管理，套娃行为的场景。&lt;/li>
+&lt;li>&lt;strong>结构&lt;/strong>：递归&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：20%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：开闭原则。&lt;/li>
+&lt;li>&lt;strong>关联&lt;/strong>：装饰器模式 / 责任链模式&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：文件系统、组织架构树、菜单/权限树、表达式树。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：叶节点和容器节点行为差异大时强行统一接口，导致叶节点里出现大量空实现或抛异常。&lt;/li>
+&lt;/ul>
+&lt;h3 id="5-装饰decorator">5. 装饰（Decorator）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：对原始对象进行封装，并提供增强的接口（包括原来的，以及新增的方法）。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：无需改动原始类，就可以增强其功能。避免使用子类来扩展，因为继承往往是静态的、单一的，容易导致后期维护成本上升。&lt;/li>
+&lt;li>&lt;strong>结构&lt;/strong>：组合&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：70%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：单一职责原则 / 利用组合替代子类继承。&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：初始化的行为比较不 elegant。&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：Java IO 包 / &lt;code>Collections.unmodifiableXXXX()&lt;/code> / 编码与压缩&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：&lt;code>InputStream&lt;/code> 流式增强、缓存层叠加、权限校验叠加。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：装饰链太深、顺序敏感但文档不清晰；与代理混用时职责不明（装饰关注功能增强，代理关注访问控制）；debug 时调用栈难以阅读。&lt;/li>
+&lt;/ul>
+&lt;h3 id="6-外观facade">6. 外观（Facade）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：为复杂子系统提供一个简化的统一接口，降低调用方与子系统的耦合。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：SPI 机制，可以灵活地采用不同的实现方案（日志、数据库等）。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：99%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：实现与接口独立，容易替换。&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：该接口与所有对象绑定（因此，这种接口往往是公共的）。&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：提供统一的子系统入口（如 SLF4J 屏蔽具体日志实现）、微服务 BFF 层。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：外观类承担了太多协调逻辑，变成&amp;quot;上帝类&amp;quot;；接口粒度过粗导致调用方必须拿到不需要的数据。&lt;/li>
+&lt;/ul>
+&lt;h3 id="7-享元flyweight">7. 享元（Flyweight）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：共享多个对象中共有且相同的状态，降低内存消耗。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：同时存在大量的对象，且存在较多的相同的状态。&lt;/li>
+&lt;li>&lt;strong>关联&lt;/strong>：很容易想到单例模式，但是单例模式是享元模式的一种特例。在享元模式中，尽管存在相同的状态，但是仍有不同的一些状态需要独立维护。&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：字符串常量池、&lt;code>Integer&lt;/code> 缓存（-128~127）、棋子/粒子等大量相似对象。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：外部状态被误放入享元对象（享元只能保存内部状态，线程安全性会被破坏）；过早优化——对象数量并不大时引入享元徒增复杂度。&lt;/li>
+&lt;/ul>
+&lt;h3 id="对比讨论">对比讨论&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>适配器 vs 代理 vs 装饰&lt;/strong>：适配器改变接口；代理不改变接口，但控制访问；装饰不改变接口，但增强功能。&lt;/li>
+&lt;li>&lt;strong>组合 vs 桥接&lt;/strong>：组合解决&amp;quot;整体-部分&amp;quot;的递归树问题，桥接解决&amp;quot;多维度独立变化&amp;quot;的组合爆炸问题。&lt;/li>
+&lt;li>&lt;strong>享元 vs 单例&lt;/strong>：单例是享元的特例（整个对象共享），享元允许对象携带不同的外部状态。&lt;/li>
+&lt;li>&lt;strong>外观&lt;/strong>：不是对单一对象的包装，而是对整个子系统的统一入口，隐藏内部复杂性。&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="行为型对象之间的通信">行为型（对象之间的通信）&lt;/h2>
+&lt;h3 id="1-责任链chain-of-responsibility">1. 责任链（Chain of Responsibility）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：请求按照一定的处理链进行处理。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：对不同的请求安排不同的处理链。所有的请求都有固定的处理链。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：50%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：单一职责原则 / 开闭原则。&lt;/li>
+&lt;li>&lt;strong>关联&lt;/strong>：命令模式 / 中介者模式 / 观察者模式&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：Dubbo Filters / Netty handlers&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：过滤器/拦截器链（Servlet Filter、Dubbo Filter）、审批流、风控规则引擎。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：链条过长且没有短路机制，所有处理器都要执行；处理器之间隐式依赖顺序却没有文档说明，维护时容易踩雷。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-命令command">2. 命令（Command）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：将不同的请求转换到统一的命令对象，交给执行器进行执行。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：将请求与具体的执行者进行解耦，实现参数化操作。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：20%&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：支持撤销/重做（编辑器）、任务队列、宏录制。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：业务逻辑简单时引入命令对象——一个 &lt;code>execute()&lt;/code> 方法包一层，纯粹增加间接层；命令对象持有过多上下文，退化成贫血模型。&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-迭代器iterator">3. 迭代器（Iterator）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：对集合类的结构能够采用一种统一的方式进行遍历访问。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：隐藏具体的迭代过程。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：99%&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：统一遍历各种集合/树/图结构，隐藏底层实现。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：在已有 Stream API 的场景下手写迭代器；在迭代过程中修改集合（&lt;code>ConcurrentModificationException&lt;/code>）。&lt;/li>
+&lt;/ul>
+&lt;h3 id="4-中介者mediator">4. 中介者（Mediator）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：由中介者来协调不同对象之间的合作。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：对象之间的依赖过于复杂。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：60%&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：中介者变为上帝对象。&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：&lt;code>Executor#execute()&lt;/code> / &lt;code>Timer#scheduleXXX()&lt;/code> / &lt;code>Method#invoke()&lt;/code> / 连接池 / YARN 资源管理器&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：聊天室、航空调度、GUI 组件协调（表单联动）、连接池。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：中介者承担过多职责变成上帝对象；系统中只有少量对象时引入，增加间接层而没有实质收益。&lt;/li>
+&lt;/ul>
+&lt;h3 id="5-备忘录memento">5. 备忘录（Memento）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：使得数据的状态得以快速保存和恢复。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：5%&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：游戏存档、编辑器撤销、事务回滚的状态保存。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：状态对象过大时频繁快照，内存暴涨；没有控制快照数量上限，历史记录无限增长。&lt;/li>
+&lt;/ul>
+&lt;h3 id="6-观察者observer--listener">6. 观察者（Observer / Listener）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：实现一种订阅机制，使得被观察对象发生事件时通知到订阅者。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：有不同的对象要观察监听同一个对象的事件 / 观察者可能动态加入、离开观察者队列。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：80%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：开闭原则。&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：无法控制通知的顺序。&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：DataStream / RxJava&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：事件驱动、消息总线、MVC 中 Model 通知 View。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：观察者链式触发（A 通知 B，B 又通知 C），调试极其困难；观察者持有被观察者的强引用，忘记取消订阅导致内存泄漏；同步通知中观察者执行耗时操作，阻塞主流程。&lt;/li>
+&lt;/ul>
+&lt;h3 id="7-状态state">7. 状态（State）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：使得对象在改变自身状态的时候，改变自身的行为。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：将状态变更与对象的自身逻辑分离。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：70%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：单一职责原则 / 开闭原则 / 解耦。&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：在状态较多或变更条件复杂的时候才适合采用。&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：业务对象的 &lt;code>draft → submitted → effective → to be offline → offline&lt;/code> 状态变化，简化整体业务代码。&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：订单状态机、工作流引擎、TCP 连接状态、游戏角色状态。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：状态数量只有 2~3 个时引入，if-else 更直观；状态之间的转移逻辑散落在各个 State 类里，全局迁移图难以一眼看清（建议配状态机图）。&lt;/li>
+&lt;/ul>
+&lt;h3 id="8-策略strategy">8. 策略（Strategy）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：能够根据上下文情况，方便切换具体的实现算法。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：有较多的实现方式，并且希望能够在运行时动态切换。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：50%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：实现与流程隔离。&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：Client 需要自己清楚什么时候采用什么策略。&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：排序算法切换、支付方式选择、促销规则计算、路由策略。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：策略类激增但大多数场景只用 1 种策略——可用函数式接口（&lt;code>Function&lt;/code> / &lt;code>Predicate&lt;/code>）替代；Context 里残留大量 if-else 选策略的逻辑，没有真正解耦。&lt;/li>
+&lt;/ul>
+&lt;h3 id="9-模板方法template-method">9. 模板方法（Template Method）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：在超类中定义了一个算法的框架，允许子类在不修改结构的情况下重写算法的特定步骤。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：多个类的执行过程，只有在局部有一些变化，可以采用模板方法进行抽象。&lt;/li>
+&lt;li>&lt;strong>结构&lt;/strong>：继承&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：80%&lt;/li>
+&lt;li>&lt;strong>Pros&lt;/strong>：减少了大量 duplicate code。&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：必须在编译时就要能够明确具体是谁执行。&lt;/li>
+&lt;li>&lt;strong>关联&lt;/strong>：策略模式是在运行时进行切换，而模板方法很明显是在编译时就决定了。&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：数据处理框架（读取 → 处理 → 写出）、JUnit 的 &lt;code>setUp/tearDown&lt;/code>、&lt;code>AbstractList&lt;/code>。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：子类重写了不应该重写的步骤（&amp;ldquo;脆弱的基类&amp;quot;问题）；钩子方法过多，子类需要理解整个父类流程才能正确实现；在需要运行时切换算法时误用模板方法（该用策略）。&lt;/li>
+&lt;/ul>
+&lt;h3 id="10-访问者visitor">10. 访问者（Visitor）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>意图&lt;/strong>：将算法与访问的对象隔离。&lt;/li>
+&lt;li>&lt;strong>动机&lt;/strong>：同一组对象会有不同的方式被访问（aka. 基于其进行计算）。&lt;/li>
+&lt;li>&lt;strong>出现概率&lt;/strong>：10%&lt;/li>
+&lt;li>&lt;strong>Cons&lt;/strong>：访问者是强关联到这个数据结构上的。&lt;/li>
+&lt;li>&lt;strong>Examples&lt;/strong>：Druid SQL 树的计算&lt;/li>
+&lt;li>&lt;strong>✅ 适用场景&lt;/strong>：编译器 AST 遍历、SQL 语法树分析（如 Druid）、文档格式导出。&lt;/li>
+&lt;li>&lt;strong>⛔ 反模式 / 误用&lt;/strong>：数据结构频繁变动时使用——每加一种元素类型，所有 Visitor 都要改；访问者强依赖数据结构的 &lt;code>accept&lt;/code> 方法，破坏了封装性。&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="总结-1">总结&lt;/h2>
+&lt;p>设计模式本身并不重要，而在于它采用了哪些策略来降低系统复杂度、提高系统的可维护性。&lt;/p>
+&lt;ol>
+&lt;li>减少继承，多采用组合的方式来丰富类的功能。&lt;/li>
+&lt;li>面对各种功能的变更，能够将变化（影响）的范围尽可能的缩小到 1 个或者少量的类中。&lt;/li>
+&lt;li>面向接口编程。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>何时应该克制&lt;/strong>：设计模式的引入本身也是一种成本——间接层增加、代码量上升、新人理解曲线变陡。在以下情形应克制使用：&lt;/p>
+&lt;ol>
+&lt;li>团队规模小、迭代快，过度抽象反而拖慢速度；&lt;/li>
+&lt;li>变化点还不明确，过早抽象容易抽错方向（YAGNI 原则）；&lt;/li>
+&lt;li>语言/框架已经原生支持，例如 Java 8+ 的函数式接口基本覆盖策略模式的使用场景。&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ol>
+&lt;li>&lt;a href="https://refactoringguru.cn/design-patterns/prototype">https://refactoringguru.cn/design-patterns/prototype&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://design-patterns.readthedocs.io/zh_CN/latest/index.html">https://design-patterns.readthedocs.io/zh_CN/latest/index.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cnblogs.com/zuoxiaolong/p/pattern26.html">https://www.cnblogs.com/zuoxiaolong/p/pattern26.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.zhihu.com/question/23757906">https://www.zhihu.com/question/23757906&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://t.cn/A6AtApg6">Are Design Patterns Missing Language Features&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.zhihu.com/question/23757906/answer/25567356">往往是 Java 的语言约束导致了这些设计模式的诞生&lt;/a>&lt;/li>
+&lt;/ol>
+- https://akelio-zhang.github.io/posts/2020-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>Java传值方式讨论</title><link>https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</link><pubDate>Sun, 27 Oct 2019 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2019-java%E4%BC%A0%E5%80%BC%E6%96%B9%E5%BC%8F%E7%9A%84%E8%AE%A8%E8%AE%BA/ -&lt;p>起因是一次华为面试题&lt;/p>
 &lt;blockquote>
 &lt;p>Java在进行函数调用时，参数时传值还是传引用？&lt;/p>&lt;/blockquote>
 &lt;p>当时，我考虑的是Java变量只有两类，基本类型与引用类型，引用类型本质应该是属于指针。所以基本类型与引用类型的实参传递都是值本身，即创建一个副本赋予形参。面试官给的仅仅是笑而不语……&lt;/p>

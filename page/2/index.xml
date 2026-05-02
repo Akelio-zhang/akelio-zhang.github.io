@@ -1,4 +1,55 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Fri, 01 May 2026 15:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>玩“谁”的游戏</title><link>https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/</link><pubDate>Wed, 18 Oct 2023 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/ -&lt;p>每个公司、行业都有其规则，这个世界也有自己的规则。有了规则就产生了对应的游戏。&lt;/p>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sat, 02 May 2026 22:50:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>心血来潮之「字体设计」</title><link>https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/</link><pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/ -&lt;h2 id="-起因">&amp;raquo; 起因&lt;/h2>
+&lt;p>今年下半年开始，一直觉得毕业开始工作后的几年一直拘泥于工作相关的知识汲取，其他知识大多游走于史政经相关领域。在 7 、 9 月集中做了几次 PPT 汇报后，越发觉得自己对字体选择的纠结与执着。相反，看到大多数人可能对字体的衬线、非衬线选择都是非常混乱。于是，就想看能不能系统地了解一下字体相关的知识；同时，还发现图书馆可以免费地借到这些专业书籍（省了一大笔费用）。就在 10 月的午后，开始了字体设计学习之旅。&lt;/p>
+&lt;h2 id="-结果">&amp;laquo; 结果&lt;/h2>
+&lt;blockquote>
+&lt;p>如果你是初学者，想了解字体设计相关的内容，从 &lt;a href="https://www.thetype.com/booklist/">The Type — 文字 / 设计 / 文化 » 相关书单&lt;/a> 开始。&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>字体与生活
+&lt;ul>
+&lt;li>&lt;a href="https://book.douban.com/subject/36140138/">从字体开始 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>这本书写的非常贴合当前生活，让你感受到字体设计的魅力。对于我而言，我特别关注到在公共环境的字体应用非常有讲究：路牌字体、地铁站字体、奢侈品品牌字体，等等；其中，&lt;a href="https://www.mtr.com.hk/ch/customer/jp/index.php">港铁&lt;/a> 的字体是我觉得最具有吸引力的。
+&lt;ul>
+&lt;li>&lt;a href="https://railmapgen.gitlab.io/">地铁线路图设计&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>汉字设计
+&lt;ul>
+&lt;li>&lt;a href="https://book.douban.com/subject/36415619/">方寸之间 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>这本书算是从 19 世纪开始到现在的汉字设计方法及工具相关专业学术文章合辑。汉字字体设计这个领域整体来说，还是以日文学术文章为多。还有每年一届的 &lt;a href="https://tokyotypedirectorsclub.org/en/"> Tokyo TDC&lt;/a>。&lt;/li>
+&lt;li>&lt;a href="https://book.douban.com/subject/26844052/">字體設計100+1 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>这本书算是汉字设计的一些案例讨论，广而不深的感觉。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>西文字体设计
+&lt;ul>
+&lt;li>&lt;a href="https://book.douban.com/subject/25836269/">西文字体 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>入门书籍，让你了解整个字体设计的全貌（现代字体设计整体还是从西文字体发展起来的）。&lt;/li>
+&lt;li>&lt;a href="https://book.douban.com/subject/36540477/">西文字体设计方法 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://book.douban.com/subject/25842572/">字体设计的规则与艺术 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>以上两本都是西文字体的具体设计方法介绍，比较详实。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>好的字体也需要好的排版设计
+&lt;ul>
+&lt;li>&lt;a href="https://book.douban.com/subject/26664522/">写给大家看的设计书（第4版）&lt;/a> | 强烈推荐！&lt;/li>
+&lt;li>&lt;a href="https://book.douban.com/subject/26896124/">设计入门教室：设计的基本规则 (豆瓣)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://static.googleusercontent.com/media/fonts.google.com/zh-CN//knowledge/stop_stealing_sheep.pdf">stop_stealing_sheep.pdf&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="-推荐">|| 推荐&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.thetype.com/">The Type — 文字 / 设计 / 文化&lt;/a>（有书单、 Podcast 、 Blog ）
+&lt;ul>
+&lt;li>&lt;a href="https://www.thetype.com/kongque/">孔雀计划：中文字体排印的思路&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://space.bilibili.com/38053181">六蛋老师的B站视频&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://book.douban.com/subject/30325780/">PPT设计的艺术——人人都用得上的PPT设计书（全彩） (豆瓣)&lt;/a>&lt;/li>
+&lt;/ul>
+- https://akelio-zhang.github.io/posts/2023-%E5%BF%83%E8%A1%80%E6%9D%A5%E6%BD%AE%E4%B9%8B%E5%AD%97%E4%BD%93%E8%AE%BE%E8%AE%A1/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>玩“谁”的游戏</title><link>https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/</link><pubDate>Wed, 18 Oct 2023 00:00:00 +0000</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/ -&lt;p>每个公司、行业都有其规则，这个世界也有自己的规则。有了规则就产生了对应的游戏。&lt;/p>
 &lt;p>如果你在行业的 Tier 1 企业，那么自然这个行业大大多数公司的游戏你都玩得转，反之，你可以只玩头当前这个游戏，换个游戏你就会很不适应。&lt;/p>
 &lt;p>规则终有人（们）来制定，那么，你在玩“谁”的游戏呢？&lt;/p>
 - https://akelio-zhang.github.io/posts/2023-%E7%8E%A9%E8%B0%81%E7%9A%84%E6%B8%B8%E6%88%8F/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>我的P.A.R.A实践记录</title><link>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</link><pubDate>Sun, 19 Mar 2023 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/ -&lt;h1 id="我的para实践记录">我的P.A.R.A实践记录&lt;/h1>
@@ -995,108 +1046,4 @@
 &lt;p>⭐&lt;a href="https://jeffe.cs.illinois.edu/teaching/algorithms/#book">Algorithms by Jeff Erickson (illinois.edu)&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-- https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>MacBook Pro到手配置</title><link>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ -&lt;h1 id="macbook-pro-到手配置">MacBook Pro 到手配置&lt;/h1>
-&lt;blockquote>
-&lt;p>14&amp;rsquo; | M1 Pro | 32G | 512GB&lt;/p>&lt;/blockquote>
-&lt;h2 id="setup">Setup&lt;/h2>
-&lt;ol>
-&lt;li>Hot corner&lt;/li>
-&lt;li>程序坞的大小与缩小&lt;/li>
-&lt;li>Apple Watch 解锁&lt;/li>
-&lt;li>触控板手势&lt;/li>
-&lt;li>iCloud 设置&lt;/li>
-&lt;li>桌面使用叠放&lt;/li>
-&lt;li>finder 显示状态栏&lt;/li>
-&lt;/ol>
-&lt;h2 id="application">Application&lt;/h2>
-&lt;ul>
-&lt;li>Productivity
-&lt;ul>
-&lt;li>Microsoft Series
-&lt;ul>
-&lt;li>Office 365&lt;/li>
-&lt;li>Outlook&lt;/li>
-&lt;li>Edge&lt;/li>
-&lt;li>OneDrive&lt;/li>
-&lt;li>Todo&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Information Manager
-&lt;ul>
-&lt;li>( I ) Cubox&lt;/li>
-&lt;li>( K / W ) Obsidian&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>UI
-&lt;ul>
-&lt;li>Xmind&lt;/li>
-&lt;li>Sketch&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Enhancement
-&lt;ul>
-&lt;li>Raycast&lt;/li>
-&lt;li>Stats&lt;/li>
-&lt;li>AIDente&lt;/li>
-&lt;li>Mos&lt;/li>
-&lt;li>Rectangle&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Developer
-&lt;ul>
-&lt;li>Homebrew , &lt;a href="https://brew.idayer.com/guide/">https://brew.idayer.com/guide/&lt;/a>&lt;/li>
-&lt;li>VS code
-&lt;ul>
-&lt;li>Tongyi Lingma&lt;/li>
-&lt;li>Markdown All in One&lt;/li>
-&lt;li>Wakatime&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Terminal
-&lt;ul>
-&lt;li>item2 + ayu // Warp&lt;/li>
-&lt;li>&lt;a href="https://wyydsb.xin/Operations/terminal.html#zsh-sh">https://wyydsb.xin/Operations/terminal.html#zsh-sh&lt;/a>&lt;/li>
-&lt;li>Zsh-syntax-highlighting&lt;/li>
-&lt;li>Zsh-autosuggestions&lt;/li>
-&lt;li>Fzf with vim plugin&lt;/li>
-&lt;li>vimrc + vim plug&lt;/li>
-&lt;li>tabnine by coc.nvim&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Java
-&lt;ul>
-&lt;li>JDK by SDKman
-&lt;ul>
-&lt;li>&lt;a href="https://whichjdk.com/">Which Version of JDK Should I Use? | whichjdk.com&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>JetBrains IDEA&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Go
-&lt;ul>
-&lt;li>brew install golang&lt;/li>
-&lt;li>go proxy setup&lt;/li>
-&lt;li>Goland&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Entermaint
-&lt;ul>
-&lt;li>IINA&lt;/li>
-&lt;li>Maipo&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h2 id="参考">参考&lt;/h2>
-&lt;ol>
-&lt;li>⭐️ &lt;a href="https://www.sqlsec.com/macsoft.html">MAC 常用软件清单 | 国光&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://zhuye.notion.site/Macbook-M1-9c908ba2946440aeb02d63609c9990ae">Macbook环境配置（含M1） (notion.site)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://rualc.com/workspace/mac/#brew">Mac 环境（M1 + Monterey） | 前端指南 (rualc.com)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.bilibili.com/video/BV1sD4y1X7MQ">学生党M1 Mac入门指北_哔哩哔哩_bilibili&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.youtube.com/watch?v=67keaaWOKzE">Mac Tutorial for Beginners - Switching from Windows to macOS - YouTube&lt;/a>&lt;/li>
-&lt;/ol>
-- https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>
+- https://akelio-zhang.github.io/posts/2022-leetcode-%E5%88%B7%E9%A2%98%E6%8C%87%E5%8D%97/ - 2019-2025 Akelio All rights reserved.</description></item></channel></rss>

@@ -1,4 +1,108 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Fri, 01 May 2026 15:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021-notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sat, 02 May 2026 22:50:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>MacBook Pro到手配置</title><link>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ -&lt;h1 id="macbook-pro-到手配置">MacBook Pro 到手配置&lt;/h1>
+&lt;blockquote>
+&lt;p>14&amp;rsquo; | M1 Pro | 32G | 512GB&lt;/p>&lt;/blockquote>
+&lt;h2 id="setup">Setup&lt;/h2>
+&lt;ol>
+&lt;li>Hot corner&lt;/li>
+&lt;li>程序坞的大小与缩小&lt;/li>
+&lt;li>Apple Watch 解锁&lt;/li>
+&lt;li>触控板手势&lt;/li>
+&lt;li>iCloud 设置&lt;/li>
+&lt;li>桌面使用叠放&lt;/li>
+&lt;li>finder 显示状态栏&lt;/li>
+&lt;/ol>
+&lt;h2 id="application">Application&lt;/h2>
+&lt;ul>
+&lt;li>Productivity
+&lt;ul>
+&lt;li>Microsoft Series
+&lt;ul>
+&lt;li>Office 365&lt;/li>
+&lt;li>Outlook&lt;/li>
+&lt;li>Edge&lt;/li>
+&lt;li>OneDrive&lt;/li>
+&lt;li>Todo&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Information Manager
+&lt;ul>
+&lt;li>( I ) Cubox&lt;/li>
+&lt;li>( K / W ) Obsidian&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>UI
+&lt;ul>
+&lt;li>Xmind&lt;/li>
+&lt;li>Sketch&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Enhancement
+&lt;ul>
+&lt;li>Raycast&lt;/li>
+&lt;li>Stats&lt;/li>
+&lt;li>AIDente&lt;/li>
+&lt;li>Mos&lt;/li>
+&lt;li>Rectangle&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Developer
+&lt;ul>
+&lt;li>Homebrew , &lt;a href="https://brew.idayer.com/guide/">https://brew.idayer.com/guide/&lt;/a>&lt;/li>
+&lt;li>VS code
+&lt;ul>
+&lt;li>Tongyi Lingma&lt;/li>
+&lt;li>Markdown All in One&lt;/li>
+&lt;li>Wakatime&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Terminal
+&lt;ul>
+&lt;li>item2 + ayu // Warp&lt;/li>
+&lt;li>&lt;a href="https://wyydsb.xin/Operations/terminal.html#zsh-sh">https://wyydsb.xin/Operations/terminal.html#zsh-sh&lt;/a>&lt;/li>
+&lt;li>Zsh-syntax-highlighting&lt;/li>
+&lt;li>Zsh-autosuggestions&lt;/li>
+&lt;li>Fzf with vim plugin&lt;/li>
+&lt;li>vimrc + vim plug&lt;/li>
+&lt;li>tabnine by coc.nvim&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Java
+&lt;ul>
+&lt;li>JDK by SDKman
+&lt;ul>
+&lt;li>&lt;a href="https://whichjdk.com/">Which Version of JDK Should I Use? | whichjdk.com&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>JetBrains IDEA&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Go
+&lt;ul>
+&lt;li>brew install golang&lt;/li>
+&lt;li>go proxy setup&lt;/li>
+&lt;li>Goland&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Entermaint
+&lt;ul>
+&lt;li>IINA&lt;/li>
+&lt;li>Maipo&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ol>
+&lt;li>⭐️ &lt;a href="https://www.sqlsec.com/macsoft.html">MAC 常用软件清单 | 国光&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuye.notion.site/Macbook-M1-9c908ba2946440aeb02d63609c9990ae">Macbook环境配置（含M1） (notion.site)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rualc.com/workspace/mac/#brew">Mac 环境（M1 + Monterey） | 前端指南 (rualc.com)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.bilibili.com/video/BV1sD4y1X7MQ">学生党M1 Mac入门指北_哔哩哔哩_bilibili&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=67keaaWOKzE">Mac Tutorial for Beginners - Switching from Windows to macOS - YouTube&lt;/a>&lt;/li>
+&lt;/ol>
+- https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021-notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-notion/ -&lt;h2 id="0x1-使用过的方案">0x1 使用过的方案&lt;/h2>
 &lt;ol>
 &lt;li>有道云笔记（markdown支持太弱）&lt;/li>
 &lt;li>Microsoft Todo（不太适合大量文字记载）&lt;/li>

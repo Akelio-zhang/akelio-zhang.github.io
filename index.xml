@@ -1,149 +1,337 @@
 <?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LIFE CODER</title><link>https://akelio-zhang.github.io/</link><description>Recent content on LIFE CODER</description><generator>Hugo -- gohugo.io</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sat, 02 May 2026 22:50:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>游戏AI—纸牌游戏的求解策略</title><link>https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/</link><pubDate>Sat, 02 May 2026 22:50:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/ -&lt;h1 id="游戏ai纸牌游戏的求解策略">游戏AI—纸牌游戏的求解策略&lt;/h1>
-&lt;h2 id="一-引言klondike-的信息迷雾">一、 引言：Klondike 的“信息迷雾”&lt;/h2>
-&lt;p>Klondike（接龙）看似简单，实则是一个极佳的算法实验场。它与国际象棋不同，属于&lt;strong>非完备信息博弈&lt;/strong>（存在大量暗牌）。&lt;/p>
-&lt;p>目前学术界与工程界对其胜率的探讨呈现出有趣的“断层”：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>理论上限（全明牌）：&lt;/strong> 根据 &lt;em>Solvitaire&lt;/em> 算法论文分析，在已知所有牌位置的情况下，胜率可达 &lt;strong>82%&lt;/strong> 左右。（&lt;a href="https://github.com/thecharlieblake/Solvitaire">GitHub - thecharlieblake/Solvitaire: A solver for a range of perfect-information, single player solitaire card games · GitHub&lt;/a>）&lt;/li>
-&lt;li>&lt;strong>现实困境（暗牌）：&lt;/strong> 蒙特卡洛抽样显示，人类在常规玩法下的期望胜率约为 &lt;strong>43%&lt;/strong>。&lt;/li>
-&lt;li>&lt;strong>AI 现状：&lt;/strong> 现有的 AI 算法在处理“未知”时的表现参差不齐，从简单的贪心到复杂的深度搜索，胜率鸿沟极大。&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2 id="二-算法炼金术不同架构的胜率复盘">二、 算法炼金术：不同架构的胜率复盘&lt;/h2>
-&lt;p>我们将目光投向目前主流的几种 AI 实现方案，观察“智能”是如何在搜索深度中涌现的：&lt;/p>
+&lt;blockquote>
+&lt;p>2026-08-04 更新：随着实验继续推进，问题已经从“怎样把 Beam Search 调得更强”，转变为“在不同信息边界下，什么搜索范式才合理”。本文保留原来的算法讨论，同时用最新对照结果修正早期结论。&lt;/p>&lt;/blockquote>
+&lt;h2 id="一引言klondike-的信息迷雾">一、引言：Klondike 的“信息迷雾”&lt;/h2>
+&lt;p>Klondike（接龙）看似简单，实则是一个极好的算法实验场。它没有对手，却同时容纳了两种性质截然不同的问题：&lt;/p>
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align: left">算法阶段&lt;/th>
-&lt;th style="text-align: left">核心逻辑&lt;/th>
-&lt;th style="text-align: left">胜率表现&lt;/th>
-&lt;th style="text-align: left">评价&lt;/th>
+&lt;th style="text-align: left">信息世界&lt;/th>
+&lt;th style="text-align: left">AI 知道什么&lt;/th>
+&lt;th style="text-align: left">本质问题&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align: left">&lt;strong>V1: 贪心算法&lt;/strong>&lt;/td>
-&lt;td style="text-align: left">只看眼前的最优移动（Immediate Reward）&lt;/td>
-&lt;td style="text-align: left">极低&lt;/td>
-&lt;td style="text-align: left">容易陷入局部最优，无法处理死局。&lt;/td>
+&lt;td style="text-align: left">&lt;strong>全信息（thoughtful / perfect information）&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">从开局就知道所有暗牌与牌库顺序&lt;/td>
+&lt;td style="text-align: left">在确定但巨大的状态空间中寻找完整解&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">&lt;strong>V2: 基础 Beam Search&lt;/strong>&lt;/td>
-&lt;td style="text-align: left">限制宽度的启发式搜索&lt;/td>
-&lt;td style="text-align: left">~12%&lt;/td>
-&lt;td style="text-align: left">算力利用率高，但由于评价函数不够敏锐，常错过长线路径。&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align: left">&lt;strong>V3: 优化版 Solvitaire&lt;/strong>&lt;/td>
-&lt;td style="text-align: left">深度优先 + 精准剪枝&lt;/td>
-&lt;td style="text-align: left">&lt;strong>~70%&lt;/strong>&lt;/td>
-&lt;td style="text-align: left">&lt;strong>当前 Benchmark&lt;/strong>。平均 Move 约 130 步，已逼近人类理论上限。&lt;/td>
+&lt;td style="text-align: left">&lt;strong>可见信息（human-visible / imperfect information）&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">只记住真正看过的牌，未翻暗牌保持未知&lt;/td>
+&lt;td style="text-align: left">在多个可能世界之间持续决策&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
+&lt;p>这里有一个重要区别：&lt;strong>知道暗牌是什么，不等于可以提前移动暗牌。&lt;/strong> 全信息 AI 仍然必须遵守正常规则，只是它能提前规划“为了释放那张关键牌，现在应该先搬动什么”。&lt;/p>
+&lt;p>这条信息边界会彻底改变算法的任务。全信息 AI 面对的是组合搜索；可见信息 AI 面对的则是信念更新、信息价值和风险控制。两者共享同一副牌，却生活在不同的世界里。&lt;/p>
+&lt;hr>
+&lt;h2 id="二算法炼金术从-12-到两种独立-ai">二、算法炼金术：从 12% 到两种独立 AI&lt;/h2>
+&lt;p>项目早期的目标很直接：让 AI 每一步都选一个“看起来更好”的动作。随着实验深入，算法逐渐分化成四种思路：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">方法&lt;/th>
+&lt;th style="text-align: left">信息条件&lt;/th>
+&lt;th style="text-align: left">核心逻辑&lt;/th>
+&lt;th style="text-align: left">实验表现&lt;/th>
+&lt;th style="text-align: left">结论&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>固定优先级贪心&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">可见局面&lt;/td>
+&lt;td style="text-align: left">只看当前一步的收益&lt;/td>
+&lt;td style="text-align: left">极低&lt;/td>
+&lt;td style="text-align: left">容易陷入局部最优与动作循环&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>基础 Beam Search&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">早期项目环境&lt;/td>
+&lt;td style="text-align: left">保留少量高分候选并向前看&lt;/td>
+&lt;td style="text-align: left">12/100&lt;/td>
+&lt;td style="text-align: left">比贪心更强，但会过早丢弃长线解&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>全信息启发式 DFS&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">全部牌已知&lt;/td>
+&lt;td style="text-align: left">沿最有希望的路径深入，失败后回溯&lt;/td>
+&lt;td style="text-align: left">&lt;strong>26/30（86.7%）&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">适合离线寻找完整获胜路径&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>可见信息 ISMCTS&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">只读玩家可见信息&lt;/td>
+&lt;td style="text-align: left">采样多个可能牌局，再在线选择动作&lt;/td>
+&lt;td style="text-align: left">&lt;strong>19/30（63.3%）&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">能处理未知，但需要为错误信念付出代价&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Beam Search 的 12% 来自早期 100 局历史测试，与后两项的规则实现、样本和预算并不完全一致，不能直接当作严格倍数比较。真正具有可比性的是最后两项：它们在相同的 30 个发牌种子上独立运行。&lt;/p>
+&lt;p>这组对照给出了一个比“哪个算法更强”更有意思的结论：&lt;/p>
 &lt;blockquote>
-&lt;p>&lt;strong>思考：&lt;/strong> 为什么 Claude Code 实现的 Beam Search 仅有 12%？这并非算法本身的缺陷，而是&lt;strong>评价尺度（Heuristic）与人类直觉的偏差&lt;/strong>。在暗牌环境下，AI 往往为了短期得分而拒绝“翻开更多暗牌”的风险决策。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>知道暗牌带来的价值，不只是少走几步，而是把一个不完全信息决策问题，重新变成了确定性的路径搜索问题。&lt;/strong>&lt;/p>&lt;/blockquote>
 &lt;hr>
-&lt;h2 id="三-理论纵深beam-search-的进化谱系">三、 理论纵深：Beam Search 的进化谱系&lt;/h2>
-&lt;p>要解决 Klondike 的搜索效率问题，我们需要从 Beam Search 的四十载演进中寻找武器：&lt;/p>
-&lt;h3 id="1-范式确立从语音识别到内存受限搜索">1. 范式确立：从语音识别到内存受限搜索&lt;/h3>
+&lt;h2 id="三理论纵深beam-search-为什么会错过真正的解">三、理论纵深：Beam Search 为什么会错过真正的解？&lt;/h2>
+&lt;h3 id="1-分数并不单调">1. 分数并不单调&lt;/h3>
+&lt;p>Klondike 中的“好局面”很难用单一分数描述。真正的获胜路径可能从一次短期退让开始：暂时不归组、先腾出空列、反复穿过牌库，甚至撤回一张 foundation 牌，只为几步之后翻开被压住的关键牌。&lt;/p>
+&lt;p>如果评价函数只奖励当前 foundation 数量、空列或已翻开的暗牌，那么某些必要的中间状态反而会得到低分。Beam Search 会在浅层就剪掉这些分支，此后再大的搜索深度也无法把它们找回来。&lt;/p>
+&lt;h3 id="2-宽度更大不一定更好">2. 宽度更大，不一定更好&lt;/h3>
+&lt;p>Beam Search 用宽度换取时间与内存，但“扩大 beam 就会稳定变强”并不成立。Lemons 等人在 &lt;a href="https://ojs.aaai.org/index.php/ICAPS/article/view/19805">&lt;em>Beam Search: Faster and Monotonic&lt;/em>&lt;/a> 中专门讨论了这种非单调性，并提出结合 distance-to-go 估计的 Monobeam。&lt;/p>
+&lt;p>这对 Klondike 的启示是：&lt;strong>搜索资源的多少，与搜索资源是否被投入正确方向，是两个问题。&lt;/strong> 如果评价函数无法识别真正的阻塞关系，更宽的 beam 可能只是更充分地搜索一批相似的错误路线。&lt;/p>
+&lt;h3 id="3-回溯是-beam-search-缺失的记忆">3. 回溯是 Beam Search 缺失的记忆&lt;/h3>
+&lt;p>Zhou 与 Hansen 的 &lt;a href="https://aaai.org/papers/icaps-05-010-beam-stack-search-integrating-backtracking-with-beam-search/">Beam-Stack Search&lt;/a> 把系统回溯重新引入 Beam Search：算法先快速找到次优解，再回到被剪掉的区间继续改进，最终可以收敛到最优解。&lt;/p>
+&lt;p>它解释了原始方案最想补上的能力——“如果眼前所有高分路线都失败，允许回头尝试当时的次优选择”。不过当前项目最终没有采用 Beam-Stack，而是直接选择更贴合全信息 Klondike 的启发式 DFS。&lt;/p>
+&lt;h3 id="4-从-nlp-借来的不是公式而是警觉">4. 从 NLP 借来的不是公式，而是警觉&lt;/h3>
+&lt;p>在序列生成领域，Google 的 &lt;a href="https://arxiv.org/abs/1609.08144">GNMT 技术报告&lt;/a> 使用长度归一化与 coverage penalty，避免 Beam Search 偏爱过短输出，或遗漏输入中的关键信息。Meister、Vieira 与 Cotterell 的 &lt;a href="https://aclanthology.org/2020.tacl-1.51/">Best-First Beam Search&lt;/a> 则继续讨论单调评分、提前剪枝和搜索顺序。&lt;/p>
+&lt;p>这些方法不能直接移植到纸牌游戏，但它们提供了一种有价值的类比：&lt;/p>
 &lt;ul>
-&lt;li>&lt;strong>[1977] Harpy 系统：&lt;/strong> 确立了在庞大搜索空间中通过“限制宽度”换取性能的范式。&lt;/li>
-&lt;li>&lt;strong>[1983] Rich &amp;amp; Knight 定义：&lt;/strong> 明确了 Beam Search 作为“内存受限的最佳优先搜索”的不完整性。&lt;/li>
-&lt;/ul>
-&lt;h3 id="2-工程改良增加深度搜索">2. 工程改良：增加深度搜索&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>⭐ 核心推荐：[2005] Beam-Stack Search (ICAPS)&lt;/strong>
-&lt;ul>
-&lt;li>&lt;strong>价值：&lt;/strong> 结合了栈（Stack）的回溯能力。当 AI 发现当前层所有路径都导致死局时，允许回退至上一步尝试次优路径。&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>&lt;strong>[2020] Best-First Beam Search (TACL)&lt;/strong>
-&lt;ul>
-&lt;li>&lt;strong>价值：&lt;/strong> 融合 A* 启发式思想，利用优先队列动态调整扩展顺序，让 AI 更有“灵性”。&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h3 id="3-评价函数优化借鉴-nlp-的逻辑">3. 评价函数优化：借鉴 NLP 的逻辑&lt;/h3>
-&lt;ul>
-&lt;li>&lt;strong>[2016] Google’s NMT System (ACL)&lt;/strong>
-&lt;ul>
-&lt;li>&lt;strong>长度归一化与覆盖惩罚：&lt;/strong> 防止 AI 为了追求短路径（步数少）而忽略了长线收益（翻开底牌）。&lt;/li>
-&lt;/ul>
-&lt;/li>
+&lt;li>路径短，不代表离胜利更近；&lt;/li>
+&lt;li>当前得分高，不代表覆盖了所有关键目标；&lt;/li>
+&lt;li>一个好的启发式，必须同时表达“进度”和“尚未解决的依赖”。&lt;/li>
 &lt;/ul>
 &lt;hr>
-&lt;h2 id="四-工程实现如何构建一个-70-胜率的-ai">四、 工程实现：如何构建一个 70%+ 胜率的 AI？&lt;/h2>
-&lt;p>基于上述理论，我们可以解构出一个高性能 Klondike Solver 的代码架构：&lt;/p>
-&lt;h3 id="1-状态表示state-representation">1. 状态表示（State Representation）&lt;/h3>
+&lt;h2 id="四从表面进度到阻塞关系">四、从表面进度到阻塞关系&lt;/h2>
+&lt;p>全信息 Klondike 最终更适合 DFS，不是因为 DFS 天生“更聪明”，而是因为它允许算法沿一条很长的假设链推进，并在失败后完整回溯。&lt;/p>
+&lt;p>Solvitaire 的研究表明，高性能纸牌求解器通常依赖四类思想：&lt;a href="https://doi.org/10.1613/jair.1.17167">论文&lt;/a> · &lt;a href="https://github.com/thecharlesblake/Solvitaire">源码&lt;/a>&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Transposition table：&lt;/strong> 不重复搜索已经见过的局面；&lt;/li>
+&lt;li>&lt;strong>Symmetry breaking：&lt;/strong> 把空列、空槽位等对称状态折叠起来；&lt;/li>
+&lt;li>&lt;strong>Dominance：&lt;/strong> 对不会损害未来选择的动作直接做出判断；&lt;/li>
+&lt;li>&lt;strong>Streamliner：&lt;/strong> 主动排除理论上合法、实际上很少有价值的路线。&lt;/li>
+&lt;/ol>
+&lt;p>这类方法的共同点不是“算得更深”，而是&lt;strong>让同样的预算只用于实质上不同的局面&lt;/strong>。&lt;/p>
+&lt;p>最新一轮实验还暴露了另一个细节：只统计暗牌总数是不够的。同样剩下 6 张暗牌，&lt;code>4+1+1&lt;/code> 与 &lt;code>2+1+1+1+1&lt;/code> 的难度完全不同。前者把风险集中在一条很深的依赖链上；后者给了算法更多并行释放的机会。&lt;/p>
+&lt;p>因此，评价函数应从“还有多少暗牌”继续追问：&lt;/p>
 &lt;ul>
-&lt;li>对牌局进行快照，并使用 &lt;strong>Hash 去重&lt;/strong>。避免 AI 在两列牌之间反复横跳（无效循环）。&lt;/li>
+&lt;li>暗牌集中在哪些列？&lt;/li>
+&lt;li>最深的阻塞链有多长？&lt;/li>
+&lt;li>哪个动作能创造真正有用的空列？&lt;/li>
+&lt;li>下一张被释放的牌能否立刻参与归组或构建？&lt;/li>
 &lt;/ul>
-&lt;h3 id="2-评分引擎scoring-engine">2. 评分引擎（Scoring Engine）&lt;/h3>
-&lt;p>不要只看总分！一个优秀的 Heuristic 公式应为：
-$$Score = (已解牌数 \times W_1) + (翻开暗牌数 \times W_2) - (无效空位 \times W_3) - (搜索深度 \times W_4)$$&lt;/p>
-&lt;h3 id="3-搜索控制器search-controller">3. 搜索控制器（Search Controller）&lt;/h3>
-&lt;ul>
-&lt;li>采用 &lt;strong>Beam-Stack Search&lt;/strong> 逻辑。&lt;/li>
-&lt;li>使用 &lt;code>Stack&amp;lt;List&amp;lt;Node&amp;gt;&amp;gt;&lt;/code> 保存每一层的候选集。&lt;/li>
-&lt;li>&lt;strong>回溯机制：&lt;/strong> 像银行交易系统的“补偿逻辑”一样。如果前向路径触发了死锁（Deadlock），立即触发状态回滚，从次优节点重新发起请求。&lt;/li>
-&lt;/ul>
+&lt;p>这次更新把全信息 AI 从 25/30 提升到 26/30。数字只增加了一局，但它验证了一个更一般的判断：&lt;strong>评价函数不应只描述局面有多好，还应该描述局面为什么被卡住。&lt;/strong>&lt;/p>
 &lt;hr>
-&lt;h2 id="五-结语从纸牌看架构思维">五、 结语：从纸牌看架构思维&lt;/h2>
-&lt;p>Klondike 的解决过程，本质上是在**有限资源（算力/内存）&lt;strong>与&lt;/strong>不确定性（暗牌）**之间寻找最优平衡点。&lt;/p>
-&lt;p>这种“带有回溯机制的可控搜索”，其实与我们日常处理的&lt;strong>复杂金融交易链路&lt;/strong>异曲同工：&lt;/p>
-&lt;ul>
-&lt;li>当一笔交易在中间节点超时或失败（死局），系统需要通过状态机回滚（回溯）并寻找替代路径。&lt;/li>
-&lt;li>&lt;strong>AI 的评价函数 = 业务的分级路由策略。&lt;/strong>&lt;/li>
-&lt;/ul>
+&lt;h2 id="五另一种智能在不知道答案时行动">五、另一种智能：在不知道答案时行动&lt;/h2>
+&lt;p>全信息求解器回答的是“如果我知道所有牌，这副牌怎么解”。可见信息 AI 面对的问题更接近真实玩家：它只能记住已经看过的牌，再推断暗牌可能是什么。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">比较维度&lt;/th>
+&lt;th style="text-align: left">全信息搜索&lt;/th>
+&lt;th style="text-align: left">可见信息搜索&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>搜索对象&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">一个确定状态图&lt;/td>
+&lt;td style="text-align: left">一组与观察一致的可能世界&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>主要困难&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">组合爆炸&lt;/td>
+&lt;td style="text-align: left">组合爆炸 + 身份不确定性&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>决策方式&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">离线寻找完整路径&lt;/td>
+&lt;td style="text-align: left">每一步重新观察与规划&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>失败来源&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">搜索预算耗尽或排序不佳&lt;/td>
+&lt;td style="text-align: left">错误信念、探索不足、循环或预算耗尽&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">&lt;strong>核心价值&lt;/strong>&lt;/td>
+&lt;td style="text-align: left">回溯与状态压缩&lt;/td>
+&lt;td style="text-align: left">信念更新与信息价值&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>ISMCTS（Information Set Monte Carlo Tree Search）的基本思想，是多次采样与当前观察相容的牌局，在这些“可能世界”中模拟后续动作，再选择整体表现更稳健的一步。&lt;/p>
+&lt;p>它最大的风险是&lt;strong>信息泄漏&lt;/strong>：如果搜索节点、评价函数或动作排序不小心使用了采样世界中的暗牌身份，算法表面上是在处理未知，实际上仍然在偷看答案。真正可信的对比，必须让未知牌始终停留在信念层，而不是悄悄进入决策状态。&lt;/p>
+&lt;p>这也解释了为什么“信息更少的算法偶尔赢过全信息算法”并不矛盾。有限预算下，搜索结果不仅取决于信息量，也取决于分支排序和随机探索。更多信息扩大了可利用的决策空间，但不会自动保证某一次有限搜索更成功。&lt;/p>
 &lt;hr>
-&lt;h3 id="-附录核心文献引用-bibtex">📚 附录：核心文献引用 (BibTeX)&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bibtex" data-lang="bibtex">&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@article&lt;/span>{blake2026winnability,
+&lt;h2 id="六当前结果不要只看两个百分比">六、当前结果：不要只看两个百分比&lt;/h2>
+&lt;p>当前严格对照使用固定 deal seeds &lt;code>0..29&lt;/code>、独立算法随机种子、相同规则和每局步数上限；全信息搜索的状态预算固定为 20,000。两套 AI 分别从同一初始牌局开始，彼此不回退，也不合并胜局。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">指标&lt;/th>
+&lt;th style="text-align: right">全信息 AI&lt;/th>
+&lt;th style="text-align: right">可见信息 AI&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">获胜局数&lt;/td>
+&lt;td style="text-align: right">&lt;strong>26 / 30&lt;/strong>&lt;/td>
+&lt;td style="text-align: right">&lt;strong>19 / 30&lt;/strong>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">经验胜率&lt;/td>
+&lt;td style="text-align: right">&lt;strong>86.7%&lt;/strong>&lt;/td>
+&lt;td style="text-align: right">&lt;strong>63.3%&lt;/strong>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">95% Wilson 区间&lt;/td>
+&lt;td style="text-align: right">70.3%–94.7%&lt;/td>
+&lt;td style="text-align: right">45.5%–78.1%&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>成对结果比单独的胜率更有解释力：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">成对结果&lt;/th>
+&lt;th style="text-align: right">局数&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">两者都赢&lt;/td>
+&lt;td style="text-align: right">19&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">仅全信息 AI 赢&lt;/td>
+&lt;td style="text-align: right">7&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">仅可见信息 AI 赢&lt;/td>
+&lt;td style="text-align: right">0&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">两者都未赢&lt;/td>
+&lt;td style="text-align: right">4&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>当前差值是 7 局、23.4 个百分点。它说明暗牌信息在这组牌局中确实产生了明显价值，但 30 局仍然是很小的样本；两个 Wilson 区间都相当宽，远不足以得出稳定的总体胜率。&lt;/p>
+&lt;p>同样需要注意：全信息 AI 的失败只代表“在 20,000 个状态内没有找到完整解”，不代表已经证明牌局无解；可见信息 AI 的失败也可能来自信念采样和在线策略，而不是牌局本身不可解。&lt;/p>
+&lt;hr>
+&lt;h2 id="七上限的三种口径">七、上限的三种口径&lt;/h2>
+&lt;p>原文中的 43%、82% 与当前 86.7%，分别来自不同规则、信息条件和实验方法。把它们排列在一条“算法越来越强”的直线上，会得到错误结论。&lt;/p>
+&lt;h3 id="1-当前有限预算实测">1. 当前有限预算实测&lt;/h3>
+&lt;p>本项目的 86.7% / 63.3%，是当前实现对 30 个固定种子的经验结果。它会随搜索预算、启发式、采样次数和样本规模变化。&lt;/p>
+&lt;h3 id="2-全信息可解率估计">2. 全信息可解率估计&lt;/h3>
+&lt;p>Blake 与 Gent 使用 Solvitaire 报告 thoughtful Klondike 的可解率为 &lt;strong>81.945 ± 0.084%&lt;/strong>。CP 2025 的 &lt;a href="https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CP.2025.9">&lt;em>Constraint Models for Klondike&lt;/em>&lt;/a> 进一步区分规则，将 Deal Three 更新为 &lt;strong>81.942 ± 0.080%&lt;/strong>，将 Deal One 更新为 &lt;strong>90.454 ± 0.090%&lt;/strong>。&lt;/p>
+&lt;p>本项目讨论的是 Draw One，因此 90.454% 是更接近的研究参照。但它仍然是大规模实验对“牌局是否可解”的估计，不保证任意有限预算求解器都能达到。&lt;/p>
+&lt;h3 id="3-可见策略的胜率下界与上限">3. 可见策略的胜率下界与上限&lt;/h3>
+&lt;p>Jupiter Scientific 曾在 Draw Three、无限回收规则下进行 442 局“human Monte Carlo”，其中赢了 189 局，得到约 &lt;strong>43%&lt;/strong>。原报告把它解释为良好人类策略的经验下界，而不是所有玩家的期望胜率。&lt;a href="https://www.jupiterscientific.org/sciinfo/KlondikeSolitaireReport.html">原始报告&lt;/a>&lt;/p>
+&lt;p>可见信息策略的真正上限仍未确定。它取决于允许的记忆、思考时间、随机策略、撤回规则和发牌方式。这里不存在一个可以脱离规则直接引用的“人类理论上限”。&lt;/p>
+&lt;hr>
+&lt;h2 id="八下一步两条不同的研究路线">八、下一步：两条不同的研究路线&lt;/h2>
+&lt;p>全信息方向的核心问题，是怎样更准确地表达隐藏牌之间的依赖关系。比起继续调大搜索宽度，更值得探索的是依赖图、anytime search，以及 DFS 与 SAT / CP 约束模型的混合。&lt;/p>
+&lt;p>可见信息方向的核心问题，则是怎样让信念跨动作保持一致。持续粒子信念、POMCP / ISMCTS、信息价值评分，都比“每一步重新猜一副牌”更接近真正的不完全信息推理。&lt;/p>
+&lt;p>实验方法也需要同步升级：先扩大到 100，再到 1,000 副固定牌局；既报告状态预算，也报告相同 wall-time；同时给出 Wilson 区间和成对胜负，而不是只展示一个最好看的百分比。&lt;/p>
+&lt;hr>
+&lt;h2 id="九结语从纸牌看架构思维">九、结语：从纸牌看架构思维&lt;/h2>
+&lt;p>Klondike 的求解过程，本质上是在&lt;strong>有限资源（算力与内存）&lt;/strong>、**状态依赖（被压住的关键牌）&lt;strong>和&lt;/strong>信息不确定性（暗牌）**之间寻找平衡。&lt;/p>
+&lt;p>这种带回溯的搜索，与复杂交易链路仍然有相似之处：&lt;/p>
+&lt;ul>
+&lt;li>当前路径失败时，需要退回稳定状态并尝试替代路线；&lt;/li>
+&lt;li>搜索启发式像业务分级路由，决定有限资源先投向哪里；&lt;/li>
+&lt;li>状态去重与幂等控制一样，避免系统反复处理同一个局面；&lt;/li>
+&lt;li>最重要的是，规则、事实与推断必须分层，不能把“猜测”伪装成“已知”。&lt;/li>
+&lt;/ul>
+&lt;p>纸牌游戏给我的最终提醒是：&lt;strong>搜索之前，先定义参与者能看见什么；优化之前，先定义我们测量的究竟是什么。&lt;/strong>&lt;/p>
+&lt;hr>
+&lt;h2 id="附录核心文献">附录：核心文献&lt;/h2>
+&lt;p>下面保留原文中的主要参考文献，并按用途区分：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Klondike 求解与可解率：&lt;/strong> Blake &amp;amp; Gent（Solvitaire）、Dang 等（约束模型）；&lt;/li>
+&lt;li>&lt;strong>Beam Search 理论：&lt;/strong> Beam-Stack Search、Best-First Beam Search、Monobeam；&lt;/li>
+&lt;li>&lt;strong>跨领域启发：&lt;/strong> GNMT 的长度归一化与覆盖惩罚；&lt;/li>
+&lt;li>&lt;strong>历史经验数据：&lt;/strong> Jupiter Scientific 报告。它不是同行评审论文，且采用 Draw Three，应与本项目结果分开理解。&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bibtex" data-lang="bibtex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@article&lt;/span>{blake2026winnability,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{The Winnability of Klondike Solitaire and Many Other Patience Games}&lt;/span>,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Blake, Charlie and Gent, Ian P.}&lt;/span>,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">journal&lt;/span>=&lt;span style="color:#cd5555">{Journal of Artificial Intelligence Research}&lt;/span>,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">volume&lt;/span>=&lt;span style="color:#cd5555">{85}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">pages&lt;/span>=&lt;span style="color:#cd5555">{1--47}&lt;/span>,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2026}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">doi&lt;/span>=&lt;span style="color:#cd5555">{10.1613/jair.1.17167}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">note&lt;/span>=&lt;span style="color:#cd5555">{Earlier version available as arXiv:1906.12314}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">doi&lt;/span>=&lt;span style="color:#cd5555">{10.1613/jair.1.17167}&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@inproceedings&lt;/span>{dang2025constraint,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Constraint Models for Klondike}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Dang, Nguyen and Gent, Ian P. and Nightingale, Peter and
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555"> Ulrich-Oltean, Felix and Waller, Jack}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">booktitle&lt;/span>=&lt;span style="color:#cd5555">{31st International Conference on Principles and Practice of
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555"> Constraint Programming (CP 2025)}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">series&lt;/span>=&lt;span style="color:#cd5555">{Leibniz International Proceedings in Informatics (LIPIcs)}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">volume&lt;/span>=&lt;span style="color:#cd5555">{340}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">pages&lt;/span>=&lt;span style="color:#cd5555">{9:1--9:20}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2025}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">doi&lt;/span>=&lt;span style="color:#cd5555">{10.4230/LIPIcs.CP.2025.9}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@software&lt;/span>{blake2019solvitaire,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Solvitaire}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Blake, Charlie and Gent, Ian P.}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2019}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">doi&lt;/span>=&lt;span style="color:#cd5555">{10.5281/zenodo.3529524}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">url&lt;/span>=&lt;span style="color:#cd5555">{https://github.com/thecharlesblake/Solvitaire}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@inproceedings&lt;/span>{zhou2005beamstack,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Beam-Stack Search: Integrating Backtracking with Beam Search}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Zhou, Rong and Hansen, Eric A.}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">booktitle&lt;/span>=&lt;span style="color:#cd5555">{Proceedings of the Fifteenth International Conference on
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555"> Automated Planning and Scheduling}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">pages&lt;/span>=&lt;span style="color:#cd5555">{90--98}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">publisher&lt;/span>=&lt;span style="color:#cd5555">{AAAI Press}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2005}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@article&lt;/span>{meister2020bestfirst,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Best-First Beam Search}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Meister, Clara and Vieira, Tim and Cotterell, Ryan}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">journal&lt;/span>=&lt;span style="color:#cd5555">{Transactions of the Association for Computational Linguistics}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">volume&lt;/span>=&lt;span style="color:#cd5555">{8}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">pages&lt;/span>=&lt;span style="color:#cd5555">{795--809}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2020}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">doi&lt;/span>=&lt;span style="color:#cd5555">{10.1162/tacl_a_00346}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@inproceedings&lt;/span>{lemons2022monobeam,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Beam Search: Faster and Monotonic}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Lemons, Sofia and Linares L{\&amp;#39;o}pez, Carlos and
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555"> Holte, Robert C. and Ruml, Wheeler}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">booktitle&lt;/span>=&lt;span style="color:#cd5555">{Proceedings of the Thirty-Second International Conference on
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555"> Automated Planning and Scheduling}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">volume&lt;/span>=&lt;span style="color:#cd5555">{32}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">pages&lt;/span>=&lt;span style="color:#cd5555">{222--230}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2022}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">doi&lt;/span>=&lt;span style="color:#cd5555">{10.1609/icaps.v32i1.19805}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@article&lt;/span>{wu2016gnmt,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Google&amp;#39;s Neural Machine Translation System: Bridging the Gap
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd5555"> between Human and Machine Translation}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Wu, Yonghui and Schuster, Mike and Chen, Zhifeng and others}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">journal&lt;/span>=&lt;span style="color:#cd5555">{CoRR}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">volume&lt;/span>=&lt;span style="color:#cd5555">{abs/1609.08144}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2016}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">url&lt;/span>=&lt;span style="color:#cd5555">{https://arxiv.org/abs/1609.08144}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@techreport&lt;/span>{jupiter2013winning,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Winning Chances for Klondike Solitaire}&lt;/span>,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{{Jupiter Scientific Staff}}&lt;/span>,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">institution&lt;/span>=&lt;span style="color:#cd5555">{Jupiter Scientific}&lt;/span>,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2013}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">url&lt;/span>=&lt;span style="color:#cd5555">{http://www.jupiterscientific.org/sciinfo/KlondikeSolitaireReport.html}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">type&lt;/span>=&lt;span style="color:#cd5555">{Technical Report}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">note&lt;/span>=&lt;span style="color:#cd5555">{Accessed: 2026-05-02}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">url&lt;/span>=&lt;span style="color:#cd5555">{https://www.jupiterscientific.org/sciinfo/KlondikeSolitaireReport.html}&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">note&lt;/span>=&lt;span style="color:#cd5555">{Historical human Monte Carlo report using Draw Three; not peer reviewed}&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@inproceedings&lt;/span>{zhou2005beam,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Beam-Stack Search: Integrating Backtracking with Beam Search}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Rong Zhou and Eric A. Hansen}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">booktitle&lt;/span>=&lt;span style="color:#cd5555">{ICAPS}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2005}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@inproceedings&lt;/span>{ruml2022beam,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Beam Search: Faster and Monotonic}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Ruml, Wheeler and others}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">booktitle&lt;/span>=&lt;span style="color:#cd5555">{ICAPS}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2022}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@article&lt;/span>{meister2020best,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Best-First Beam Search}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Meister, Clara and Vieira, Tim and Cotterell, Ryan}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">journal&lt;/span>=&lt;span style="color:#cd5555">{TACL}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2020}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#008b45;font-weight:bold">@inproceedings&lt;/span>{wu2016google,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">title&lt;/span>=&lt;span style="color:#cd5555">{Google&amp;#39;s Neural Machine Translation System}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">author&lt;/span>=&lt;span style="color:#cd5555">{Wu, Yonghui and others}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">booktitle&lt;/span>=&lt;span style="color:#cd5555">{ACL}&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#658b00">year&lt;/span>=&lt;span style="color:#cd5555">{2016}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="附录与ai的讨论">附录：与AI的讨论&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="与-ai-的讨论">与 AI 的讨论&lt;/h3>
 &lt;ul>
-&lt;li>&lt;a href="https://chatgpt.com/c/69f5ceb7-e784-8321-a920-9b69ef96e241">Chatgpt&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://chatgpt.com/c/69f5ceb7-e784-8321-a920-9b69ef96e241">ChatGPT&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.doubao.com/chat/38423648263759874">豆包&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://gemini.google.com/app/8175761eeed95892">Gemini&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://claude.ai/chat/36e15e04-4af2-4024-8134-e7e7073f62b9">Claude&lt;/a>&lt;/li>

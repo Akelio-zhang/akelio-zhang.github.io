@@ -291,83 +291,539 @@
 &lt;/li>
 &lt;/ul>
 &lt;h2 id="toolbase">ToolBase&lt;/h2>
-&lt;h3 id="生产力">生产力&lt;/h3>
+&lt;h3 id="搜索与查找">搜索与查找&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>zoxide&lt;/code>&lt;/td>
+&lt;td>智能 cd,按使用频率跳转&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>nali&lt;/code>&lt;/td>
+&lt;td>IP 地理信息查询&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>fzf&lt;/code>&lt;/td>
+&lt;td>模糊查找器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>ag&lt;/code>&lt;/td>
+&lt;td>代码搜索&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>nmap&lt;/code>&lt;/td>
+&lt;td>网络探测与端口扫描&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>fd&lt;/code>&lt;/td>
+&lt;td>用户友好的 find 替代&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>rg&lt;/code>&lt;/td>
+&lt;td>ripgrep,极快代码搜索&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="代码与开发">代码与开发&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>nvim&lt;/code>&lt;/td>
+&lt;td>Neovim 编辑器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>code&lt;/code>&lt;/td>
+&lt;td>VS Code CLI&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>typst&lt;/code>&lt;/td>
+&lt;td>Typst 排版编译&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>scc&lt;/code>&lt;/td>
+&lt;td>代码行数/复杂度统计&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>just&lt;/code>&lt;/td>
+&lt;td>命令运行器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>hugo&lt;/code>&lt;/td>
+&lt;td>静态站点生成&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>ruff&lt;/code>&lt;/td>
+&lt;td>Python lint/format&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>tokei&lt;/code>&lt;/td>
+&lt;td>代码统计&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>git-js&lt;/code>&lt;/td>
+&lt;td>Git JS 工具&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>mdbook&lt;/code>&lt;/td>
+&lt;td>Markdown 写书&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>jj&lt;/code>&lt;/td>
+&lt;td>Jujutsu 版本控制&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>jupyter&lt;/code>&lt;/td>
+&lt;td>Jupyter 交互环境&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>black&lt;/code>&lt;/td>
+&lt;td>Python 格式化&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lazygit&lt;/code>&lt;/td>
+&lt;td>Git 终端 UI&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="版本控制">版本控制&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>git&lt;/code>&lt;/td>
+&lt;td>核心版本控制&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>gh&lt;/code>&lt;/td>
+&lt;td>GitHub CLI&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="文字处理">文字处理&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>bat&lt;/code>&lt;/td>
+&lt;td>带语法高亮的 cat&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>md-reader&lt;/code>&lt;/td>
+&lt;td>终端 Markdown 阅读器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>glow&lt;/code>&lt;/td>
+&lt;td>终端 Markdown 渲染&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>pandoc&lt;/code>&lt;/td>
+&lt;td>文档格式转换&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>rich&lt;/code>&lt;/td>
+&lt;td>rich-cli 文本渲染&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="性能分析与基准测试">性能分析与基准测试&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>wrk&lt;/code>&lt;/td>
+&lt;td>HTTP 压测&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>hyperfine&lt;/code>&lt;/td>
+&lt;td>命令行基准测试&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>oha&lt;/code>&lt;/td>
+&lt;td>HTTP 负载测试&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="系统监控">系统监控&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>dust&lt;/code>&lt;/td>
+&lt;td>目录大小可视化&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>fastfetch&lt;/code>&lt;/td>
+&lt;td>系统信息&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>gtop&lt;/code>&lt;/td>
+&lt;td>终端系统仪表盘&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>htop&lt;/code>&lt;/td>
+&lt;td>进程监控&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="文件管理">文件管理&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>tree&lt;/code>&lt;/td>
+&lt;td>目录树&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>yazi&lt;/code>&lt;/td>
+&lt;td>终端文件管理器&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>size&lt;/code>&lt;/td>
+&lt;td>二进制体积分析&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>rclone&lt;/code>&lt;/td>
+&lt;td>云存储同步&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="网络与下载">网络与下载&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>tailscaled&lt;/code>&lt;/td>
+&lt;td>Tailscale 守护进程&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>tailscale&lt;/code>&lt;/td>
+&lt;td>Mesh VPN&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>telnet&lt;/code>&lt;/td>
+&lt;td>远程登录&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>wget&lt;/code>&lt;/td>
+&lt;td>下载&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>bilix&lt;/code>&lt;/td>
+&lt;td>视频下载&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="媒体处理">媒体处理&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>ffmpeg&lt;/code>&lt;/td>
+&lt;td>音视频转码&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="数据与数据库">数据与数据库&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>duckdb&lt;/code>&lt;/td>
+&lt;td>嵌入式分析数据库&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>jq&lt;/code>&lt;/td>
+&lt;td>JSON 处理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>modelscope&lt;/code>&lt;/td>
+&lt;td>模型/数据集下载&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="容器编排与云">容器、编排与云&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>podman&lt;/code>&lt;/td>
+&lt;td>容器引擎&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>kubectl&lt;/code>&lt;/td>
+&lt;td>Kubernetes CLI&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>nerdctl&lt;/code>&lt;/td>
+&lt;td>containerd CLI&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>colima&lt;/code>&lt;/td>
+&lt;td>容器运行时&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>minikube&lt;/code>&lt;/td>
+&lt;td>本地 K8s&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>docker&lt;/code>&lt;/td>
+&lt;td>Docker CLI&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>podman-compose&lt;/code>&lt;/td>
+&lt;td>Podman Compose&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="ai-与机器学习">AI 与机器学习&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>claude&lt;/code>&lt;/td>
+&lt;td>Claude Code&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>ollama&lt;/code>&lt;/td>
+&lt;td>本地大模型&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>pi&lt;/code>&lt;/td>
+&lt;td>pi-coding-agent&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>mineru-api&lt;/code>&lt;/td>
+&lt;td>MinerU 文档解析&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>llmfit&lt;/code>&lt;/td>
+&lt;td>本地 LLM 适配&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>codex&lt;/code>&lt;/td>
+&lt;td>OpenAI Codex CLI&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>huggingface-cli&lt;/code>&lt;/td>
+&lt;td>Hugging Face CLI&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>qwen&lt;/code>&lt;/td>
+&lt;td>Qwen CLI&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>hf&lt;/code>&lt;/td>
+&lt;td>Hugging Face CLI&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>opencode&lt;/code>&lt;/td>
+&lt;td>OpenCode&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="语言运行时与构建">语言、运行时与构建&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>python3&lt;/code>&lt;/td>
+&lt;td>Python&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>java&lt;/code>&lt;/td>
+&lt;td>Java 运行时&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>go&lt;/code>&lt;/td>
+&lt;td>Go&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>javac&lt;/code>&lt;/td>
+&lt;td>Java 编译&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>python&lt;/code>&lt;/td>
+&lt;td>Python&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lean&lt;/code>&lt;/td>
+&lt;td>Lean 定理证明&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>elan&lt;/code>&lt;/td>
+&lt;td>Lean 版本管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>node&lt;/code>&lt;/td>
+&lt;td>Node.js&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>rustc&lt;/code>&lt;/td>
+&lt;td>Rust 编译&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>lake&lt;/code>&lt;/td>
+&lt;td>Lean 构建工具&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>native-image&lt;/code>&lt;/td>
+&lt;td>GraalVM 原生镜像&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="包管理与环境">包管理与环境&lt;/h3>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>工具&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>uv&lt;/code>&lt;/td>
+&lt;td>Python 包/项目管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>brew&lt;/code>&lt;/td>
+&lt;td>Homebrew&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>cargo&lt;/code>&lt;/td>
+&lt;td>Rust 包管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>bun&lt;/code>&lt;/td>
+&lt;td>JS 运行时/包管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>npm&lt;/code>&lt;/td>
+&lt;td>Node 包管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>mise&lt;/code>&lt;/td>
+&lt;td>多语言版本管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>pip&lt;/code>&lt;/td>
+&lt;td>Python 包管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>sdk&lt;/code>&lt;/td>
+&lt;td>SDKMAN (Java)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>rustup&lt;/code>&lt;/td>
+&lt;td>Rust 工具链&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>pip3&lt;/code>&lt;/td>
+&lt;td>Python 包管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>npx&lt;/code>&lt;/td>
+&lt;td>Node 包执行&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>bunx&lt;/code>&lt;/td>
+&lt;td>Bun 包执行&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>pnpm&lt;/code>&lt;/td>
+&lt;td>Node 包管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>fnm&lt;/code>&lt;/td>
+&lt;td>Node 版本管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>pdm&lt;/code>&lt;/td>
+&lt;td>Python 包管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>uvx&lt;/code>&lt;/td>
+&lt;td>uv 工具执行&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;blockquote>
+&lt;p>最高频 5 个:&lt;code>nvim&lt;/code>、&lt;code>git&lt;/code>、&lt;code>uv&lt;/code>、&lt;code>brew&lt;/code>、&lt;code>zoxide&lt;/code>&lt;/p>&lt;/blockquote>
 &lt;ul>
-&lt;li>Terminal
-&lt;ul>
-&lt;li>warp AI+&lt;/li>
-&lt;li>Iterm2&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>CLI
-&lt;ul>
-&lt;li>Search
-&lt;ul>
-&lt;li>fzf：文件搜索&lt;/li>
-&lt;li>ag：全文搜索&lt;/li>
-&lt;li>nali：IP查询&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Show Code
-&lt;ul>
-&lt;li>bat：cat in Rust&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Word Processor
-&lt;ul>
-&lt;li>typst：文档渲染（现代latex？）&lt;/li>
-&lt;li>pandoc：通用文档转换器&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Benchmark
-&lt;ul>
-&lt;li>wrk/oha: http performance benchmark&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Code
-&lt;ul>
-&lt;li>scc / tokei: stat your code files.&lt;/li>
-&lt;li>&lt;a href="https://github.com/ast-grep/ast-grep">GitHub - ast-grep/ast-grep: ⚡A CLI tool for code structural search, lint and rewriting. Written in Rust&lt;/a>&lt;/li>
-&lt;li>SDKMAN / &lt;a href="https://github.com/version-fox/vfox">GitHub - version-fox/vfox: A cross-platform and extendable version manager with support for Java, Node.js, Flutter, .Net &amp;amp; more&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Container
-&lt;ul>
-&lt;li>Lima (virtual machine)&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Mac Apps
-&lt;ul>
-&lt;li>Podman desktop：提供容器管理的GUI&lt;/li>
-&lt;li>Raycast (quick action) ：快捷操作中心，支持插件&lt;/li>
-&lt;li>Rectangle：提供类似Windows的分屏&lt;/li>
-&lt;li>Ollama：提供本地模型访问能力&lt;/li>
-&lt;li>AI Dente：电池管理&lt;/li>
-&lt;li>Stats：系统监控&lt;/li>
-&lt;li>Kawa：中日输入法快捷切换&lt;/li>
-&lt;li>mos：鼠标操控优化&lt;/li>
-&lt;li>keka：解压缩&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>Other
-&lt;ul>
-&lt;li>Database
-&lt;ul>
-&lt;li>Ducked&lt;/li>
-&lt;li>Databend AI+&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>[[tool-base]]&lt;/li>
+&lt;li>[[App&amp;amp;Project]]&lt;/li>
 &lt;/ul>
 &lt;h2 id="联系我">联系我&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;p>Last edited on 2025/11/04&lt;/p>
+&lt;p>Last edited on 2026/09/26&lt;/p>
 - https://akelio-zhang.github.io/about/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
 &lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>

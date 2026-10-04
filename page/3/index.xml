@@ -321,12 +321,12 @@
 &lt;td>网络探测与端口扫描&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>&lt;code>fd&lt;/code>&lt;/td>
-&lt;td>用户友好的 find 替代&lt;/td>
-&lt;/tr>
-&lt;tr>
 &lt;td>&lt;code>rg&lt;/code>&lt;/td>
 &lt;td>ripgrep,极快代码搜索&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>fd&lt;/code>&lt;/td>
+&lt;td>用户友好的 find 替代&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
@@ -756,12 +756,12 @@
 &lt;td>Homebrew&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>&lt;code>cargo&lt;/code>&lt;/td>
-&lt;td>Rust 包管理&lt;/td>
-&lt;/tr>
-&lt;tr>
 &lt;td>&lt;code>bun&lt;/code>&lt;/td>
 &lt;td>JS 运行时/包管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>cargo&lt;/code>&lt;/td>
+&lt;td>Rust 包管理&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;code>npm&lt;/code>&lt;/td>
@@ -784,12 +784,12 @@
 &lt;td>Rust 工具链&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>&lt;code>pip3&lt;/code>&lt;/td>
-&lt;td>Python 包管理&lt;/td>
-&lt;/tr>
-&lt;tr>
 &lt;td>&lt;code>npx&lt;/code>&lt;/td>
 &lt;td>Node 包执行&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>pip3&lt;/code>&lt;/td>
+&lt;td>Python 包管理&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;code>bunx&lt;/code>&lt;/td>
@@ -817,13 +817,13 @@
 &lt;blockquote>
 &lt;p>最高频 5 个:&lt;code>nvim&lt;/code>、&lt;code>git&lt;/code>、&lt;code>uv&lt;/code>、&lt;code>brew&lt;/code>、&lt;code>zoxide&lt;/code>&lt;/p>&lt;/blockquote>
 &lt;ul>
-&lt;li>[[App&amp;amp;Project]]&lt;/li>
+&lt;li>[[AI｜Apps、Skills 与实验项目]]&lt;/li>
 &lt;/ul>
 &lt;h2 id="联系我">联系我&lt;/h2>
 &lt;ul>
 &lt;li>&lt;a href="https://github.com/Akelio-zhang">Github&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;p>Last edited on 2026/09/26&lt;/p>
+&lt;p>Last edited on 2026/10/04&lt;/p>
 - https://akelio-zhang.github.io/about/ - 2019-2025 Akelio All rights reserved.</description></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ -&lt;h1 id="git指南">Git指南&lt;/h1>
 &lt;h2 id="零目的">零、目的&lt;/h2>
 &lt;ol>

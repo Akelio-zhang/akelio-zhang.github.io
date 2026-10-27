@@ -1,1 +1,70 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>设计 on LIFE CODER</title><link>https://akelio-zhang.github.io/tags/%E8%AE%BE%E8%AE%A1/</link><description>Recent content in 设计 on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Fri, 15 Apr 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/tags/%E8%AE%BE%E8%AE%A1/index.xml" rel="self" type="application/rss+xml"/><item><title>读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>设计</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ - &lt;h1 id=&quot;读书笔记用数据讲故事&quot;&gt;读书笔记–用数据讲故事&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;第二章 选择有效的图表
+&lt;ul&gt;
+&lt;li&gt;图表类型
+&lt;ul&gt;
+&lt;li&gt;简单文本&lt;/li&gt;
+&lt;li&gt;表格（不利于展示你的观点）
+&lt;ul&gt;
+&lt;li&gt;热力图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;点图
+&lt;ul&gt;
+&lt;li&gt;散点图（往往需要配合辅助线、辅助文本）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;线图
+&lt;ul&gt;
+&lt;li&gt;折线图（可以增加最大值、最小值的同图展示）&lt;/li&gt;
+&lt;li&gt;斜率图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;条形图
+&lt;ul&gt;
+&lt;li&gt;直方图（竖直条形图）&lt;/li&gt;
+&lt;li&gt;堆叠竖直条形图（一般是最下一层能够比较有效对比）&lt;/li&gt;
+&lt;li&gt;瀑布图&lt;/li&gt;
+&lt;li&gt;水平条形图（适合阅读，分类标签可以很长）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;面积图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;图表使用建议
+&lt;ul&gt;
+&lt;li&gt;不要使用饼图&lt;/li&gt;
+&lt;li&gt;不要使用3D图&lt;/li&gt;
+&lt;li&gt;尽量不要使用双Y轴&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;第三章 杂乱是你的敌人&lt;/li&gt;
+&lt;li&gt;第四章 聚焦受众的视线（引导到核心的数据）
+&lt;ul&gt;
+&lt;li&gt;前属性&lt;/li&gt;
+&lt;li&gt;颜色&lt;/li&gt;
+&lt;li&gt;大小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;第五章 像设计师一样思考（通过可视化，让读者观众明白你的结论，第四章的升级版）
+&lt;ul&gt;
+&lt;li&gt;可供性
+&lt;ul&gt;
+&lt;li&gt;突出重要内容&lt;/li&gt;
+&lt;li&gt;消除干扰&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;无障碍
+&lt;ul&gt;
+&lt;li&gt;不要过于复杂&lt;/li&gt;
+&lt;li&gt;擅长使用文字突出结论&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;美观&lt;/li&gt;
+&lt;li&gt;接受度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt; - https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ - 2019–2026 Akelio</description><pubDate>Fri, 15 Apr 2022 04:00:00 GMT</pubDate></item></channel></rss>

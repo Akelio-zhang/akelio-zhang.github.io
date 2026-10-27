@@ -1,1 +1,274 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Git on LIFE CODER</title><link>https://akelio-zhang.github.io/tags/git/</link><description>Recent content in Git on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Mon, 30 Sep 2024 18:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Git原理与分支管理实践</title><link>https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link><pubDate>Mon, 30 Sep 2024 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid><description/></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 03 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>Git</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>Git原理与分支管理实践</title><link>https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/ - &lt;blockquote&gt;
+&lt;p&gt;Written with Claude.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;理解 Git 不应止步于记住命令。本文记录了两个动手实验——把 &lt;code&gt;.git&lt;/code&gt; 目录的对象存进数据库、用 JS 重新实现 Git 核心操作——以此真正搞清楚 Git 在保存什么、操作什么。第二部分结合团队实际诉求，设计了一套基于 Git Flow 的分支管理方案。&lt;/p&gt;
+&lt;h2 id=&quot;原理理解&quot;&gt;原理理解&lt;/h2&gt;
+&lt;h3 id=&quot;将-git-存储到数据库git-db&quot;&gt;将 .git 存储到数据库（git-db）&lt;/h3&gt;
+&lt;p&gt;Git 的存储本质是一个内容寻址的 KV 数据库，所有对象（blob / tree / commit / tag）都以 SHA-1 为 key，以 zlib 压缩后的二进制为 value。这个实验将 &lt;code&gt;.git/objects&lt;/code&gt; 下的所有对象导入关系型数据库，直观地验证了这一点：每一次 &lt;code&gt;git add&lt;/code&gt; 产生一个 blob 对象，每一次 &lt;code&gt;git commit&lt;/code&gt; 产生一个 commit 对象和若干 tree 对象，分支和 HEAD 不过是指向某个 commit SHA-1 的指针文件。理解这一层之后，Git 的大多数&quot;魔法&quot;行为都变得可以推导。&lt;/p&gt;
+&lt;h3 id=&quot;用-js-重新实现-gitgit-js&quot;&gt;用 JS 重新实现 Git（git-js）&lt;/h3&gt;
+&lt;p&gt;在理解存储结构之后，用 JavaScript 重新实现 Git 的核心操作（&lt;code&gt;init&lt;/code&gt; / &lt;code&gt;add&lt;/code&gt; / &lt;code&gt;commit&lt;/code&gt; / &lt;code&gt;log&lt;/code&gt; / &lt;code&gt;checkout&lt;/code&gt;），目的是验证对操作语义的理解是否准确。这个过程中最重要的收获是：Git 的&quot;分支切换&quot;本质上只是修改 HEAD 指针 + 用目标 tree 对象还原工作区，与任何网络、服务端都无关；而 &lt;code&gt;merge&lt;/code&gt; 的核心是找到两个 commit 的公共祖先，再做三方合并。&lt;/p&gt;
+&lt;h2 id=&quot;分支管理&quot;&gt;分支管理&lt;/h2&gt;
+&lt;h3 id=&quot;主流工作流对比&quot;&gt;主流工作流对比&lt;/h3&gt;
+&lt;p&gt;分支管理策略大体分为两类：&lt;strong&gt;Trunk Based Development&lt;/strong&gt; 和 &lt;strong&gt;Git Flow&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Git Flow&lt;/strong&gt;：维持 &lt;code&gt;master&lt;/code&gt; 和 &lt;code&gt;develop&lt;/code&gt; 两个长期分支，分别对应生产和测试环境。多版本场景下可从对应节点再建新的主分支并行推进。节奏稳健，适合有明确发布窗口的团队。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GitHub Flow&lt;/strong&gt;：主干持续发布，feature 分支直接合入 main 并部署。是 Trunk Based 的精华版，对团队整体工程能力要求高，不适合多版本并行管理。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GitLab Flow&lt;/strong&gt;：GitHub Flow 的演进版，在主干之外增加环境分支（如 &lt;code&gt;production&lt;/code&gt;、&lt;code&gt;staging&lt;/code&gt;），主干代码向下游环境分支合并。相比 GitHub Flow 更适合有多套环境的团队，但对合并纪律要求较高。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;代码管理诉求&quot;&gt;代码管理诉求&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;按窗口（功能清单）发布、单一生产版本&lt;/li&gt;
+&lt;li&gt;支持多版本并行开发&lt;/li&gt;
+&lt;li&gt;尽可能保留所有 commit&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;操作方案基于-git-flow&quot;&gt;操作方案：基于 Git Flow&lt;/h3&gt;
+&lt;h4 id=&quot;多版本并行开发策略&quot;&gt;多版本并行开发策略&lt;/h4&gt;
+&lt;p&gt;多版本并行开发通过以下约束保证代码继承关系的正确性：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;核心规则：所有测试分支不得落后于 &lt;code&gt;master&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;无论当前有多少个版本在并行开发，每个测试分支在提 MR 合入时，必须已将最新的 &lt;code&gt;master&lt;/code&gt; 内容 merge 进来。这一约束确保了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;任何一个版本上线后，其他版本的测试分支都不会丢失已上线的内容&lt;/li&gt;
+&lt;li&gt;版本间的代码继承关系通过这条规则自然保证，不需要额外维护分支间的同步逻辑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;执行时机&lt;/strong&gt;：同步要求在&lt;strong&gt;提 MR 合入测试分支时&lt;/strong&gt;即生效，而非上线前才处理，避免冲突在打包阶段集中爆发。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CR 注意事项&lt;/strong&gt;：feature 分支 merge master 后，MR 的 diff 中会包含与本次功能无关的内容。开发者须在 MR 描述中注明是否包含 master 同步，方便 reviewer 聚焦在本次功能变更上，避免 CR 流于形式。&lt;/p&gt;
+&lt;h4 id=&quot;分支命名&quot;&gt;分支命名&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;master&lt;/code&gt;：最新 commit id 等价于当前生产版本&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;develop&lt;/code&gt;：单版本场景下的测试主分支&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;develop_vX&lt;/code&gt;：多版本并行时各版本独立的测试分支，对应独立的测试环境&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;release_日期&lt;/code&gt;：窗口裁剪的标准路径，当测试分支上同时存在多个功能但本次只上线部分时使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;代码提交&quot;&gt;代码提交&lt;/h4&gt;
+&lt;p&gt;所有分支合入测试主分支前须经过 Code Review。通过拓宽 CR 参与人数来分散审查压力，保证代码质量。feature 分支合入时禁止 squash merge，保留完整的 commit 历史。&lt;/p&gt;
+&lt;h4 id=&quot;打包上线&quot;&gt;打包上线&lt;/h4&gt;
+&lt;p&gt;若存在 &lt;code&gt;release&lt;/code&gt; 分支则以 &lt;code&gt;release&lt;/code&gt; 为打包源，否则以本次测试分支为打包分支。打包产物的后缀 commit id 即为 &lt;code&gt;master&lt;/code&gt; 合并与 tag 的目标节点。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;master&lt;/code&gt; 分支只允许 &lt;code&gt;--ff-only&lt;/code&gt; 合并，确保其仅作为映射指标存在——所有 commit 均来源于经过复核的测试主分支。&lt;/p&gt;
+&lt;p&gt;典型生命周期（单测试分支场景）：&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;plaintext&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;feature → develop → (build &amp;#x26; verify) → master (ff-only) + tag&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;平台配置&quot;&gt;平台配置&lt;/h4&gt;
+&lt;p&gt;以下规则须在 GitLab/GitHub 分支保护里显式配置，不依赖约定：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;规则&lt;/th&gt;&lt;th&gt;作用&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;develop_*&lt;/code&gt; 只允许 merge commit，禁止 squash&lt;/td&gt;&lt;td&gt;保留所有 commit 历史&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;master&lt;/code&gt; 只允许 ff-only&lt;/td&gt;&lt;td&gt;保证 master 是线性映射&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;feature 分支合入 &lt;code&gt;develop_*&lt;/code&gt; 必须通过 MR + CR&lt;/td&gt;&lt;td&gt;保证上线质量&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;develop_*&lt;/code&gt; 不允许直接 push，必须走 MR&lt;/td&gt;&lt;td&gt;防止绕过 CR&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&quot;最终效果&quot;&gt;最终效果&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;master&lt;/code&gt; 与 tag 共同构成所有历史发布版本的完整索引，每个 tag 对应一次上线的代码与变更内容&lt;/li&gt;
+&lt;li&gt;打包的代码一定包含 &lt;code&gt;master&lt;/code&gt; 的全部提交（Jenkins 增加检查脚本保障）&lt;/li&gt;
+&lt;li&gt;所有上线代码均经过 Code Review&lt;/li&gt;
+&lt;li&gt;最小化 commit 在不同分支间的流动：仅有单测试分支时，整个流程只存在测试分支向 &lt;code&gt;master&lt;/code&gt; 的一次合并&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;这套方案的核心取舍是：以 Git Flow 的双主干结构换取发布安全性，以 &lt;code&gt;--ff-only&lt;/code&gt; 合并保证 &lt;code&gt;master&lt;/code&gt; 的可追溯性，以 CR 门禁换取上线质量。对于单一生产版本、按窗口发布的团队，这是目前成本最低、风险最可控的路径。&lt;/p&gt; - https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/ - 2019–2026 Akelio</description><pubDate>Mon, 30 Sep 2024 10:00:00 GMT</pubDate></item><item><title>Git指南</title><link>https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ - &lt;h1 id=&quot;git指南&quot;&gt;Git指南&lt;/h1&gt;
+&lt;h2 id=&quot;零目的&quot;&gt;零、目的&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;掌握各类场景下如何更好使用Git。&lt;/li&gt;
+&lt;li&gt;减少因为代码提交问题带来的生产环境问题。
+&lt;img src=&quot;https://s2.loli.net/2022/08/20/OfV5qM2WQ4BrGwI.png&quot; alt=&quot;/images/git-zoo.jpg&quot;&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;一了解git&quot;&gt;一、了解[[Git]]&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;什么是Git？
+    1. 一款分布式版本管理系统
+    2. 优点：分布式、性能、版本的文件完整性
+        1. 分布式，可以让你在本地提交代码（对于SVN而言没有网络就无法提交代码，在家也能愉快地写代码）；
+        2. 性能，对于我们的一般项目而言，你感受不到合并时性能的差别（与SVN比较）；
+        3. 版本的文件完整性：git背后设计理念是快照思想。&lt;/li&gt;
+&lt;li&gt;Git概念
+    1. 仓库(repository)
+        1. 用于代码版本管理
+        2. 一个git仓库管理了三棵“树”，分别是
+            1. Working Directory（工作目录）
+            2. Index（暂存区）
+            3. HEAD（本地仓库）
+        3. 大多数时候你通过编辑器只能对工作目录操作，操作其他两个“树”（区域）必须使用git命令才可以。
+    2. 分支(branch)
+        1. 用于并行独立开发，更方便管理不同开发任务的进度&lt;/li&gt;
+&lt;li&gt;Git常用命令
+    1. git add
+    2. git commit
+    3. git push
+    4. git pull
+    5. git branch
+    6. git switch
+    7. git restore&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;二最常见的一种使用场景&quot;&gt;二、最常见的一种使用场景&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;陈主管说他已经开发好了整个架构，需要我去把几个功能实现一下，并提交到dev分支让他方便Review。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;基本流程
+    1. 先从远程服务器把代码拉到本地：&lt;code&gt;git clone http://197.68.6.70/demo-project&lt;/code&gt;
+    2. 此时你拥有的是主干master分支的代码，我们需要切换到dev分支进行开发：
+        1. &lt;code&gt;git fetch --all&lt;/code&gt;
+        2. &lt;code&gt;git switch --track origin/dev&lt;/code&gt;
+    3. 在&lt;strong&gt;工作目录&lt;/strong&gt;写代码
+    4. 提交变更的文件到&lt;strong&gt;暂存区&lt;/strong&gt;：&lt;code&gt;git add &amp;#x3C;somefile&gt;&lt;/code&gt;
+    5. 提交文件到&lt;strong&gt;本地仓库&lt;/strong&gt;：&lt;code&gt;git commit -m &quot;xxx&quot;&lt;/code&gt;
+    6. 把我的代码推送到远程仓库（同步）：&lt;code&gt;git push&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;三最佳实践git里的后悔药&quot;&gt;三、最佳实践——Git里的后悔药&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;我提交到暂存区的代码搞错了：&lt;code&gt;git restore -S &amp;#x3C;files or dir&gt;&lt;/code&gt; （在使用IDEA时，这个场景不太会出现，因为IDEA往往是把add 和 commit的操作会合并成一个处理）&lt;/li&gt;
+&lt;li&gt;我提交到本地仓库的代码搞错了：
+    1. 最近的一个commit：&lt;code&gt;git reset -mixed HEAD~1&lt;/code&gt;
+    2. 历史中的一个commit：
+        1. 使用 &lt;code&gt;git reset --mixed &amp;#x3C;commit_id&gt;&lt;/code&gt;，然后重新提交正确的代码（ ❗从最新commit到指定commit的代码都需要重新提交）
+        2. 使用 &lt;code&gt;git revert &amp;#x3C;commit_id&gt;&lt;/code&gt; ，这个操作近似于自己重新提交代码&lt;/li&gt;
+&lt;li&gt;我提交到远程仓库的代码搞错了：
+    1. 只有一个建议：&lt;strong&gt;请写出正确的代码，重新提交！所以，请在每次push之前谨慎！&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;四最佳实践与他人同步&quot;&gt;四、最佳实践——与他人同步&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;我想把别人在dev分支上开发的代码同步下来看看：&lt;code&gt;git pull --rebase&lt;/code&gt; 或者 &lt;code&gt;git pull&lt;/code&gt; （前者会让你的commit log更加清爽一些，没有一些额外的merge commit log）&lt;/li&gt;
+&lt;li&gt;如果你开发的分支和多人一同开发，建议每天进行一次 &lt;code&gt;git pull --rebase&lt;/code&gt; 与 &lt;code&gt;git push&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;五最佳实践我的改动比较大&quot;&gt;五、最佳实践——我的改动比较大&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;建议自己拉一个分支进行开发 &lt;code&gt;git switch -c &amp;#x3C;new_branch_name&gt;&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;开发结束后，先把&lt;strong&gt;主开发分支&lt;/strong&gt;合并到你的分支：&lt;code&gt;git merge dev&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;没问题后再把你的分支合并到主开发分支：&lt;code&gt;git switch dev&lt;/code&gt; ，&lt;code&gt;git merge &amp;#x3C;new_branch_name&gt;&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;六其他&quot;&gt;六、其他&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;⭐准备上线前
+    1. 和上一个版本代码对比(&lt;code&gt;git diff release master&lt;/code&gt;)，确认release分支是&lt;strong&gt;正确的需要上线的代码&lt;/strong&gt;
+    2. 使用Jenkins对release分支进行自动打包与部署，在工作空间获取上线代码包（禁止本地打包）&lt;/li&gt;
+&lt;li&gt;上线完成后
+    1. 在gitlab上提交release合并至master分支的merge request，由技术经理确认合并；
+    2. 对最新的master分支进行tag，方便反查源码；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;七几个原则&quot;&gt;七、几个原则&lt;/h2&gt;
+&lt;h3 id=&quot;强制&quot;&gt;强制&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;禁止&lt;code&gt;git push -f&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;禁止&lt;code&gt;git push master&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;建议&quot;&gt;建议&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;建议分支命名：master、release、dev、dev_xx
+    1. master分支为线上正在运行的代码；不允许手动提交；只能通过页面的merge request进行代码合并；每次上完线后把分支(release)代码合并到master
+    2. release为测试环境对应的代码，jenkins均从该分支进行自动构建与部署
+    3. dev，以及其他分支为开发分支，较为自由。&lt;/li&gt;
+&lt;li&gt;减少对&lt;code&gt;git checkout&lt;/code&gt;的使用，已经拆分为 &lt;code&gt;git switch&lt;/code&gt; 和 &lt;code&gt;git restore&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;不要把二进制文件放到git仓库中进行版本管理&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;八实现方式之数据结构&quot;&gt;八、实现方式之数据结构&lt;/h2&gt;
+&lt;p&gt;在Git当中，&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;markdown&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;// 一个文件就是字节数组&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;type blob = array&amp;#x3C;byte&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;  &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;// 一个目录包含文件或者其他目录&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;type tree = map&amp;#x3C;string, tree | blob&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;  &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;// 一个commit包含它的父节点，原始信息，顶级目录（快）&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;type commit = struct {&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;    parents: array&amp;#x3C;commit&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;    author: string&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;    message: string&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;    snapshot: tree&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;  &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;// 文件、目录、commit最终都以object类型进行存储&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;type object = blob | tree | commit&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样看起来，每一次修改文件并提交git仓库后，都会新建一个blob对象，并作为新的快照内部的文件使用，因此，git仓库存储空间可能会越来越大，特别是对于那些二进制文件（非文本文件，难以压缩）。这时候可以通过&lt;code&gt;git gc&lt;/code&gt;进行git仓库压缩，这里面的算法大家可以自己去探索一下。根据我的经验，能大概缩小到原本的1/3~1/2。&lt;/p&gt;
+&lt;h2 id=&quot;九参考&quot;&gt;九、参考&lt;/h2&gt;
+&lt;h3 id=&quot;cheatsheet&quot;&gt;Cheatsheet&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://ndpsoftware.com/git-cheatsheet.html#loc=index;&quot;&gt;一个可视化的Git Cheatsheet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://about.gitlab.com/images/press/git-cheat-sheet.pdf&quot;&gt;Gitlab官方Cheatsheet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/k88hudson/git-flight-rules&quot;&gt;https://github.com/k88hudson/git-flight-rules&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E9%AB%98%E7%BA%A7%E5%90%88%E5%B9%B6&quot;&gt;Git - 高级合并 (git-scm.com)&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;原理学习&quot;&gt;原理学习&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://draveness.me/whys-the-design-git-the-best/&quot;&gt;为什么你应该使用 Git 进行版本控制 - 面向信仰编程 (draveness.me)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.progit.cn/&quot;&gt;Pro Git 中文版（第二版）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://missing.csail.mit.edu/2020/version-control/&quot;&gt;Version Control (Git) · the missing semester of your cs education (mit.edu)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://chuquan.me/2022/05/21/understand-principle-of-git/&quot;&gt;深入理解 Git 底层实现原理 | 楚权的世界&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;some-code&quot;&gt;Some code&lt;/h2&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; clone&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; branch&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; --track&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; dev&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; origin/dev&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; checkout&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; dev&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; add&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; &amp;#x26; &lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; commit&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; push&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;Merge&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; Request&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; (MR)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;  &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; restore&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; -S&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; &amp;#x3C;&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;files&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; or&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; di&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;r&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; reset&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; -mixed&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; HEAD~1&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; reset&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; --mixed&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; &amp;#x3C;&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;commit_i&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;d&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; revert&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; &amp;#x3C;&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;commit_i&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;d&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;  &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; pull&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; --rebase&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; pull&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;  &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; checkout&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; -b&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; &amp;#x3C;&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;branch_nam&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;e&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;...&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; merge&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; dev&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;  &lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; stash&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;git&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; stash&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; pop&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt; - https://akelio-zhang.github.io/posts/2021-git%E6%8C%87%E5%8D%97/ - 2019–2026 Akelio</description><pubDate>Mon, 03 Jan 2022 10:00:00 GMT</pubDate></item></channel></rss>

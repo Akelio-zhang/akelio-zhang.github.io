@@ -1,1 +1,226 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>数字生活 on LIFE CODER</title><link>https://akelio-zhang.github.io/tags/%E6%95%B0%E5%AD%97%E7%94%9F%E6%B4%BB/</link><description>Recent content in 数字生活 on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 04 Oct 2026 11:07:13 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/tags/%E6%95%B0%E5%AD%97%E7%94%9F%E6%B4%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><pubDate>Fri, 15 Apr 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description/></item><item><title>MacBook Pro到手配置</title><link>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</link><pubDate>Thu, 10 Feb 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</guid><description/></item><item><title>Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021-notion/</link><pubDate>Thu, 27 Jan 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2021-notion/</guid><description/></item><item><title>About Me</title><link>https://akelio-zhang.github.io/about/</link><pubDate>Wed, 26 Jan 2022 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/about/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>数字生活</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>读书笔记--用数据讲故事</title><link>https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ - &lt;h1 id=&quot;读书笔记用数据讲故事&quot;&gt;读书笔记–用数据讲故事&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;第二章 选择有效的图表
+&lt;ul&gt;
+&lt;li&gt;图表类型
+&lt;ul&gt;
+&lt;li&gt;简单文本&lt;/li&gt;
+&lt;li&gt;表格（不利于展示你的观点）
+&lt;ul&gt;
+&lt;li&gt;热力图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;点图
+&lt;ul&gt;
+&lt;li&gt;散点图（往往需要配合辅助线、辅助文本）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;线图
+&lt;ul&gt;
+&lt;li&gt;折线图（可以增加最大值、最小值的同图展示）&lt;/li&gt;
+&lt;li&gt;斜率图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;条形图
+&lt;ul&gt;
+&lt;li&gt;直方图（竖直条形图）&lt;/li&gt;
+&lt;li&gt;堆叠竖直条形图（一般是最下一层能够比较有效对比）&lt;/li&gt;
+&lt;li&gt;瀑布图&lt;/li&gt;
+&lt;li&gt;水平条形图（适合阅读，分类标签可以很长）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;面积图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;图表使用建议
+&lt;ul&gt;
+&lt;li&gt;不要使用饼图&lt;/li&gt;
+&lt;li&gt;不要使用3D图&lt;/li&gt;
+&lt;li&gt;尽量不要使用双Y轴&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;第三章 杂乱是你的敌人&lt;/li&gt;
+&lt;li&gt;第四章 聚焦受众的视线（引导到核心的数据）
+&lt;ul&gt;
+&lt;li&gt;前属性&lt;/li&gt;
+&lt;li&gt;颜色&lt;/li&gt;
+&lt;li&gt;大小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;第五章 像设计师一样思考（通过可视化，让读者观众明白你的结论，第四章的升级版）
+&lt;ul&gt;
+&lt;li&gt;可供性
+&lt;ul&gt;
+&lt;li&gt;突出重要内容&lt;/li&gt;
+&lt;li&gt;消除干扰&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;无障碍
+&lt;ul&gt;
+&lt;li&gt;不要过于复杂&lt;/li&gt;
+&lt;li&gt;擅长使用文字突出结论&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;美观&lt;/li&gt;
+&lt;li&gt;接受度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt; - https://akelio-zhang.github.io/posts/2022-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AE%B2%E6%95%85%E4%BA%8B/ - 2019–2026 Akelio</description><pubDate>Fri, 15 Apr 2022 04:00:00 GMT</pubDate></item><item><title>MacBook Pro到手配置</title><link>https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ - &lt;h1 id=&quot;macbook-pro-到手配置&quot;&gt;MacBook Pro 到手配置&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;14’ | M1 Pro | 32G | 512GB&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;setup&quot;&gt;Setup&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Hot corner&lt;/li&gt;
+&lt;li&gt;程序坞的大小与缩小&lt;/li&gt;
+&lt;li&gt;Apple Watch 解锁&lt;/li&gt;
+&lt;li&gt;触控板手势&lt;/li&gt;
+&lt;li&gt;iCloud 设置&lt;/li&gt;
+&lt;li&gt;桌面使用叠放&lt;/li&gt;
+&lt;li&gt;finder 显示状态栏&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;application&quot;&gt;Application&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Productivity
+&lt;ul&gt;
+&lt;li&gt;Microsoft Series
+&lt;ul&gt;
+&lt;li&gt;Office 365&lt;/li&gt;
+&lt;li&gt;Outlook&lt;/li&gt;
+&lt;li&gt;Edge&lt;/li&gt;
+&lt;li&gt;OneDrive&lt;/li&gt;
+&lt;li&gt;Todo&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Information Manager
+&lt;ul&gt;
+&lt;li&gt;( I ) Cubox&lt;/li&gt;
+&lt;li&gt;( K / W ) Obsidian&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;UI
+&lt;ul&gt;
+&lt;li&gt;Xmind&lt;/li&gt;
+&lt;li&gt;Sketch&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Enhancement
+&lt;ul&gt;
+&lt;li&gt;Raycast&lt;/li&gt;
+&lt;li&gt;Stats&lt;/li&gt;
+&lt;li&gt;AIDente&lt;/li&gt;
+&lt;li&gt;Mos&lt;/li&gt;
+&lt;li&gt;Rectangle&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Developer
+&lt;ul&gt;
+&lt;li&gt;Homebrew , &lt;a href=&quot;https://brew.idayer.com/guide/&quot;&gt;https://brew.idayer.com/guide/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;VS code
+&lt;ul&gt;
+&lt;li&gt;Tongyi Lingma&lt;/li&gt;
+&lt;li&gt;Markdown All in One&lt;/li&gt;
+&lt;li&gt;Wakatime&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Terminal
+&lt;ul&gt;
+&lt;li&gt;item2 + ayu // Warp&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://wyydsb.xin/Operations/terminal.html#zsh-sh&quot;&gt;https://wyydsb.xin/Operations/terminal.html#zsh-sh&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Zsh-syntax-highlighting&lt;/li&gt;
+&lt;li&gt;Zsh-autosuggestions&lt;/li&gt;
+&lt;li&gt;Fzf with vim plugin&lt;/li&gt;
+&lt;li&gt;vimrc + vim plug&lt;/li&gt;
+&lt;li&gt;tabnine by coc.nvim&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Java
+&lt;ul&gt;
+&lt;li&gt;JDK by SDKman
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://whichjdk.com/&quot;&gt;Which Version of JDK Should I Use? | whichjdk.com&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;JetBrains IDEA&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Go
+&lt;ul&gt;
+&lt;li&gt;brew install golang&lt;/li&gt;
+&lt;li&gt;go proxy setup&lt;/li&gt;
+&lt;li&gt;Goland&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Entermaint
+&lt;ul&gt;
+&lt;li&gt;IINA&lt;/li&gt;
+&lt;li&gt;Maipo&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;参考&quot;&gt;参考&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;⭐️ &lt;a href=&quot;https://www.sqlsec.com/macsoft.html&quot;&gt;MAC 常用软件清单 | 国光&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://zhuye.notion.site/Macbook-M1-9c908ba2946440aeb02d63609c9990ae&quot;&gt;Macbook环境配置（含M1） (notion.site)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://rualc.com/workspace/mac/#brew&quot;&gt;Mac 环境（M1 + Monterey） | 前端指南 (rualc.com)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV1sD4y1X7MQ&quot;&gt;学生党M1 Mac入门指北_哔哩哔哩_bilibili&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=67keaaWOKzE&quot;&gt;Mac Tutorial for Beginners - Switching from Windows to macOS - YouTube&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt; - https://akelio-zhang.github.io/posts/2022-macbook-pro-%E5%88%B0%E6%89%8B%E9%85%8D%E7%BD%AE/ - 2019–2026 Akelio</description><pubDate>Thu, 10 Feb 2022 04:00:00 GMT</pubDate></item><item><title>Notion结束文字工作站的选择纠结</title><link>https://akelio-zhang.github.io/posts/2021-notion/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2021-notion/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2021-notion/ - &lt;h2 id=&quot;0x1-使用过的方案&quot;&gt;0x1 使用过的方案&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;有道云笔记（markdown支持太弱）&lt;/li&gt;
+&lt;li&gt;Microsoft Todo（不太适合大量文字记载）&lt;/li&gt;
+&lt;li&gt;语雀（不适合临时想法记录）&lt;/li&gt;
+&lt;li&gt;Typora/VS Code + Onedrive（文件之间的关联比较麻烦，没有统一的入口）&lt;/li&gt;
+&lt;li&gt;微信公众号（不适合个人内容记载，且使用起来比较麻烦，适合做推广）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;0x2-场景整理&quot;&gt;0x2 场景整理&lt;/h2&gt;
+&lt;p&gt;问题的解决方案往往要追溯到需求本身，不然只是在为了使用而使用，缺乏了创造力。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;工作上对项目、系统的设计、开发、运维的文档落地与持续运维追踪。&lt;/li&gt;
+&lt;li&gt;读书笔记记录。&lt;/li&gt;
+&lt;li&gt;CS一些技术的学习笔记。&lt;/li&gt;
+&lt;li&gt;生活的一些行程安排或记录。&lt;/li&gt;
+&lt;li&gt;Todo List。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;0x3-notion最大好处就是all-in-one&quot;&gt;0x3 Notion，最大好处就是ALL IN ONE。&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;良好的Markdown支持&lt;/li&gt;
+&lt;li&gt;UI符合我的审美需求&lt;/li&gt;
+&lt;li&gt;能够支持大量文字输入&lt;/li&gt;
+&lt;li&gt;因为是web，天生跨平台&lt;/li&gt;
+&lt;li&gt;block，database，link的设计，能够满足绝大部分的知识库使用场景（场景2-4）&lt;/li&gt;
+&lt;li&gt;支持项目管理，可部分替代teambition（场景1）&lt;/li&gt;
+&lt;li&gt;支持Todo，可部分替代todo app（场景5）&lt;/li&gt;
+&lt;li&gt;有些遗憾
+&lt;ol&gt;
+&lt;li&gt;所有数据在线，尽管有了Github的备份和导出，但是没有一套本地持久化的方案总觉得并不安心。&lt;/li&gt;
+&lt;li&gt;没有标签系统&lt;/li&gt;
+&lt;li&gt;不支持快速的外部文章导入&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;0x4-目前的文字工作方式&quot;&gt;0x4 目前的文字工作方式&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;DASHBOARD是所有内容的入口。&lt;/li&gt;
+&lt;li&gt;DASHBOARD展示的内容尽可能少，一般就是日常要做的、工作追踪、学习提升的三个入口。&lt;/li&gt;
+&lt;li&gt;Notion主要做有一些计划性的、需要有结果输出的文字工作。
+&lt;ol&gt;
+&lt;li&gt;每天使用Github进行备份&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;[H1]Todo来承载一些紧急类的工作记录（往往重要性不会太强）【可以用便利贴替代】&lt;/li&gt;
+&lt;li&gt;[H2]Xmind承担思维脑图，基本无可替代，数据用Onedrive管理。&lt;/li&gt;
+&lt;li&gt;[H3]备忘录只做个人信息备忘录，待办事项直接用todo/cubox解决。&lt;/li&gt;
+&lt;li&gt;[IN]cubox承载信息流的记录（手机、PC浏览器），替代之前的微信收藏、知乎收藏。&lt;/li&gt;
+&lt;li&gt;[OUT]微信公众号、知乎专栏用来做对外输出。（Notion本身也提供了链接分享，但是有墙，并没有什么x用）&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;放弃语雀&lt;/del&gt;，是因为流量还是小了一点。&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;Onenote暂时处于停止使用的状态&lt;/del&gt;，主要原因是格式版本比较心累，markdown不好用，跨平台能力有限。但是对于一些图、画较多的场景，Onenote有他自由排版的优势。&lt;/li&gt;
+&lt;li&gt;当然，目前在使用Notion还有一些不舒服的地方：1）DASHBOARD呈现的内容过多，会分散注意力；2）Notion中很多已经完成的内容，目前只是简单放在database置为完成状态，或者移入存档Page。这些内容在较长不会做更新，却依旧占据了较多的篇幅，也会分散注意力。目前使用toggle或者database filter来隐藏。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2022/08/20/IG97nj3AkKQacL2.png&quot; alt=&quot;/images/notion-station.webp&quot;&gt;&lt;/p&gt; - https://akelio-zhang.github.io/posts/2021-notion/ - 2019–2026 Akelio</description><pubDate>Thu, 27 Jan 2022 04:00:00 GMT</pubDate></item></channel></rss>

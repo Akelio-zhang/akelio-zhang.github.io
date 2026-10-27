@@ -1,1 +1,234 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>基石系列/消息队列 on LIFE CODER</title><link>https://akelio-zhang.github.io/categories/%E5%9F%BA%E7%9F%B3%E7%B3%BB%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</link><description>Recent content in 基石系列/消息队列 on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 29 Mar 2026 17:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/categories/%E5%9F%BA%E7%9F%B3%E7%B3%BB%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/index.xml" rel="self" type="application/rss+xml"/><item><title>消息队列：从原理到选型</title><link>https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/</link><pubDate>Sun, 29 Mar 2026 17:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>基石系列/消息队列</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>消息队列：从原理到选型</title><link>https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9A%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9A%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9A%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/ - &lt;h1 id=&quot;消息队列从原理到选型&quot;&gt;消息队列：从原理到选型&lt;/h1&gt;
+&lt;h2 id=&quot;什么是消息队列&quot;&gt;什么是消息队列？&lt;/h2&gt;
+&lt;p&gt;消息队列（Message Queue）是一种进程间通信或同进程间通信的方式，生产者将消息写入队列，消费者从队列中读取并处理消息。两端之间不直接通信，而是通过一个&quot;中间人&quot;传递数据。&lt;/p&gt;
+&lt;p&gt;从系统设计角度看，消息队列的核心价值在于两点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;解耦&lt;/strong&gt;：生产者和消费者不需要同时在线，彼此不感知对方的实现细节。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;最终一致性&lt;/strong&gt;：通过异步消息传递，将强一致性的同步调用转变为最终一致性的异步流程，显著提升系统吞吐量和可用性。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;为什么需要消息队列&quot;&gt;为什么需要消息队列？&lt;/h2&gt;
+&lt;p&gt;以一个电商下单场景为例：用户下单后，系统需要扣库存、发优惠券、推送通知、更新积分……如果这些操作全部同步串行执行，响应时间会线性叠加，任何一个下游服务的抖动都会直接影响下单接口的成功率。&lt;/p&gt;
+&lt;p&gt;消息队列正是为了解决这类问题而生的，它带来了三个核心能力：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;异步&lt;/strong&gt;：将耗时操作从主流程中剥离，主流程只需保证消息写入成功。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;削峰&lt;/strong&gt;：突发流量（如秒杀）先堆积在队列中，下游按自身消费能力匀速处理，避免被压垮。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;解耦&lt;/strong&gt;：下游新增或下线，无需改动上游代码，只需调整订阅关系。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当然，引入消息队列也带来了额外的复杂性：消息重复、消息丢失、顺序性保证、系统可用性等问题都需要仔细设计。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;主流消息队列横向对比&quot;&gt;主流消息队列横向对比&lt;/h2&gt;
+&lt;h3 id=&quot;rabbitmq&quot;&gt;RabbitMQ&lt;/h3&gt;
+&lt;p&gt;RabbitMQ 实现了 AMQP（Advanced Message Queuing Protocol）协议，其设计目标是支持&lt;strong&gt;复杂的消息路由&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;核心模型是 &lt;strong&gt;Exchange → Queue&lt;/strong&gt; 的两段式绑定：生产者将消息发送到 Exchange，由 Exchange 根据 routing key 和 binding 规则决定消息投递到哪个（或哪些）Queue，消费者从 Queue 消费。Exchange 有四种类型：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;类型&lt;/th&gt;&lt;th&gt;路由行为&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;direct&lt;/td&gt;&lt;td&gt;routing key 精确匹配&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;topic&lt;/td&gt;&lt;td&gt;routing key 通配符匹配（&lt;code&gt;*&lt;/code&gt; / &lt;code&gt;#&lt;/code&gt;）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;fanout&lt;/td&gt;&lt;td&gt;广播到所有绑定队列&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;headers&lt;/td&gt;&lt;td&gt;按消息头匹配&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;这套模型让 RabbitMQ 天然适合&lt;strong&gt;业务消息路由&lt;/strong&gt;场景，例如按地区、按事件类型将消息分发到不同处理队列。但它有几个结构性限制：消息消费后即删除，&lt;strong&gt;不支持回放&lt;/strong&gt;；消息默认存储在内存中，大量堆积时性能急剧下降；吞吐量在数万 QPS 量级，在大规模数据流场景下力不从心。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适合场景&lt;/strong&gt;：业务解耦、任务分发、需要复杂路由规则的场景。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;kafka&quot;&gt;Kafka&lt;/h3&gt;
+&lt;p&gt;Kafka 的本质是一个&lt;strong&gt;分布式持久化日志系统&lt;/strong&gt;，虽然常被当做消息队列使用，但它的设计目标是高吞吐、持久存储和可回放。&lt;/p&gt;
+&lt;h4 id=&quot;核心设计理念&quot;&gt;核心设计理念&lt;/h4&gt;
+&lt;p&gt;Kafka 团队认为，面对一个消息/数据系统，核心要解决的问题是&lt;strong&gt;可靠性&lt;/strong&gt;（消息不丢）和&lt;strong&gt;消费模型&lt;/strong&gt;（灵活消费）。Kafka 的答案是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;以 &lt;strong&gt;Append-Only Log&lt;/strong&gt; 作为存储模型，顺序写盘，吞吐极高（百万 QPS 量级）。&lt;/li&gt;
+&lt;li&gt;通过 &lt;strong&gt;Offset&lt;/strong&gt; 将消费进度的管理权交给消费者，支持任意回放。&lt;/li&gt;
+&lt;li&gt;通过 &lt;strong&gt;Consumer Group&lt;/strong&gt; 实现消费者的水平扩展。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;核心组件&quot;&gt;核心组件&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Topic&lt;/strong&gt;：逻辑上的消息分类，类似数据库中的表。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Partition&lt;/strong&gt;：Topic 的物理分片，是并行度的基本单元。每个 Partition 是一个有序的、不可变的消息序列。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Producer&lt;/strong&gt;：消息生产者，可指定 Partition 策略（轮询、按 key 哈希、自定义）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Consumer / Consumer Group&lt;/strong&gt;：消费者以 Consumer Group 为单位消费。&lt;strong&gt;同一个 Consumer Group 内，每个 Partition 只能被一个 Consumer 消费&lt;/strong&gt;；不同 Consumer Group 之间相互独立，互不影响。这意味着，Consumer 数量的上限等于 Partition 数量——多余的 Consumer 会处于空闲状态。因此，当消费能力不足时，必须先增加 Partition 数量，才能通过横向扩容 Consumer 来提升吞吐。&lt;strong&gt;Partition 数量是 Kafka 消费端并行度的天花板。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Broker&lt;/strong&gt;：单个 Kafka 服务器节点。多个 Broker 组成 Kafka 集群。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;数据一致性与可用性&quot;&gt;数据一致性与可用性&lt;/h4&gt;
+&lt;p&gt;Kafka 通过 &lt;strong&gt;ISR（In-Sync Replicas）&lt;/strong&gt; 机制保证数据可靠性：每个 Partition 有一个 Leader 和若干 Follower，只有追上 Leader 的 Follower 才在 ISR 列表中。Producer 可通过 &lt;code&gt;acks&lt;/code&gt; 参数控制可靠性级别：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;acks&lt;/th&gt;&lt;th&gt;含义&lt;/th&gt;&lt;th&gt;可靠性&lt;/th&gt;&lt;th&gt;吞吐&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;不等待确认&lt;/td&gt;&lt;td&gt;最低&lt;/td&gt;&lt;td&gt;最高&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;Leader 写入即确认&lt;/td&gt;&lt;td&gt;中&lt;/td&gt;&lt;td&gt;中&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;all / -1&lt;/td&gt;&lt;td&gt;所有 ISR 写入后确认&lt;/td&gt;&lt;td&gt;最高&lt;/td&gt;&lt;td&gt;最低&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;适合场景&lt;/strong&gt;：日志收集、事件流、数据管道、需要消息回放的场景、大规模高吞吐场景。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;rocketmq&quot;&gt;RocketMQ&lt;/h3&gt;
+&lt;p&gt;RocketMQ 由阿里巴巴开源，参考了 Kafka 的整体架构，但针对&lt;strong&gt;业务消息&lt;/strong&gt;场景做了深度增强：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;事务消息&lt;/strong&gt;：支持分布式事务，生产者发送半消息，本地事务执行后再 commit/rollback，天然解决业务侧的分布式一致性问题。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;延迟消息&lt;/strong&gt;：支持固定延迟级别（如 1s/5s/10s/30s/1min/…），适合订单超时关闭等场景。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;消息过滤&lt;/strong&gt;：支持 Tag 过滤和 SQL92 表达式过滤，在 Broker 侧完成，减少消费者侧无效消息处理。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;消息轨迹&lt;/strong&gt;：内置消息全链路追踪，便于排查消息丢失或延迟问题。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;顺序消息&lt;/strong&gt;：支持全局顺序和分区顺序，业务场景（如同一订单的多条消息）可按 key 路由到同一队列保证顺序。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;相比 Kafka，RocketMQ 在运维层面更友好，天然支持业务消息的高级特性，但在纯数据流/日志场景下吞吐不如 Kafka。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适合场景&lt;/strong&gt;：电商、金融等对消息语义要求高的业务场景，需要事务消息、延迟消息的场景。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;三者横向对比总结&quot;&gt;三者横向对比总结&lt;/h2&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;维度&lt;/th&gt;&lt;th&gt;RabbitMQ&lt;/th&gt;&lt;th&gt;Kafka&lt;/th&gt;&lt;th&gt;RocketMQ&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;协议&lt;/td&gt;&lt;td&gt;AMQP&lt;/td&gt;&lt;td&gt;自定义&lt;/td&gt;&lt;td&gt;自定义&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;吞吐量&lt;/td&gt;&lt;td&gt;万级&lt;/td&gt;&lt;td&gt;百万级&lt;/td&gt;&lt;td&gt;十万级&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;消息堆积&lt;/td&gt;&lt;td&gt;差（内存为主）&lt;/td&gt;&lt;td&gt;优（磁盘持久）&lt;/td&gt;&lt;td&gt;优&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;消息回放&lt;/td&gt;&lt;td&gt;✗&lt;/td&gt;&lt;td&gt;✓&lt;/td&gt;&lt;td&gt;✗（部分支持）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;延迟消息&lt;/td&gt;&lt;td&gt;✓（插件）&lt;/td&gt;&lt;td&gt;✗&lt;/td&gt;&lt;td&gt;✓（原生）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;事务消息&lt;/td&gt;&lt;td&gt;✓&lt;/td&gt;&lt;td&gt;✓（有限）&lt;/td&gt;&lt;td&gt;✓（原生）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;路由能力&lt;/td&gt;&lt;td&gt;强&lt;/td&gt;&lt;td&gt;弱&lt;/td&gt;&lt;td&gt;中&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;社区生态&lt;/td&gt;&lt;td&gt;成熟&lt;/td&gt;&lt;td&gt;极活跃&lt;/td&gt;&lt;td&gt;活跃&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;适用场景&lt;/td&gt;&lt;td&gt;业务路由解耦&lt;/td&gt;&lt;td&gt;数据流/日志&lt;/td&gt;&lt;td&gt;业务消息&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;faq&quot;&gt;FAQ&lt;/h2&gt;
+&lt;h3 id=&quot;kafka-和传统-mq-有什么本质区别&quot;&gt;Kafka 和传统 MQ 有什么本质区别？&lt;/h3&gt;
+&lt;p&gt;传统 MQ（如 RabbitMQ）以&lt;strong&gt;消息&lt;/strong&gt;为核心抽象，消息消费后即删除，Broker 负责路由和分发。&lt;/p&gt;
+&lt;p&gt;Kafka 以&lt;strong&gt;日志&lt;/strong&gt;为核心抽象，消息按时间顺序追加写入，永久保留（直到过期），消费者通过 Offset 自主记录消费进度。这意味着：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka 天然支持多个独立消费者读取同一份数据（如实时消费 + 离线分析）。&lt;/li&gt;
+&lt;li&gt;Kafka 支持重放历史消息，可用于数据修复、新业务冷启动。&lt;/li&gt;
+&lt;li&gt;Kafka 的消费语义由消费者决定，Broker 不感知消费状态（除 Consumer Group Offset）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;消息系统如何防止重复消费&quot;&gt;消息系统如何防止重复消费？&lt;/h3&gt;
+&lt;p&gt;重复消费根源在于：消息成功消费但 Offset 提交失败，重启后重新消费同一条消息。&lt;/p&gt;
+&lt;p&gt;防重策略的核心是&lt;strong&gt;幂等性设计&lt;/strong&gt;，即&quot;消费 N 次和消费 1 次效果相同&quot;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;数据库唯一索引&lt;/strong&gt;：以消息唯一 ID 为 unique key 入库，重复消息直接报主键冲突，忽略即可。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;状态机检查&lt;/strong&gt;：消费前检查当前状态是否已经满足&quot;已处理&quot;条件，是则跳过。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Redis 去重&lt;/strong&gt;：以消息 ID 为 key，&lt;code&gt;SETNX&lt;/code&gt; 写入，成功才处理，失败说明已处理过。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Producer 侧，Kafka 0.11+ 支持&lt;strong&gt;幂等 Producer&lt;/strong&gt;（&lt;code&gt;enable.idempotence=true&lt;/code&gt;），在单 session 内保证 exactly-once 写入，避免网络重试导致的重复写入。&lt;/p&gt;
+&lt;h3 id=&quot;消息系统如何防止消息丢失&quot;&gt;消息系统如何防止消息丢失？&lt;/h3&gt;
+&lt;p&gt;消息丢失可能发生在三个阶段：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;生产者侧&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka 设置 &lt;code&gt;acks=all&lt;/code&gt;，等待所有 ISR 副本确认后再返回成功。&lt;/li&gt;
+&lt;li&gt;开启 Producer 重试（&lt;code&gt;retries &gt; 0&lt;/code&gt;），注意同时开启幂等避免重复。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Broker 侧&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;设置 &lt;code&gt;replication.factor &gt;= 3&lt;/code&gt;，&lt;code&gt;min.insync.replicas &gt;= 2&lt;/code&gt;，确保有足够副本存活。&lt;/li&gt;
+&lt;li&gt;关闭 &lt;code&gt;unclean.leader.election.enable&lt;/code&gt;，避免数据落后的副本成为 Leader 导致数据倒退。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;消费者侧&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;关闭自动提交 Offset（&lt;code&gt;enable.auto.commit=false&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;消息&lt;strong&gt;处理成功后&lt;/strong&gt;再手动提交 Offset，而不是取到消息就提交。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总结来说，防丢的核心原则是：&lt;strong&gt;生产者确认写入、Broker 多副本冗余、消费者先处理后提交&lt;/strong&gt;。三端都不能有单点。&lt;/p&gt;
+&lt;h3 id=&quot;消息系统如何做到恰好一次exactly-once&quot;&gt;消息系统如何做到恰好一次（Exactly-once）？&lt;/h3&gt;
+&lt;p&gt;Exactly-once 是消息系统中最难实现的语义。完整的 Exactly-once 需要生产者、Broker、消费者三端协同：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;生产者&lt;/strong&gt;：开启幂等 Producer + 事务（&lt;code&gt;transactional.id&lt;/code&gt;），保证消息精确写入一次。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;消费者&lt;/strong&gt;：将消息处理和 Offset 提交放入同一个原子操作中（如同一数据库事务），保证&quot;处理&quot;和&quot;标记已消费&quot;同时成功或同时失败。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在工程实践中，大多数业务系统选择接受&quot;at-least-once + 消费端幂等&quot;的组合，因为它实现简单、运维成本低，且效果等价于 exactly-once。真正的 exactly-once 通常只在流处理场景（如 Kafka Streams、Flink）中严格使用。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;参考链接&quot;&gt;参考链接&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://javaguide.cn/high-performance/message-queue/message-queue.html&quot;&gt;消息队列基础知识总结 - JavaGuide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.infoq.cn/article/kafka-vs-rabbitmq&quot;&gt;消息中间件选型分析：从 Kafka 与 RabbitMQ 的对比看全局 - InfoQ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://tech.meituan.com/2016/07/01/mq-design.html&quot;&gt;美团：消息队列设计精要&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/38913026&quot;&gt;Kafka 核心设计理念 - 知乎&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt; - https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9A%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/ - 2019–2026 Akelio</description><pubDate>Sun, 29 Mar 2026 09:00:00 GMT</pubDate></item></channel></rss>

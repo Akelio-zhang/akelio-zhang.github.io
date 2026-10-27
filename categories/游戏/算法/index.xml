@@ -1,1 +1,340 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>游戏/算法 on LIFE CODER</title><link>https://akelio-zhang.github.io/categories/%E6%B8%B8%E6%88%8F/%E7%AE%97%E6%B3%95/</link><description>Recent content in 游戏/算法 on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sat, 02 May 2026 22:50:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/categories/%E6%B8%B8%E6%88%8F/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml"/><item><title>游戏AI—纸牌游戏的求解策略</title><link>https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/</link><pubDate>Sat, 02 May 2026 22:50:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>游戏/算法</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>游戏AI—纸牌游戏的求解策略</title><link>https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/ - &lt;h1 id=&quot;游戏ai纸牌游戏的求解策略&quot;&gt;游戏AI—纸牌游戏的求解策略&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2026-08-04 更新：随着实验继续推进，问题已经从“怎样把 Beam Search 调得更强”，转变为“在不同信息边界下，什么搜索范式才合理”。本文保留原来的算法讨论，同时用最新对照结果修正早期结论。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;一引言klondike-的信息迷雾&quot;&gt;一、引言：Klondike 的“信息迷雾”&lt;/h2&gt;
+&lt;p&gt;Klondike（接龙）看似简单，实则是一个极好的算法实验场。它没有对手，却同时容纳了两种性质截然不同的问题：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;信息世界&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;AI 知道什么&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;本质问题&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;全信息（thoughtful / perfect information）&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;从开局就知道所有暗牌与牌库顺序&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;在确定但巨大的状态空间中寻找完整解&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;可见信息（human-visible / imperfect information）&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;只记住真正看过的牌，未翻暗牌保持未知&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;在多个可能世界之间持续决策&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;这里有一个重要区别：&lt;strong&gt;知道暗牌是什么，不等于可以提前移动暗牌。&lt;/strong&gt; 全信息 AI 仍然必须遵守正常规则，只是它能提前规划“为了释放那张关键牌，现在应该先搬动什么”。&lt;/p&gt;
+&lt;p&gt;这条信息边界会彻底改变算法的任务。全信息 AI 面对的是组合搜索；可见信息 AI 面对的则是信念更新、信息价值和风险控制。两者共享同一副牌，却生活在不同的世界里。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;二算法炼金术从-12-到两种独立-ai&quot;&gt;二、算法炼金术：从 12% 到两种独立 AI&lt;/h2&gt;
+&lt;p&gt;项目早期的目标很直接：让 AI 每一步都选一个“看起来更好”的动作。随着实验深入，算法逐渐分化成四种思路：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;方法&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;信息条件&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;核心逻辑&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;实验表现&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;结论&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;固定优先级贪心&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;可见局面&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;只看当前一步的收益&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;极低&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;容易陷入局部最优与动作循环&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;基础 Beam Search&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;早期项目环境&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;保留少量高分候选并向前看&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;12/100&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;比贪心更强，但会过早丢弃长线解&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;全信息启发式 DFS&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;全部牌已知&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;沿最有希望的路径深入，失败后回溯&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;26/30（86.7%）&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;适合离线寻找完整获胜路径&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;可见信息 ISMCTS&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;只读玩家可见信息&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;采样多个可能牌局，再在线选择动作&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;19/30（63.3%）&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;能处理未知，但需要为错误信念付出代价&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;Beam Search 的 12% 来自早期 100 局历史测试，与后两项的规则实现、样本和预算并不完全一致，不能直接当作严格倍数比较。真正具有可比性的是最后两项：它们在相同的 30 个发牌种子上独立运行。&lt;/p&gt;
+&lt;p&gt;这组对照给出了一个比“哪个算法更强”更有意思的结论：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;知道暗牌带来的价值，不只是少走几步，而是把一个不完全信息决策问题，重新变成了确定性的路径搜索问题。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;三理论纵深beam-search-为什么会错过真正的解&quot;&gt;三、理论纵深：Beam Search 为什么会错过真正的解？&lt;/h2&gt;
+&lt;h3 id=&quot;1-分数并不单调&quot;&gt;1. 分数并不单调&lt;/h3&gt;
+&lt;p&gt;Klondike 中的“好局面”很难用单一分数描述。真正的获胜路径可能从一次短期退让开始：暂时不归组、先腾出空列、反复穿过牌库，甚至撤回一张 foundation 牌，只为几步之后翻开被压住的关键牌。&lt;/p&gt;
+&lt;p&gt;如果评价函数只奖励当前 foundation 数量、空列或已翻开的暗牌，那么某些必要的中间状态反而会得到低分。Beam Search 会在浅层就剪掉这些分支，此后再大的搜索深度也无法把它们找回来。&lt;/p&gt;
+&lt;h3 id=&quot;2-宽度更大不一定更好&quot;&gt;2. 宽度更大，不一定更好&lt;/h3&gt;
+&lt;p&gt;Beam Search 用宽度换取时间与内存，但“扩大 beam 就会稳定变强”并不成立。Lemons 等人在 &lt;a href=&quot;https://ojs.aaai.org/index.php/ICAPS/article/view/19805&quot;&gt;&lt;em&gt;Beam Search: Faster and Monotonic&lt;/em&gt;&lt;/a&gt; 中专门讨论了这种非单调性，并提出结合 distance-to-go 估计的 Monobeam。&lt;/p&gt;
+&lt;p&gt;这对 Klondike 的启示是：&lt;strong&gt;搜索资源的多少，与搜索资源是否被投入正确方向，是两个问题。&lt;/strong&gt; 如果评价函数无法识别真正的阻塞关系，更宽的 beam 可能只是更充分地搜索一批相似的错误路线。&lt;/p&gt;
+&lt;h3 id=&quot;3-回溯是-beam-search-缺失的记忆&quot;&gt;3. 回溯是 Beam Search 缺失的记忆&lt;/h3&gt;
+&lt;p&gt;Zhou 与 Hansen 的 &lt;a href=&quot;https://aaai.org/papers/icaps-05-010-beam-stack-search-integrating-backtracking-with-beam-search/&quot;&gt;Beam-Stack Search&lt;/a&gt; 把系统回溯重新引入 Beam Search：算法先快速找到次优解，再回到被剪掉的区间继续改进，最终可以收敛到最优解。&lt;/p&gt;
+&lt;p&gt;它解释了原始方案最想补上的能力——“如果眼前所有高分路线都失败，允许回头尝试当时的次优选择”。不过当前项目最终没有采用 Beam-Stack，而是直接选择更贴合全信息 Klondike 的启发式 DFS。&lt;/p&gt;
+&lt;h3 id=&quot;4-从-nlp-借来的不是公式而是警觉&quot;&gt;4. 从 NLP 借来的不是公式，而是警觉&lt;/h3&gt;
+&lt;p&gt;在序列生成领域，Google 的 &lt;a href=&quot;https://arxiv.org/abs/1609.08144&quot;&gt;GNMT 技术报告&lt;/a&gt; 使用长度归一化与 coverage penalty，避免 Beam Search 偏爱过短输出，或遗漏输入中的关键信息。Meister、Vieira 与 Cotterell 的 &lt;a href=&quot;https://aclanthology.org/2020.tacl-1.51/&quot;&gt;Best-First Beam Search&lt;/a&gt; 则继续讨论单调评分、提前剪枝和搜索顺序。&lt;/p&gt;
+&lt;p&gt;这些方法不能直接移植到纸牌游戏，但它们提供了一种有价值的类比：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;路径短，不代表离胜利更近；&lt;/li&gt;
+&lt;li&gt;当前得分高，不代表覆盖了所有关键目标；&lt;/li&gt;
+&lt;li&gt;一个好的启发式，必须同时表达“进度”和“尚未解决的依赖”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;四从表面进度到阻塞关系&quot;&gt;四、从表面进度到阻塞关系&lt;/h2&gt;
+&lt;p&gt;全信息 Klondike 最终更适合 DFS，不是因为 DFS 天生“更聪明”，而是因为它允许算法沿一条很长的假设链推进，并在失败后完整回溯。&lt;/p&gt;
+&lt;p&gt;Solvitaire 的研究表明，高性能纸牌求解器通常依赖四类思想：&lt;a href=&quot;https://doi.org/10.1613/jair.1.17167&quot;&gt;论文&lt;/a&gt; · &lt;a href=&quot;https://github.com/thecharlesblake/Solvitaire&quot;&gt;源码&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Transposition table：&lt;/strong&gt; 不重复搜索已经见过的局面；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Symmetry breaking：&lt;/strong&gt; 把空列、空槽位等对称状态折叠起来；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Dominance：&lt;/strong&gt; 对不会损害未来选择的动作直接做出判断；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Streamliner：&lt;/strong&gt; 主动排除理论上合法、实际上很少有价值的路线。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这类方法的共同点不是“算得更深”，而是&lt;strong&gt;让同样的预算只用于实质上不同的局面&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;最新一轮实验还暴露了另一个细节：只统计暗牌总数是不够的。同样剩下 6 张暗牌，&lt;code&gt;4+1+1&lt;/code&gt; 与 &lt;code&gt;2+1+1+1+1&lt;/code&gt; 的难度完全不同。前者把风险集中在一条很深的依赖链上；后者给了算法更多并行释放的机会。&lt;/p&gt;
+&lt;p&gt;因此，评价函数应从“还有多少暗牌”继续追问：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;暗牌集中在哪些列？&lt;/li&gt;
+&lt;li&gt;最深的阻塞链有多长？&lt;/li&gt;
+&lt;li&gt;哪个动作能创造真正有用的空列？&lt;/li&gt;
+&lt;li&gt;下一张被释放的牌能否立刻参与归组或构建？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这次更新把全信息 AI 从 25/30 提升到 26/30。数字只增加了一局，但它验证了一个更一般的判断：&lt;strong&gt;评价函数不应只描述局面有多好，还应该描述局面为什么被卡住。&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;五另一种智能在不知道答案时行动&quot;&gt;五、另一种智能：在不知道答案时行动&lt;/h2&gt;
+&lt;p&gt;全信息求解器回答的是“如果我知道所有牌，这副牌怎么解”。可见信息 AI 面对的问题更接近真实玩家：它只能记住已经看过的牌，再推断暗牌可能是什么。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;比较维度&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;全信息搜索&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;可见信息搜索&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;搜索对象&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;一个确定状态图&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;一组与观察一致的可能世界&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;主要困难&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;组合爆炸&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;组合爆炸 + 身份不确定性&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;决策方式&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;离线寻找完整路径&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;每一步重新观察与规划&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;失败来源&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;搜索预算耗尽或排序不佳&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;错误信念、探索不足、循环或预算耗尽&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;核心价值&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;回溯与状态压缩&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;信念更新与信息价值&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;ISMCTS（Information Set Monte Carlo Tree Search）的基本思想，是多次采样与当前观察相容的牌局，在这些“可能世界”中模拟后续动作，再选择整体表现更稳健的一步。&lt;/p&gt;
+&lt;p&gt;它最大的风险是&lt;strong&gt;信息泄漏&lt;/strong&gt;：如果搜索节点、评价函数或动作排序不小心使用了采样世界中的暗牌身份，算法表面上是在处理未知，实际上仍然在偷看答案。真正可信的对比，必须让未知牌始终停留在信念层，而不是悄悄进入决策状态。&lt;/p&gt;
+&lt;p&gt;这也解释了为什么“信息更少的算法偶尔赢过全信息算法”并不矛盾。有限预算下，搜索结果不仅取决于信息量，也取决于分支排序和随机探索。更多信息扩大了可利用的决策空间，但不会自动保证某一次有限搜索更成功。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;六当前结果不要只看两个百分比&quot;&gt;六、当前结果：不要只看两个百分比&lt;/h2&gt;
+&lt;p&gt;当前严格对照使用固定 deal seeds &lt;code&gt;0..29&lt;/code&gt;、独立算法随机种子、相同规则和每局步数上限；全信息搜索的状态预算固定为 20,000。两套 AI 分别从同一初始牌局开始，彼此不回退，也不合并胜局。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;指标&lt;/th&gt;&lt;th align=&quot;right&quot;&gt;全信息 AI&lt;/th&gt;&lt;th align=&quot;right&quot;&gt;可见信息 AI&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;获胜局数&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;&lt;strong&gt;26 / 30&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;&lt;strong&gt;19 / 30&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;经验胜率&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;&lt;strong&gt;86.7%&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;&lt;strong&gt;63.3%&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;95% Wilson 区间&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;70.3%–94.7%&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;45.5%–78.1%&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;成对结果比单独的胜率更有解释力：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;成对结果&lt;/th&gt;&lt;th align=&quot;right&quot;&gt;局数&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;两者都赢&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;19&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;仅全信息 AI 赢&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;7&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;仅可见信息 AI 赢&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;两者都未赢&lt;/td&gt;&lt;td align=&quot;right&quot;&gt;4&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;当前差值是 7 局、23.4 个百分点。它说明暗牌信息在这组牌局中确实产生了明显价值，但 30 局仍然是很小的样本；两个 Wilson 区间都相当宽，远不足以得出稳定的总体胜率。&lt;/p&gt;
+&lt;p&gt;同样需要注意：全信息 AI 的失败只代表“在 20,000 个状态内没有找到完整解”，不代表已经证明牌局无解；可见信息 AI 的失败也可能来自信念采样和在线策略，而不是牌局本身不可解。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;七上限的三种口径&quot;&gt;七、上限的三种口径&lt;/h2&gt;
+&lt;p&gt;原文中的 43%、82% 与当前 86.7%，分别来自不同规则、信息条件和实验方法。把它们排列在一条“算法越来越强”的直线上，会得到错误结论。&lt;/p&gt;
+&lt;h3 id=&quot;1-当前有限预算实测&quot;&gt;1. 当前有限预算实测&lt;/h3&gt;
+&lt;p&gt;本项目的 86.7% / 63.3%，是当前实现对 30 个固定种子的经验结果。它会随搜索预算、启发式、采样次数和样本规模变化。&lt;/p&gt;
+&lt;h3 id=&quot;2-全信息可解率估计&quot;&gt;2. 全信息可解率估计&lt;/h3&gt;
+&lt;p&gt;Blake 与 Gent 使用 Solvitaire 报告 thoughtful Klondike 的可解率为 &lt;strong&gt;81.945 ± 0.084%&lt;/strong&gt;。CP 2025 的 &lt;a href=&quot;https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CP.2025.9&quot;&gt;&lt;em&gt;Constraint Models for Klondike&lt;/em&gt;&lt;/a&gt; 进一步区分规则，将 Deal Three 更新为 &lt;strong&gt;81.942 ± 0.080%&lt;/strong&gt;，将 Deal One 更新为 &lt;strong&gt;90.454 ± 0.090%&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;本项目讨论的是 Draw One，因此 90.454% 是更接近的研究参照。但它仍然是大规模实验对“牌局是否可解”的估计，不保证任意有限预算求解器都能达到。&lt;/p&gt;
+&lt;h3 id=&quot;3-可见策略的胜率下界与上限&quot;&gt;3. 可见策略的胜率下界与上限&lt;/h3&gt;
+&lt;p&gt;Jupiter Scientific 曾在 Draw Three、无限回收规则下进行 442 局“human Monte Carlo”，其中赢了 189 局，得到约 &lt;strong&gt;43%&lt;/strong&gt;。原报告把它解释为良好人类策略的经验下界，而不是所有玩家的期望胜率。&lt;a href=&quot;https://www.jupiterscientific.org/sciinfo/KlondikeSolitaireReport.html&quot;&gt;原始报告&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;可见信息策略的真正上限仍未确定。它取决于允许的记忆、思考时间、随机策略、撤回规则和发牌方式。这里不存在一个可以脱离规则直接引用的“人类理论上限”。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;八下一步两条不同的研究路线&quot;&gt;八、下一步：两条不同的研究路线&lt;/h2&gt;
+&lt;p&gt;全信息方向的核心问题，是怎样更准确地表达隐藏牌之间的依赖关系。比起继续调大搜索宽度，更值得探索的是依赖图、anytime search，以及 DFS 与 SAT / CP 约束模型的混合。&lt;/p&gt;
+&lt;p&gt;可见信息方向的核心问题，则是怎样让信念跨动作保持一致。持续粒子信念、POMCP / ISMCTS、信息价值评分，都比“每一步重新猜一副牌”更接近真正的不完全信息推理。&lt;/p&gt;
+&lt;p&gt;实验方法也需要同步升级：先扩大到 100，再到 1,000 副固定牌局；既报告状态预算，也报告相同 wall-time；同时给出 Wilson 区间和成对胜负，而不是只展示一个最好看的百分比。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;九结语从纸牌看架构思维&quot;&gt;九、结语：从纸牌看架构思维&lt;/h2&gt;
+&lt;p&gt;Klondike 的求解过程，本质上是在&lt;strong&gt;有限资源（算力与内存）&lt;/strong&gt;、**状态依赖（被压住的关键牌）&lt;strong&gt;和&lt;/strong&gt;信息不确定性（暗牌）**之间寻找平衡。&lt;/p&gt;
+&lt;p&gt;这种带回溯的搜索，与复杂交易链路仍然有相似之处：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当前路径失败时，需要退回稳定状态并尝试替代路线；&lt;/li&gt;
+&lt;li&gt;搜索启发式像业务分级路由，决定有限资源先投向哪里；&lt;/li&gt;
+&lt;li&gt;状态去重与幂等控制一样，避免系统反复处理同一个局面；&lt;/li&gt;
+&lt;li&gt;最重要的是，规则、事实与推断必须分层，不能把“猜测”伪装成“已知”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;纸牌游戏给我的最终提醒是：&lt;strong&gt;搜索之前，先定义参与者能看见什么；优化之前，先定义我们测量的究竟是什么。&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;附录核心文献&quot;&gt;附录：核心文献&lt;/h2&gt;
+&lt;p&gt;下面保留原文中的主要参考文献，并按用途区分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Klondike 求解与可解率：&lt;/strong&gt; Blake &amp;#x26; Gent（Solvitaire）、Dang 等（约束模型）；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Beam Search 理论：&lt;/strong&gt; Beam-Stack Search、Best-First Beam Search、Monobeam；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;跨领域启发：&lt;/strong&gt; GNMT 的长度归一化与覆盖惩罚；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;历史经验数据：&lt;/strong&gt; Jupiter Scientific 报告。它不是同行评审论文，且采用 Draw Three，应与本项目结果分开理解。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bibtex&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;@article&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;blake2026winnability&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  title&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;The Winnability of Klondike Solitaire and Many Other Patience Games&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  author&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Blake, Charlie and Gent, Ian P.&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  journal&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Journal of Artificial Intelligence Research&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  volume&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;85&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  year&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;2026&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  doi&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;10.1613/jair.1.17167&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;@inproceedings&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;dang2025constraint&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  title&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Constraint Models for Klondike&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  author&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Dang, Nguyen and Gent, Ian P. and Nightingale, Peter and&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;          Ulrich-Oltean, Felix and Waller, Jack&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  booktitle&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;31st International Conference on Principles and Practice of&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;             Constraint Programming (CP 2025)&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  series&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Leibniz International Proceedings in Informatics (LIPIcs)&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  volume&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;340&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  pages&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;9:1--9:20&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  year&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;2025&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  doi&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;10.4230/LIPIcs.CP.2025.9&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;@software&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;blake2019solvitaire&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  title&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Solvitaire&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  author&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Blake, Charlie and Gent, Ian P.&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  year&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;2019&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  doi&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;10.5281/zenodo.3529524&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  url&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;https://github.com/thecharlesblake/Solvitaire&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;@inproceedings&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;zhou2005beamstack&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  title&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Beam-Stack Search: Integrating Backtracking with Beam Search&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  author&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Zhou, Rong and Hansen, Eric A.&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  booktitle&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Proceedings of the Fifteenth International Conference on&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;             Automated Planning and Scheduling&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  pages&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;90--98&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  publisher&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;AAAI Press&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  year&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;2005&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;@article&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;meister2020bestfirst&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  title&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Best-First Beam Search&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  author&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Meister, Clara and Vieira, Tim and Cotterell, Ryan&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  journal&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Transactions of the Association for Computational Linguistics&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  volume&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;8&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  pages&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;795--809&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  year&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;2020&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  doi&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;10.1162/tacl_a_00346&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;@inproceedings&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;lemons2022monobeam&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  title&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Beam Search: Faster and Monotonic&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  author&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Lemons, Sofia and Linares L{\&apos;o}pez, Carlos and&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;          Holte, Robert C. and Ruml, Wheeler&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  booktitle&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Proceedings of the Thirty-Second International Conference on&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;             Automated Planning and Scheduling&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  volume&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;32&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  pages&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;222--230&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  year&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;2022&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  doi&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;10.1609/icaps.v32i1.19805&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;@article&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;wu2016gnmt&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  title&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Google&apos;s Neural Machine Translation System: Bridging the Gap&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;         between Human and Machine Translation&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  author&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Wu, Yonghui and Schuster, Mike and Chen, Zhifeng and others&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  journal&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;CoRR&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  volume&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;abs/1609.08144&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  year&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;2016&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  url&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;https://arxiv.org/abs/1609.08144&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;@techreport&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;jupiter2013winning&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  title&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Winning Chances for Klondike Solitaire&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  author&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;{Jupiter Scientific Staff}&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  institution&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Jupiter Scientific&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  year&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;2013&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  url&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;https://www.jupiterscientific.org/sciinfo/KlondikeSolitaireReport.html&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  note&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;Historical human Monte Carlo report using Draw Three; not peer reviewed&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;与-ai-的讨论&quot;&gt;与 AI 的讨论&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://chatgpt.com/c/69f5ceb7-e784-8321-a920-9b69ef96e241&quot;&gt;ChatGPT&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.doubao.com/chat/38423648263759874&quot;&gt;豆包&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://gemini.google.com/app/8175761eeed95892&quot;&gt;Gemini&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://claude.ai/chat/36e15e04-4af2-4024-8134-e7e7073f62b9&quot;&gt;Claude&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt; - https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/ - 2019–2026 Akelio</description><pubDate>Sat, 02 May 2026 14:50:00 GMT</pubDate></item></channel></rss>

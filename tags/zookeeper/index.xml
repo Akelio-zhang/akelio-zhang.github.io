@@ -1,1 +1,228 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ZooKeeper on LIFE CODER</title><link>https://akelio-zhang.github.io/tags/zookeeper/</link><description>Recent content in ZooKeeper on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Wed, 01 May 2019 18:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/tags/zookeeper/index.xml" rel="self" type="application/rss+xml"/><item><title>ZooKeeper笔记</title><link>https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/</link><pubDate>Wed, 01 May 2019 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>ZooKeeper</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>ZooKeeper笔记</title><link>https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/ - &lt;h1 id=&quot;zookeeper笔记&quot;&gt;ZooKeeper笔记&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;logged in 2019 and written with Claude in 2026.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;本文是学习 ZooKeeper 过程中的整理笔记，涵盖核心概念、Watcher 机制、ZAB 选举协议以及实践案例，主要参考官方文档与《从Paxos到ZooKeeper》。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;what-is-zookeeper&quot;&gt;What is ZooKeeper?&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;ZooKeeper 是一个面向分布式应用的协调服务，核心能力包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;配置管理&lt;/strong&gt;：集中存储和分发配置信息&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;命名服务&lt;/strong&gt;：为分布式资源提供统一命名&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分布式同步&lt;/strong&gt;：实现分布式锁、屏障等同步原语&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;集群管理&lt;/strong&gt;：监控节点存活状态、Master 选举等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;内部数据结构：ZNode&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ZooKeeper 使用类 Linux 目录树结构组织数据，每个节点称为 ZNode，具有唯一路径名，并可存储少量数据。ZNode 支持变更通知（Watcher），使客户端能够感知数据变化。&lt;/p&gt;
+&lt;p&gt;在一致性方面，ZooKeeper 通过 ZAB 协议在集群内部保证强一致性与分区容忍性。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://draveness.me/zookeeper-chubby&quot;&gt;ZooKeeper 与 Chubby 对比&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;zookeeper-能做什么&quot;&gt;ZooKeeper 能做什么？&lt;/h2&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://blog.csdn.net/weijifeng_/article/details/79775738&quot;&gt;ZooKeeper 应用场景总结&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;常见应用场景包括：分布式锁、服务注册与发现、配置中心、Leader 选举、分布式队列等。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;watcher-机制&quot;&gt;Watcher 机制&lt;/h2&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://www.ibm.com/developerworks/cn/opensource/os-cn-apache-zookeeper-watcher/index.html&quot;&gt;IBM Developer - ZooKeeper Watcher 详解&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;watcher-的核心特性&quot;&gt;Watcher 的核心特性&lt;/h3&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;特性&lt;/th&gt;&lt;th&gt;说明&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;一次性触发&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;Watcher 触发一次后自动失效，需重新注册才能继续监听&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;串行回调&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;客户端回调在单线程中顺序执行，避免并发问题，但回调逻辑不能阻塞&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;轻量级&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;服务端只存储 Watcher 的存在标记，WatchEvent 不携带变更后的数据，客户端需自行重新读取&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&quot;watcher-基本流程&quot;&gt;Watcher 基本流程&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;客户端通过 &lt;code&gt;addWatch&lt;/code&gt; 方法向服务端注册一个 Watcher&lt;/li&gt;
+&lt;li&gt;服务端检测到对应事件发生后，封装一个 &lt;code&gt;WatchEvent&lt;/code&gt; 发送给客户端&lt;/li&gt;
+&lt;li&gt;客户端通过 &lt;code&gt;WatchManager&lt;/code&gt; 中缓存的回调函数进行处理&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;WatchEvent&lt;/code&gt; 可按 &lt;code&gt;KeeperState&lt;/code&gt;（连接状态）和 &lt;code&gt;EventType&lt;/code&gt;（事件类型）两个维度分类。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;zookeeper-原理&quot;&gt;ZooKeeper 原理&lt;/h2&gt;
+&lt;h3 id=&quot;分布式系统的核心挑战&quot;&gt;分布式系统的核心挑战&lt;/h3&gt;
+&lt;p&gt;在理解 ZooKeeper 的设计之前，需要先了解分布式系统面临的基本问题。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CAP 定理&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;分布式系统无法同时满足以下三点，最多只能保证其中两项：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;属性&lt;/th&gt;&lt;th&gt;含义&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;C（Consistency）一致性&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;所有节点在同一时刻看到相同的数据&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;A（Availability）可用性&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;每个请求都能收到响应（不保证是最新数据）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;P（Partition Tolerance）分区容忍性&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;网络分区发生时系统仍能继续运行&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;网络分区在分布式环境中是不可避免的，因此实际系统通常在 &lt;strong&gt;CP&lt;/strong&gt; 或 &lt;strong&gt;AP&lt;/strong&gt; 之间做取舍。ZooKeeper 选择了 &lt;strong&gt;CP&lt;/strong&gt;：牺牲部分可用性（Leader 选举期间不提供服务），换取强一致性保证。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;拜占庭将军问题与故障模型&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;分布式系统中的节点故障分两类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Crash Fault（崩溃故障）&lt;/strong&gt;：节点宕机、停止响应，不会发送错误信息。ZooKeeper 假设只存在此类故障。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Byzantine Fault（拜占庭故障）&lt;/strong&gt;：节点可能发送任意错误或恶意消息。容忍此类故障需要 &lt;strong&gt;N ≥ 3F+1&lt;/strong&gt; 个节点（N 为总节点数，F 为故障节点数）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ZooKeeper 不处理拜占庭故障，仅需 &lt;strong&gt;N ≥ 2F+1&lt;/strong&gt;（即超过半数存活即可），这也是为什么 ZK 集群通常部署奇数个节点（3、5、7）。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://www.zhihu.com/question/52254063/answer/322188918&quot;&gt;拜占庭容错为什么需要 N ≥ 3F+1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;FLP 不可能定理&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在异步网络环境中，即使只有一个节点可能崩溃，也不存在一个能在有限时间内保证达成共识的确定性算法。ZAB、Paxos、Raft 等协议的解决思路是：在实践中引入&lt;strong&gt;超时机制&lt;/strong&gt;，将异步网络假设放宽为部分同步模型，从而绕过这一理论限制。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;共识算法简述&quot;&gt;共识算法简述&lt;/h3&gt;
+&lt;p&gt;ZAB 并非凭空设计，其背后是一系列共识算法的演进：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Paxos&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Paxos 是分布式共识的理论基础，分为 Prepare 和 Accept 两个阶段，通过多数派投票达成一致。但原始 Paxos 描述的是单值共识，工程实现复杂，不直接支持日志复制场景。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Multi-Paxos → Raft&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;为解决 Paxos 的工程复杂性，Raft 将共识过程拆分为 &lt;strong&gt;Leader 选举、日志复制、安全性&lt;/strong&gt; 三个相对独立的子问题，可读性更强，是目前最广泛实现的共识算法（etcd、TiKV 均基于 Raft）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ZAB vs Raft&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ZAB 与 Raft 思路相近，核心差异在于：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;对比项&lt;/th&gt;&lt;th&gt;ZAB&lt;/th&gt;&lt;th&gt;Raft&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;设计目标&lt;/td&gt;&lt;td&gt;为 ZooKeeper 定制&lt;/td&gt;&lt;td&gt;通用共识算法&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;日志提交条件&lt;/td&gt;&lt;td&gt;超过半数 ACK&lt;/td&gt;&lt;td&gt;超过半数 ACK&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Leader 选举依据&lt;/td&gt;&lt;td&gt;epoch + zxid&lt;/td&gt;&lt;td&gt;term + log index&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;成员变更&lt;/td&gt;&lt;td&gt;不支持动态成员变更&lt;/td&gt;&lt;td&gt;支持（Joint Consensus）&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;zab-协议详解&quot;&gt;ZAB 协议详解&lt;/h3&gt;
+&lt;p&gt;ZAB（ZooKeeper Atomic Broadcast，原子广播协议）是 ZooKeeper 的核心，保证所有事务在集群中以相同顺序被所有节点处理。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ZAB 的两个核心阶段&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;① 崩溃恢复（Leader Election + Recovery）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;当集群启动或 Leader 宕机时进入此阶段：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;所有节点进入 LOOKING 状态，开始投票&lt;/li&gt;
+&lt;li&gt;每个节点广播自己的投票：&lt;code&gt;(myid, zxid, epoch)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;收到投票后按以下规则 PK，更新自己的投票：
+&lt;ul&gt;
+&lt;li&gt;优先选 &lt;code&gt;epoch&lt;/code&gt; 更大的节点&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;epoch&lt;/code&gt; 相同则选 &lt;code&gt;zxid&lt;/code&gt; 更大的节点（数据更新）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zxid&lt;/code&gt; 也相同则选 &lt;code&gt;myid&lt;/code&gt; 更大的节点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;超过半数节点投给同一候选人，该节点成为新 Leader&lt;/li&gt;
+&lt;li&gt;新 Leader 与 Follower 同步数据，确保所有已提交事务不丢失&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;② 消息广播（Atomic Broadcast）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;正常运行阶段，所有写请求统一由 Leader 处理：&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;plaintext&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;Client → (任意节点) → Leader&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                         ↓ Propose（带 zxid）&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                    Follower × N&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                         ↓ ACK（超过半数）&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                    Leader Commit&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                         ↓ 广播 Commit&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                    Follower Commit → Client 响应&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个流程类似两阶段提交（2PC），但 Leader 不等待所有节点确认，只需&lt;strong&gt;多数派&lt;/strong&gt;即可提交，从而在容错性和性能之间取得平衡。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;zxid 的结构&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;zxid&lt;/code&gt; 是一个 64 位整数，高 32 位为 &lt;code&gt;epoch&lt;/code&gt;（每次 Leader 切换递增），低 32 位为事务序号。这个设计保证了跨 Leader 周期的全局事务顺序。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ZooKeeper 的一致性保证&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ZooKeeper 提供的并非严格的线性一致性（Linearizability），而是&lt;strong&gt;顺序一致性（Sequential Consistency）&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;写操作：由 Leader 统一处理，全局有序，保证强一致&lt;/li&gt;
+&lt;li&gt;读操作：可能从 Follower 读到旧数据（Follower 同步存在延迟）&lt;/li&gt;
+&lt;li&gt;如需读到最新数据，需在读之前调用 &lt;code&gt;sync()&lt;/code&gt; 强制同步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/400a44edee88&quot;&gt;ZAB 协议详解 - 简书&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/27335748&quot;&gt;ZAB 协议原理 - 知乎&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;实践案例搭建-zookeeper-集群&quot;&gt;实践案例：搭建 ZooKeeper 集群&lt;/h2&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://segmentfault.com/a/1190000006907443&quot;&gt;Docker 搭建 ZK 集群 - SegmentFault&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;①-搭建-zk-集群docker&quot;&gt;① 搭建 ZK 集群（Docker）&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;方式一：逐个创建容器&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;拉取 ZooKeeper 镜像后，依次创建多个 ZK 容器，手动配置组成集群。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;方式二：使用 Docker Compose（推荐）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;编写 &lt;code&gt;docker-compose.yml&lt;/code&gt; 配置集群拓扑，一键启动：&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;# 启动集群&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;COMPOSE_PROJECT_NAME&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;zk_test&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; docker-compose&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; up&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; -d&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;# 查看运行状态&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;COMPOSE_PROJECT_NAME&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;zk_test&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; docker-compose&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; ps&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741434602-a9fc9846-91da-47bb-a9e3-f4ca702b3fec.png&quot; alt=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741434602-a9fc9846-91da-47bb-a9e3-f4ca702b3fec.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741457323-ad45018b-658a-48de-b3f7-12caf47bf98e.png&quot; alt=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741457323-ad45018b-658a-48de-b3f7-12caf47bf98e.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;②-连接集群验证&quot;&gt;② 连接集群验证&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;通过 Docker 连接 ZK 集群：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;docker&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; run&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; -it&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; --rm&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  --link&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zk1&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; --link&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zk2&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; --link&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zk3&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  --net&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zk_test_default&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;  zookeeper&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zkCli.sh&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; -server&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zk1:2181&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;本地使用 nc 快速检查节点状态：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; stat&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; |&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; nc&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 127.0.0.1&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 2181&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; stat&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; |&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; nc&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 127.0.0.1&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 2182&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; stat&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; |&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; nc&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 127.0.0.1&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 2183&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;实测结果：&lt;code&gt;zk3&lt;/code&gt;（端口 2183）为 Leader，其余节点均为 Follower。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741480312-67a471eb-9a50-452e-8f73-bb84a3a307af.png&quot; alt=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741480312-67a471eb-9a50-452e-8f73-bb84a3a307af.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;③-java-客户端接入&quot;&gt;③ Java 客户端接入&lt;/h3&gt;
+&lt;p&gt;常用客户端库：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Apache ZooKeeper 原生客户端&lt;/strong&gt;：官方提供，功能完整&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;101tec ZkClient&lt;/strong&gt;：对原生客户端的封装，API 更友好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;主要练习内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;节点的增删改查&lt;/li&gt;
+&lt;li&gt;多线程竞争 Master（分布式锁场景）&lt;/li&gt;
+&lt;li&gt;Watcher 的注册与回调&lt;/li&gt;
+&lt;li&gt;模拟服务器节点失效时的处理逻辑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/eec133595c68&quot;&gt;ZooKeeper 入门 - 简书&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.cnblogs.com/dimmacro/p/4457665.html&quot;&gt;ZooKeeper 原理与实践 - 博客园&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;《从Paxos到ZooKeeper》&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.zhihu.com/question/52254063/answer/322188918&quot;&gt;拜占庭容错为什么需要 N ≥ 3F+1 - 知乎&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt; - https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/ - 2019–2026 Akelio</description><pubDate>Wed, 01 May 2019 10:00:00 GMT</pubDate></item></channel></rss>

@@ -1,1 +1,329 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Spark on LIFE CODER</title><link>https://akelio-zhang.github.io/tags/spark/</link><description>Recent content in Spark on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 01 Jan 2023 00:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/tags/spark/index.xml" rel="self" type="application/rss+xml"/><item><title>Apache Spark 学习笔记</title><link>https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link><pubDate>Sun, 01 Jan 2023 00:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>Spark</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>Apache Spark 学习笔记</title><link>https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ - &lt;blockquote&gt;
+&lt;p&gt;logged in 2023 and written with Claude in 2026.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;本文是学习 Apache Spark 过程中的系统性笔记，涵盖 Spark 编程模型（RDD / DataFrame / Dataset）、集群搭建、性能优化、内存管理，以及与 Hadoop / Hive / Impala / Kafka 等生态的集成。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;1-概述&quot;&gt;1. 概述&lt;/h2&gt;
+&lt;p&gt;Apache Spark 是一个面向大规模数据处理的统一分析引擎，具备以下特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;通用性&lt;/strong&gt;：同时支持 SQL 查询、流式计算、机器学习、图计算等场景&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;多数据源&lt;/strong&gt;：可运行在 HDFS、Hive、HBase、Kafka、S3 等绝大多数数据源之上&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;高性能&lt;/strong&gt;：基于内存计算，相比 MapReduce 有数量级的性能提升&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;2-核心数据抽象rdd--dataset--dataframe&quot;&gt;2. 核心数据抽象：RDD / Dataset / DataFrame&lt;/h2&gt;
+&lt;p&gt;Spark 提供三种核心数据抽象，三者均具备**惰性求值（Lazy Evaluation）**机制——在调用 &lt;code&gt;map&lt;/code&gt; 等 Transformation 时不会立即执行，只有遇到 &lt;code&gt;foreach&lt;/code&gt; 等 Action 时才真正触发计算。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;抽象&lt;/th&gt;&lt;th&gt;特点&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;RDD&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;最底层抽象，不支持 SQL；通过粗粒度变换构建数据血缘（Lineage），节点故障时可从血缘重算恢复&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;Dataset&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;分布式数据集合，知道数据存在但不知道如何组织；强类型，编译期检查&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;DataFrame&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;Dataset[Row]&lt;/code&gt; 的别名，每行按列名组织，类型固定；支持 SQL 查询，是最常用的抽象&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;DataFrame 与 Dataset 拥有完全相同的成员函数，区别仅在于每行数据类型：DataFrame 每行类型为 &lt;code&gt;Row&lt;/code&gt;，需通过 &lt;code&gt;getAs&lt;/code&gt; 方法或模式匹配取出特定字段。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;RDD 的设计参考了 DryadLINQ 的 API 风格。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://zhuanlan.zhihu.com/p/29830732&quot;&gt;Dataset vs DataFrame 对比（知乎）&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;3-spark-编程模型&quot;&gt;3. Spark 编程模型&lt;/h2&gt;
+&lt;h3 id=&quot;31-入口sparksession&quot;&gt;3.1 入口：SparkSession&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;SparkSession&lt;/code&gt; 是使用 Dataset / DataFrame API 进行 Spark 编程的统一入口，&lt;strong&gt;只在 Driver（Master）进程中可见&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&quot;32-transformation-vs-action&quot;&gt;3.2 Transformation vs Action&lt;/h3&gt;
+&lt;p&gt;Spark 的所有操作分为两类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Transformation&lt;/strong&gt;：将一个 RDD/DataFrame 转换为另一个，仅记录 Lineage，不触发计算（如 &lt;code&gt;map&lt;/code&gt;、&lt;code&gt;filter&lt;/code&gt;、&lt;code&gt;join&lt;/code&gt;）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Action&lt;/strong&gt;：将 RDD/DataFrame 转换为其他数据形式，触发真正的计算（如 &lt;code&gt;foreach&lt;/code&gt;、&lt;code&gt;count&lt;/code&gt;、&lt;code&gt;collect&lt;/code&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;每次 Action 调用对应一个 Spark &lt;strong&gt;Job&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&quot;33-job-分解application--job--stage--task&quot;&gt;3.3 Job 分解：Application → Job → Stage → Task&lt;/h3&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;plaintext&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;Application&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;  └── Job（每次 Action 调用 = 一个 Job）&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;        └── Stage（每个 Shuffle 依赖 = 一个 Stage 边界）&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;              └── Task（每个并行计算单元；同一 Stage 内所有 Task 执行相同代码，处理不同数据分片）&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;每个 &lt;strong&gt;Node&lt;/strong&gt; 是一个独立的 JVM 进程，内部运行若干 &lt;strong&gt;Executor&lt;/strong&gt;，每个 Executor 将 Stage 内的任务拆分为多个 &lt;strong&gt;Task&lt;/strong&gt; 并行执行。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;4-shuffle-机制与宽窄依赖&quot;&gt;4. Shuffle 机制与宽窄依赖&lt;/h2&gt;
+&lt;h3 id=&quot;41-宽依赖-vs-窄依赖&quot;&gt;4.1 宽依赖 vs 窄依赖&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;窄依赖&lt;/strong&gt;：子分区数据只依赖一个父分区，无需跨节点数据移动（如 &lt;code&gt;map&lt;/code&gt;、&lt;code&gt;filter&lt;/code&gt;）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;宽依赖&lt;/strong&gt;：子分区依赖多个父分区，需要 Shuffle 数据（如 &lt;code&gt;groupByKey&lt;/code&gt;、&lt;code&gt;join&lt;/code&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Shuffle 是划分 DAG Stage 的标识&lt;/strong&gt;，会产生大量网络 I/O，是影响 Spark 性能的关键因素。&lt;/p&gt;
+&lt;h3 id=&quot;42-会触发-shuffle-的-transformation&quot;&gt;4.2 会触发 Shuffle 的 Transformation&lt;/h3&gt;
+&lt;p&gt;以下操作会引发 Shuffle，使用时需格外注意：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;repartition&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;join&lt;/code&gt;、&lt;code&gt;cogroup&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;所有 &lt;code&gt;*By&lt;/code&gt; / &lt;code&gt;*ByKey&lt;/code&gt; 系列操作（&lt;code&gt;groupByKey&lt;/code&gt;、&lt;code&gt;reduceByKey&lt;/code&gt;、&lt;code&gt;sortByKey&lt;/code&gt; 等）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;43-减少-shuffle-的常见优化手段&quot;&gt;4.3 减少 Shuffle 的常见优化手段&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;① 用 &lt;code&gt;reduceByKey&lt;/code&gt; 替代 &lt;code&gt;groupByKey&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;scala&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;// 低效：全量数据通过网络传输后再聚合&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;rdd.groupByKey().mapValues(_.sum)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;// 高效：先在各 partition 局部累积，Shuffle 后再合并&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;rdd.reduceByKey(_ &lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;+&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; _)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;② 避免&quot;新增列后 join 回来&quot;的写法&lt;/strong&gt;，直接在原数据上生成新列。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;③ 小表广播（Broadcast Join）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;当 join 的一侧数据集足够小，可以用 &lt;code&gt;broadcast&lt;/code&gt; 将其复制到每个 Executor 内存，避免 Shuffle：&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;scala&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;val&lt;/span&gt;&lt;span style=&quot;color:#E36209;--shiki-dark:#FFAB70&quot;&gt; broadcastSmall&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; spark.sparkContext.broadcast(smallRdd)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;largeRdd.map { row &lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;=&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;  val&lt;/span&gt;&lt;span style=&quot;color:#E36209;--shiki-dark:#FFAB70&quot;&gt; small&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; broadcastSmall.value&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;  // ...&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://zhuanlan.zhihu.com/p/34436165&quot;&gt;Spark 优化（知乎）&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;5-性能优化&quot;&gt;5. 性能优化&lt;/h2&gt;
+&lt;h3 id=&quot;51-cache-vs-persist&quot;&gt;5.1 cache vs persist&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cache()&lt;/code&gt;：将 RDD/DataFrame 缓存到内存，等价于 &lt;code&gt;persist(StorageLevel.MEMORY_ONLY)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;persist(level)&lt;/code&gt;：支持指定存储级别（内存、磁盘、序列化等），灵活性更高&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://blog.csdn.net/aijiudu/article/details/55811464&quot;&gt;cache vs persist 详解&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;52-broadcast-广播变量&quot;&gt;5.2 broadcast 广播变量&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;broadcast&lt;/code&gt; 将变量复制到每个 Executor（而非每个 Task），大幅减少内存占用和网络传输。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;适用于 RDD、Dataset、DataFrame，也适用于普通 Scala / Java 对象&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;限制&lt;/strong&gt;：广播对象必须是 &lt;strong&gt;不可变（immutable）&lt;/strong&gt; 的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;53-foreachpartition&quot;&gt;5.3 foreachPartition&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;foreachPartition&lt;/code&gt; 将数据分散到各 Slave 节点上执行，相比 &lt;code&gt;foreach&lt;/code&gt; 减少了 Driver 与 Executor 之间的通信开销，适合写数据库等场景。&lt;/p&gt;
+&lt;h3 id=&quot;54-关注-stage-数量与耗时&quot;&gt;5.4 关注 Stage 数量与耗时&lt;/h3&gt;
+&lt;p&gt;性能分析时，需重点关注：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;聚合操作产生的 Stage 数量及各 Stage 耗时&lt;/li&gt;
+&lt;li&gt;尽量减少宽依赖（即减少 Stage 数量）&lt;/li&gt;
+&lt;li&gt;了解数据特点，明确处理目标&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;6-内存管理&quot;&gt;6. 内存管理&lt;/h2&gt;
+&lt;p&gt;Spark Executor 的内存被划分为多个区域（Storage Memory、Execution Memory、User Memory 等），理解内存模型对调优至关重要。&lt;/p&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://arganzheng.life/spark-executor-memory-management.html&quot;&gt;Spark Executor 内存管理（arganzheng）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.ibm.com/developerworks/cn/analytics/library/ba-cn-apache-spark-memory-management/index.html&quot;&gt;Apache Spark 内存管理详解（IBM Developer）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;7-sparksql-实战示例&quot;&gt;7. SparkSQL 实战示例&lt;/h2&gt;
+&lt;h3 id=&quot;71-连接-hive-并执行查询&quot;&gt;7.1 连接 Hive 并执行查询&lt;/h3&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;scala&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;val&lt;/span&gt;&lt;span style=&quot;color:#E36209;--shiki-dark:#FFAB70&quot;&gt; spark&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; SparkSession&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;.builder()&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;  .appName(&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;&quot;MyApp&quot;&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;  .enableHiveSupport()&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;  .getOrCreate()&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;// 查询任务表&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;val&lt;/span&gt;&lt;span style=&quot;color:#E36209;--shiki-dark:#FFAB70&quot;&gt; df&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; spark.sql(&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;&quot;SELECT * FROM demo_match_task WHERE status = 0&quot;&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;df.show()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://spark.apache.org/docs/latest/sql-data-sources-hive-tables.html&quot;&gt;Spark SQL Hive Tables 官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;72-读取-json-并注册临时视图&quot;&gt;7.2 读取 JSON 并注册临时视图&lt;/h3&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;scala&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;val&lt;/span&gt;&lt;span style=&quot;color:#E36209;--shiki-dark:#FFAB70&quot;&gt; df&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; spark.read.json(&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;&quot;task.json&quot;&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;df.show()&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;val&lt;/span&gt;&lt;span style=&quot;color:#E36209;--shiki-dark:#FFAB70&quot;&gt; t&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; df.filter(&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;&quot;status == 0&quot;&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;t.show()&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;t.createOrReplaceTempView(&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;&quot;task&quot;&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;spark.sql(&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;&quot;SELECT * FROM task&quot;&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;).show()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;73-典型-etl-流程示例&quot;&gt;7.3 典型 ETL 流程示例&lt;/h3&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;sql&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;-- 对任务表循环执行匹配逻辑&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;SELECT&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; *&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;FROM&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; user_tag t&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;LEFT JOIN&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; (&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;  SELECT&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; *&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;  FROM&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; match_orig_data a&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;  WHERE&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; a&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;file_id&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; ?&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;  LEFT JOIN&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; user_table b &lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;ON&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; a&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;user_id&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; b&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;user_id&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;) c &lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;ON&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; t&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;user_id&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; c&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;user_id&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;-- 写入结果后更新任务状态&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;UPDATE&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; demo_match_task &lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;SET&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; status&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; =&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 1&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; WHERE&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; task_id &lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; ?;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;8-集群搭建hadoop--hive--spark&quot;&gt;8. 集群搭建（Hadoop + Hive + Spark）&lt;/h2&gt;
+&lt;h3 id=&quot;81-hadoop&quot;&gt;8.1 Hadoop&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;注意将域名暴露为自己的 IP 或 &lt;code&gt;0.0.0.0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;参考：&lt;a href=&quot;https://zhuanlan.zhihu.com/p/25015815&quot;&gt;Hadoop 搭建（知乎）&lt;/a&gt; | &lt;a href=&quot;https://segmentfault.com/a/1190000012484353&quot;&gt;Hadoop 搭建（SegmentFault）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;集群 Web UI 地址（示例）：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;服务&lt;/th&gt;&lt;th&gt;地址&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Hadoop NameNode&lt;/td&gt;&lt;td&gt;&lt;code&gt;192.168.xx.1:50070&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;YARN ResourceManager&lt;/td&gt;&lt;td&gt;&lt;code&gt;192.168.xx.1:8088&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Spark Master&lt;/td&gt;&lt;td&gt;&lt;code&gt;192.168.xx.1:8080&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&quot;82-hive采用-mysql-管理-metastore&quot;&gt;8.2 Hive（采用 MySQL 管理 Metastore）&lt;/h3&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://www.cnblogs.com/dxxblog/p/8193967.html&quot;&gt;Hive + MySQL Metastore 配置&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;83-spark-集成-hive&quot;&gt;8.3 Spark 集成 Hive&lt;/h3&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://spark.apache.org/docs/latest/sql-data-sources-hive-tables.html&quot;&gt;Spark Integration with Hive&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;84-spark-任务提交&quot;&gt;8.4 Spark 任务提交&lt;/h3&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;spark-submit&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  --class&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; com.example.MyApp&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  --master&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; spark://192.168.xx.1:7077&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  --executor-memory&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; 4G&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  --total-executor-cores&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 8&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;  /path/to/your_app.jar&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;重要参数说明：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;参数&lt;/th&gt;&lt;th&gt;说明&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;--class&lt;/code&gt;&lt;/td&gt;&lt;td&gt;主类全限定名&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;--master&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Spark Master 地址&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;--executor-memory&lt;/code&gt;&lt;/td&gt;&lt;td&gt;每个 Executor 分配的内存&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;--total-executor-cores&lt;/code&gt;&lt;/td&gt;&lt;td&gt;总 CPU 核数&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://spark.apache.org/docs/latest/submitting-applications.html&quot;&gt;Submitting Applications 官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;85-打包注意事项&quot;&gt;8.5 打包注意事项&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;maven-assembly-plugin&lt;/code&gt; 打包任务 JAR&lt;/li&gt;
+&lt;li&gt;推荐使用 &lt;code&gt;maven-shade-plugin&lt;/code&gt; 打 Uber JAR，支持包重命名，避免类冲突&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Spark 客户端版本尽量与集群版本保持一致&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;9-生态集成&quot;&gt;9. 生态集成&lt;/h2&gt;
+&lt;h3 id=&quot;91-hadoop-与-mapreduce&quot;&gt;9.1 Hadoop 与 MapReduce&lt;/h3&gt;
+&lt;p&gt;Hadoop 本质是：&lt;strong&gt;HDFS 分布式文件系统 + MapReduce 计算引擎 + YARN 资源管理&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;MapReduce 是一种面向分布式的底层编程模型（Programming Model，指通过类似库调用的方式触发执行），对复杂计算场景开发成本较高。Hive 本质是 &lt;strong&gt;SQL → MapReduce → 任务解析&lt;/strong&gt; 的中间件，降低了使用门槛。&lt;/p&gt;
+&lt;h3 id=&quot;92-kafka-集成&quot;&gt;9.2 Kafka 集成&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;接收 Kafka（Spark Streaming）：&lt;a href=&quot;https://spark.apache.org/docs/2.2.0/streaming-kafka-0-8-integration.html&quot;&gt;官方文档（0.8）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;发送 Kafka：&lt;a href=&quot;https://www.jianshu.com/p/19c7a06d3997&quot;&gt;参考文章（简书）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;93-impala-vs-hive&quot;&gt;9.3 Impala vs Hive&lt;/h3&gt;
+&lt;p&gt;Impala 是为解决 Hive 交互式查询性能问题而生的方案：复用 Hive 的元数据管理，但跳过 MapReduce，使用自研执行引擎直接读取数据，延迟更低。&lt;/p&gt;
+&lt;p&gt;使用 JDBC 连接 Hive / Impala 时，若集群开启 Kerberos，需在连接前完成认证。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://www.cnblogs.com/beihang09/p/14224781.html&quot;&gt;Impala和Hive的关系 - 山中何事 - 博客园&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;94-kudu-vs-hbase&quot;&gt;9.4 Kudu vs HBase&lt;/h3&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;维度&lt;/th&gt;&lt;th&gt;Kudu&lt;/th&gt;&lt;th&gt;HBase&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;存储模型&lt;/td&gt;&lt;td&gt;列式，支持随机读写&lt;/td&gt;&lt;td&gt;列式，优化随机读写&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;适用场景&lt;/td&gt;&lt;td&gt;同时有顺序和随机读写；数据更新时效性要求高&lt;/td&gt;&lt;td&gt;海量数据随机读写&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;典型场景&lt;/td&gt;&lt;td&gt;时序数据分析、实时报表、ODS&lt;/td&gt;&lt;td&gt;用户画像、日志存储&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://zhuanlan.zhihu.com/p/25928166&quot;&gt;Kudu 介绍（知乎）&lt;/a&gt; | &lt;a href=&quot;https://cloud.tencent.com/developer/news/391226&quot;&gt;Kudu vs HBase（腾讯云）&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;10-时间戳问题&quot;&gt;10. 时间戳问题&lt;/h2&gt;
+&lt;p&gt;跨组件时间戳处理是大数据开发中的常见坑点，各层行为不一致。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;组件&lt;/th&gt;&lt;th&gt;时间戳行为&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;MySQL&lt;/td&gt;&lt;td&gt;&lt;code&gt;TIMESTAMP&lt;/code&gt; 类型与时区相关，存储时转换为 UTC&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Hive&lt;/td&gt;&lt;td&gt;&lt;code&gt;TIMESTAMP&lt;/code&gt; 无时区概念，Parquet 格式会影响其行为&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Spark&lt;/td&gt;&lt;td&gt;读取无时区时间戳时按 UTC 处理；写入 Hive 时可能因时区设置附加偏移&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;解决思路&lt;/strong&gt;：统一将时间戳转换到 UTC 后再处理，避免跨层时区混乱。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://cwiki.apache.org/confluence/display/Hive/Different+TIMESTAMP+types&quot;&gt;Hive 不同 TIMESTAMP 类型说明&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;参考文献&quot;&gt;参考文献&lt;/h2&gt;
+&lt;p&gt;以下链接在正文中未直接引用，但均来自原始学习记录，供延伸阅读。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Spark 官方文档&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://spark.apache.org/docs/latest/rdd-programming-guide.html&quot;&gt;RDD Programming Guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://spark.apache.org/docs/latest/sql-programming-guide.html&quot;&gt;Spark SQL and DataFrames - Spark 4.1.1 Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Hadoop 生态&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/fe7573adc3fb&quot;&gt;Hive + MySQL Metastore 配置（简书）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/60e7e16fb3ce&quot;&gt;Spark Integration with Hive（简书）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;列式存储&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/3d3950c9fb06&quot;&gt;列式存储介绍（简书）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/35622907&quot;&gt;列式存储详解（知乎）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Kudu&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://kudu.apache.org/kudu.pdf&quot;&gt;Kudu 白皮书（PDF）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Kerberos 认证&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/SimGenius/article/details/77081827&quot;&gt;JDBC 连接 Hive/Impala 前的 Kerberos 认证&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;ETL&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Extract,_transform,_load&quot;&gt;ETL 概念（Wikipedia）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt; - https://akelio-zhang.github.io/posts/2023-spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ - 2019–2026 Akelio</description><pubDate>Sat, 31 Dec 2022 16:00:00 GMT</pubDate></item></channel></rss>

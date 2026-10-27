@@ -1,1 +1,632 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>分布式系统 on LIFE CODER</title><link>https://akelio-zhang.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/</link><description>Recent content in 分布式系统 on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 29 Mar 2026 17:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml"/><item><title>消息队列：从原理到选型</title><link>https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/</link><pubDate>Sun, 29 Mar 2026 17:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/</guid><description/></item><item><title>资源调度（Yarn&amp;K8s）</title><link>https://akelio-zhang.github.io/posts/2026-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6yarnk8s/</link><pubDate>Sun, 29 Mar 2026 15:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2026-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6yarnk8s/</guid><description/></item><item><title>ZooKeeper笔记</title><link>https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/</link><pubDate>Wed, 01 May 2019 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>分布式系统</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>消息队列：从原理到选型</title><link>https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9A%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9A%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9A%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/ - &lt;h1 id=&quot;消息队列从原理到选型&quot;&gt;消息队列：从原理到选型&lt;/h1&gt;
+&lt;h2 id=&quot;什么是消息队列&quot;&gt;什么是消息队列？&lt;/h2&gt;
+&lt;p&gt;消息队列（Message Queue）是一种进程间通信或同进程间通信的方式，生产者将消息写入队列，消费者从队列中读取并处理消息。两端之间不直接通信，而是通过一个&quot;中间人&quot;传递数据。&lt;/p&gt;
+&lt;p&gt;从系统设计角度看，消息队列的核心价值在于两点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;解耦&lt;/strong&gt;：生产者和消费者不需要同时在线，彼此不感知对方的实现细节。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;最终一致性&lt;/strong&gt;：通过异步消息传递，将强一致性的同步调用转变为最终一致性的异步流程，显著提升系统吞吐量和可用性。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;为什么需要消息队列&quot;&gt;为什么需要消息队列？&lt;/h2&gt;
+&lt;p&gt;以一个电商下单场景为例：用户下单后，系统需要扣库存、发优惠券、推送通知、更新积分……如果这些操作全部同步串行执行，响应时间会线性叠加，任何一个下游服务的抖动都会直接影响下单接口的成功率。&lt;/p&gt;
+&lt;p&gt;消息队列正是为了解决这类问题而生的，它带来了三个核心能力：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;异步&lt;/strong&gt;：将耗时操作从主流程中剥离，主流程只需保证消息写入成功。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;削峰&lt;/strong&gt;：突发流量（如秒杀）先堆积在队列中，下游按自身消费能力匀速处理，避免被压垮。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;解耦&lt;/strong&gt;：下游新增或下线，无需改动上游代码，只需调整订阅关系。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当然，引入消息队列也带来了额外的复杂性：消息重复、消息丢失、顺序性保证、系统可用性等问题都需要仔细设计。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;主流消息队列横向对比&quot;&gt;主流消息队列横向对比&lt;/h2&gt;
+&lt;h3 id=&quot;rabbitmq&quot;&gt;RabbitMQ&lt;/h3&gt;
+&lt;p&gt;RabbitMQ 实现了 AMQP（Advanced Message Queuing Protocol）协议，其设计目标是支持&lt;strong&gt;复杂的消息路由&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;核心模型是 &lt;strong&gt;Exchange → Queue&lt;/strong&gt; 的两段式绑定：生产者将消息发送到 Exchange，由 Exchange 根据 routing key 和 binding 规则决定消息投递到哪个（或哪些）Queue，消费者从 Queue 消费。Exchange 有四种类型：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;类型&lt;/th&gt;&lt;th&gt;路由行为&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;direct&lt;/td&gt;&lt;td&gt;routing key 精确匹配&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;topic&lt;/td&gt;&lt;td&gt;routing key 通配符匹配（&lt;code&gt;*&lt;/code&gt; / &lt;code&gt;#&lt;/code&gt;）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;fanout&lt;/td&gt;&lt;td&gt;广播到所有绑定队列&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;headers&lt;/td&gt;&lt;td&gt;按消息头匹配&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;这套模型让 RabbitMQ 天然适合&lt;strong&gt;业务消息路由&lt;/strong&gt;场景，例如按地区、按事件类型将消息分发到不同处理队列。但它有几个结构性限制：消息消费后即删除，&lt;strong&gt;不支持回放&lt;/strong&gt;；消息默认存储在内存中，大量堆积时性能急剧下降；吞吐量在数万 QPS 量级，在大规模数据流场景下力不从心。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适合场景&lt;/strong&gt;：业务解耦、任务分发、需要复杂路由规则的场景。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;kafka&quot;&gt;Kafka&lt;/h3&gt;
+&lt;p&gt;Kafka 的本质是一个&lt;strong&gt;分布式持久化日志系统&lt;/strong&gt;，虽然常被当做消息队列使用，但它的设计目标是高吞吐、持久存储和可回放。&lt;/p&gt;
+&lt;h4 id=&quot;核心设计理念&quot;&gt;核心设计理念&lt;/h4&gt;
+&lt;p&gt;Kafka 团队认为，面对一个消息/数据系统，核心要解决的问题是&lt;strong&gt;可靠性&lt;/strong&gt;（消息不丢）和&lt;strong&gt;消费模型&lt;/strong&gt;（灵活消费）。Kafka 的答案是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;以 &lt;strong&gt;Append-Only Log&lt;/strong&gt; 作为存储模型，顺序写盘，吞吐极高（百万 QPS 量级）。&lt;/li&gt;
+&lt;li&gt;通过 &lt;strong&gt;Offset&lt;/strong&gt; 将消费进度的管理权交给消费者，支持任意回放。&lt;/li&gt;
+&lt;li&gt;通过 &lt;strong&gt;Consumer Group&lt;/strong&gt; 实现消费者的水平扩展。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;核心组件&quot;&gt;核心组件&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Topic&lt;/strong&gt;：逻辑上的消息分类，类似数据库中的表。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Partition&lt;/strong&gt;：Topic 的物理分片，是并行度的基本单元。每个 Partition 是一个有序的、不可变的消息序列。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Producer&lt;/strong&gt;：消息生产者，可指定 Partition 策略（轮询、按 key 哈希、自定义）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Consumer / Consumer Group&lt;/strong&gt;：消费者以 Consumer Group 为单位消费。&lt;strong&gt;同一个 Consumer Group 内，每个 Partition 只能被一个 Consumer 消费&lt;/strong&gt;；不同 Consumer Group 之间相互独立，互不影响。这意味着，Consumer 数量的上限等于 Partition 数量——多余的 Consumer 会处于空闲状态。因此，当消费能力不足时，必须先增加 Partition 数量，才能通过横向扩容 Consumer 来提升吞吐。&lt;strong&gt;Partition 数量是 Kafka 消费端并行度的天花板。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Broker&lt;/strong&gt;：单个 Kafka 服务器节点。多个 Broker 组成 Kafka 集群。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;数据一致性与可用性&quot;&gt;数据一致性与可用性&lt;/h4&gt;
+&lt;p&gt;Kafka 通过 &lt;strong&gt;ISR（In-Sync Replicas）&lt;/strong&gt; 机制保证数据可靠性：每个 Partition 有一个 Leader 和若干 Follower，只有追上 Leader 的 Follower 才在 ISR 列表中。Producer 可通过 &lt;code&gt;acks&lt;/code&gt; 参数控制可靠性级别：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;acks&lt;/th&gt;&lt;th&gt;含义&lt;/th&gt;&lt;th&gt;可靠性&lt;/th&gt;&lt;th&gt;吞吐&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;0&lt;/td&gt;&lt;td&gt;不等待确认&lt;/td&gt;&lt;td&gt;最低&lt;/td&gt;&lt;td&gt;最高&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;Leader 写入即确认&lt;/td&gt;&lt;td&gt;中&lt;/td&gt;&lt;td&gt;中&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;all / -1&lt;/td&gt;&lt;td&gt;所有 ISR 写入后确认&lt;/td&gt;&lt;td&gt;最高&lt;/td&gt;&lt;td&gt;最低&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;适合场景&lt;/strong&gt;：日志收集、事件流、数据管道、需要消息回放的场景、大规模高吞吐场景。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;rocketmq&quot;&gt;RocketMQ&lt;/h3&gt;
+&lt;p&gt;RocketMQ 由阿里巴巴开源，参考了 Kafka 的整体架构，但针对&lt;strong&gt;业务消息&lt;/strong&gt;场景做了深度增强：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;事务消息&lt;/strong&gt;：支持分布式事务，生产者发送半消息，本地事务执行后再 commit/rollback，天然解决业务侧的分布式一致性问题。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;延迟消息&lt;/strong&gt;：支持固定延迟级别（如 1s/5s/10s/30s/1min/…），适合订单超时关闭等场景。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;消息过滤&lt;/strong&gt;：支持 Tag 过滤和 SQL92 表达式过滤，在 Broker 侧完成，减少消费者侧无效消息处理。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;消息轨迹&lt;/strong&gt;：内置消息全链路追踪，便于排查消息丢失或延迟问题。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;顺序消息&lt;/strong&gt;：支持全局顺序和分区顺序，业务场景（如同一订单的多条消息）可按 key 路由到同一队列保证顺序。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;相比 Kafka，RocketMQ 在运维层面更友好，天然支持业务消息的高级特性，但在纯数据流/日志场景下吞吐不如 Kafka。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适合场景&lt;/strong&gt;：电商、金融等对消息语义要求高的业务场景，需要事务消息、延迟消息的场景。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;三者横向对比总结&quot;&gt;三者横向对比总结&lt;/h2&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;维度&lt;/th&gt;&lt;th&gt;RabbitMQ&lt;/th&gt;&lt;th&gt;Kafka&lt;/th&gt;&lt;th&gt;RocketMQ&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;协议&lt;/td&gt;&lt;td&gt;AMQP&lt;/td&gt;&lt;td&gt;自定义&lt;/td&gt;&lt;td&gt;自定义&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;吞吐量&lt;/td&gt;&lt;td&gt;万级&lt;/td&gt;&lt;td&gt;百万级&lt;/td&gt;&lt;td&gt;十万级&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;消息堆积&lt;/td&gt;&lt;td&gt;差（内存为主）&lt;/td&gt;&lt;td&gt;优（磁盘持久）&lt;/td&gt;&lt;td&gt;优&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;消息回放&lt;/td&gt;&lt;td&gt;✗&lt;/td&gt;&lt;td&gt;✓&lt;/td&gt;&lt;td&gt;✗（部分支持）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;延迟消息&lt;/td&gt;&lt;td&gt;✓（插件）&lt;/td&gt;&lt;td&gt;✗&lt;/td&gt;&lt;td&gt;✓（原生）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;事务消息&lt;/td&gt;&lt;td&gt;✓&lt;/td&gt;&lt;td&gt;✓（有限）&lt;/td&gt;&lt;td&gt;✓（原生）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;路由能力&lt;/td&gt;&lt;td&gt;强&lt;/td&gt;&lt;td&gt;弱&lt;/td&gt;&lt;td&gt;中&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;社区生态&lt;/td&gt;&lt;td&gt;成熟&lt;/td&gt;&lt;td&gt;极活跃&lt;/td&gt;&lt;td&gt;活跃&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;适用场景&lt;/td&gt;&lt;td&gt;业务路由解耦&lt;/td&gt;&lt;td&gt;数据流/日志&lt;/td&gt;&lt;td&gt;业务消息&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;faq&quot;&gt;FAQ&lt;/h2&gt;
+&lt;h3 id=&quot;kafka-和传统-mq-有什么本质区别&quot;&gt;Kafka 和传统 MQ 有什么本质区别？&lt;/h3&gt;
+&lt;p&gt;传统 MQ（如 RabbitMQ）以&lt;strong&gt;消息&lt;/strong&gt;为核心抽象，消息消费后即删除，Broker 负责路由和分发。&lt;/p&gt;
+&lt;p&gt;Kafka 以&lt;strong&gt;日志&lt;/strong&gt;为核心抽象，消息按时间顺序追加写入，永久保留（直到过期），消费者通过 Offset 自主记录消费进度。这意味着：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka 天然支持多个独立消费者读取同一份数据（如实时消费 + 离线分析）。&lt;/li&gt;
+&lt;li&gt;Kafka 支持重放历史消息，可用于数据修复、新业务冷启动。&lt;/li&gt;
+&lt;li&gt;Kafka 的消费语义由消费者决定，Broker 不感知消费状态（除 Consumer Group Offset）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;消息系统如何防止重复消费&quot;&gt;消息系统如何防止重复消费？&lt;/h3&gt;
+&lt;p&gt;重复消费根源在于：消息成功消费但 Offset 提交失败，重启后重新消费同一条消息。&lt;/p&gt;
+&lt;p&gt;防重策略的核心是&lt;strong&gt;幂等性设计&lt;/strong&gt;，即&quot;消费 N 次和消费 1 次效果相同&quot;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;数据库唯一索引&lt;/strong&gt;：以消息唯一 ID 为 unique key 入库，重复消息直接报主键冲突，忽略即可。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;状态机检查&lt;/strong&gt;：消费前检查当前状态是否已经满足&quot;已处理&quot;条件，是则跳过。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Redis 去重&lt;/strong&gt;：以消息 ID 为 key，&lt;code&gt;SETNX&lt;/code&gt; 写入，成功才处理，失败说明已处理过。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Producer 侧，Kafka 0.11+ 支持&lt;strong&gt;幂等 Producer&lt;/strong&gt;（&lt;code&gt;enable.idempotence=true&lt;/code&gt;），在单 session 内保证 exactly-once 写入，避免网络重试导致的重复写入。&lt;/p&gt;
+&lt;h3 id=&quot;消息系统如何防止消息丢失&quot;&gt;消息系统如何防止消息丢失？&lt;/h3&gt;
+&lt;p&gt;消息丢失可能发生在三个阶段：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;生产者侧&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka 设置 &lt;code&gt;acks=all&lt;/code&gt;，等待所有 ISR 副本确认后再返回成功。&lt;/li&gt;
+&lt;li&gt;开启 Producer 重试（&lt;code&gt;retries &gt; 0&lt;/code&gt;），注意同时开启幂等避免重复。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Broker 侧&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;设置 &lt;code&gt;replication.factor &gt;= 3&lt;/code&gt;，&lt;code&gt;min.insync.replicas &gt;= 2&lt;/code&gt;，确保有足够副本存活。&lt;/li&gt;
+&lt;li&gt;关闭 &lt;code&gt;unclean.leader.election.enable&lt;/code&gt;，避免数据落后的副本成为 Leader 导致数据倒退。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;消费者侧&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;关闭自动提交 Offset（&lt;code&gt;enable.auto.commit=false&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;消息&lt;strong&gt;处理成功后&lt;/strong&gt;再手动提交 Offset，而不是取到消息就提交。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总结来说，防丢的核心原则是：&lt;strong&gt;生产者确认写入、Broker 多副本冗余、消费者先处理后提交&lt;/strong&gt;。三端都不能有单点。&lt;/p&gt;
+&lt;h3 id=&quot;消息系统如何做到恰好一次exactly-once&quot;&gt;消息系统如何做到恰好一次（Exactly-once）？&lt;/h3&gt;
+&lt;p&gt;Exactly-once 是消息系统中最难实现的语义。完整的 Exactly-once 需要生产者、Broker、消费者三端协同：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;生产者&lt;/strong&gt;：开启幂等 Producer + 事务（&lt;code&gt;transactional.id&lt;/code&gt;），保证消息精确写入一次。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;消费者&lt;/strong&gt;：将消息处理和 Offset 提交放入同一个原子操作中（如同一数据库事务），保证&quot;处理&quot;和&quot;标记已消费&quot;同时成功或同时失败。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在工程实践中，大多数业务系统选择接受&quot;at-least-once + 消费端幂等&quot;的组合，因为它实现简单、运维成本低，且效果等价于 exactly-once。真正的 exactly-once 通常只在流处理场景（如 Kafka Streams、Flink）中严格使用。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;参考链接&quot;&gt;参考链接&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://javaguide.cn/high-performance/message-queue/message-queue.html&quot;&gt;消息队列基础知识总结 - JavaGuide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.infoq.cn/article/kafka-vs-rabbitmq&quot;&gt;消息中间件选型分析：从 Kafka 与 RabbitMQ 的对比看全局 - InfoQ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://tech.meituan.com/2016/07/01/mq-design.html&quot;&gt;美团：消息队列设计精要&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/38913026&quot;&gt;Kafka 核心设计理念 - 知乎&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt; - https://akelio-zhang.github.io/posts/2024-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9A%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E9%80%89%E5%9E%8B/ - 2019–2026 Akelio</description><pubDate>Sun, 29 Mar 2026 09:00:00 GMT</pubDate></item><item><title>资源调度（Yarn&amp;K8s）</title><link>https://akelio-zhang.github.io/posts/2026-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%EF%BC%88yarn%26k8s%EF%BC%89/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2026-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%EF%BC%88yarn%26k8s%EF%BC%89/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%EF%BC%88yarn%26k8s%EF%BC%89/ - &lt;h1 id=&quot;资源调度yarnk8s&quot;&gt;资源调度（Yarn&amp;#x26;K8s）&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文适合有一定 Linux 和分布式系统基础的读者，重点拆解 YARN、K8s 资源调度的宏观模型，以及 Cgroups 在内核层的实现细节。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在当今的分布式系统世界里，我们早已习惯了将成千上万台服务器视为一个整体。在这个&quot;硅基大陆&quot;上，每天都有无数的计算任务（Spark 作业、Nginx 服务、AI 训练模型）在抢夺生存空间。&lt;/p&gt;
+&lt;p&gt;如果将这些机器比作&lt;strong&gt;国土&lt;/strong&gt;，将任务比作&lt;strong&gt;居民&lt;/strong&gt;，那么决定哪个居民住进哪间房、能用多少电、吃多少粮的神秘力量，就是&lt;strong&gt;资源调度系统（Resource Scheduler）&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;今天，我们就从宏观和微观两个视角，拆解这股统治力量背后的奥秘，并深入 Linux 内核，围观其终极执行者——Cgroups 的运作原理。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;一-宏观视角两栖霸主的治理策略&quot;&gt;一、 宏观视角：两栖霸主的治理策略&lt;/h2&gt;
+&lt;p&gt;在大数据和云原生的世界里，YARN 和 Kubernetes (K8s) 是两股最强大的势力。它们虽然一个服务于大数据批处理，一个服务于微服务容器化，但在&quot;如何协调资源&quot;这件事上，殊途同归。&lt;/p&gt;
+&lt;h3 id=&quot;1-yarn-精准的请求-分配模式&quot;&gt;1. YARN: 精准的&quot;请求-分配&quot;模式&lt;/h3&gt;
+&lt;p&gt;YARN 像是一个极其严谨的&lt;strong&gt;工程大总管&lt;/strong&gt;。它不关心你的任务在干什么，只关心你用了多少资源。&lt;/p&gt;
+&lt;p&gt;其核心在于&lt;strong&gt;解耦&lt;/strong&gt;：ResourceManager 负责全局资源（内存、CPU）的调度分配，而 ApplicationMaster（任务包工头）负责向大总管申请资源，并指导机器上的 NodeManager 执行。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;它的风格：&lt;/strong&gt; 严格按照配额办事，适合运行时间长、资源需求确定的大任务，强调资源的利用率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;2-kubernetes-高可用的声明式治理&quot;&gt;2. Kubernetes: 高可用的&quot;声明式&quot;治理&lt;/h3&gt;
+&lt;p&gt;K8s 像是一个&lt;strong&gt;自动化城市市长&lt;/strong&gt;。你不需要告诉它&quot;怎么做&quot;，只需要声明&quot;我想要什么&quot;（比如：我需要 3 个 Nginx 实例，每个 1G 内存）。&lt;/p&gt;
+&lt;p&gt;K8s 的核心是&lt;strong&gt;控制循环（Control Loop）&lt;/strong&gt;。它不断对比&quot;理想状态&quot;与&quot;实际状态&quot;，如果发现不一致（比如有个节点宕机，少了 1 个 Nginx），调度器就会自动在其他合适的机器上重建任务。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;它的风格：&lt;/strong&gt; 自愈能力极强，追求最终一致性，特别适合需要 24 小时运行的服务。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;3-yarn-vs-k8s-核心对比&quot;&gt;3. YARN vs K8s 核心对比&lt;/h3&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th&gt;YARN&lt;/th&gt;&lt;th&gt;Kubernetes&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;核心组件&lt;/td&gt;&lt;td&gt;ResourceManager / ApplicationMaster / NodeManager&lt;/td&gt;&lt;td&gt;API Server / Scheduler / Kubelet&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;调度模型&lt;/td&gt;&lt;td&gt;请求-分配（Pull）&lt;/td&gt;&lt;td&gt;声明式 + 控制循环（Reconcile）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;适用场景&lt;/td&gt;&lt;td&gt;大数据批处理（Spark/MapReduce）&lt;/td&gt;&lt;td&gt;长运行微服务、容器化工作负载&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;自愈能力&lt;/td&gt;&lt;td&gt;弱（依赖 ApplicationMaster 重试）&lt;/td&gt;&lt;td&gt;强（控制循环持续修复）&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;二-微观视角资源调度是如何落地的&quot;&gt;二、 微观视角：资源调度是如何落地的？&lt;/h2&gt;
+&lt;p&gt;无论 YARN 和 K8s 在顶层设计上多么精妙，它们最终都必须回到一台台具体的物理机上执行。它们不能只发号施令，还得有一种机制来&quot;物理&quot;隔离资源。&lt;/p&gt;
+&lt;p&gt;试想一下，如果没有隔离，一个写了 Bug 的任务发生了内存泄漏，占满了整台机器的资源，同机器上的其他核心业务（比如银行的实时交易拦截系统）就会瞬间瘫痪。&lt;/p&gt;
+&lt;h3 id=&quot;k8s-resource-limits-与-cgroups-的对应关系&quot;&gt;K8s Resource Limits 与 Cgroups 的对应关系&lt;/h3&gt;
+&lt;p&gt;下面这段 K8s Pod YAML 是大家日常最熟悉的配置，但它背后真正执行限制的，其实是 Cgroups：&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;yaml&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#22863A;--shiki-dark:#85E89D&quot;&gt;resources&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#22863A;--shiki-dark:#85E89D&quot;&gt;  requests&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#22863A;--shiki-dark:#85E89D&quot;&gt;    memory&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;&quot;256Mi&quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#22863A;--shiki-dark:#85E89D&quot;&gt;    cpu&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;&quot;250m&quot;&lt;/span&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;       # 对应 cfs_quota = 25ms / 100ms 周期&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#22863A;--shiki-dark:#85E89D&quot;&gt;  limits&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#22863A;--shiki-dark:#85E89D&quot;&gt;    memory&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;&quot;512Mi&quot;&lt;/span&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;   # 对应 memory.limit_in_bytes = 512 * 1024 * 1024&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#22863A;--shiki-dark:#85E89D&quot;&gt;    cpu&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;: &lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;&quot;500m&quot;&lt;/span&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;       # 对应 cfs_quota = 50ms / 100ms 周期&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;requests&lt;/code&gt; 影响调度决策（Scheduler 用于选节点），&lt;code&gt;limits&lt;/code&gt; 才是真正写入 Cgroups 的硬约束。两者之差就是&quot;超卖空间&quot;，也是生产环境 OOM 事故的高发地带。&lt;/p&gt;
+&lt;p&gt;在 Linux 环境下，承担这一重任的底层基石就是 &lt;strong&gt;Cgroups (Control Groups)&lt;/strong&gt;。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;三-cgroups-的实现原理linux-内核的紧箍咒&quot;&gt;三、 Cgroups 的实现原理：Linux 内核的&quot;紧箍咒&quot;&lt;/h2&gt;
+&lt;p&gt;Cgroups 是 Linux 内核提供的一种机制，它可以对进程组使用的资源（如 CPU、内存、磁盘 I/O、网络带宽）进行精细化的限制、统计和隔离。&lt;/p&gt;
+&lt;p&gt;可以说，&lt;strong&gt;没有 Cgroups，就没有现代的容器技术&lt;/strong&gt;。Docker 的本质，不过是用 Namespace 做隔离、用 Cgroups 做限流的进程而已——容器并非虚拟机，它没有独立的内核，Cgroups 就是它与宿主机之间唯一的那道&quot;栅栏&quot;。没有这道栅栏，K8s 的资源保证也就无从谈起。&lt;/p&gt;
+&lt;h3 id=&quot;1-核心架构层级组织-hierarchy-与子系统-subsystem&quot;&gt;1. 核心架构：层级组织 (Hierarchy) 与子系统 (Subsystem)&lt;/h3&gt;
+&lt;p&gt;Cgroups 的设计非常巧妙，它将资源的控制视为一个&lt;strong&gt;层级树状结构&lt;/strong&gt;，并通过 Linux 著名的文件系统视图（Everything is a file）展现给用户。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;子系统 (Subsystem/Resource Controller)：&lt;/strong&gt; 这是具体的资源控制器。Linux 内核提供了许多子系统，如：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cpu&lt;/code&gt;: 限制进程对 CPU 时间的使用。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;memory&lt;/code&gt;: 限制进程的内存使用量（包括 RAM 和 Swap）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;blkio&lt;/code&gt;: 限制磁盘 I/O。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;控制组 (Control Group)：&lt;/strong&gt; 这就是树上的一个个节点。我们将一组进程放入一个控制组中，然后对这个组应用子系统的策略。&lt;/li&gt;
+&lt;li&gt;cgroup v2 的控制目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;plaintext&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;/sys/fs/cgroup/&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;├── cgroup.controllers      # 当前系统支持哪些资源控制&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;├── cgroup.procs            # 根组里的进程&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;├── cgroup.subtree_control  # 哪些资源可以下放到子组&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;├── system.slice/           # 所有的资源（CPU/MEM/IO）都在这一个目录下&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;│   ├── cgroup.controllers&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;│   ├── cpu.max             # v2 里的 CPU 限制文件&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;│   ├── memory.max          # v2 里的内存限制文件&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;│   └── io.max              # v2 里的 IO 限制文件&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;└── user.slice/&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;2-实现原理深度细化&quot;&gt;2. 实现原理深度细化&lt;/h3&gt;
+&lt;p&gt;Cgroups 是如何实实在在地限制住资源的使用呢？我们重点看 CPU 和内存的实现：&lt;/p&gt;
+&lt;h4 id=&quot;a-cpu-限制原理时间片的魔术&quot;&gt;A. CPU 限制原理：时间片的魔术&lt;/h4&gt;
+&lt;p&gt;CPU 的限制有两种常见的实现模式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;完全公平调度 (CFS) 带宽限制 (The Hard Limit)：&lt;/strong&gt; 这是 YARN 和 K8s 最常用的模式。内核通过两个参数来控制：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cpu.cfs_period_us&lt;/code&gt;: 一个周期的时间长度（默认 100,000 微秒，即 100ms）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cpu.cfs_quota_us&lt;/code&gt;: 在这个周期内，该组允许使用的 CPU 时间（单位：微秒）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;举个例子：若设置 &lt;code&gt;cpu.cfs_quota_us = 50000&lt;/code&gt;、&lt;code&gt;cpu.cfs_period_us = 100000&lt;/code&gt;，意味着该 Cgroup 每 100ms 只能跑 50ms，即最多使用 0.5 个 CPU 核。一旦配额耗尽，进程就会被&lt;strong&gt;暂停（Throttle）&lt;/strong&gt;，直到下一个周期配额重置。这是一个严格的硬限制——即使机器上其他核心完全空闲，该进程也不能&quot;借用&quot;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;CPU Shares (The Soft Limit)：&lt;/strong&gt; 这不是硬限制，而是权重的比拼。在 CPU 空闲时，谁都可以百分百使用；只有当多个进程&lt;strong&gt;抢占&lt;/strong&gt; CPU 时，内核才会按照 Shares 的比例来决定谁能获得更多的计算时间。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;b-内存限制原理红线与警报&quot;&gt;B. 内存限制原理：红线与警报&lt;/h4&gt;
+&lt;p&gt;内存的限制比 CPU 更加严厉，因为它关系到系统的稳定性。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;核心文件：&lt;/strong&gt; &lt;code&gt;memory.limit_in_bytes&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;实现细节：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;记账：&lt;/strong&gt; 当 Cgroup 内的进程尝试申请内存时，内核的内存分配器（Page Allocator）会检查该 Cgroup 的内存计数器。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;红线检查：&lt;/strong&gt; 如果新申请的内存使得该组的总使用量超过了 &lt;code&gt;memory.limit_in_bytes&lt;/code&gt; 设定的红线，内核就不会继续分配内存。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;最后的挣扎 (Reclaim)：&lt;/strong&gt; 内核会首先尝试在这个 Cgroup 内部进行&lt;strong&gt;内存回收&lt;/strong&gt;（比如回收不再使用的文件缓存、将不常用的内存页交换到磁盘 Swap 上）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;死刑 (OOM Killer)：&lt;/strong&gt; 如果回收后内存依然不足，内核就会触发 &lt;strong&gt;OOM Killer (Out Of Memory Killer)&lt;/strong&gt; 机制。它会依据内核计算的 &lt;code&gt;oom_score&lt;/code&gt;（综合考量进程内存占用、运行时长、是否为特权进程等因素）在这个 Cgroup 内打分，将得分最高的进程直接杀掉（&lt;code&gt;SIGKILL&lt;/code&gt;），以此来保障整台机器不崩溃。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;3-动手验证用-cgroups-限制一个进程&quot;&gt;3. 动手验证：用 Cgroups 限制一个进程&lt;/h3&gt;
+&lt;p&gt;理论之后，我们用几条命令直接验证。以下示例基于 Cgroups v1 接口（适用于大多数仍在使用 v1 的生产环境）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;内存限制：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;# 创建一个新的 memory cgroup&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;mkdir&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; /sys/fs/cgroup/memory/demo&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;# 限制内存上限为 50MB&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt; $((&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;50&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; *&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 1024&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; *&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 1024&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;)) &lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;&gt;&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; /sys/fs/cgroup/memory/demo/memory.limit_in_bytes&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;# 将当前 shell 加入该 cgroup&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; $$&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; &gt;&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; /sys/fs/cgroup/memory/demo/cgroup.procs&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;# 此时在该 shell 内运行的任何进程，内存超过 50MB 将触发 OOM Killer&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;CPU 限速：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;mkdir&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; /sys/fs/cgroup/cpu/demo&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;# 每 100ms 周期内只允许使用 20ms，即 20% CPU&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 100000&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; &gt;&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; /sys/fs/cgroup/cpu/demo/cpu.cfs_period_us&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 20000&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;  &gt;&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; /sys/fs/cgroup/cpu/demo/cpu.cfs_quota_us&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; &amp;#x3C;&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;PI&lt;/span&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;D&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;&gt;&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; &gt;&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; /sys/fs/cgroup/cpu/demo/cgroup.procs&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;配合 &lt;code&gt;top&lt;/code&gt; 观察 CPU 占用，或用以下命令查看 Throttle 计数是否上涨：&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;cat&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; /sys/fs/cgroup/cpu/demo/cpu.stat&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;# nr_throttled 字段会随着限速触发而递增&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;四-总结从理念到执行的闭环&quot;&gt;四、 总结：从理念到执行的闭环&lt;/h2&gt;
+&lt;p&gt;资源调度是一个从宏观理念到微观执行的闭环：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;YARN/K8s&lt;/strong&gt; 负责解决&quot;在全局范围，我该把任务放到哪里&quot;的问题（调度策略）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cgroups&lt;/strong&gt; 负责解决&quot;当任务来到机器上，它能用多少资源&quot;的问题（资源隔离）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;它们共同构成了现代分布式系统的基石，确保了我们的&quot;硅基大陆&quot;有序、高效地运转。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;后记：&lt;/strong&gt;
+在进行实际的开发或运维时（尤其是像银行风控系统这样对稳定性要求极高的环境），深入理解 Cgroups 限制会导致 OOM (Out Of Memory) 还是 Throttle (CPU 限速) 极其关键。正确地设置 Java 堆大小（&lt;code&gt;-Xmx&lt;/code&gt;）与 Cgroups 限制（Container limits）之间的差距，往往就是一个线上 Bug 和系统崩溃之间的差别。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.kernel.org/translations/zh_CN/scheduler/sched-design-CFS.html&quot;&gt;完全公平调度器 — The Linux Kernel documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://arthurchiao.art/blog/linux-cfs-design-and-implementation-zh/&quot;&gt;Linux CFS 调度器：原理、设计与内核实现（2023）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.kernel.org/admin-guide/cgroup-v1/cgroups.html&quot;&gt;Control Groups — The Linux Kernel documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.kernel.org/translations/zh_CN/scheduler/sched-bwc.html&quot;&gt;CFS 带宽控制 — The Linux Kernel documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/&quot;&gt;Resource Management for Pods and Containers | Kubernetes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html&quot;&gt;Apache Hadoop YARN — Apache Hadoop 3.4.3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt; - https://akelio-zhang.github.io/posts/2026-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%EF%BC%88yarn%26k8s%EF%BC%89/ - 2019–2026 Akelio</description><pubDate>Sun, 29 Mar 2026 07:00:00 GMT</pubDate></item><item><title>ZooKeeper笔记</title><link>https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/ - &lt;h1 id=&quot;zookeeper笔记&quot;&gt;ZooKeeper笔记&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;logged in 2019 and written with Claude in 2026.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;本文是学习 ZooKeeper 过程中的整理笔记，涵盖核心概念、Watcher 机制、ZAB 选举协议以及实践案例，主要参考官方文档与《从Paxos到ZooKeeper》。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;what-is-zookeeper&quot;&gt;What is ZooKeeper?&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;ZooKeeper 是一个面向分布式应用的协调服务，核心能力包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;配置管理&lt;/strong&gt;：集中存储和分发配置信息&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;命名服务&lt;/strong&gt;：为分布式资源提供统一命名&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分布式同步&lt;/strong&gt;：实现分布式锁、屏障等同步原语&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;集群管理&lt;/strong&gt;：监控节点存活状态、Master 选举等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;内部数据结构：ZNode&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ZooKeeper 使用类 Linux 目录树结构组织数据，每个节点称为 ZNode，具有唯一路径名，并可存储少量数据。ZNode 支持变更通知（Watcher），使客户端能够感知数据变化。&lt;/p&gt;
+&lt;p&gt;在一致性方面，ZooKeeper 通过 ZAB 协议在集群内部保证强一致性与分区容忍性。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://draveness.me/zookeeper-chubby&quot;&gt;ZooKeeper 与 Chubby 对比&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;zookeeper-能做什么&quot;&gt;ZooKeeper 能做什么？&lt;/h2&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://blog.csdn.net/weijifeng_/article/details/79775738&quot;&gt;ZooKeeper 应用场景总结&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;常见应用场景包括：分布式锁、服务注册与发现、配置中心、Leader 选举、分布式队列等。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;watcher-机制&quot;&gt;Watcher 机制&lt;/h2&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://www.ibm.com/developerworks/cn/opensource/os-cn-apache-zookeeper-watcher/index.html&quot;&gt;IBM Developer - ZooKeeper Watcher 详解&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;watcher-的核心特性&quot;&gt;Watcher 的核心特性&lt;/h3&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;特性&lt;/th&gt;&lt;th&gt;说明&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;一次性触发&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;Watcher 触发一次后自动失效，需重新注册才能继续监听&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;串行回调&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;客户端回调在单线程中顺序执行，避免并发问题，但回调逻辑不能阻塞&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;轻量级&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;服务端只存储 Watcher 的存在标记，WatchEvent 不携带变更后的数据，客户端需自行重新读取&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&quot;watcher-基本流程&quot;&gt;Watcher 基本流程&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;客户端通过 &lt;code&gt;addWatch&lt;/code&gt; 方法向服务端注册一个 Watcher&lt;/li&gt;
+&lt;li&gt;服务端检测到对应事件发生后，封装一个 &lt;code&gt;WatchEvent&lt;/code&gt; 发送给客户端&lt;/li&gt;
+&lt;li&gt;客户端通过 &lt;code&gt;WatchManager&lt;/code&gt; 中缓存的回调函数进行处理&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;WatchEvent&lt;/code&gt; 可按 &lt;code&gt;KeeperState&lt;/code&gt;（连接状态）和 &lt;code&gt;EventType&lt;/code&gt;（事件类型）两个维度分类。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;zookeeper-原理&quot;&gt;ZooKeeper 原理&lt;/h2&gt;
+&lt;h3 id=&quot;分布式系统的核心挑战&quot;&gt;分布式系统的核心挑战&lt;/h3&gt;
+&lt;p&gt;在理解 ZooKeeper 的设计之前，需要先了解分布式系统面临的基本问题。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CAP 定理&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;分布式系统无法同时满足以下三点，最多只能保证其中两项：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;属性&lt;/th&gt;&lt;th&gt;含义&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;C（Consistency）一致性&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;所有节点在同一时刻看到相同的数据&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;A（Availability）可用性&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;每个请求都能收到响应（不保证是最新数据）&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;P（Partition Tolerance）分区容忍性&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;网络分区发生时系统仍能继续运行&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;网络分区在分布式环境中是不可避免的，因此实际系统通常在 &lt;strong&gt;CP&lt;/strong&gt; 或 &lt;strong&gt;AP&lt;/strong&gt; 之间做取舍。ZooKeeper 选择了 &lt;strong&gt;CP&lt;/strong&gt;：牺牲部分可用性（Leader 选举期间不提供服务），换取强一致性保证。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;拜占庭将军问题与故障模型&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;分布式系统中的节点故障分两类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Crash Fault（崩溃故障）&lt;/strong&gt;：节点宕机、停止响应，不会发送错误信息。ZooKeeper 假设只存在此类故障。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Byzantine Fault（拜占庭故障）&lt;/strong&gt;：节点可能发送任意错误或恶意消息。容忍此类故障需要 &lt;strong&gt;N ≥ 3F+1&lt;/strong&gt; 个节点（N 为总节点数，F 为故障节点数）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ZooKeeper 不处理拜占庭故障，仅需 &lt;strong&gt;N ≥ 2F+1&lt;/strong&gt;（即超过半数存活即可），这也是为什么 ZK 集群通常部署奇数个节点（3、5、7）。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://www.zhihu.com/question/52254063/answer/322188918&quot;&gt;拜占庭容错为什么需要 N ≥ 3F+1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;FLP 不可能定理&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在异步网络环境中，即使只有一个节点可能崩溃，也不存在一个能在有限时间内保证达成共识的确定性算法。ZAB、Paxos、Raft 等协议的解决思路是：在实践中引入&lt;strong&gt;超时机制&lt;/strong&gt;，将异步网络假设放宽为部分同步模型，从而绕过这一理论限制。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;共识算法简述&quot;&gt;共识算法简述&lt;/h3&gt;
+&lt;p&gt;ZAB 并非凭空设计，其背后是一系列共识算法的演进：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Paxos&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Paxos 是分布式共识的理论基础，分为 Prepare 和 Accept 两个阶段，通过多数派投票达成一致。但原始 Paxos 描述的是单值共识，工程实现复杂，不直接支持日志复制场景。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Multi-Paxos → Raft&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;为解决 Paxos 的工程复杂性，Raft 将共识过程拆分为 &lt;strong&gt;Leader 选举、日志复制、安全性&lt;/strong&gt; 三个相对独立的子问题，可读性更强，是目前最广泛实现的共识算法（etcd、TiKV 均基于 Raft）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ZAB vs Raft&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ZAB 与 Raft 思路相近，核心差异在于：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;对比项&lt;/th&gt;&lt;th&gt;ZAB&lt;/th&gt;&lt;th&gt;Raft&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;设计目标&lt;/td&gt;&lt;td&gt;为 ZooKeeper 定制&lt;/td&gt;&lt;td&gt;通用共识算法&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;日志提交条件&lt;/td&gt;&lt;td&gt;超过半数 ACK&lt;/td&gt;&lt;td&gt;超过半数 ACK&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Leader 选举依据&lt;/td&gt;&lt;td&gt;epoch + zxid&lt;/td&gt;&lt;td&gt;term + log index&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;成员变更&lt;/td&gt;&lt;td&gt;不支持动态成员变更&lt;/td&gt;&lt;td&gt;支持（Joint Consensus）&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;zab-协议详解&quot;&gt;ZAB 协议详解&lt;/h3&gt;
+&lt;p&gt;ZAB（ZooKeeper Atomic Broadcast，原子广播协议）是 ZooKeeper 的核心，保证所有事务在集群中以相同顺序被所有节点处理。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ZAB 的两个核心阶段&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;① 崩溃恢复（Leader Election + Recovery）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;当集群启动或 Leader 宕机时进入此阶段：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;所有节点进入 LOOKING 状态，开始投票&lt;/li&gt;
+&lt;li&gt;每个节点广播自己的投票：&lt;code&gt;(myid, zxid, epoch)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;收到投票后按以下规则 PK，更新自己的投票：
+&lt;ul&gt;
+&lt;li&gt;优先选 &lt;code&gt;epoch&lt;/code&gt; 更大的节点&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;epoch&lt;/code&gt; 相同则选 &lt;code&gt;zxid&lt;/code&gt; 更大的节点（数据更新）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zxid&lt;/code&gt; 也相同则选 &lt;code&gt;myid&lt;/code&gt; 更大的节点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;超过半数节点投给同一候选人，该节点成为新 Leader&lt;/li&gt;
+&lt;li&gt;新 Leader 与 Follower 同步数据，确保所有已提交事务不丢失&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;② 消息广播（Atomic Broadcast）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;正常运行阶段，所有写请求统一由 Leader 处理：&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;plaintext&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;Client → (任意节点) → Leader&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                         ↓ Propose（带 zxid）&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                    Follower × N&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                         ↓ ACK（超过半数）&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                    Leader Commit&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                         ↓ 广播 Commit&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;                    Follower Commit → Client 响应&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个流程类似两阶段提交（2PC），但 Leader 不等待所有节点确认，只需&lt;strong&gt;多数派&lt;/strong&gt;即可提交，从而在容错性和性能之间取得平衡。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;zxid 的结构&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;zxid&lt;/code&gt; 是一个 64 位整数，高 32 位为 &lt;code&gt;epoch&lt;/code&gt;（每次 Leader 切换递增），低 32 位为事务序号。这个设计保证了跨 Leader 周期的全局事务顺序。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ZooKeeper 的一致性保证&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ZooKeeper 提供的并非严格的线性一致性（Linearizability），而是&lt;strong&gt;顺序一致性（Sequential Consistency）&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;写操作：由 Leader 统一处理，全局有序，保证强一致&lt;/li&gt;
+&lt;li&gt;读操作：可能从 Follower 读到旧数据（Follower 同步存在延迟）&lt;/li&gt;
+&lt;li&gt;如需读到最新数据，需在读之前调用 &lt;code&gt;sync()&lt;/code&gt; 强制同步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/400a44edee88&quot;&gt;ZAB 协议详解 - 简书&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/27335748&quot;&gt;ZAB 协议原理 - 知乎&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;实践案例搭建-zookeeper-集群&quot;&gt;实践案例：搭建 ZooKeeper 集群&lt;/h2&gt;
+&lt;p&gt;参考：&lt;a href=&quot;https://segmentfault.com/a/1190000006907443&quot;&gt;Docker 搭建 ZK 集群 - SegmentFault&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;①-搭建-zk-集群docker&quot;&gt;① 搭建 ZK 集群（Docker）&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;方式一：逐个创建容器&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;拉取 ZooKeeper 镜像后，依次创建多个 ZK 容器，手动配置组成集群。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;方式二：使用 Docker Compose（推荐）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;编写 &lt;code&gt;docker-compose.yml&lt;/code&gt; 配置集群拓扑，一键启动：&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;# 启动集群&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;COMPOSE_PROJECT_NAME&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;zk_test&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; docker-compose&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; up&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; -d&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6A737D;--shiki-dark:#6A737D&quot;&gt;# 查看运行状态&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#24292E;--shiki-dark:#E1E4E8&quot;&gt;COMPOSE_PROJECT_NAME&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;zk_test&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; docker-compose&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; ps&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741434602-a9fc9846-91da-47bb-a9e3-f4ca702b3fec.png&quot; alt=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741434602-a9fc9846-91da-47bb-a9e3-f4ca702b3fec.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741457323-ad45018b-658a-48de-b3f7-12caf47bf98e.png&quot; alt=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741457323-ad45018b-658a-48de-b3f7-12caf47bf98e.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;②-连接集群验证&quot;&gt;② 连接集群验证&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;通过 Docker 连接 ZK 集群：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt;docker&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; run&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; -it&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; --rm&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  --link&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zk1&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; --link&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zk2&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; --link&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zk3&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;  --net&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zk_test_default&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt;  zookeeper&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zkCli.sh&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; -server&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; zk1:2181&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;本地使用 nc 快速检查节点状态：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;bash&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; stat&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; |&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; nc&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 127.0.0.1&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 2181&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; stat&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; |&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; nc&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 127.0.0.1&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 2182&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt;echo&lt;/span&gt;&lt;span style=&quot;color:#032F62;--shiki-dark:#9ECBFF&quot;&gt; stat&lt;/span&gt;&lt;span style=&quot;color:#D73A49;--shiki-dark:#F97583&quot;&gt; |&lt;/span&gt;&lt;span style=&quot;color:#6F42C1;--shiki-dark:#B392F0&quot;&gt; nc&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 127.0.0.1&lt;/span&gt;&lt;span style=&quot;color:#005CC5;--shiki-dark:#79B8FF&quot;&gt; 2183&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;实测结果：&lt;code&gt;zk3&lt;/code&gt;（端口 2183）为 Leader，其余节点均为 Follower。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741480312-67a471eb-9a50-452e-8f73-bb84a3a307af.png&quot; alt=&quot;https://cdn.nlark.com/yuque/0/2020/png/726875/1595741480312-67a471eb-9a50-452e-8f73-bb84a3a307af.png&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;③-java-客户端接入&quot;&gt;③ Java 客户端接入&lt;/h3&gt;
+&lt;p&gt;常用客户端库：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Apache ZooKeeper 原生客户端&lt;/strong&gt;：官方提供，功能完整&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;101tec ZkClient&lt;/strong&gt;：对原生客户端的封装，API 更友好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;主要练习内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;节点的增删改查&lt;/li&gt;
+&lt;li&gt;多线程竞争 Master（分布式锁场景）&lt;/li&gt;
+&lt;li&gt;Watcher 的注册与回调&lt;/li&gt;
+&lt;li&gt;模拟服务器节点失效时的处理逻辑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/eec133595c68&quot;&gt;ZooKeeper 入门 - 简书&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.cnblogs.com/dimmacro/p/4457665.html&quot;&gt;ZooKeeper 原理与实践 - 博客园&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;《从Paxos到ZooKeeper》&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.zhihu.com/question/52254063/answer/322188918&quot;&gt;拜占庭容错为什么需要 N ≥ 3F+1 - 知乎&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt; - https://akelio-zhang.github.io/posts/2019-zookeeper%E7%AC%94%E8%AE%B0/ - 2019–2026 Akelio</description><pubDate>Wed, 01 May 2019 10:00:00 GMT</pubDate></item></channel></rss>

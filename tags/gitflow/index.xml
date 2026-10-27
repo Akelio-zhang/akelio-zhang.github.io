@@ -1,1 +1,85 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GitFlow on LIFE CODER</title><link>https://akelio-zhang.github.io/tags/gitflow/</link><description>Recent content in GitFlow on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Mon, 30 Sep 2024 18:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/tags/gitflow/index.xml" rel="self" type="application/rss+xml"/><item><title>Git原理与分支管理实践</title><link>https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link><pubDate>Mon, 30 Sep 2024 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>GitFlow</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>Git原理与分支管理实践</title><link>https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/ - &lt;blockquote&gt;
+&lt;p&gt;Written with Claude.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;理解 Git 不应止步于记住命令。本文记录了两个动手实验——把 &lt;code&gt;.git&lt;/code&gt; 目录的对象存进数据库、用 JS 重新实现 Git 核心操作——以此真正搞清楚 Git 在保存什么、操作什么。第二部分结合团队实际诉求，设计了一套基于 Git Flow 的分支管理方案。&lt;/p&gt;
+&lt;h2 id=&quot;原理理解&quot;&gt;原理理解&lt;/h2&gt;
+&lt;h3 id=&quot;将-git-存储到数据库git-db&quot;&gt;将 .git 存储到数据库（git-db）&lt;/h3&gt;
+&lt;p&gt;Git 的存储本质是一个内容寻址的 KV 数据库，所有对象（blob / tree / commit / tag）都以 SHA-1 为 key，以 zlib 压缩后的二进制为 value。这个实验将 &lt;code&gt;.git/objects&lt;/code&gt; 下的所有对象导入关系型数据库，直观地验证了这一点：每一次 &lt;code&gt;git add&lt;/code&gt; 产生一个 blob 对象，每一次 &lt;code&gt;git commit&lt;/code&gt; 产生一个 commit 对象和若干 tree 对象，分支和 HEAD 不过是指向某个 commit SHA-1 的指针文件。理解这一层之后，Git 的大多数&quot;魔法&quot;行为都变得可以推导。&lt;/p&gt;
+&lt;h3 id=&quot;用-js-重新实现-gitgit-js&quot;&gt;用 JS 重新实现 Git（git-js）&lt;/h3&gt;
+&lt;p&gt;在理解存储结构之后，用 JavaScript 重新实现 Git 的核心操作（&lt;code&gt;init&lt;/code&gt; / &lt;code&gt;add&lt;/code&gt; / &lt;code&gt;commit&lt;/code&gt; / &lt;code&gt;log&lt;/code&gt; / &lt;code&gt;checkout&lt;/code&gt;），目的是验证对操作语义的理解是否准确。这个过程中最重要的收获是：Git 的&quot;分支切换&quot;本质上只是修改 HEAD 指针 + 用目标 tree 对象还原工作区，与任何网络、服务端都无关；而 &lt;code&gt;merge&lt;/code&gt; 的核心是找到两个 commit 的公共祖先，再做三方合并。&lt;/p&gt;
+&lt;h2 id=&quot;分支管理&quot;&gt;分支管理&lt;/h2&gt;
+&lt;h3 id=&quot;主流工作流对比&quot;&gt;主流工作流对比&lt;/h3&gt;
+&lt;p&gt;分支管理策略大体分为两类：&lt;strong&gt;Trunk Based Development&lt;/strong&gt; 和 &lt;strong&gt;Git Flow&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Git Flow&lt;/strong&gt;：维持 &lt;code&gt;master&lt;/code&gt; 和 &lt;code&gt;develop&lt;/code&gt; 两个长期分支，分别对应生产和测试环境。多版本场景下可从对应节点再建新的主分支并行推进。节奏稳健，适合有明确发布窗口的团队。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GitHub Flow&lt;/strong&gt;：主干持续发布，feature 分支直接合入 main 并部署。是 Trunk Based 的精华版，对团队整体工程能力要求高，不适合多版本并行管理。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GitLab Flow&lt;/strong&gt;：GitHub Flow 的演进版，在主干之外增加环境分支（如 &lt;code&gt;production&lt;/code&gt;、&lt;code&gt;staging&lt;/code&gt;），主干代码向下游环境分支合并。相比 GitHub Flow 更适合有多套环境的团队，但对合并纪律要求较高。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;代码管理诉求&quot;&gt;代码管理诉求&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;按窗口（功能清单）发布、单一生产版本&lt;/li&gt;
+&lt;li&gt;支持多版本并行开发&lt;/li&gt;
+&lt;li&gt;尽可能保留所有 commit&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;操作方案基于-git-flow&quot;&gt;操作方案：基于 Git Flow&lt;/h3&gt;
+&lt;h4 id=&quot;多版本并行开发策略&quot;&gt;多版本并行开发策略&lt;/h4&gt;
+&lt;p&gt;多版本并行开发通过以下约束保证代码继承关系的正确性：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;核心规则：所有测试分支不得落后于 &lt;code&gt;master&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;无论当前有多少个版本在并行开发，每个测试分支在提 MR 合入时，必须已将最新的 &lt;code&gt;master&lt;/code&gt; 内容 merge 进来。这一约束确保了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;任何一个版本上线后，其他版本的测试分支都不会丢失已上线的内容&lt;/li&gt;
+&lt;li&gt;版本间的代码继承关系通过这条规则自然保证，不需要额外维护分支间的同步逻辑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;执行时机&lt;/strong&gt;：同步要求在&lt;strong&gt;提 MR 合入测试分支时&lt;/strong&gt;即生效，而非上线前才处理，避免冲突在打包阶段集中爆发。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CR 注意事项&lt;/strong&gt;：feature 分支 merge master 后，MR 的 diff 中会包含与本次功能无关的内容。开发者须在 MR 描述中注明是否包含 master 同步，方便 reviewer 聚焦在本次功能变更上，避免 CR 流于形式。&lt;/p&gt;
+&lt;h4 id=&quot;分支命名&quot;&gt;分支命名&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;master&lt;/code&gt;：最新 commit id 等价于当前生产版本&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;develop&lt;/code&gt;：单版本场景下的测试主分支&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;develop_vX&lt;/code&gt;：多版本并行时各版本独立的测试分支，对应独立的测试环境&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;release_日期&lt;/code&gt;：窗口裁剪的标准路径，当测试分支上同时存在多个功能但本次只上线部分时使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;代码提交&quot;&gt;代码提交&lt;/h4&gt;
+&lt;p&gt;所有分支合入测试主分支前须经过 Code Review。通过拓宽 CR 参与人数来分散审查压力，保证代码质量。feature 分支合入时禁止 squash merge，保留完整的 commit 历史。&lt;/p&gt;
+&lt;h4 id=&quot;打包上线&quot;&gt;打包上线&lt;/h4&gt;
+&lt;p&gt;若存在 &lt;code&gt;release&lt;/code&gt; 分支则以 &lt;code&gt;release&lt;/code&gt; 为打包源，否则以本次测试分支为打包分支。打包产物的后缀 commit id 即为 &lt;code&gt;master&lt;/code&gt; 合并与 tag 的目标节点。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;master&lt;/code&gt; 分支只允许 &lt;code&gt;--ff-only&lt;/code&gt; 合并，确保其仅作为映射指标存在——所有 commit 均来源于经过复核的测试主分支。&lt;/p&gt;
+&lt;p&gt;典型生命周期（单测试分支场景）：&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;plaintext&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;feature → develop → (build &amp;#x26; verify) → master (ff-only) + tag&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;平台配置&quot;&gt;平台配置&lt;/h4&gt;
+&lt;p&gt;以下规则须在 GitLab/GitHub 分支保护里显式配置，不依赖约定：&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;规则&lt;/th&gt;&lt;th&gt;作用&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;develop_*&lt;/code&gt; 只允许 merge commit，禁止 squash&lt;/td&gt;&lt;td&gt;保留所有 commit 历史&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;master&lt;/code&gt; 只允许 ff-only&lt;/td&gt;&lt;td&gt;保证 master 是线性映射&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;feature 分支合入 &lt;code&gt;develop_*&lt;/code&gt; 必须通过 MR + CR&lt;/td&gt;&lt;td&gt;保证上线质量&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;develop_*&lt;/code&gt; 不允许直接 push，必须走 MR&lt;/td&gt;&lt;td&gt;防止绕过 CR&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&quot;最终效果&quot;&gt;最终效果&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;master&lt;/code&gt; 与 tag 共同构成所有历史发布版本的完整索引，每个 tag 对应一次上线的代码与变更内容&lt;/li&gt;
+&lt;li&gt;打包的代码一定包含 &lt;code&gt;master&lt;/code&gt; 的全部提交（Jenkins 增加检查脚本保障）&lt;/li&gt;
+&lt;li&gt;所有上线代码均经过 Code Review&lt;/li&gt;
+&lt;li&gt;最小化 commit 在不同分支间的流动：仅有单测试分支时，整个流程只存在测试分支向 &lt;code&gt;master&lt;/code&gt; 的一次合并&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;这套方案的核心取舍是：以 Git Flow 的双主干结构换取发布安全性，以 &lt;code&gt;--ff-only&lt;/code&gt; 合并保证 &lt;code&gt;master&lt;/code&gt; 的可追溯性，以 CR 门禁换取上线质量。对于单一生产版本、按窗口发布的团队，这是目前成本最低、风险最可控的路径。&lt;/p&gt; - https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/ - 2019–2026 Akelio</description><pubDate>Mon, 30 Sep 2024 10:00:00 GMT</pubDate></item></channel></rss>

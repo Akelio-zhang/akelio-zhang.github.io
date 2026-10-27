@@ -1,1 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DIKW on LIFE CODER</title><link>https://akelio-zhang.github.io/tags/dikw/</link><description>Recent content in DIKW on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 19 Mar 2023 18:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/tags/dikw/index.xml" rel="self" type="application/rss+xml"/><item><title>我的P.A.R.A实践记录</title><link>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</link><pubDate>Sun, 19 Mar 2023 18:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>DIKW</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>我的P.A.R.A实践记录</title><link>https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/ - &lt;h1 id=&quot;我的para实践记录&quot;&gt;我的P.A.R.A实践记录&lt;/h1&gt;
+&lt;h2 id=&quot;什么是para&quot;&gt;什么是P.A.R.A&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;The P.A.R.A. (Projects, Areas, Resources, Archives) method is a method for organizing digital information.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;It was developed by &lt;a href=&quot;https://fortelabs.co/about-forte-labs&quot;&gt;Forte Labs&lt;/a&gt;, a company that creates content to help increase productivity through technology.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2023/03/19/8QDcPAhmZYqRLw6.png&quot; alt=&quot;image.png|800&quot;&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Project: 短期、长期项目，用于Area的&lt;strong&gt;实践落地&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;Area: 关注的&lt;strong&gt;核心领域与能力提升&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;Resource: 用于Area相关联的信息整理以及其他可能感兴趣的内容。&lt;/li&gt;
+&lt;li&gt;Archive: 另外三项不活跃的内容移入这个地方，减少对活跃项目的干扰。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;practice&quot;&gt;Practice&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Data Collection: &lt;strong&gt;Cubox&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Send to Obsidian through “自定义动作”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Information Station and Writing: &lt;strong&gt;Obsidian&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Publish to github.io: A Python script to copy blog files to &lt;code&gt;blog_source&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Publish to Wechat Official Account: A web converter to make blog files suitable to wechat&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Knowledge Output: &lt;strong&gt;github.io; Wechat Official Account&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt; - https://akelio-zhang.github.io/posts/2023-%E6%88%91%E7%9A%84para%E5%AE%9E%E8%B7%B5/ - 2019–2026 Akelio</description><pubDate>Sun, 19 Mar 2023 10:00:00 GMT</pubDate></item></channel></rss>

@@ -1,1 +1,336 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Roadmap on LIFE CODER</title><link>https://akelio-zhang.github.io/tags/roadmap/</link><description>Recent content in Roadmap on LIFE CODER</description><generator>Hugo</generator><language>zh</language><copyright>2019-2025 Akelio All rights reserved.</copyright><lastBuildDate>Sun, 26 Jun 2022 12:00:00 +0800</lastBuildDate><atom:link href="https://akelio-zhang.github.io/tags/roadmap/index.xml" rel="self" type="application/rss+xml"/><item><title>CS自学 Roadmap</title><link>https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/</link><pubDate>Sun, 26 Jun 2022 12:00:00 +0800</pubDate><guid>https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>roadmap</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>CS自学 Roadmap</title><link>https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/ - &lt;h1 id=&quot;cs自学-roadmap&quot;&gt;CS自学 Roadmap&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这两年收集很多课程，也受到csdiy.wiki的启发，觉得整理一份自己觉得比较合适的roadmap，供大家参考。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;![[CS-KB-Graph.excalidraw|800]]&lt;/p&gt;
+&lt;h2 id=&quot;roadmap&quot;&gt;Roadmap&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;快速版
+&lt;ul&gt;
+&lt;li&gt;CS61A + CS61B + CS61C&lt;/li&gt;
+&lt;li&gt;这三个课程都来自于UCB，能让你最快判断自己是否适应CS的内容，并帮助你找到还不错的工作(maybe)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;循序渐进版
+&lt;ul&gt;
+&lt;li&gt;入门
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV1EW411u7th&quot;&gt;Crash Course Computer Science&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据基础
+&lt;ul&gt;
+&lt;li&gt;微积分/线性代数/信息理论/概率统计/离散数学&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;基本原理
+&lt;ul&gt;
+&lt;li&gt;程序抽象
+&lt;ul&gt;
+&lt;li&gt;CS61A&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;计算机架构入门
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.coursera.org/learn/build-a-computer#syllabus&quot;&gt;Build a Modern Computer from First Principles: From Nand to Tetris (Project-Centered Course) | Coursera&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;15-213/CS61C&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据结构与算法
+&lt;ul&gt;
+&lt;li&gt;CS61B/6.006/普林斯顿红宝书&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;领域基础
+&lt;ul&gt;
+&lt;li&gt;通览
+&lt;ul&gt;
+&lt;li&gt;6.033&lt;/li&gt;
+&lt;li&gt;6.NULL（工具课）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;操作系统
+&lt;ul&gt;
+&lt;li&gt;Cn: &lt;a href=&quot;http://jyywiki.cn/OS/2022/&quot;&gt;操作系统：设计与实现@南京大学&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;En: 6.S081/CS162&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据库
+&lt;ul&gt;
+&lt;li&gt;CS186(Java)/15-445(C++)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;分布式系统
+&lt;ul&gt;
+&lt;li&gt;6.824&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;编译原理
+&lt;ul&gt;
+&lt;li&gt;CS143&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://craftinginterpreters.com/introduction.html&quot;&gt;Introduction · Crafting Interpreters&lt;/a&gt;；中文翻译：&lt;a href=&quot;https://readonly.link/books/https://raw.githubusercontent.com/GuoYaxiang/craftinginterpreters_zh/main/book.json?front-matter=contents&quot;&gt;Crafting Interpreters-CN&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;网络
+&lt;ul&gt;
+&lt;li&gt;CS144
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/772352941&quot;&gt;# CS144：带你手搓TCP/IP协议栈&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;高级课程
+&lt;ul&gt;
+&lt;li&gt;软件工程
+&lt;ul&gt;
+&lt;li&gt;6.031&lt;/li&gt;
+&lt;li&gt;CS169&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;AI
+&lt;ul&gt;
+&lt;li&gt;CS188&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;图形学
+&lt;ul&gt;
+&lt;li&gt;GAMES101&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;信息安全
+&lt;ul&gt;
+&lt;li&gt;CS161&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;性能分析
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://book.douban.com/subject/35934902/&quot;&gt;性能之巅（第2版） (豆瓣)&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.brendangregg.com/linuxperf.html&quot;&gt;Linux Performance Reference&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;领域分支
+&lt;ul&gt;
+&lt;li&gt;Theoretical computer science 
+&lt;ul&gt;
+&lt;li&gt;算法与数据结构 &lt;/li&gt;
+&lt;li&gt;计算理论 &lt;/li&gt;
+&lt;li&gt;信息与编码理论 &lt;/li&gt;
+&lt;li&gt;编程语言理论 &lt;/li&gt;
+&lt;li&gt;形式化方法formal methods &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Computer systems计算机系统 
+&lt;ul&gt;
+&lt;li&gt;计算机架构与系统工程 ARCHITECTURE &lt;/li&gt;
+&lt;li&gt;计算机性能分析 PERFORMANCE &lt;/li&gt;
+&lt;li&gt;并发，并行，分布式系统 （DISTRIBUTED） &lt;/li&gt;
+&lt;li&gt;计算机网络 （NETWORK） &lt;/li&gt;
+&lt;li&gt;信息安全与加密 (SECURITY) &lt;/li&gt;
+&lt;li&gt;数据库 （STORAGE） &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Computer application  
+&lt;ul&gt;
+&lt;li&gt;图形学、可视化 &lt;/li&gt;
+&lt;li&gt;人机交互 &lt;/li&gt;
+&lt;li&gt;科学计算 &lt;/li&gt;
+&lt;li&gt;AI &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;软件工程
+&lt;img src=&quot;https://s2.loli.net/2022/08/20/4tFMPhyqJpQLwEu.png&quot; alt=&quot;image/Pasted-image-20220805140624.png&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;参考&quot;&gt;参考&lt;/h2&gt;
+&lt;h3 id=&quot;course-table&quot;&gt;Course Table&lt;/h3&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;课程  &lt;/th&gt;&lt;th&gt;内容          &lt;/th&gt;&lt;th&gt;url                                                                    &lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;CS61A  &lt;/td&gt;&lt;td&gt;程序抽象      &lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://cs61a.org/&quot;&gt;https://cs61a.org/&lt;/a&gt;                                                      &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CS61B  &lt;/td&gt;&lt;td&gt;数据结构与算法&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://inst.eecs.berkeley.edu/~cs61b/sp22/&quot;&gt;https://inst.eecs.berkeley.edu/~cs61b/sp22/&lt;/a&gt;                              &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CS61C  &lt;/td&gt;&lt;td&gt;计算机体系结构&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://cs61c.org/sp22/&quot;&gt;https://cs61c.org/sp22/&lt;/a&gt;                                                  &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;6.NULL&lt;/td&gt;&lt;td&gt;基础          &lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://missing.csail.mit.edu/&quot;&gt;https://missing.csail.mit.edu/&lt;/a&gt;                                        &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;15-213&lt;/td&gt;&lt;td&gt;计算机系统基础&lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://www.cs.cmu.edu/~213/&quot;&gt;https://www.cs.cmu.edu/~213/&lt;/a&gt;                                              &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;6.S081&lt;/td&gt;&lt;td&gt;操作系统      &lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV19k4y1C7kA&quot;&gt;https://www.bilibili.com/video/BV19k4y1C7kA&lt;/a&gt;            &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;rCore  &lt;/td&gt;&lt;td&gt;操作系统      &lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html&quot;&gt;https://rcore-os.github.io/rCore-Tutorial-Book-v3/index.html&lt;/a&gt;          &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CS186  &lt;/td&gt;&lt;td&gt;数据库        &lt;/td&gt;&lt;td&gt;&lt;a href=&quot;http://cs186berkeley.net/fa20/&quot;&gt;http://cs186berkeley.net/fa20/&lt;/a&gt;                                        &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;15-445&lt;/td&gt;&lt;td&gt;数据库        &lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV1f7411z7dw&quot;&gt;https://www.bilibili.com/video/BV1f7411z7dw&lt;/a&gt;                            &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;6.S191&lt;/td&gt;&lt;td&gt;深度学习      &lt;/td&gt;&lt;td&gt;&lt;a href=&quot;http://introtodeeplearning.com/&quot;&gt;http://introtodeeplearning.com/&lt;/a&gt;  &lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CS25  &lt;/td&gt;&lt;td&gt;深度学习      &lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://web.stanford.edu/class/cs25/&quot;&gt;https://web.stanford.edu/class/cs25/&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CS229T&lt;/td&gt;&lt;td&gt;统计学习      &lt;/td&gt;&lt;td&gt;&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&amp;#x26;mid=2650754066&amp;#x26;idx=1&amp;#x26;sn=8dc9c75a1326ce885f594f8f9bca0ff9&amp;#x26;chksm=871a886cb06d017af9ca42a381abc0fef218233ec6a7f5546061ccfeefa43f37453515a96320&amp;#x26;mpshare=1&amp;#x26;scene=1&amp;#x26;srcid=1216s7HO0KtAYi06epv1ZBdV&amp;#x26;sharer_sharetime=1639646339745&amp;#x26;sharer_shareid=4f5e972d431ca863bcb02b778677068c#rd&quot;&gt;斯坦福统计学习理论笔记：Percy Liang带你搞定「贼难」的理论基础 (qq.com)&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&quot;课程与阅读推荐&quot;&gt;课程与阅读推荐&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;阅读推荐
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://teachyourselfcs.com/&quot;&gt;Teach Yourself Computer Science&lt;/a&gt;/&lt;a href=&quot;https://github.com/izackwu/TeachYourselfCS-CN/blob/master/TeachYourselfCS-CN.md&quot;&gt;中文版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://jyywiki.cn/Reading_List.md&quot;&gt;JYY阅读推荐&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://csdiy.wiki/&quot;&gt;CS自学指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/112763953&quot;&gt;替你总结一份MIT计算机课程 - 知乎 (zhihu.com)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;CMU
+&lt;ul&gt;
+&lt;li&gt;课程介绍：&lt;a href=&quot;http://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/undergraduatecomputerscience/#bscurriculumtextcontainer&quot;&gt;Computer Science Program &amp;#x3C; Carnegie Mellon University (cmu.edu)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Berkeley
+&lt;ul&gt;
+&lt;li&gt;EECS培养方案地图，并且有前置关系：&lt;a href=&quot;https://hkn.eecs.berkeley.edu/courseguides&quot;&gt;Eta Kappa Nu (HKN), Mu Chapter (berkeley.edu)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;课程介绍：&lt;a href=&quot;https://www2.eecs.berkeley.edu/Courses/CS/&quot;&gt;CS Courses | EECS at UC Berkeley&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;MIT
+&lt;ul&gt;
+&lt;li&gt;课程介绍：&lt;a href=&quot;http://student.mit.edu/catalog/m6a.html&quot;&gt;Fall 2022 Course 6: Electrical Engineering and Computer Science (mit.edu)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Stanford
+&lt;ul&gt;
+&lt;li&gt;课程介绍：&lt;a href=&quot;https://cs.stanford.edu/academicz/courses&quot;&gt;Courses | Stanford Computer Science&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;ps-css-courses-vs-ces-courses&quot;&gt;PS. CS’s Courses Vs CE’s Courses&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;计算机科学
+&lt;ul&gt;
+&lt;li&gt;基本原理
+&lt;ul&gt;
+&lt;li&gt;数据结构与算法（ CS61A , CS61B ）&lt;/li&gt;
+&lt;li&gt;计算机体系架构（ CS61C , 15-213 ）
+&lt;ul&gt;
+&lt;li&gt;从小我就一直听说，计算机的世界是由 01 构成的，我不理解但大受震撼。如果你的内心也怀有这份好奇，不妨花一到两个月的时间学习 &lt;a href=&quot;https://csdiy.wiki/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/N2T/&quot;&gt;Coursera: Nand2Tetris&lt;/a&gt; 这门无门槛的计算机课程。这门麻雀虽小五脏俱全的课程会从 01 开始让你亲手造出一台计算机，并在上面运行俄罗斯方块小游戏。一门课里涵盖了编译、虚拟机、汇编、体系结构、数字电路、逻辑门等等从上至下、从软至硬的各类知识，非常全面。难度上也是通过精心的设计，略去了众多现代计算机复杂的细节，提取出了最核心本质的东西，力图让每个人都能理解。在低年级，如果就能从宏观上建立对整个计算机体系的鸟瞰图，是大有裨益的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;电子基础（电路基础 EE16A &amp;#x26; B 、信号与系统 EE120 ）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;领域基础
+&lt;ul&gt;
+&lt;li&gt;操作系统（ 6.S081 , CS162 ）&lt;/li&gt;
+&lt;li&gt;编译原理（ CS143 ）&lt;/li&gt;
+&lt;li&gt;网络（ CS144 ）&lt;/li&gt;
+&lt;li&gt;数据库（ 15-445 , CS186 ）&lt;/li&gt;
+&lt;li&gt;信息安全与加密&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;应用分支
+&lt;ul&gt;
+&lt;li&gt;软件工程（ CS169 ）&lt;/li&gt;
+&lt;li&gt;分布式系统（ 6.824 , 15-418 ）&lt;/li&gt;
+&lt;li&gt;科学计算&lt;/li&gt;
+&lt;li&gt;人机交互 HIC&lt;/li&gt;
+&lt;li&gt;图形学与可视化（ GAMES101 ）&lt;/li&gt;
+&lt;li&gt;AI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;土木
+&lt;ul&gt;
+&lt;li&gt;基本原理
+&lt;ul&gt;
+&lt;li&gt;力学&lt;/li&gt;
+&lt;li&gt;材料&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;领域基础
+&lt;ul&gt;
+&lt;li&gt;概论&lt;/li&gt;
+&lt;li&gt;结构力学&lt;/li&gt;
+&lt;li&gt;工程结构设计原理（混凝土、钢结构）&lt;/li&gt;
+&lt;li&gt;弹性力学、土力学、水力学、工程经济学、工程测量&lt;/li&gt;
+&lt;li&gt;基础工程&lt;/li&gt;
+&lt;li&gt;工程施工&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;应用分支
+&lt;ul&gt;
+&lt;li&gt;建筑结构设计&lt;/li&gt;
+&lt;li&gt;桥梁工程&lt;/li&gt;
+&lt;li&gt;施工组织与预算&lt;/li&gt;
+&lt;li&gt;高级拓展课程
+&lt;ul&gt;
+&lt;li&gt;工程结构抗震与防灾&lt;/li&gt;
+&lt;li&gt;桥梁抗震与抗风&lt;/li&gt;
+&lt;li&gt;大跨空间结构设计与施工&lt;/li&gt;
+&lt;li&gt;高层钢结构&lt;/li&gt;
+&lt;li&gt;结构可靠性分析&lt;/li&gt;
+&lt;li&gt;结构检验&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt; - https://akelio-zhang.github.io/posts/2022-cs%E8%87%AA%E5%AD%A6-roadmap/ - 2019–2026 Akelio</description><pubDate>Sun, 26 Jun 2022 04:00:00 GMT</pubDate></item></channel></rss>

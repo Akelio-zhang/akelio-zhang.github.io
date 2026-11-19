@@ -1,0 +1,392 @@
+<!DOCTYPE html><html lang="zh-CN" class="no-js"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@5.3.0/files/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@5.3.0/index.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@5.3.0/wght-italic.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/noto-sans-sc@5.3.1/index.min.css"><title>LLM 上下文工程观察：RAG、记忆与 Harness · LIFE CODER</title><meta name="description" content="Akelio 的技术笔记、读书记录与数字生活。"><meta name="theme-color" content="#FCFCFC"><link rel="canonical" href="https://akelio-zhang.github.io/posts/2026-llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9F%EF%BC%9Arag%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E-harness/"><link rel="alternate" type="application/rss+xml" title="LIFE CODER" href="/index.xml"><meta property="og:title" content="LLM 上下文工程观察：RAG、记忆与 Harness"><meta property="og:description" content="Akelio 的技术笔记、读书记录与数字生活。"><meta property="og:site_name" content="LIFE CODER"><meta property="og:locale" content="zh"><meta property="og:type" content="article"><meta property="og:url" content="https://akelio-zhang.github.io/posts/2026-llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9F%EF%BC%9Arag%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E-harness/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-11-19T14:30:00+08:00"><meta property="article:modified_time" content="2026-11-20T00:15:10+08:00"><meta property="article:tag" content="LLM生态"><meta property="article:tag" content="RAG"><meta property="article:tag" content="记忆系统"><meta property="article:tag" content="AI-Agent"><meta property="article:tag" content="上下文工程"><meta property="article:tag" content="技术雷达"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="LLM 上下文工程观察：RAG、记忆与 Harness"><meta name="twitter:description" content="Akelio 的技术笔记、读书记录与数字生活。"><meta property="og:image" content="https://akelio-zhang.github.io/images/llm-ecosystem-2026-evolution.png"><meta name="twitter:image" content="https://akelio-zhang.github.io/images/llm-ecosystem-2026-evolution.png"><script>
+      document.documentElement.classList.replace('no-js', 'js');
+      (() => {
+        let choice;
+        try {
+          choice = localStorage.getItem('theme');
+        } catch {}
+        if (!choice) {
+          const cookie = document.cookie.match(/(?:^|;\s*)night=([01])(?:;|$)/);
+          if (cookie) choice = cookie[1] === '1' ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme =
+          choice === 'dark' || choice === 'light'
+            ? choice
+            : matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+      })();
+    </script><link rel="stylesheet" href="/_astro/SiteLayout.rnyIcAql.css"></head><body id="top"><a class="skip-link" href="#main">跳过导航，阅读正文</a><header class="mobile-header"><button class="icon-button menu-trigger" type="button" aria-label="打开导航" aria-controls="mobile-menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button><a href="/" class="mobile-brand">LIFE CODER</a><button class="icon-button theme-toggle" type="button" aria-label="切换到深色模式"><span class="theme-moon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"></path></svg></span><span class="theme-sun"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v1m0 16v1M3 12h1m16 0h1M5.6 5.6l.7.7m11.4 11.4.7.7M5.6 18.4l.7-.7M17.7 6.3l.7-.7M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0"></path></svg></span></button></header><details class="nav-fallback"><summary>导航与目录</summary><nav aria-label="站点导航" class="nav-links"><a href="/posts/" aria-current="page">Archive</a><a href="/categories/">Categories</a><a href="/tags/">Tags</a><a href="/index.xml">RSS Feed</a><a href="/about/">About</a></nav><nav class="toc compact" aria-label="文章目录"><p class="toc-title">目录</p><ol><li style="--depth:0"><a href="#llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9Frag%E8%AE%B0%E5%BF%86%E4%B8%8E-harness" data-heading="llm-上下文工程观察rag记忆与-harness">LLM 上下文工程观察：RAG、记忆与 Harness</a></li><li style="--depth:1"><a href="#%E4%B8%80%E4%B8%80%E6%AC%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E9%9C%80%E8%A6%81%E5%93%AA%E4%BA%9B%E4%B8%8A%E4%B8%8B%E6%96%87" data-heading="一一次数据分析需要哪些上下文">一、一次数据分析需要哪些上下文</a></li><li style="--depth:1"><a href="#%E4%BA%8Crag%E4%BB%8E%E5%8D%95%E6%AC%A1%E5%8F%AC%E5%9B%9E%E5%88%B0%E6%8C%89%E9%9C%80%E6%A3%80%E7%B4%A2" data-heading="二rag从单次召回到按需检索">二、RAG：从单次召回到按需检索</a></li><li style="--depth:2"><a href="#21-%E4%BB%A5%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2%E4%BD%9C%E4%B8%BA%E5%9F%BA%E7%BA%BF" data-heading="21-以向量检索作为基线">2.1 以向量检索作为基线</a></li><li style="--depth:2"><a href="#22-%E7%A0%94%E7%A9%B6%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E6%A3%80%E7%B4%A2%E6%94%B9%E8%BF%9B" data-heading="22-研究中的三种检索改进">2.2 研究中的三种检索改进</a></li><li style="--depth:2"><a href="#23-%E6%A3%80%E7%B4%A2%E8%AE%BE%E8%AE%A1%E7%9A%84%E4%B8%89%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%86%B3%E7%AD%96" data-heading="23-检索设计的三个工程决策">2.3 检索设计的三个工程决策</a></li><li style="--depth:2"><a href="#24-%E6%B8%90%E8%BF%9B%E5%BC%8F%E6%8A%AB%E9%9C%B2%E4%B8%8E%E6%A3%80%E7%B4%A2%E5%81%9C%E6%AD%A2%E6%9D%A1%E4%BB%B6" data-heading="24-渐进式披露与检索停止条件">2.4 渐进式披露与检索停止条件</a></li><li style="--depth:1"><a href="#%E4%B8%89memory%E7%AE%A1%E7%90%86%E8%B7%A8%E4%BC%9A%E8%AF%9D%E7%8A%B6%E6%80%81" data-heading="三memory管理跨会话状态">三、Memory：管理跨会话状态</a></li><li style="--depth:2"><a href="#31-%E5%8C%BA%E5%88%86%E4%B8%8A%E4%B8%8B%E6%96%87%E8%AF%81%E6%8D%AE%E5%92%8C%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%8A%B6%E6%80%81" data-heading="31-区分上下文证据和工作流状态">3.1 区分上下文、证据和工作流状态</a></li><li style="--depth:2"><a href="#32-%E8%AE%B0%E5%BF%86%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F" data-heading="32-记忆的生命周期">3.2 记忆的生命周期</a></li><li style="--depth:2"><a href="#33-%E8%AE%B0%E5%BF%86%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%B8%8D%E5%90%8C%E4%BE%A7%E9%87%8D%E7%82%B9" data-heading="33-记忆项目的不同侧重点">3.3 记忆项目的不同侧重点</a></li><li style="--depth:2"><a href="#34-%E6%8C%81%E4%B9%85%E5%8C%96%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%A3%8E%E9%99%A9" data-heading="34-持久化带来的风险">3.4 持久化带来的风险</a></li><li style="--depth:1"><a href="#%E5%9B%9Bharness%E6%8A%8A%E6%A3%80%E7%B4%A2%E8%AE%B0%E5%BF%86%E4%B8%8E%E6%89%A7%E8%A1%8C%E8%BF%9E%E8%B5%B7%E6%9D%A5" data-heading="四harness把检索记忆与执行连起来">四、Harness：把检索、记忆与执行连起来</a></li><li style="--depth:1"><a href="#%E4%BA%94%E5%88%86%E5%B1%82%E8%AF%84%E4%BC%B0%E6%A3%80%E7%B4%A2%E8%AE%B0%E5%BF%86%E4%B8%8E%E4%BB%BB%E5%8A%A1%E7%BB%93%E6%9E%9C" data-heading="五分层评估检索记忆与任务结果">五、分层评估检索、记忆与任务结果</a></li><li style="--depth:1"><a href="#%E5%85%AD%E4%B8%A4%E4%B8%AA%E5%BE%85%E9%AA%8C%E8%AF%81%E7%9A%84%E5%B7%A5%E7%A8%8B%E9%97%AE%E9%A2%98" data-heading="六两个待验证的工程问题">六、两个待验证的工程问题</a></li><li style="--depth:1"><a href="#%E9%99%84%E5%BD%95llm-%E7%94%9F%E6%80%81%E6%8A%80%E6%9C%AF%E9%9B%B7%E8%BE%BE" data-heading="附录llm-生态技术雷达">附录：LLM 生态技术雷达</a></li><li style="--depth:1"><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" data-heading="参考资料">参考资料</a></li></ol></nav></details><div class="site-grid"><aside class="sidebar"><a href="/" class="brand"><span class="brand-title">LIFE CODER</span><span class="brand-subtitle">Akelio&#39;s Blog</span></a><nav aria-label="站点导航" class="nav-links"><a href="/posts/" aria-current="page">Archive</a><a href="/categories/">Categories</a><a href="/tags/">Tags</a><a href="/index.xml">RSS Feed</a><a href="/about/">About</a></nav><footer class="sidebar-footer"><p>© 2019–2026 Akelio</p><p>Inspired by <a href="https://github.com/AmazingRise/hugo-theme-diary">Diary</a> by Rise<br>and <a href="https://github.com/SumiMakito/hexo-theme-journal">Makito's Journal</a></p><span class="footer-rule"></span></footer></aside><main id="main" tabindex="-1"><article class="paper article" data-source="content/posts/2026-LLM 上下文工程观察：RAG、记忆与 Harness.md" data-published="2026-11-19T14:30:00+08:00" data-updated="2026-11-20T00:15:10+08:00"><header class="article-header with-cover" style="--cover:url('/images/llm-ecosystem-2026-evolution.png')"><div class="article-header-content"><h1>LLM 上下文工程观察：RAG、记忆与 Harness</h1><div class="article-meta"><time datetime="2026-11-19T14:30:00+08:00">2026-11-19</time><a href="/categories/ai/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B/">AI/上下文工程</a></div><ul class="article-tags"><li><a href="/tags/llm%E7%94%9F%E6%80%81/">#LLM生态</a></li><li><a href="/tags/rag/">#RAG</a></li><li><a href="/tags/%E8%AE%B0%E5%BF%86%E7%B3%BB%E7%BB%9F/">#记忆系统</a></li><li><a href="/tags/ai-agent/">#AI-Agent</a></li><li><a href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B/">#上下文工程</a></li><li><a href="/tags/%E6%8A%80%E6%9C%AF%E9%9B%B7%E8%BE%BE/">#技术雷达</a></li></ul></div></header><div class="article-content"><div class="prose" data-content-body><h1 id="llm-上下文工程观察rag记忆与-harness">LLM 上下文工程观察：RAG、记忆与 Harness</h1>
+<blockquote>
+<p>RAG 为当前任务检索证据，Memory 保留可跨会话复用的状态，Harness 管理检索与工具调用的权限、预算和结果验证。</p>
+</blockquote>
+<blockquote>
+<p>Written with Gemini.</p>
+</blockquote>
+<h2 id="一一次数据分析需要哪些上下文">一、一次数据分析需要哪些上下文</h2>
+<p>假设用户请 Agent 按财年汇总收入，并要求这个项目以后默认使用财年口径。Agent 要从财务文档和已有查询中找到当前适用的财年定义，也要把用户确认的默认口径保留给下次会话。执行前，它要检查数据访问权限和查询的只读约束，交付时还要核对取数日期范围。</p>
+<p>这里有三个职责。<strong>RAG</strong> 为当次任务查证据。<strong>记忆系统（Memory）</strong> 管理跨会话沿用的项目约定。<strong>Harness</strong> 是控制 Agent 执行的运行层，负责决定该查什么、能读什么，以及如何验证动作和结果。</p>
+<p>长上下文扩大了模型的工作空间。长任务仍然需要为证据和历史分配 Token，处理信息过期与冲突，并约束工具的访问范围。</p>
+<hr>
+<h2 id="二rag从单次召回到按需检索">二、RAG：从单次召回到按需检索</h2>
+<h3 id="21-以向量检索作为基线">2.1 以向量检索作为基线</h3>
+<p>Lewis 等人在 2020 年提出结合检索器和生成器的 RAG 模型，分别按序列和按 Token 使用检索到的文档 [1]。一种常见的工程基线是按固定长度切分文档，建立向量索引，召回 Top-K 个片段并放入 Prompt。在 FAQ 和语义明确的知识库问答中，可以用这个基线衡量更复杂的检索是否值得投入。</p>
+<p>复杂任务会暴露单次相似度召回的几个局限。</p>
+<ol>
+<li><strong>切块可能破坏文档边界。</strong> 跨章节论证、表格和代码依赖需要保留相应结构。</li>
+<li><strong>相似度只衡量部分相关性。</strong> 关键词适合精确标识符，向量适合语义匹配，跨文档关系常要沿目录或关系索引进一步查找。</li>
+<li><strong>召回后仍要分配上下文预算。</strong> 证据可能排序过低，被截断，或被重复内容掩盖。信息位置与干扰也会影响模型对长上下文的利用 [2]。</li>
+<li><strong>各阶段需要单独定位故障。</strong> 查询改写、召回、重排、上下文组装和生成都可能影响最终结果。</li>
+</ol>
+<h3 id="22-研究中的三种检索改进">2.2 研究中的三种检索改进</h3>
+<p><strong>调整检索单元。</strong> Dense X Retrieval 将检索单元从段落细化到命题。Late Chunking 先编码整篇文档，再生成带有文档上下文的块向量。两项研究都提示，切分粒度和文档结构会影响模型找到证据的能力 [8][9]。</p>
+<p><strong>按任务选择检索步骤。</strong> Self-RAG 用反思标记学习何时检索、如何评价结果。Adaptive-RAG 按问题复杂度选择直接回答、单步检索或多步检索。多步检索能补充候选证据，也会增加模型调用和延迟 [10][11]。</p>
+<p><strong>在构建期和查询期分配成本。</strong> RAPTOR 预先构建多层摘要树，GraphRAG 预先建图和生成社区摘要。SAG 在查询时按共享实体连接相关原文块。SAG 是预印本，实验覆盖三个多跳问答基准 [3][12][13]。</p>
+<p>RAGAS 提供回答评估维度，Seven Failure Points 分类检索到生成链路中的工程故障。对执行任务的 Agent，还应检查权限、接口和业务规则是否满足。评测设计见第五节 [14][15]。</p>
+<h3 id="23-检索设计的三个工程决策">2.3 检索设计的三个工程决策</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div aria-label="表格，可横向滚动" role="region" tabindex="0" class="table-scroll"><table style="--columns:4"><thead><tr><th align="left">决策</th><th align="left">可选设计</th><th align="left">适用场景</th><th align="left">主要成本与失效模式</th></tr></thead><tbody><tr><td align="left"><strong>怎样找候选</strong></td><td align="left">组合关键词、向量、元数据过滤和重排</td><td align="left">精确术语和语义查询并存的知识库</td><td align="left">维护索引，调试召回与排序</td></tr><tr><td align="left"><strong>怎样组织证据关系</strong></td><td align="left">用目录树保留层级，用图索引关联实体、调用和引用</td><td align="left">长文档导航、代码依赖、多跳问答、全库主题总结</td><td align="left">构建和维护结构，检查漏边、错误关系与错误路由</td></tr><tr><td align="left"><strong>何时继续检索</strong></td><td align="left">先读目录或摘要，根据缺口扩大范围或读取原文</td><td align="left">大型代码库、研究任务、长程 Agent</td><td align="left">在线延迟和调用次数随任务变化</td></tr></tbody></table></div>
+<p>这三个决策可以组合。PageIndex 根据文档树逐层导航，无需向量数据库或固定长度切块。OpenViking 用类似文件系统的接口组织知识、记忆和技能，支持从摘要、概览逐层打开原文，并在目录范围内做语义检索。Graphify 则对代码、文档构图，并区分直接抽取和推断得到的关系 [4][5][6]。</p>
+<p>全库主题总结可以评估 GraphRAG 的社区摘要是否提高证据覆盖。查找精确配置项可以先测关键词检索的命中率和延迟。是否引入树或图，取决于查询分布和语料更新频率 [3]。</p>
+<h3 id="24-渐进式披露与检索停止条件">2.4 渐进式披露与检索停止条件</h3>
+<p>渐进式披露（Progressive Disclosure）先提供目录或摘要，再按需呈现详细内容。多步检索可以据此从低成本的信息入口开始，在证据不足时逐步查阅原文。</p>
+<div class="code-block"><div data-content-ui="" class="code-toolbar"><span class="code-language">TEXT</span></div><pre aria-label="TEXT 代码，可横向滚动" class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>问题与任务状态</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>读取目录、摘要或实体索引</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>选择候选范围，查阅局部证据</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>检查必要证据是否齐全，是否存在冲突</span></span>
+<span class="line"><span>    ├─ 证据充分 → 带来源作答</span></span>
+<span class="line"><span>    ├─ 证据不足，仍有预算 → 改写查询、换路或展开下一层</span></span>
+<span class="line"><span>    │                     └→ 回到证据检查</span></span>
+<span class="line"><span>    └─ 证据不足，预算耗尽 → 说明缺口、给出有依据的部分结论或转人工</span></span></code></pre></div>
+<p>例如，核对财年收入至少需要确认财年起止日、收入定义和适用范围。把这些条件列入检查项，再用轮次、Token 和时延限制检索。树导航选错分支时，可以回退到关键词或向量检索。进入上下文的证据应保留文档版本和页码或代码位置，便于读者复核。</p>
+<hr>
+<h2 id="三memory管理跨会话状态">三、Memory：管理跨会话状态</h2>
+<h3 id="31-区分上下文证据和工作流状态">3.1 区分上下文、证据和工作流状态</h3>
+<p>本文用 RAG 指向为任务检索外部资料的流程，用 Memory 指向跨会话状态的管理。两者可以共用关键词或向量检索。各自的职责由数据来源、写入权限和有效期决定。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div aria-label="表格，可横向滚动" role="region" tabindex="0" class="table-scroll"><table style="--columns:3"><thead><tr><th align="left">机制</th><th align="left">数据来自哪里</th><th align="left">主要作用</th></tr></thead><tbody><tr><td align="left"><strong>长上下文</strong></td><td align="left">当前请求、会话历史和临时载入的资料</td><td align="left">提供一次推理的工作空间</td></tr><tr><td align="left"><strong>RAG</strong></td><td align="left">文档、网页、代码库中的外部知识</td><td align="left">找到当前问题所需的证据</td></tr><tr><td align="left"><strong>Memory</strong></td><td align="left">对话、操作轨迹、显式偏好与复盘</td><td align="left">跨会话复用经过筛选的状态与经验</td></tr><tr><td align="left"><strong>Checkpoint / Run State</strong></td><td align="left">任务变量、执行位置、工具结果</td><td align="left">恢复某次工作流的执行进度</td></tr></tbody></table></div>
+<h3 id="32-记忆的生命周期">3.2 记忆的生命周期</h3>
+<p>Agent 的记忆可以按用途分为工作记忆、情景记忆、语义记忆和程序性记忆。工作记忆通常保存在当前上下文或运行状态中，其余三种可以按需持久化 [16][17]。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div aria-label="表格，可横向滚动" role="region" tabindex="0" class="table-scroll"><table style="--columns:4"><thead><tr><th align="left">类型</th><th align="left">典型内容</th><th align="left">推荐保存方式</th><th align="left">主要风险</th></tr></thead><tbody><tr><td align="left"><strong>工作记忆</strong></td><td align="left">当前计划、临时变量、正在处理的证据</td><td align="left">当前上下文或任务状态，随会话清理</td><td align="left">把临时假设误写成长期事实</td></tr><tr><td align="left"><strong>情景记忆</strong></td><td align="left">某次故障、修复过程、历史决策及其原因</td><td align="left">带时间和来源的事件记录，可压缩但保留追溯链</td><td align="left">流水账膨胀，旧事件覆盖新状态</td></tr><tr><td align="left"><strong>语义记忆</strong></td><td align="left">稳定偏好、项目约定、已确认事实</td><td align="left">可更新、可失效的结构化记录</td><td align="left">冲突、过期、把推测当事实</td></tr><tr><td align="left"><strong>程序性记忆</strong></td><td align="left">已验证的操作步骤、可复用技能与检查清单</td><td align="left">版本化 Skill、脚本或流程，并附适用条件</td><td align="left">在新环境中机械复用旧流程</td></tr></tbody></table></div>
+<ol>
+<li><strong>候选写入</strong> 从用户显式要求、已验证的任务结果和有复用价值的事件中提取候选。</li>
+<li><strong>提炼与校验</strong> 区分观察、推断和用户确认，剔除敏感信息与无复用价值的中间输出。</li>
+<li><strong>合并与冲突处理</strong> 去重，保留时间范围、版本和来源，区分适用的项目与时间段。</li>
+<li><strong>检索与注入</strong> 在已授权的用户、项目和团队范围内召回，在 Token 预算内组装上下文。</li>
+<li><strong>反馈与遗忘</strong> 支持更正、过期、删除和审计，让失效的记忆退出默认召回。</li>
+</ol>
+<p>以前文的报表为例，用户确认「本项目默认使用财年」后，系统可以把它写成带项目范围和生效时间的偏好。下次先取回这条偏好，再从现行财务文档确认财年起止日。用户改用自然年时，把新口径另存为一个版本，旧版本退出默认召回，并按保留策略处理。</p>
+<h3 id="33-记忆项目的不同侧重点">3.3 记忆项目的不同侧重点</h3>
+<ul>
+<li><strong>AgentMemory</strong> 面向编码 Agent，支持跨工具捕获会话、查阅和管理项目历史。无密钥模式支持 BM25，向量和图检索取决于配置与可用数据 [20]。</li>
+<li><strong>claude-mem</strong> 捕获 Agent 活动，并生成观察记录和会话摘要。新会话用「索引—时间线—详情」分步检索历史 [21]。</li>
+<li><strong>Mem0</strong> 提供面向用户、会话和 Agent 的通用记忆 API，支持托管与自托管 [22]。</li>
+<li><strong>OpenViking</strong> 通过同一上下文文件系统组织知识、记忆和技能 [6]。</li>
+</ul>
+<p>比较这些项目时，需要先对齐负载。会话捕获重在追溯，用户个性化重在偏好更新，技能复用重在适用条件。报告基准结果时，注明版本、模型、数据和预算。</p>
+<h3 id="34-持久化带来的风险">3.4 持久化带来的风险</h3>
+<p>陈旧文档或错误索引会使 RAG 在多次查询中重复出错。记忆系统还能把模型生成的推测或工具带回的信息写入长期状态，让它们在后续会话里反复被当作事实。</p>
+<ul>
+<li><strong>错误固化</strong> 区分模型推断和用户确认，写入时保留来源与验证状态。</li>
+<li><strong>过期与串域</strong> 根据作用域和有效期召回，支持更正和版本替换。</li>
+<li><strong>持久化提示注入</strong> 在写入时检查来源。检索结果作为数据交给模型，工具权限由 Harness 单独检查。</li>
+<li><strong>隐私与合规</strong> 采集时裁剪敏感内容，明确保留期，并支持查看、导出和删除。删除应覆盖派生摘要与检索索引。</li>
+</ul>
+<hr>
+<h2 id="四harness把检索记忆与执行连起来">四、Harness：把检索、记忆与执行连起来</h2>
+<p>Harness 在读取时限定检索范围，在执行时校验工具调用，在交付前检查结果。写入路径决定哪些信息能从本次任务进入长期记忆。</p>
+<p><strong>读路径</strong></p>
+<div class="code-block"><div data-content-ui="" class="code-toolbar"><span class="code-language">TEXT</span></div><pre aria-label="TEXT 代码，可横向滚动" class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>用户请求 + 当前任务状态</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>Harness 选择知识、记忆或任务状态，并在检索前限定授权范围</span></span>
+<span class="line"><span>    ├─ 需要证据 → 在授权范围内查知识或记忆 → 复核来源、排序、按预算组装</span></span>
+<span class="line"><span>    └─ 已掌握所需信息 → 直接使用当前上下文</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>模型推理 → 检查工具权限和参数 → 调用工具（按需）</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>验证答案或执行结果</span></span>
+<span class="line"><span>    ├─ 满足任务约束 → 交付</span></span>
+<span class="line"><span>    ├─ 证据不足，仍有预算 → 返回检索</span></span>
+<span class="line"><span>    └─ 无法验证或超出预算 → 报告缺口或转人工</span></span></code></pre></div>
+<p><strong>写路径</strong>在采集和落盘前裁剪敏感内容。短期事件日志按保留期管理。后台从获准保留的事件中提炼候选记忆，检查冲突与有效期，必要时请用户确认，再写入长期索引。项目事实尽量关联正式文档、测试或代码提交。</p>
+<p>以财年收入为例，Harness 可以限制知识检索和数据库工具的项目权限，执行参数校验和只读约束，再按任务定义检查日期范围与结果格式。Jev 一类组件可以参与有界的路由判断。其部分判断接口提供概率字段，具体权限和业务规则仍由应用校验 [7]。</p>
+<hr>
+<h2 id="五分层评估检索记忆与任务结果">五、分层评估检索、记忆与任务结果</h2>
+<p>RAG 与 Memory 的评测都必须分层，否则无法知道收益来自哪里，也无法定位退化发生在哪一步。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div aria-label="表格，可横向滚动" role="region" tabindex="0" class="table-scroll"><table style="--columns:3"><thead><tr><th align="left">层级</th><th align="left">RAG 重点指标</th><th align="left">Memory 重点指标</th></tr></thead><tbody><tr><td align="left"><strong>写入 / 构建</strong></td><td align="left">文档解析成功率、结构完整度、索引新鲜度、构建成本</td><td align="left">写入准确率、重复率、来源覆盖率、敏感信息误存率</td></tr><tr><td align="left"><strong>检索</strong></td><td align="left">Evidence Recall@K、MRR / nDCG、重排增益、无答案拒识</td><td align="left">必要记忆召回率、过期记忆召回率、冲突识别率、跨域泄漏率</td></tr><tr><td align="left"><strong>上下文</strong></td><td align="left">有效证据占比、重复率、引用可定位率、Token 消耗</td><td align="left">有效记忆占比、作用域正确性、注入 Token 与详情展开成本</td></tr><tr><td align="left"><strong>生成 / 执行</strong></td><td align="left">答案正确性、忠实度、引用准确性、拒答质量</td><td align="left">个性化或任务成功率增益、错误记忆导致的失败率</td></tr><tr><td align="left"><strong>系统成本</strong></td><td align="left">P50/P95 延迟、检索轮次、缓存命中率、单次回答成本</td><td align="left">读写延迟、后台整理成本、存储增长、删除生效时间</td></tr></tbody></table></div>
+<p>RAG 对照可以比较无外部知识、直接给模型长文档、简单混合检索和结构化检索。Memory 对照可以比较无记忆、直接提供全量历史、会话摘要和完整记忆管线。各组使用相同的任务集和生成模型。<strong>固定预算时比较任务成功率，达到同一成功率时比较 Token、时延和维护成本。</strong></p>
+<p>组件指标用于定位退化。即使 Recall@K 提高，也要单独检查执行结果是否改善。LoCoMo 和 LongMemEval 可作为长程对话的评测入口。编码项目和企业应用还需要使用各自的真实任务验证 [18][19]。</p>
+<p>记忆评测按会话时间推进，依次测试写入、召回和更正。可以验证用户更新偏好后是否沿用新值、删除后是否仍能召回、其他项目能否读到这项偏好。报告任务成功率时，同时记录错误记忆引入的失败。</p>
+<hr>
+<h2 id="六两个待验证的工程问题">六、两个待验证的工程问题</h2>
+<ol>
+<li><strong>结构化索引何时值得维护？</strong> 在同一批真实查询和语料更新记录上，对照简单混合检索。比较建索引成本、更新后的证据召回、端到端成本和任务成功率。</li>
+<li><strong>跨工具共享记忆何时有收益？</strong> 让 IDE、CLI 和 Agent 复用同一组项目约定，记录任务成功率和重复确认次数。同步测试作用域隔离、偏好更正和删除生效时间。</li>
+</ol>
+<hr>
+<h2 id="附录llm-生态技术雷达">附录：LLM 生态技术雷达</h2>
+<p>下表基于课程材料并借助 AI 归纳。RAG 与 Memory 属于上下文工程，Harness 属于 Agent 执行系统。使用雷达跟踪一个方向时，记录适用负载、对照基线、成本落点、已知失效条件、来源与核对日期。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div aria-label="表格，可横向滚动" role="region" tabindex="0" class="table-scroll"><table style="--columns:5"><thead><tr><th align="left">生态领域</th><th align="left">雷达一级方向</th><th align="left">代表性技术</th><th align="left">核心关注问题</th><th align="left">二级重点专题</th></tr></thead><tbody><tr><td align="left"><strong>模型能力</strong></td><td align="left">1. 模型能力</td><td align="left">Transformer、MoE、Reasoning、Multimodal</td><td align="left">模型的能力边界如何演进</td><td align="left">原生推理与多模态</td></tr><tr><td align="left"><strong>数据与训练</strong></td><td align="left">2. 后训练与适配</td><td align="left">SFT、RL、DPO、LoRA、Distillation</td><td align="left">如何改变模型的行为与能力</td><td align="left">推理强化学习与领域对齐</td></tr><tr><td align="left"><strong>数据与训练</strong></td><td align="left">3. 数据工程</td><td align="left">Data Curation、Synthetic Data、Data Flywheel</td><td align="left">如何持续获得高质量训练与反馈数据</td><td align="left">合成数据与反馈闭环</td></tr><tr><td align="left"><strong>推理基础设施</strong></td><td align="left">4. 推理基础设施</td><td align="left">vLLM、SGLang、KV Cache、Quantization</td><td align="left">如何优化吞吐、延迟与成本</td><td align="left">注意力优化与低比特推理</td></tr><tr><td align="left"><strong>智能应用</strong></td><td align="left">5. 上下文工程</td><td align="left">Prompt、RAG、Memory、Context Compression</td><td align="left">如何组织高价值上下文</td><td align="left"><strong>RAG、Memory</strong></td></tr><tr><td align="left"><strong>智能应用</strong></td><td align="left">6. Agent 执行系统</td><td align="left">Harness、Tool Use、Skills、MCP、Sandbox</td><td align="left">如何可靠地执行复杂任务</td><td align="left"><strong>Harness</strong>、MCP 与沙箱</td></tr><tr><td align="left"><strong>推理基础设施</strong></td><td align="left">7. 多模型协同</td><td align="left">Model Router、Model Gateway、Fallback</td><td align="left">如何按任务分配模型和计算资源</td><td align="left">动态路由与多模型回退</td></tr><tr><td align="left"><strong>可信生产系统</strong></td><td align="left">8. 评测与验证</td><td align="left">Evals、Benchmark、LLM-as-Judge、Verification</td><td align="left">如何证明正确性与可靠性</td><td align="left">轨迹评测与结果验证</td></tr><tr><td align="left"><strong>可信生产系统</strong></td><td align="left">9. 安全与治理</td><td align="left">Prompt Injection、Guardrails、Permissions</td><td align="left">如何限制模型、数据与工具的风险</td><td align="left">注入防御与权限控制</td></tr><tr><td align="left"><strong>可信生产系统</strong></td><td align="left">10. AI 系统运维</td><td align="left">LLMOps、Tracing、Observability、Cost</td><td align="left">如何持续监控并优化生产系统</td><td align="left">全链路追踪与成本治理</td></tr><tr><td align="left"><strong>智能应用</strong></td><td align="left">11. 环境与模态交互</td><td align="left">Vision、Voice、Computer Use、Embodied AI</td><td align="left">如何让模型感知并操作外部世界</td><td align="left">桌面/浏览器操作与具身交互</td></tr></tbody></table></div>
+<p>RAG 部分参考了 AI 辅助论文调研。该调研说明了选文范围和证据局限。</p>
+<p>文中公开项目特性的核对日期为 2026 年 11 月 19 日。</p>
+<h2 id="参考资料">参考资料</h2>
+<p>[1] P. Lewis et al., “Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks,” 2020. <a href="https://arxiv.org/abs/2005.11401">arXiv:2005.11401</a></p>
+<p>[2] N. F. Liu et al., “Lost in the Middle: How Language Models Use Long Contexts,” 2023. <a href="https://arxiv.org/abs/2307.03172">arXiv:2307.03172</a></p>
+<p>[3] D. Edge et al., “From Local to Global: A Graph RAG Approach to Query-Focused Summarization,” 2024. <a href="https://arxiv.org/abs/2404.16130">arXiv:2404.16130</a></p>
+<p>[4] VectifyAI, “PageIndex: Vectorless, Reasoning-based RAG.” <a href="https://github.com/VectifyAI/PageIndex">GitHub</a></p>
+<p>[5] Graphify Labs, “Graphify: Codebase Knowledge Graph for Agents.” <a href="https://github.com/Graphify-Labs/graphify">GitHub</a></p>
+<p>[6] Volcano Engine, “OpenViking: The Context Database for AI Agents.” <a href="https://github.com/volcengine/OpenViking">GitHub</a></p>
+<p>[7] TypeSafe AI, “Jev / System One Models Documentation.” <a href="https://docs.typesafe.ai/introduction">官方文档</a></p>
+<p>[8] T. Chen et al., “Dense X Retrieval: What Retrieval Granularity Should We Use?” 2023. <a href="https://arxiv.org/abs/2312.06648">arXiv:2312.06648</a></p>
+<p>[9] M. Günther et al., “Late Chunking: Contextual Chunk Embeddings Using Long-Context Embedding Models,” 2024. <a href="https://arxiv.org/abs/2409.04701">arXiv:2409.04701</a></p>
+<p>[10] A. Asai et al., “Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection,” 2023. <a href="https://arxiv.org/abs/2310.11511">arXiv:2310.11511</a></p>
+<p>[11] S. Jeong et al., “Adaptive-RAG: Learning to Adapt Retrieval-Augmented Large Language Models through Question Complexity,” 2024. <a href="https://arxiv.org/abs/2403.14403">arXiv:2403.14403</a></p>
+<p>[12] P. Sarthi et al., “RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval,” 2024. <a href="https://arxiv.org/abs/2401.18059">arXiv:2401.18059</a></p>
+<p>[13] Y. Wu et al., “SAG: SQL-Retrieval Augmented Generation with Query-Time Dynamic Hyperedges,” arXiv 预印本，2026. <a href="https://arxiv.org/abs/2606.15971">arXiv:2606.15971</a></p>
+<p>[14] S. Es et al., “RAGAS: Automated Evaluation of Retrieval Augmented Generation,” 2023. <a href="https://arxiv.org/abs/2309.15217">arXiv:2309.15217</a></p>
+<p>[15] S. Barnett et al., “Seven Failure Points When Engineering a Retrieval Augmented Generation System,” 2024. <a href="https://arxiv.org/abs/2401.05856">arXiv:2401.05856</a></p>
+<p>[16] C. Packer et al., “MemGPT: Towards LLMs as Operating Systems,” 2023. <a href="https://arxiv.org/abs/2310.08560">arXiv:2310.08560</a></p>
+<p>[17] Z. Zhang et al., “A Survey on the Memory Mechanism of Large Language Model based Agents,” 2024. <a href="https://arxiv.org/abs/2404.13501">arXiv:2404.13501</a></p>
+<p>[18] D. Wu et al., “LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive Memory,” 2024. <a href="https://arxiv.org/abs/2410.10813">arXiv:2410.10813</a></p>
+<p>[19] A. Maharana et al., “Evaluating Very Long-Term Conversational Memory of LLM Agents,” 2024. <a href="https://arxiv.org/abs/2402.17753">arXiv:2402.17753</a></p>
+<p>[20] Rohit Ghumare, “AgentMemory: Persistent Memory Across Coding Sessions and Agents.” <a href="https://github.com/rohitg00/agentmemory">GitHub</a></p>
+<p>[21] thedotmack, “claude-mem: Persistent Context Across Sessions.” <a href="https://github.com/thedotmack/claude-mem">GitHub</a></p>
+<p>[22] P. Chhikara et al., “Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory,” 2025. <a href="https://arxiv.org/abs/2504.19413">arXiv:2504.19413</a>；<a href="https://github.com/mem0ai/mem0">GitHub</a></p></div><p class="last-updated">最后更新于 <time datetime="2026-11-20T00:15:10+08:00">2026-11-20</time></p><nav class="post-navigation" aria-label="相邻文章"><div><a href="/posts/2026-loop-engineering%EF%BC%9A%E7%BB%99-agent-%E8%AE%BE%E8%AE%A1%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%AD%A6/"><span>较新的文章</span>Loop Engineering：给 Agent 设计循环的工程学</a></div><div><a href="/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/"><span>较早的文章</span>游戏AI—纸牌游戏的求解策略</a></div></nav><section class="comments" aria-label="评论" data-comments data-repo="Akelio-zhang/akelio-zhang.github.io" data-label="Comment"><p class="section-label">讨论</p><noscript><p>评论需要 JavaScript。你也可以前往 <a href="https://github.com/Akelio-zhang/akelio-zhang.github.io/issues">GitHub Issues</a> 阅读讨论。</p></noscript></section></div></article></main><aside class="extra"><nav class="toc" aria-label="文章目录"><p class="toc-title">目录</p><ol><li style="--depth:0"><a href="#llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9Frag%E8%AE%B0%E5%BF%86%E4%B8%8E-harness" data-heading="llm-上下文工程观察rag记忆与-harness">LLM 上下文工程观察：RAG、记忆与 Harness</a></li><li style="--depth:1"><a href="#%E4%B8%80%E4%B8%80%E6%AC%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E9%9C%80%E8%A6%81%E5%93%AA%E4%BA%9B%E4%B8%8A%E4%B8%8B%E6%96%87" data-heading="一一次数据分析需要哪些上下文">一、一次数据分析需要哪些上下文</a></li><li style="--depth:1"><a href="#%E4%BA%8Crag%E4%BB%8E%E5%8D%95%E6%AC%A1%E5%8F%AC%E5%9B%9E%E5%88%B0%E6%8C%89%E9%9C%80%E6%A3%80%E7%B4%A2" data-heading="二rag从单次召回到按需检索">二、RAG：从单次召回到按需检索</a></li><li style="--depth:2"><a href="#21-%E4%BB%A5%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2%E4%BD%9C%E4%B8%BA%E5%9F%BA%E7%BA%BF" data-heading="21-以向量检索作为基线">2.1 以向量检索作为基线</a></li><li style="--depth:2"><a href="#22-%E7%A0%94%E7%A9%B6%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E6%A3%80%E7%B4%A2%E6%94%B9%E8%BF%9B" data-heading="22-研究中的三种检索改进">2.2 研究中的三种检索改进</a></li><li style="--depth:2"><a href="#23-%E6%A3%80%E7%B4%A2%E8%AE%BE%E8%AE%A1%E7%9A%84%E4%B8%89%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%86%B3%E7%AD%96" data-heading="23-检索设计的三个工程决策">2.3 检索设计的三个工程决策</a></li><li style="--depth:2"><a href="#24-%E6%B8%90%E8%BF%9B%E5%BC%8F%E6%8A%AB%E9%9C%B2%E4%B8%8E%E6%A3%80%E7%B4%A2%E5%81%9C%E6%AD%A2%E6%9D%A1%E4%BB%B6" data-heading="24-渐进式披露与检索停止条件">2.4 渐进式披露与检索停止条件</a></li><li style="--depth:1"><a href="#%E4%B8%89memory%E7%AE%A1%E7%90%86%E8%B7%A8%E4%BC%9A%E8%AF%9D%E7%8A%B6%E6%80%81" data-heading="三memory管理跨会话状态">三、Memory：管理跨会话状态</a></li><li style="--depth:2"><a href="#31-%E5%8C%BA%E5%88%86%E4%B8%8A%E4%B8%8B%E6%96%87%E8%AF%81%E6%8D%AE%E5%92%8C%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%8A%B6%E6%80%81" data-heading="31-区分上下文证据和工作流状态">3.1 区分上下文、证据和工作流状态</a></li><li style="--depth:2"><a href="#32-%E8%AE%B0%E5%BF%86%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F" data-heading="32-记忆的生命周期">3.2 记忆的生命周期</a></li><li style="--depth:2"><a href="#33-%E8%AE%B0%E5%BF%86%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%B8%8D%E5%90%8C%E4%BE%A7%E9%87%8D%E7%82%B9" data-heading="33-记忆项目的不同侧重点">3.3 记忆项目的不同侧重点</a></li><li style="--depth:2"><a href="#34-%E6%8C%81%E4%B9%85%E5%8C%96%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%A3%8E%E9%99%A9" data-heading="34-持久化带来的风险">3.4 持久化带来的风险</a></li><li style="--depth:1"><a href="#%E5%9B%9Bharness%E6%8A%8A%E6%A3%80%E7%B4%A2%E8%AE%B0%E5%BF%86%E4%B8%8E%E6%89%A7%E8%A1%8C%E8%BF%9E%E8%B5%B7%E6%9D%A5" data-heading="四harness把检索记忆与执行连起来">四、Harness：把检索、记忆与执行连起来</a></li><li style="--depth:1"><a href="#%E4%BA%94%E5%88%86%E5%B1%82%E8%AF%84%E4%BC%B0%E6%A3%80%E7%B4%A2%E8%AE%B0%E5%BF%86%E4%B8%8E%E4%BB%BB%E5%8A%A1%E7%BB%93%E6%9E%9C" data-heading="五分层评估检索记忆与任务结果">五、分层评估检索、记忆与任务结果</a></li><li style="--depth:1"><a href="#%E5%85%AD%E4%B8%A4%E4%B8%AA%E5%BE%85%E9%AA%8C%E8%AF%81%E7%9A%84%E5%B7%A5%E7%A8%8B%E9%97%AE%E9%A2%98" data-heading="六两个待验证的工程问题">六、两个待验证的工程问题</a></li><li style="--depth:1"><a href="#%E9%99%84%E5%BD%95llm-%E7%94%9F%E6%80%81%E6%8A%80%E6%9C%AF%E9%9B%B7%E8%BE%BE" data-heading="附录llm-生态技术雷达">附录：LLM 生态技术雷达</a></li><li style="--depth:1"><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" data-heading="参考资料">参考资料</a></li></ol></nav><div class="desktop-tools"><a class="icon-button" href="#top" aria-label="返回顶部"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"></path></svg></a><button class="icon-button theme-toggle" type="button" aria-label="切换到深色模式"><span class="theme-moon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"></path></svg></span><span class="theme-sun"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v1m0 16v1M3 12h1m16 0h1M5.6 5.6l.7.7m11.4 11.4.7.7M5.6 18.4l.7-.7M17.7 6.3l.7-.7M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0"></path></svg></span></button></div></aside></div><dialog id="mobile-menu" class="mobile-dialog" aria-label="导航与目录"><div class="drawer-heading"><a href="/">LIFE CODER</a><button type="button" class="icon-button drawer-close" aria-label="关闭导航"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"></path></svg></button></div><nav aria-label="站点导航" class="nav-links"><a href="/posts/" aria-current="page">Archive</a><a href="/categories/">Categories</a><a href="/tags/">Tags</a><a href="/index.xml">RSS Feed</a><a href="/about/">About</a></nav><nav class="toc compact" aria-label="文章目录"><p class="toc-title">目录</p><ol><li style="--depth:0"><a href="#llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9Frag%E8%AE%B0%E5%BF%86%E4%B8%8E-harness" data-heading="llm-上下文工程观察rag记忆与-harness">LLM 上下文工程观察：RAG、记忆与 Harness</a></li><li style="--depth:1"><a href="#%E4%B8%80%E4%B8%80%E6%AC%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E9%9C%80%E8%A6%81%E5%93%AA%E4%BA%9B%E4%B8%8A%E4%B8%8B%E6%96%87" data-heading="一一次数据分析需要哪些上下文">一、一次数据分析需要哪些上下文</a></li><li style="--depth:1"><a href="#%E4%BA%8Crag%E4%BB%8E%E5%8D%95%E6%AC%A1%E5%8F%AC%E5%9B%9E%E5%88%B0%E6%8C%89%E9%9C%80%E6%A3%80%E7%B4%A2" data-heading="二rag从单次召回到按需检索">二、RAG：从单次召回到按需检索</a></li><li style="--depth:2"><a href="#21-%E4%BB%A5%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2%E4%BD%9C%E4%B8%BA%E5%9F%BA%E7%BA%BF" data-heading="21-以向量检索作为基线">2.1 以向量检索作为基线</a></li><li style="--depth:2"><a href="#22-%E7%A0%94%E7%A9%B6%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E6%A3%80%E7%B4%A2%E6%94%B9%E8%BF%9B" data-heading="22-研究中的三种检索改进">2.2 研究中的三种检索改进</a></li><li style="--depth:2"><a href="#23-%E6%A3%80%E7%B4%A2%E8%AE%BE%E8%AE%A1%E7%9A%84%E4%B8%89%E4%B8%AA%E5%B7%A5%E7%A8%8B%E5%86%B3%E7%AD%96" data-heading="23-检索设计的三个工程决策">2.3 检索设计的三个工程决策</a></li><li style="--depth:2"><a href="#24-%E6%B8%90%E8%BF%9B%E5%BC%8F%E6%8A%AB%E9%9C%B2%E4%B8%8E%E6%A3%80%E7%B4%A2%E5%81%9C%E6%AD%A2%E6%9D%A1%E4%BB%B6" data-heading="24-渐进式披露与检索停止条件">2.4 渐进式披露与检索停止条件</a></li><li style="--depth:1"><a href="#%E4%B8%89memory%E7%AE%A1%E7%90%86%E8%B7%A8%E4%BC%9A%E8%AF%9D%E7%8A%B6%E6%80%81" data-heading="三memory管理跨会话状态">三、Memory：管理跨会话状态</a></li><li style="--depth:2"><a href="#31-%E5%8C%BA%E5%88%86%E4%B8%8A%E4%B8%8B%E6%96%87%E8%AF%81%E6%8D%AE%E5%92%8C%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%8A%B6%E6%80%81" data-heading="31-区分上下文证据和工作流状态">3.1 区分上下文、证据和工作流状态</a></li><li style="--depth:2"><a href="#32-%E8%AE%B0%E5%BF%86%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F" data-heading="32-记忆的生命周期">3.2 记忆的生命周期</a></li><li style="--depth:2"><a href="#33-%E8%AE%B0%E5%BF%86%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%B8%8D%E5%90%8C%E4%BE%A7%E9%87%8D%E7%82%B9" data-heading="33-记忆项目的不同侧重点">3.3 记忆项目的不同侧重点</a></li><li style="--depth:2"><a href="#34-%E6%8C%81%E4%B9%85%E5%8C%96%E5%B8%A6%E6%9D%A5%E7%9A%84%E9%A3%8E%E9%99%A9" data-heading="34-持久化带来的风险">3.4 持久化带来的风险</a></li><li style="--depth:1"><a href="#%E5%9B%9Bharness%E6%8A%8A%E6%A3%80%E7%B4%A2%E8%AE%B0%E5%BF%86%E4%B8%8E%E6%89%A7%E8%A1%8C%E8%BF%9E%E8%B5%B7%E6%9D%A5" data-heading="四harness把检索记忆与执行连起来">四、Harness：把检索、记忆与执行连起来</a></li><li style="--depth:1"><a href="#%E4%BA%94%E5%88%86%E5%B1%82%E8%AF%84%E4%BC%B0%E6%A3%80%E7%B4%A2%E8%AE%B0%E5%BF%86%E4%B8%8E%E4%BB%BB%E5%8A%A1%E7%BB%93%E6%9E%9C" data-heading="五分层评估检索记忆与任务结果">五、分层评估检索、记忆与任务结果</a></li><li style="--depth:1"><a href="#%E5%85%AD%E4%B8%A4%E4%B8%AA%E5%BE%85%E9%AA%8C%E8%AF%81%E7%9A%84%E5%B7%A5%E7%A8%8B%E9%97%AE%E9%A2%98" data-heading="六两个待验证的工程问题">六、两个待验证的工程问题</a></li><li style="--depth:1"><a href="#%E9%99%84%E5%BD%95llm-%E7%94%9F%E6%80%81%E6%8A%80%E6%9C%AF%E9%9B%B7%E8%BE%BE" data-heading="附录llm-生态技术雷达">附录：LLM 生态技术雷达</a></li><li style="--depth:1"><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" data-heading="参考资料">参考资料</a></li></ol></nav></dialog><footer class="mobile-footer">© 2019–2026 Akelio · <a href="https://github.com/AmazingRise/hugo-theme-diary">Diary</a>· <a href="#top">返回顶部</a></footer><script type="module">var e=document.documentElement,t=[...document.querySelectorAll(`.theme-toggle`)],n=!1;try{n=!!localStorage.getItem(`theme`)}catch{}n||=/(?:^|;\s*)night=[01](?:;|$)/.test(document.cookie);function r(){let n=e.dataset.theme===`dark`;t.forEach(e=>{e.setAttribute(`aria-label`,n?`切换到浅色模式`:`切换到深色模式`)}),document.querySelector(`.utterances-frame`)?.contentWindow?.postMessage({type:`set-theme`,theme:n?`github-dark`:`github-light`},`https://utteranc.es`)}t.forEach(t=>t.addEventListener(`click`,()=>{let t=e.dataset.theme===`dark`?`light`:`dark`;e.dataset.theme=t,n=!0;try{localStorage.setItem(`theme`,t)}catch{}document.cookie=`night=${+(t===`dark`)};path=/;max-age=31536000;SameSite=Lax`,r()})),matchMedia(`(prefers-color-scheme: dark)`).addEventListener(`change`,t=>{n||(e.dataset.theme=t.matches?`dark`:`light`,r())}),r();var i=document.querySelector(`#mobile-menu`),a=document.querySelector(`.menu-trigger`);if(i&&a){let e=!1;a.addEventListener(`click`,t=>{e=t.detail===0,i.classList.toggle(`instant`,e),i.showModal(),a.setAttribute(`aria-expanded`,`true`)});let t=!1,n,r=()=>{if(!i.open||t)return;if(e||matchMedia(`(prefers-reduced-motion: reduce)`).matches){i.close();return}t=!0;let r=i.animate([{transform:`translateX(0)`,opacity:1},{transform:`translateX(-12px)`,opacity:0}],{duration:160,easing:`cubic-bezier(0.23, 1, 0.32, 1)`});n=r,r.finished.then(()=>{n===r&&(n=void 0,i.close())},()=>{})};i.querySelector(`.drawer-close`)?.addEventListener(`click`,r),i.addEventListener(`click`,e=>{let t=i.getBoundingClientRect();e.target===i&&(e.clientX<t.left||e.clientX>t.right||e.clientY<t.top||e.clientY>t.bottom)&&r()}),i.querySelectorAll(`a`).forEach(e=>e.addEventListener(`click`,r)),i.addEventListener(`close`,()=>{n?.cancel(),n=void 0,t=!1,a.setAttribute(`aria-expanded`,`false`),a.focus({preventScroll:!0})})}var o=[...document.querySelectorAll(`[data-heading]`)],s=[...document.querySelectorAll(`[data-content-body] :is(h1,h2,h3,h4)`)];if(s.length){let e=()=>{let e=matchMedia(`(max-width: 1020px)`).matches?100:50,t=s.filter(t=>t.getBoundingClientRect().top<=e).at(-1)??s[0];o.forEach(e=>{e.dataset.heading===t.id?e.setAttribute(`aria-current`,`location`):e.removeAttribute(`aria-current`)});let n=document.querySelector(`.extra .toc a[aria-current=location]`),r=n?.closest(`.toc`);if(n&&r&&r.clientHeight){let e=n.getBoundingClientRect(),t=r.getBoundingClientRect();(e.top<t.top||e.bottom>t.bottom)&&(r.scrollTop+=e.top-t.top-t.height/2)}},t=new IntersectionObserver(e,{rootMargin:`-70px 0px -65% 0px`});s.forEach(e=>t.observe(e)),window.addEventListener(`hashchange`,e),e()}document.querySelectorAll(`.prose pre`).forEach(e=>{let t=e.querySelector(`code`);if(!t)return;let n=e.closest(`.code-block`)?.querySelector(`.code-toolbar`);if(!n)return;let r=document.createElement(`button`);r.className=`copy-code`,r.type=`button`,r.textContent=`复制`,r.setAttribute(`aria-label`,`复制代码`);let i=document.createElement(`span`);i.className=`sr-only`,i.setAttribute(`role`,`status`),i.setAttribute(`aria-live`,`polite`),r.addEventListener(`click`,async()=>{try{await navigator.clipboard.writeText(t.textContent??``),r.textContent=`已复制`,i.textContent=`代码已复制`}catch{r.textContent=`请手动复制`,i.textContent=`复制失败，请选择代码并手动复制`}setTimeout(()=>{r.textContent=`复制`,i.textContent=``},2e3)}),n.append(i,r)});for(let t of document.querySelectorAll(`[data-comments]`)){let n=document.createElement(`script`);n.src=`https://utteranc.es/client.js`,n.async=!0,n.crossOrigin=`anonymous`,n.setAttribute(`repo`,t.dataset.repo),t.dataset.issue?n.setAttribute(`issue-number`,t.dataset.issue):n.setAttribute(`issue-term`,`pathname`),n.setAttribute(`label`,t.dataset.label),n.setAttribute(`theme`,e.dataset.theme===`dark`?`github-dark`:`github-light`),t.append(n);let i=new MutationObserver(()=>{let e=t.querySelector(`iframe`);e&&(e.addEventListener(`load`,r),i.disconnect())});i.observe(t,{childList:!0,subtree:!0})}</script><script>(function(){const analytics = {"cloudflare":"2f59cb7a51ad44d8a42a8ffa92b3a040","howxm":"1505365a-b8ae-4806-9cd6-38502af8cefc"};
+const productionHost = "akelio-zhang.github.io";
+
+      if (location.hostname === productionHost) {
+        const cf = document.createElement('script');
+        cf.defer = true;
+        cf.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+        cf.dataset.cfBeacon = JSON.stringify({ token: analytics.cloudflare });
+        document.head.append(cf);
+        window._howxmQueue = window._howxmQueue || [];
+        window._howxm = function () {
+          window._howxmQueue.push(arguments);
+        };
+        window._howxm('setAppID', analytics.howxm);
+        const how = document.createElement('script');
+        how.async = true;
+        how.src = 'https://static.howxm.com/sdk.js';
+        document.head.append(how);
+      }
+    })();</script></body></html>

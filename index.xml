@@ -1,4 +1,422 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>LIFE CODER</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>游戏AI—纸牌游戏的求解策略</title><link>https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/ - &lt;h1 id=&quot;游戏ai纸牌游戏的求解策略&quot;&gt;游戏AI—纸牌游戏的求解策略&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>LIFE CODER</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>Loop Engineering：给 Agent 设计循环的工程学</title><link>https://akelio-zhang.github.io/posts/2026-loop-engineering%EF%BC%9A%E7%BB%99-agent-%E8%AE%BE%E8%AE%A1%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%AD%A6/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2026-loop-engineering%EF%BC%9A%E7%BB%99-agent-%E8%AE%BE%E8%AE%A1%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%AD%A6/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-loop-engineering%EF%BC%9A%E7%BB%99-agent-%E8%AE%BE%E8%AE%A1%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%AD%A6/ - &lt;h1 id=&quot;loop-engineering给-agent-设计循环的工程学&quot;&gt;Loop Engineering：给 Agent 设计循环的工程学&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一次任务是一个循环，一个项目是一个循环，Agent 的自我改造还是一个循环。区别不在循环本身，而在状态的生存期，以及状态载体的抽象层级。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;用过 Claude Code 这类 coding agent 的人对 agent loop 都不陌生：模型读上下文，调用工具，观察结果，决定下一步，直到任务完成或预算耗尽。这个感知—行动—观察的循环在三个时间尺度上同时运转：一次会话内的任务执行、横跨数周的项目演进、Agent 对自身能力的改造。&lt;a href=&quot;https://colobu.com/2026/07/09/claude-code-loop-design-primer/&quot;&gt;Claude Code loop design primer&lt;/a&gt; 把这组设计问题归入 loop engineering 的实践范畴。本文以它提出的三层框架为骨架梳理相关文献：&lt;strong&gt;Task Loop&lt;/strong&gt;（把一次任务做对）、&lt;strong&gt;Project Loop&lt;/strong&gt;（把项目做下去）、&lt;strong&gt;Meta Loop&lt;/strong&gt;（让 Agent 改造自己）。&lt;/p&gt;
+&lt;p&gt;这个框架在理论上有现成的对应物。1999 年 Sutton 等人的 Options Framework [15] 把&quot;跨多步的抽象动作&quot;（option）形式化为策略加终止条件，不同时间尺度的决策可以嵌套组合。套到今天的 Agent 上：Task Loop 是执行一个 option，Project Loop 是 option 之间的状态继承，Meta Loop 是学会创建新的 option。&lt;/p&gt;
+&lt;h2 id=&quot;一task-loop把一次任务做对&quot;&gt;一、Task Loop：把一次任务做对&lt;/h2&gt;
+&lt;p&gt;Task Loop 处理单次任务内的执行闭环。起点是 ReAct [1]：模型交替输出推理（Thought）和动作（Action），观察结果写回上下文。今天几乎所有 agent 框架的骨架都是这个结构。&lt;/p&gt;
+&lt;p&gt;随后两个工作在循环里加入反馈。Self-Refine [2] 让同一个模型生成、自评、修订，迭代到满足停止条件；Reflexion [3] 在多次尝试之间引入语言化的经验记忆：失败后生成一段自我反思，存入 episodic memory，作为下次尝试的上下文。等效于用自然语言做策略更新——不微调参数，只积累复盘记录。&lt;/p&gt;
+&lt;p&gt;工程化转折点是 SWE-agent [6]。它追问的不是循环结构，而是动作空间：Agent-Computer Interface（ACI）的设计质量直接决定循环成败，暴露给 Agent 的每个命令必须有明确的反馈信号，否则模型会在低效路径上反复空转。SWE-agent 在 SWE-bench [4]（2,294 个真实 GitHub issue）上创下当时的最好成绩。CodeAct [5] 从另一侧收敛到同一结论：动作空间统一为可执行的 Python 代码，比 JSON 之类的结构化格式更高效——代码是表达复杂动作最紧凑的接口，且执行本身就是验证。&lt;/p&gt;
+&lt;p&gt;反例来自 Huang 等人 [16]：没有外部反馈时，让 LLM 自查自纠通常无效，甚至降低原本正确的输出质量。这条结论划出了 [2][3] 的适用边界——自我反馈循环有效的条件，是反馈信号锚定在真实环境上：单元测试、任务成功判定、对具体失败轨迹的分析。模型对自己输出的判断不算。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Task Loop 的设计要点&lt;/strong&gt;：动作空间紧凑且可执行；每次循环接回真实环境信号；反思针对具体失败，不做泛泛自评。&lt;/p&gt;
+&lt;h2 id=&quot;二project-loop把项目做下去&quot;&gt;二、Project Loop：把项目做下去&lt;/h2&gt;
+&lt;p&gt;Task Loop 的状态随上下文结束而消失。Project Loop 的状态必须活在上下文之外：文件、数据库、记忆系统。&lt;/p&gt;
+&lt;p&gt;正向机制看 Voyager [7]。它在 Minecraft 里靠三个部件做开放式探索：自动课程生成器提出难度递增的任务；迭代式提示机制根据环境反馈修正代码；Skill Library 把每个验证通过的技能以代码形式存入向量库，供后续检索和组合。获得新物品的速度是此前方法的 3.3 倍，且技能库跨世界可用。这一轮循环的产出成为下一轮循环的输入，能力以资产形式累积。&lt;/p&gt;
+&lt;p&gt;负向证据来自两篇 2026 年的基准研究。SlopCodeBench [8] 测量 coding agent 在长期迭代中的退化：agent 反复扩展自己写的代码，36 个问题、196 个 checkpoint，最好的 agent 只通过 14.8%；77% 的轨迹出现结构侵蚀（复杂度堆积到少数函数），75.5% 出现冗余膨胀。对照 473 个开源仓库的 git 历史，agent 代码冗余是 2.3 倍，侵蚀程度是 2.0 倍。一个关键细节：显式的质量约束能把初始冗余和侵蚀降低三分之一，但退化速率不变——指引改变起点，改变不了斜率。&lt;/p&gt;
+&lt;p&gt;SWE-Chain [9] 把链式程度再推进一步：跨版本的包升级，每次升级都建立在 agent 上一次交付的代码库上，9 个真实 Python 包、155 个版本迁移串成 12 条升级链。考验的是状态继承：上一版遗留的代码，全部是这一版的初始条件。&lt;/p&gt;
+&lt;p&gt;系统层面，Agent Memory [10] 对十个代表性记忆系统做了首个系统级刻画：提出四轴分类法，用分阶段剖析工具把成本归因到构建、检索、生成三个环节。核心结论是记忆系统的设计选择会系统性地在写路径（构建与更新）和读路径（检索）之间搬移成本。记忆架构是有真实成本曲线的系统设计问题，不是加一个向量库就完事。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Project Loop 的设计要点&lt;/strong&gt;：状态资产化（skill library 是正面教材）；为退化设置监控与治理（SlopCodeBench 的证据表明退化是常态而非例外）；按读写成本曲线选型记忆架构。&lt;/p&gt;
+&lt;h2 id=&quot;三meta-loop让-agent-改造自己&quot;&gt;三、Meta Loop：让 Agent 改造自己&lt;/h2&gt;
+&lt;p&gt;Meta Loop 的特征是优化对象逐级上移，四级台阶：&lt;/p&gt;
+&lt;p&gt;第一级优化 prompt。DSPy [11] 的做法是&quot;编程而非提示&quot;（programming, not prompting）：声明式模块组成 pipeline，optimizer 自动搜索每个模块的提示词。开发者只写控制流，提示词是可学习参数。第二级优化 prompt 的搜索方式。GEPA [12] 不做盲目搜索，而是从执行轨迹提取反思文本，用遗传搜索加 Pareto 前沿选择进化提示词：平均比强化学习方法高约 10%，rollout 预算最多省 35 倍。和 Reflexion 一样，从轨迹学习再次胜过从标量奖励学习。&lt;/p&gt;
+&lt;p&gt;第三级优化工作流。EvoAgentX [13] 把 DSPy、TextGrad、AFlow 等优化算法收进统一框架，对多 agent 工作流的提示词、工具配置、执行拓扑做自动进化。第四级优化 agent 自身的代码。Darwin Gödel Machine [14] 修改驱动自己的代码库——工具、工作流、搜索策略——以 SWE-bench 得分为选择压力，维护自我修改版本的档案库做开放式探索。SWE-bench 得分从 20% 提到 50%，改进出的组件（如更反思性的工具调用）可迁移到其他任务。&lt;/p&gt;
+&lt;p&gt;四级台阶推的是同一个边界：什么可以被循环改变。从参数（提示词）到结构（工作流）再到 agent 的自我定义（代码）。每外推一层，验证闭环都更贵、更慢，且更依赖基准的代表性。DGM 的选择压力是 SWE-bench，而 SWE-bench 能否代表真实工程能力，正是 SlopCodeBench 这类研究提出质疑的地方。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;DeepSeek Super-agent&lt;/strong&gt; 把 Watchdog 放在主系统之外，由它定期检查 Worker 的实际进展，并在任务停滞或偏离目标时介入。维护者也可以通过 Watchdog 在线调整提示词和触发规则，让后续任务按更新后的策略执行。[18]&lt;/p&gt;
+&lt;p&gt;要把这种调整接成一个有人参与的 Meta Loop，可以在普通讨论频繁误触发 Worker 时收紧规则，再用一批新事件检验误触发是否减少、有效请求是否仍得到处理。对照验证是本文基于原文所述能力提出的设计。&lt;/p&gt;
+&lt;h2 id=&quot;四跨层的设计原则与开放问题&quot;&gt;四、跨层的设计原则与开放问题&lt;/h2&gt;
+&lt;p&gt;三层放在一起，有四条贯穿的设计原则：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;状态的生存期决定架构。&lt;/strong&gt; Task Loop 的状态随上下文蒸发，关键是信号如何接回；Project Loop 的状态跨会话存活，关键是资产化与记忆架构；Meta Loop 的状态写进 agent 自身，关键是版本管理与回滚。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;验证闭环决定循环成败。&lt;/strong&gt; 从 [16] 的教训到 [14] 的成功，有效的自我改进循环都锚定外部验证信号：单元测试、基准得分、环境反馈。没有验证闭环的反思是噪声源。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;退化是长期循环的默认结局。&lt;/strong&gt; [8] 表明即使功能验证通过，代码质量仍在持续恶化。质量度量必须进循环，单靠&quot;测试通过&quot;一道闸门挡不住。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;层级上移，工程重心从提示词转向系统。&lt;/strong&gt; Task Loop 的部分问题可以靠 prompt 工程解决；Project Loop 和 Meta Loop 的问题是存储、检索、调度、版本控制。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;开放问题：自我纠错在什么条件下可靠（[16] 与 [2][3] 的边界尚未厘清）；长期循环的质量治理是否存在持续有效的干预手段（[8] 显示指引改变不了退化速率）；Meta Loop 的选择压力如何避免过拟合基准（Goodhart 效应的 agent 版）。&lt;/p&gt;
+&lt;h2 id=&quot;阅读路线&quot;&gt;阅读路线&lt;/h2&gt;
+&lt;p&gt;五篇入门，按序：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;ReAct&lt;/strong&gt; [1] —— 单次任务的执行闭环&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Voyager&lt;/strong&gt; [7] —— 长期任务规划与能力积累&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SlopCodeBench&lt;/strong&gt; [8] —— 项目持续演进的质量风险&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GEPA&lt;/strong&gt; [12] —— 从执行轨迹优化 Agent&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;EvoAgentX&lt;/strong&gt; [13] —— 优化完整 Agent 工作流&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;读完后可以用 Hermes / Pi / Codex 各实现一个 Task、Project、Meta Loop 的最小原型，三层各跑通一个。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;参考文献&quot;&gt;参考文献&lt;/h2&gt;
+&lt;p&gt;[1] S. Yao, J. Zhao, D. Yu, N. Du, I. Shafran, K. Narasimhan, and Y. Cao, “ReAct: Synergizing Reasoning and Acting in Language Models,” 2022. &lt;a href=&quot;https://arxiv.org/abs/2210.03629&quot;&gt;arXiv:2210.03629&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[2] A. Madaan et al., “Self-Refine: Iterative Refinement with Self-Feedback,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2303.17651&quot;&gt;arXiv:2303.17651&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[3] N. Shinn, F. Cassano, E. Berman, A. Gopinath, K. Narasimhan, and S. Yao, “Reflexion: Language Agents with Verbal Reinforcement Learning,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2303.11366&quot;&gt;arXiv:2303.11366&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[4] C. E. Jimenez, J. Yang, A. Wettig, S. Yao, K. Pei, O. Press, and K. Narasimhan, “SWE-bench: Can Language Models Resolve Real-World GitHub Issues?” in &lt;em&gt;Proc. ICLR&lt;/em&gt;, 2024. &lt;a href=&quot;https://arxiv.org/abs/2310.06770&quot;&gt;arXiv:2310.06770&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[5] X. Wang, Y. Chen, L. Yuan, Y. Zhang, Y. Li, H. Peng, and H. Ji, “Executable Code Actions Elicit Better LLM Agents,” in &lt;em&gt;Proc. ICML&lt;/em&gt;, 2024. &lt;a href=&quot;https://arxiv.org/abs/2402.01030&quot;&gt;arXiv:2402.01030&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[6] J. Yang, C. E. Jimenez, A. Wettig, K. Lieret, S. Yao, K. Narasimhan, and O. Press, “SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2405.15793&quot;&gt;arXiv:2405.15793&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[7] G. Wang, Y. Xie, Y. Jiang, A. Mandlekar, C. Xiao, Y. Zhu, L. Fan, and A. Anandkumar, “Voyager: An Open-Ended Embodied Agent with Large Language Models,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2305.16291&quot;&gt;arXiv:2305.16291&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[8] G. Orlanski et al., “SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks,” 2026. &lt;a href=&quot;https://arxiv.org/abs/2603.24755&quot;&gt;arXiv:2603.24755&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[9] M. H. Lam et al., “SWE-Chain: Benchmarking Coding Agents on Chained Release-Level Package Upgrades,” 2026. &lt;a href=&quot;https://arxiv.org/abs/2605.14415&quot;&gt;arXiv:2605.14415&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[10] Y. Omri et al., “Agent Memory: Characterization and System Implications of Stateful Long-Horizon Workloads,” 2026. &lt;a href=&quot;https://arxiv.org/abs/2606.06448&quot;&gt;arXiv:2606.06448&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[11] O. Khattab et al., “DSPy: Compiling Declarative Language Model Calls into Self-Improving Pipelines,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2310.03714&quot;&gt;arXiv:2310.03714&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[12] L. A. Agrawal, S. Tan, D. Soylu, N. Ziems, R. Khare, K. Opsahl-Ong, A. Singhvi, H. Shandilya, M. J. Ryan, M. Jiang, C. Potts, K. Sen, A. G. Dimakis, I. Stoica, D. Klein, M. Zaharia, and O. Khattab, “GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning,” 2025. &lt;a href=&quot;https://arxiv.org/abs/2507.19457&quot;&gt;arXiv:2507.19457&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[13] Y. Wang, S. Liu, J. Fang, and Z. Meng, “EvoAgentX: An Automated Framework for Evolving Agentic Workflows,” in &lt;em&gt;Proc. EMNLP 2025 System Demonstrations&lt;/em&gt;, Suzhou, China, 2025, pp. 643–655. &lt;a href=&quot;https://doi.org/10.18653/v1/2025.emnlp-demos.47&quot;&gt;DOI: 10.18653/v1/2025.emnlp-demos.47&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[14] J. Zhang, S. Hu, C. Lu, R. Lange, and J. Clune, “Darwin Gödel Machine: Open-Ended Evolution of Self-Improving Agents,” 2025. &lt;a href=&quot;https://arxiv.org/abs/2505.22954&quot;&gt;arXiv:2505.22954&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[15] R. S. Sutton, D. Precup, and S. Singh, “Between MDPs and semi-MDPs: A framework for temporal abstraction in reinforcement learning,” &lt;em&gt;Artificial Intelligence&lt;/em&gt;, vol. 112, no. 1–2, pp. 181–211, 1999. &lt;a href=&quot;https://doi.org/10.1016/S0004-3702(99)00052-1&quot;&gt;DOI: 10.1016/S0004-3702(99)00052-1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[16] J. Huang, X. Chen, S. Mishra, H. S. Zheng, A. W. Yu, X. Song, and D. Zhou, “Large Language Models Cannot Self-Correct Reasoning Yet,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2310.01798&quot;&gt;arXiv:2310.01798&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[17] “Claude Code Loop Design Primer,” colobu.com, 2026. &lt;a href=&quot;https://colobu.com/2026/07/09/claude-code-loop-design-primer/&quot;&gt;链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[18] Yujia Qiao（DeepSeek Harness 团队），&lt;a href=&quot;https://mp.weixin.qq.com/s/zoS7GlReWPhfCjENGxXCdg&quot;&gt;Super-agent 设计探索：迈向更自主的 Agent 系统&lt;/a&gt;，2026。&lt;/p&gt; - https://akelio-zhang.github.io/posts/2026-loop-engineering%EF%BC%9A%E7%BB%99-agent-%E8%AE%BE%E8%AE%A1%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%AD%A6/ - 2019–2026 Akelio</description><pubDate>Thu, 19 Nov 2026 14:41:12 GMT</pubDate></item><item><title>LLM 上下文工程观察：RAG、记忆与 Harness</title><link>https://akelio-zhang.github.io/posts/2026-llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9F%EF%BC%9Arag%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E-harness/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2026-llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9F%EF%BC%9Arag%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E-harness/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9F%EF%BC%9Arag%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E-harness/ - &lt;h1 id=&quot;llm-上下文工程观察rag记忆与-harness&quot;&gt;LLM 上下文工程观察：RAG、记忆与 Harness&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;RAG 为当前任务检索证据，Memory 保留可跨会话复用的状态，Harness 管理检索与工具调用的权限、预算和结果验证。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Written with Gemini.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;一一次数据分析需要哪些上下文&quot;&gt;一、一次数据分析需要哪些上下文&lt;/h2&gt;
+&lt;p&gt;假设用户请 Agent 按财年汇总收入，并要求这个项目以后默认使用财年口径。Agent 要从财务文档和已有查询中找到当前适用的财年定义，也要把用户确认的默认口径保留给下次会话。执行前，它要检查数据访问权限和查询的只读约束，交付时还要核对取数日期范围。&lt;/p&gt;
+&lt;p&gt;这里有三个职责。&lt;strong&gt;RAG&lt;/strong&gt; 为当次任务查证据。&lt;strong&gt;记忆系统（Memory）&lt;/strong&gt; 管理跨会话沿用的项目约定。&lt;strong&gt;Harness&lt;/strong&gt; 是控制 Agent 执行的运行层，负责决定该查什么、能读什么，以及如何验证动作和结果。&lt;/p&gt;
+&lt;p&gt;长上下文扩大了模型的工作空间。长任务仍然需要为证据和历史分配 Token，处理信息过期与冲突，并约束工具的访问范围。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;二rag从单次召回到按需检索&quot;&gt;二、RAG：从单次召回到按需检索&lt;/h2&gt;
+&lt;h3 id=&quot;21-以向量检索作为基线&quot;&gt;2.1 以向量检索作为基线&lt;/h3&gt;
+&lt;p&gt;Lewis 等人在 2020 年提出结合检索器和生成器的 RAG 模型，分别按序列和按 Token 使用检索到的文档 [1]。一种常见的工程基线是按固定长度切分文档，建立向量索引，召回 Top-K 个片段并放入 Prompt。在 FAQ 和语义明确的知识库问答中，可以用这个基线衡量更复杂的检索是否值得投入。&lt;/p&gt;
+&lt;p&gt;复杂任务会暴露单次相似度召回的几个局限。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;切块可能破坏文档边界。&lt;/strong&gt; 跨章节论证、表格和代码依赖需要保留相应结构。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;相似度只衡量部分相关性。&lt;/strong&gt; 关键词适合精确标识符，向量适合语义匹配，跨文档关系常要沿目录或关系索引进一步查找。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;召回后仍要分配上下文预算。&lt;/strong&gt; 证据可能排序过低，被截断，或被重复内容掩盖。信息位置与干扰也会影响模型对长上下文的利用 [2]。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;各阶段需要单独定位故障。&lt;/strong&gt; 查询改写、召回、重排、上下文组装和生成都可能影响最终结果。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;22-研究中的三种检索改进&quot;&gt;2.2 研究中的三种检索改进&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;调整检索单元。&lt;/strong&gt; Dense X Retrieval 将检索单元从段落细化到命题。Late Chunking 先编码整篇文档，再生成带有文档上下文的块向量。两项研究都提示，切分粒度和文档结构会影响模型找到证据的能力 [8][9]。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;按任务选择检索步骤。&lt;/strong&gt; Self-RAG 用反思标记学习何时检索、如何评价结果。Adaptive-RAG 按问题复杂度选择直接回答、单步检索或多步检索。多步检索能补充候选证据，也会增加模型调用和延迟 [10][11]。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;在构建期和查询期分配成本。&lt;/strong&gt; RAPTOR 预先构建多层摘要树，GraphRAG 预先建图和生成社区摘要。SAG 在查询时按共享实体连接相关原文块。SAG 是预印本，实验覆盖三个多跳问答基准 [3][12][13]。&lt;/p&gt;
+&lt;p&gt;RAGAS 提供回答评估维度，Seven Failure Points 分类检索到生成链路中的工程故障。对执行任务的 Agent，还应检查权限、接口和业务规则是否满足。评测设计见第五节 [14][15]。&lt;/p&gt;
+&lt;h3 id=&quot;23-检索设计的三个工程决策&quot;&gt;2.3 检索设计的三个工程决策&lt;/h3&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;决策&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;可选设计&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;适用场景&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;主要成本与失效模式&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;怎样找候选&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;组合关键词、向量、元数据过滤和重排&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;精确术语和语义查询并存的知识库&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;维护索引，调试召回与排序&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;怎样组织证据关系&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;用目录树保留层级，用图索引关联实体、调用和引用&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;长文档导航、代码依赖、多跳问答、全库主题总结&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;构建和维护结构，检查漏边、错误关系与错误路由&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;何时继续检索&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;先读目录或摘要，根据缺口扩大范围或读取原文&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;大型代码库、研究任务、长程 Agent&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;在线延迟和调用次数随任务变化&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;这三个决策可以组合。PageIndex 根据文档树逐层导航，无需向量数据库或固定长度切块。OpenViking 用类似文件系统的接口组织知识、记忆和技能，支持从摘要、概览逐层打开原文，并在目录范围内做语义检索。Graphify 则对代码、文档构图，并区分直接抽取和推断得到的关系 [4][5][6]。&lt;/p&gt;
+&lt;p&gt;全库主题总结可以评估 GraphRAG 的社区摘要是否提高证据覆盖。查找精确配置项可以先测关键词检索的命中率和延迟。是否引入树或图，取决于查询分布和语料更新频率 [3]。&lt;/p&gt;
+&lt;h3 id=&quot;24-渐进式披露与检索停止条件&quot;&gt;2.4 渐进式披露与检索停止条件&lt;/h3&gt;
+&lt;p&gt;渐进式披露（Progressive Disclosure）先提供目录或摘要，再按需呈现详细内容。多步检索可以据此从低成本的信息入口开始，在证据不足时逐步查阅原文。&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;text&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;问题与任务状态&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;读取目录、摘要或实体索引&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;选择候选范围，查阅局部证据&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;检查必要证据是否齐全，是否存在冲突&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ├─ 证据充分 → 带来源作答&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ├─ 证据不足，仍有预算 → 改写查询、换路或展开下一层&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    │                     └→ 回到证据检查&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    └─ 证据不足，预算耗尽 → 说明缺口、给出有依据的部分结论或转人工&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;例如，核对财年收入至少需要确认财年起止日、收入定义和适用范围。把这些条件列入检查项，再用轮次、Token 和时延限制检索。树导航选错分支时，可以回退到关键词或向量检索。进入上下文的证据应保留文档版本和页码或代码位置，便于读者复核。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;三memory管理跨会话状态&quot;&gt;三、Memory：管理跨会话状态&lt;/h2&gt;
+&lt;h3 id=&quot;31-区分上下文证据和工作流状态&quot;&gt;3.1 区分上下文、证据和工作流状态&lt;/h3&gt;
+&lt;p&gt;本文用 RAG 指向为任务检索外部资料的流程，用 Memory 指向跨会话状态的管理。两者可以共用关键词或向量检索。各自的职责由数据来源、写入权限和有效期决定。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;机制&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;数据来自哪里&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;主要作用&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;长上下文&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;当前请求、会话历史和临时载入的资料&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;提供一次推理的工作空间&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;RAG&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;文档、网页、代码库中的外部知识&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;找到当前问题所需的证据&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;Memory&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;对话、操作轨迹、显式偏好与复盘&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;跨会话复用经过筛选的状态与经验&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;Checkpoint / Run State&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;任务变量、执行位置、工具结果&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;恢复某次工作流的执行进度&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&quot;32-记忆的生命周期&quot;&gt;3.2 记忆的生命周期&lt;/h3&gt;
+&lt;p&gt;Agent 的记忆可以按用途分为工作记忆、情景记忆、语义记忆和程序性记忆。工作记忆通常保存在当前上下文或运行状态中，其余三种可以按需持久化 [16][17]。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;类型&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;典型内容&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;推荐保存方式&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;主要风险&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;工作记忆&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;当前计划、临时变量、正在处理的证据&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;当前上下文或任务状态，随会话清理&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;把临时假设误写成长期事实&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;情景记忆&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;某次故障、修复过程、历史决策及其原因&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;带时间和来源的事件记录，可压缩但保留追溯链&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;流水账膨胀，旧事件覆盖新状态&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;语义记忆&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;稳定偏好、项目约定、已确认事实&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;可更新、可失效的结构化记录&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;冲突、过期、把推测当事实&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;程序性记忆&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;已验证的操作步骤、可复用技能与检查清单&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;版本化 Skill、脚本或流程，并附适用条件&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;在新环境中机械复用旧流程&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;候选写入&lt;/strong&gt; 从用户显式要求、已验证的任务结果和有复用价值的事件中提取候选。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;提炼与校验&lt;/strong&gt; 区分观察、推断和用户确认，剔除敏感信息与无复用价值的中间输出。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;合并与冲突处理&lt;/strong&gt; 去重，保留时间范围、版本和来源，区分适用的项目与时间段。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;检索与注入&lt;/strong&gt; 在已授权的用户、项目和团队范围内召回，在 Token 预算内组装上下文。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;反馈与遗忘&lt;/strong&gt; 支持更正、过期、删除和审计，让失效的记忆退出默认召回。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;以前文的报表为例，用户确认「本项目默认使用财年」后，系统可以把它写成带项目范围和生效时间的偏好。下次先取回这条偏好，再从现行财务文档确认财年起止日。用户改用自然年时，把新口径另存为一个版本，旧版本退出默认召回，并按保留策略处理。&lt;/p&gt;
+&lt;h3 id=&quot;33-记忆项目的不同侧重点&quot;&gt;3.3 记忆项目的不同侧重点&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;AgentMemory&lt;/strong&gt; 面向编码 Agent，支持跨工具捕获会话、查阅和管理项目历史。无密钥模式支持 BM25，向量和图检索取决于配置与可用数据 [20]。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;claude-mem&lt;/strong&gt; 捕获 Agent 活动，并生成观察记录和会话摘要。新会话用「索引—时间线—详情」分步检索历史 [21]。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mem0&lt;/strong&gt; 提供面向用户、会话和 Agent 的通用记忆 API，支持托管与自托管 [22]。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OpenViking&lt;/strong&gt; 通过同一上下文文件系统组织知识、记忆和技能 [6]。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;比较这些项目时，需要先对齐负载。会话捕获重在追溯，用户个性化重在偏好更新，技能复用重在适用条件。报告基准结果时，注明版本、模型、数据和预算。&lt;/p&gt;
+&lt;h3 id=&quot;34-持久化带来的风险&quot;&gt;3.4 持久化带来的风险&lt;/h3&gt;
+&lt;p&gt;陈旧文档或错误索引会使 RAG 在多次查询中重复出错。记忆系统还能把模型生成的推测或工具带回的信息写入长期状态，让它们在后续会话里反复被当作事实。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;错误固化&lt;/strong&gt; 区分模型推断和用户确认，写入时保留来源与验证状态。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;过期与串域&lt;/strong&gt; 根据作用域和有效期召回，支持更正和版本替换。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;持久化提示注入&lt;/strong&gt; 在写入时检查来源。检索结果作为数据交给模型，工具权限由 Harness 单独检查。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;隐私与合规&lt;/strong&gt; 采集时裁剪敏感内容，明确保留期，并支持查看、导出和删除。删除应覆盖派生摘要与检索索引。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;四harness把检索记忆与执行连起来&quot;&gt;四、Harness：把检索、记忆与执行连起来&lt;/h2&gt;
+&lt;p&gt;Harness 在读取时限定检索范围，在执行时校验工具调用，在交付前检查结果。写入路径决定哪些信息能从本次任务进入长期记忆。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;读路径&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;text&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;用户请求 + 当前任务状态&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;Harness 选择知识、记忆或任务状态，并在检索前限定授权范围&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ├─ 需要证据 → 在授权范围内查知识或记忆 → 复核来源、排序、按预算组装&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    └─ 已掌握所需信息 → 直接使用当前上下文&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;模型推理 → 检查工具权限和参数 → 调用工具（按需）&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;验证答案或执行结果&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ├─ 满足任务约束 → 交付&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ├─ 证据不足，仍有预算 → 返回检索&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    └─ 无法验证或超出预算 → 报告缺口或转人工&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;写路径&lt;/strong&gt;在采集和落盘前裁剪敏感内容。短期事件日志按保留期管理。后台从获准保留的事件中提炼候选记忆，检查冲突与有效期，必要时请用户确认，再写入长期索引。项目事实尽量关联正式文档、测试或代码提交。&lt;/p&gt;
+&lt;p&gt;以财年收入为例，Harness 可以限制知识检索和数据库工具的项目权限，执行参数校验和只读约束，再按任务定义检查日期范围与结果格式。Jev 一类组件可以参与有界的路由判断。其部分判断接口提供概率字段，具体权限和业务规则仍由应用校验 [7]。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;五分层评估检索记忆与任务结果&quot;&gt;五、分层评估检索、记忆与任务结果&lt;/h2&gt;
+&lt;p&gt;RAG 与 Memory 的评测都必须分层，否则无法知道收益来自哪里，也无法定位退化发生在哪一步。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;层级&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;RAG 重点指标&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;Memory 重点指标&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;写入 / 构建&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;文档解析成功率、结构完整度、索引新鲜度、构建成本&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;写入准确率、重复率、来源覆盖率、敏感信息误存率&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;检索&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Evidence Recall@K、MRR / nDCG、重排增益、无答案拒识&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;必要记忆召回率、过期记忆召回率、冲突识别率、跨域泄漏率&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;上下文&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;有效证据占比、重复率、引用可定位率、Token 消耗&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;有效记忆占比、作用域正确性、注入 Token 与详情展开成本&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;生成 / 执行&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;答案正确性、忠实度、引用准确性、拒答质量&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;个性化或任务成功率增益、错误记忆导致的失败率&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;系统成本&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;P50/P95 延迟、检索轮次、缓存命中率、单次回答成本&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;读写延迟、后台整理成本、存储增长、删除生效时间&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;RAG 对照可以比较无外部知识、直接给模型长文档、简单混合检索和结构化检索。Memory 对照可以比较无记忆、直接提供全量历史、会话摘要和完整记忆管线。各组使用相同的任务集和生成模型。&lt;strong&gt;固定预算时比较任务成功率，达到同一成功率时比较 Token、时延和维护成本。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;组件指标用于定位退化。即使 Recall@K 提高，也要单独检查执行结果是否改善。LoCoMo 和 LongMemEval 可作为长程对话的评测入口。编码项目和企业应用还需要使用各自的真实任务验证 [18][19]。&lt;/p&gt;
+&lt;p&gt;记忆评测按会话时间推进，依次测试写入、召回和更正。可以验证用户更新偏好后是否沿用新值、删除后是否仍能召回、其他项目能否读到这项偏好。报告任务成功率时，同时记录错误记忆引入的失败。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;六两个待验证的工程问题&quot;&gt;六、两个待验证的工程问题&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;结构化索引何时值得维护？&lt;/strong&gt; 在同一批真实查询和语料更新记录上，对照简单混合检索。比较建索引成本、更新后的证据召回、端到端成本和任务成功率。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;跨工具共享记忆何时有收益？&lt;/strong&gt; 让 IDE、CLI 和 Agent 复用同一组项目约定，记录任务成功率和重复确认次数。同步测试作用域隔离、偏好更正和删除生效时间。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;附录llm-生态技术雷达&quot;&gt;附录：LLM 生态技术雷达&lt;/h2&gt;
+&lt;p&gt;下表基于课程材料并借助 AI 归纳。RAG 与 Memory 属于上下文工程，Harness 属于 Agent 执行系统。使用雷达跟踪一个方向时，记录适用负载、对照基线、成本落点、已知失效条件、来源与核对日期。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;生态领域&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;雷达一级方向&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;代表性技术&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;核心关注问题&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;二级重点专题&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;模型能力&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;1. 模型能力&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Transformer、MoE、Reasoning、Multimodal&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;模型的能力边界如何演进&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;原生推理与多模态&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;数据与训练&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;2. 后训练与适配&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;SFT、RL、DPO、LoRA、Distillation&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何改变模型的行为与能力&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;推理强化学习与领域对齐&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;数据与训练&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;3. 数据工程&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Data Curation、Synthetic Data、Data Flywheel&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何持续获得高质量训练与反馈数据&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;合成数据与反馈闭环&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;推理基础设施&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;4. 推理基础设施&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;vLLM、SGLang、KV Cache、Quantization&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何优化吞吐、延迟与成本&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;注意力优化与低比特推理&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;智能应用&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;5. 上下文工程&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Prompt、RAG、Memory、Context Compression&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何组织高价值上下文&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;RAG、Memory&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;智能应用&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;6. Agent 执行系统&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Harness、Tool Use、Skills、MCP、Sandbox&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何可靠地执行复杂任务&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;Harness&lt;/strong&gt;、MCP 与沙箱&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;推理基础设施&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;7. 多模型协同&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Model Router、Model Gateway、Fallback&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何按任务分配模型和计算资源&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;动态路由与多模型回退&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;可信生产系统&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;8. 评测与验证&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Evals、Benchmark、LLM-as-Judge、Verification&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何证明正确性与可靠性&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;轨迹评测与结果验证&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;可信生产系统&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;9. 安全与治理&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Prompt Injection、Guardrails、Permissions&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何限制模型、数据与工具的风险&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;注入防御与权限控制&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;可信生产系统&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;10. AI 系统运维&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;LLMOps、Tracing、Observability、Cost&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何持续监控并优化生产系统&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;全链路追踪与成本治理&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;智能应用&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;11. 环境与模态交互&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Vision、Voice、Computer Use、Embodied AI&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何让模型感知并操作外部世界&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;桌面/浏览器操作与具身交互&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;RAG 部分参考了 AI 辅助论文调研。该调研说明了选文范围和证据局限。&lt;/p&gt;
+&lt;p&gt;文中公开项目特性的核对日期为 2026 年 11 月 19 日。&lt;/p&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+&lt;p&gt;[1] P. Lewis et al., “Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks,” 2020. &lt;a href=&quot;https://arxiv.org/abs/2005.11401&quot;&gt;arXiv:2005.11401&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[2] N. F. Liu et al., “Lost in the Middle: How Language Models Use Long Contexts,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2307.03172&quot;&gt;arXiv:2307.03172&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[3] D. Edge et al., “From Local to Global: A Graph RAG Approach to Query-Focused Summarization,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2404.16130&quot;&gt;arXiv:2404.16130&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[4] VectifyAI, “PageIndex: Vectorless, Reasoning-based RAG.” &lt;a href=&quot;https://github.com/VectifyAI/PageIndex&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[5] Graphify Labs, “Graphify: Codebase Knowledge Graph for Agents.” &lt;a href=&quot;https://github.com/Graphify-Labs/graphify&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[6] Volcano Engine, “OpenViking: The Context Database for AI Agents.” &lt;a href=&quot;https://github.com/volcengine/OpenViking&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[7] TypeSafe AI, “Jev / System One Models Documentation.” &lt;a href=&quot;https://docs.typesafe.ai/introduction&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[8] T. Chen et al., “Dense X Retrieval: What Retrieval Granularity Should We Use?” 2023. &lt;a href=&quot;https://arxiv.org/abs/2312.06648&quot;&gt;arXiv:2312.06648&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[9] M. Günther et al., “Late Chunking: Contextual Chunk Embeddings Using Long-Context Embedding Models,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2409.04701&quot;&gt;arXiv:2409.04701&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[10] A. Asai et al., “Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2310.11511&quot;&gt;arXiv:2310.11511&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[11] S. Jeong et al., “Adaptive-RAG: Learning to Adapt Retrieval-Augmented Large Language Models through Question Complexity,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2403.14403&quot;&gt;arXiv:2403.14403&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[12] P. Sarthi et al., “RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2401.18059&quot;&gt;arXiv:2401.18059&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[13] Y. Wu et al., “SAG: SQL-Retrieval Augmented Generation with Query-Time Dynamic Hyperedges,” arXiv 预印本，2026. &lt;a href=&quot;https://arxiv.org/abs/2606.15971&quot;&gt;arXiv:2606.15971&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[14] S. Es et al., “RAGAS: Automated Evaluation of Retrieval Augmented Generation,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2309.15217&quot;&gt;arXiv:2309.15217&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[15] S. Barnett et al., “Seven Failure Points When Engineering a Retrieval Augmented Generation System,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2401.05856&quot;&gt;arXiv:2401.05856&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[16] C. Packer et al., “MemGPT: Towards LLMs as Operating Systems,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2310.08560&quot;&gt;arXiv:2310.08560&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[17] Z. Zhang et al., “A Survey on the Memory Mechanism of Large Language Model based Agents,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2404.13501&quot;&gt;arXiv:2404.13501&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[18] D. Wu et al., “LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive Memory,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2410.10813&quot;&gt;arXiv:2410.10813&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[19] A. Maharana et al., “Evaluating Very Long-Term Conversational Memory of LLM Agents,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2402.17753&quot;&gt;arXiv:2402.17753&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[20] Rohit Ghumare, “AgentMemory: Persistent Memory Across Coding Sessions and Agents.” &lt;a href=&quot;https://github.com/rohitg00/agentmemory&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[21] thedotmack, “claude-mem: Persistent Context Across Sessions.” &lt;a href=&quot;https://github.com/thedotmack/claude-mem&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[22] P. Chhikara et al., “Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory,” 2025. &lt;a href=&quot;https://arxiv.org/abs/2504.19413&quot;&gt;arXiv:2504.19413&lt;/a&gt;；&lt;a href=&quot;https://github.com/mem0ai/mem0&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt; - https://akelio-zhang.github.io/posts/2026-llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9F%EF%BC%9Arag%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E-harness/ - 2019–2026 Akelio</description><pubDate>Thu, 19 Nov 2026 06:30:00 GMT</pubDate></item><item><title>游戏AI—纸牌游戏的求解策略</title><link>https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-%E6%B8%B8%E6%88%8Fai%E2%80%94%E7%BA%B8%E7%89%8C%E6%B8%B8%E6%88%8F%E7%9A%84%E6%B1%82%E8%A7%A3%E7%AD%96%E7%95%A5/ - &lt;h1 id=&quot;游戏ai纸牌游戏的求解策略&quot;&gt;游戏AI—纸牌游戏的求解策略&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;2026-08-04 更新：随着实验继续推进，问题已经从“怎样把 Beam Search 调得更强”，转变为“在不同信息边界下，什么搜索范式才合理”。本文保留原来的算法讨论，同时用最新对照结果修正早期结论。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1233,125 +1651,4 @@ MySQL 会先在磁盘连续空间里写一份副本，再写真正的文件。�
 &lt;li&gt;用front-design和playwright做专项支持&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;整体来说，它们不是单个工具的拼凑，而是一套能持续迭代的工作流。关键在于保持复盘，把经验转成可复用的资产。&lt;/p&gt; - https://akelio-zhang.github.io/posts/2026-claude-code%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/ - 2019–2026 Akelio</description><pubDate>Sat, 14 Mar 2026 01:00:00 GMT</pubDate></item><item><title>产品力</title><link>https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/ - &lt;p&gt;理工科人总是会关注到技术细节，但产品并不是简单的技术细节叠加，而是一个综合结果。譬如车辆、手机、甚至键盘、音响。&lt;/p&gt;
-&lt;p&gt;那对于软件系统（产品）而言更是如此，如何打造一个有产品力的软件系统？&lt;/p&gt; - https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/ - 2019–2026 Akelio</description><pubDate>Fri, 23 May 2025 07:00:00 GMT</pubDate></item><item><title>Git原理与分支管理实践</title><link>https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/ - &lt;blockquote&gt;
-&lt;p&gt;Written with Claude.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;理解 Git 不应止步于记住命令。本文记录了两个动手实验——把 &lt;code&gt;.git&lt;/code&gt; 目录的对象存进数据库、用 JS 重新实现 Git 核心操作——以此真正搞清楚 Git 在保存什么、操作什么。第二部分结合团队实际诉求，设计了一套基于 Git Flow 的分支管理方案。&lt;/p&gt;
-&lt;h2 id=&quot;原理理解&quot;&gt;原理理解&lt;/h2&gt;
-&lt;h3 id=&quot;将-git-存储到数据库git-db&quot;&gt;将 .git 存储到数据库（git-db）&lt;/h3&gt;
-&lt;p&gt;Git 的存储本质是一个内容寻址的 KV 数据库，所有对象（blob / tree / commit / tag）都以 SHA-1 为 key，以 zlib 压缩后的二进制为 value。这个实验将 &lt;code&gt;.git/objects&lt;/code&gt; 下的所有对象导入关系型数据库，直观地验证了这一点：每一次 &lt;code&gt;git add&lt;/code&gt; 产生一个 blob 对象，每一次 &lt;code&gt;git commit&lt;/code&gt; 产生一个 commit 对象和若干 tree 对象，分支和 HEAD 不过是指向某个 commit SHA-1 的指针文件。理解这一层之后，Git 的大多数&quot;魔法&quot;行为都变得可以推导。&lt;/p&gt;
-&lt;h3 id=&quot;用-js-重新实现-gitgit-js&quot;&gt;用 JS 重新实现 Git（git-js）&lt;/h3&gt;
-&lt;p&gt;在理解存储结构之后，用 JavaScript 重新实现 Git 的核心操作（&lt;code&gt;init&lt;/code&gt; / &lt;code&gt;add&lt;/code&gt; / &lt;code&gt;commit&lt;/code&gt; / &lt;code&gt;log&lt;/code&gt; / &lt;code&gt;checkout&lt;/code&gt;），目的是验证对操作语义的理解是否准确。这个过程中最重要的收获是：Git 的&quot;分支切换&quot;本质上只是修改 HEAD 指针 + 用目标 tree 对象还原工作区，与任何网络、服务端都无关；而 &lt;code&gt;merge&lt;/code&gt; 的核心是找到两个 commit 的公共祖先，再做三方合并。&lt;/p&gt;
-&lt;h2 id=&quot;分支管理&quot;&gt;分支管理&lt;/h2&gt;
-&lt;h3 id=&quot;主流工作流对比&quot;&gt;主流工作流对比&lt;/h3&gt;
-&lt;p&gt;分支管理策略大体分为两类：&lt;strong&gt;Trunk Based Development&lt;/strong&gt; 和 &lt;strong&gt;Git Flow&lt;/strong&gt;。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Git Flow&lt;/strong&gt;：维持 &lt;code&gt;master&lt;/code&gt; 和 &lt;code&gt;develop&lt;/code&gt; 两个长期分支，分别对应生产和测试环境。多版本场景下可从对应节点再建新的主分支并行推进。节奏稳健，适合有明确发布窗口的团队。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;GitHub Flow&lt;/strong&gt;：主干持续发布，feature 分支直接合入 main 并部署。是 Trunk Based 的精华版，对团队整体工程能力要求高，不适合多版本并行管理。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;GitLab Flow&lt;/strong&gt;：GitHub Flow 的演进版，在主干之外增加环境分支（如 &lt;code&gt;production&lt;/code&gt;、&lt;code&gt;staging&lt;/code&gt;），主干代码向下游环境分支合并。相比 GitHub Flow 更适合有多套环境的团队，但对合并纪律要求较高。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;代码管理诉求&quot;&gt;代码管理诉求&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;按窗口（功能清单）发布、单一生产版本&lt;/li&gt;
-&lt;li&gt;支持多版本并行开发&lt;/li&gt;
-&lt;li&gt;尽可能保留所有 commit&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;操作方案基于-git-flow&quot;&gt;操作方案：基于 Git Flow&lt;/h3&gt;
-&lt;h4 id=&quot;多版本并行开发策略&quot;&gt;多版本并行开发策略&lt;/h4&gt;
-&lt;p&gt;多版本并行开发通过以下约束保证代码继承关系的正确性：&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;核心规则：所有测试分支不得落后于 &lt;code&gt;master&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;无论当前有多少个版本在并行开发，每个测试分支在提 MR 合入时，必须已将最新的 &lt;code&gt;master&lt;/code&gt; 内容 merge 进来。这一约束确保了：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;任何一个版本上线后，其他版本的测试分支都不会丢失已上线的内容&lt;/li&gt;
-&lt;li&gt;版本间的代码继承关系通过这条规则自然保证，不需要额外维护分支间的同步逻辑&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;执行时机&lt;/strong&gt;：同步要求在&lt;strong&gt;提 MR 合入测试分支时&lt;/strong&gt;即生效，而非上线前才处理，避免冲突在打包阶段集中爆发。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;CR 注意事项&lt;/strong&gt;：feature 分支 merge master 后，MR 的 diff 中会包含与本次功能无关的内容。开发者须在 MR 描述中注明是否包含 master 同步，方便 reviewer 聚焦在本次功能变更上，避免 CR 流于形式。&lt;/p&gt;
-&lt;h4 id=&quot;分支命名&quot;&gt;分支命名&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;master&lt;/code&gt;：最新 commit id 等价于当前生产版本&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;develop&lt;/code&gt;：单版本场景下的测试主分支&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;develop_vX&lt;/code&gt;：多版本并行时各版本独立的测试分支，对应独立的测试环境&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;release_日期&lt;/code&gt;：窗口裁剪的标准路径，当测试分支上同时存在多个功能但本次只上线部分时使用&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&quot;代码提交&quot;&gt;代码提交&lt;/h4&gt;
-&lt;p&gt;所有分支合入测试主分支前须经过 Code Review。通过拓宽 CR 参与人数来分散审查压力，保证代码质量。feature 分支合入时禁止 squash merge，保留完整的 commit 历史。&lt;/p&gt;
-&lt;h4 id=&quot;打包上线&quot;&gt;打包上线&lt;/h4&gt;
-&lt;p&gt;若存在 &lt;code&gt;release&lt;/code&gt; 分支则以 &lt;code&gt;release&lt;/code&gt; 为打包源，否则以本次测试分支为打包分支。打包产物的后缀 commit id 即为 &lt;code&gt;master&lt;/code&gt; 合并与 tag 的目标节点。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;master&lt;/code&gt; 分支只允许 &lt;code&gt;--ff-only&lt;/code&gt; 合并，确保其仅作为映射指标存在——所有 commit 均来源于经过复核的测试主分支。&lt;/p&gt;
-&lt;p&gt;典型生命周期（单测试分支场景）：&lt;/p&gt;
-&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;plaintext&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;feature → develop → (build &amp;#x26; verify) → master (ff-only) + tag&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&quot;平台配置&quot;&gt;平台配置&lt;/h4&gt;
-&lt;p&gt;以下规则须在 GitLab/GitHub 分支保护里显式配置，不依赖约定：&lt;/p&gt;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;规则&lt;/th&gt;&lt;th&gt;作用&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;develop_*&lt;/code&gt; 只允许 merge commit，禁止 squash&lt;/td&gt;&lt;td&gt;保留所有 commit 历史&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;master&lt;/code&gt; 只允许 ff-only&lt;/td&gt;&lt;td&gt;保证 master 是线性映射&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;feature 分支合入 &lt;code&gt;develop_*&lt;/code&gt; 必须通过 MR + CR&lt;/td&gt;&lt;td&gt;保证上线质量&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;code&gt;develop_*&lt;/code&gt; 不允许直接 push，必须走 MR&lt;/td&gt;&lt;td&gt;防止绕过 CR&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
-&lt;h3 id=&quot;最终效果&quot;&gt;最终效果&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;master&lt;/code&gt; 与 tag 共同构成所有历史发布版本的完整索引，每个 tag 对应一次上线的代码与变更内容&lt;/li&gt;
-&lt;li&gt;打包的代码一定包含 &lt;code&gt;master&lt;/code&gt; 的全部提交（Jenkins 增加检查脚本保障）&lt;/li&gt;
-&lt;li&gt;所有上线代码均经过 Code Review&lt;/li&gt;
-&lt;li&gt;最小化 commit 在不同分支间的流动：仅有单测试分支时，整个流程只存在测试分支向 &lt;code&gt;master&lt;/code&gt; 的一次合并&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;p&gt;这套方案的核心取舍是：以 Git Flow 的双主干结构换取发布安全性，以 &lt;code&gt;--ff-only&lt;/code&gt; 合并保证 &lt;code&gt;master&lt;/code&gt; 的可追溯性，以 CR 门禁换取上线质量。对于单一生产版本、按窗口发布的团队，这是目前成本最低、风险最可控的路径。&lt;/p&gt; - https://akelio-zhang.github.io/posts/2024-git%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/ - 2019–2026 Akelio</description><pubDate>Mon, 30 Sep 2024 10:00:00 GMT</pubDate></item><item><title>软件开发的一些思考与Hint</title><link>https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/ - &lt;h2 id=&quot;业务价值与驱动力&quot;&gt;业务价值与驱动力&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;大局观&amp;#x26;格局（森林）//  细节 （树木）&lt;/li&gt;
-&lt;li&gt;代码不是资产/财富，代码是负债。代码实现的那个背后的需求才是资产/财富。&lt;/li&gt;
-&lt;li&gt;代码本身并没有价值，运行、数据沉淀才是价值。&lt;/li&gt;
-&lt;li&gt;结合上面两个，在大多数业务场景里面，想法起点和运营成果才是价值&lt;/li&gt;
-&lt;li&gt;软件行业中，代码目前看起来并不具备护城河能力（开源、复制），数据才是护城河，特别是与社会资源强关联的那些（社交、金融资产、生产活动）&lt;/li&gt;
-&lt;li&gt;要做有门槛的事，建立自己的护城河和影响力&lt;/li&gt;
-&lt;li&gt;制定标准与构建生态（apple，sony）&lt;/li&gt;
-&lt;li&gt;数据驱动，数智赋能，价值在外的思维（业务）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;软件工程&quot;&gt;软件工程&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;操作系统是一个程序，这个程序的用户是程序员或者一般人员。那我们做系统（某种意义上程序的集合）需要充分考虑我们的用户，做好对外的提供的api和对象。内部做好实现。&lt;/li&gt;
-&lt;li&gt;Unix环境高级编程：从应用系统深入到操作系统；几乎所有的性能优化，都在CA、OS能找到相同的思想理念。&lt;/li&gt;
-&lt;li&gt;编程、计算机是来解决问题，提升效率的。&lt;/li&gt;
-&lt;li&gt;系统功能正确性（输入与输出、内在状态变更）系统内外 VS 函数内外&lt;/li&gt;
-&lt;li&gt;Meta method：抽象 分层 组合&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;系统选型&quot;&gt;系统选型&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;没有银弹，所有系统架构都有优势、劣势。最典型的就是批处理系统与实时流处理系统的优劣势。&lt;/li&gt;
-&lt;li&gt;系统选型时，首先明确（业务、科技）需求优先级，再考虑系统的长期性（考虑未来迁移、运维的成本）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;其他人的思考引用&quot;&gt;其他人的思考引用&lt;/h2&gt;
-&lt;h3 id=&quot;南大老师的话&quot;&gt;南大老师的话&lt;/h3&gt;
-&lt;p&gt;来源：&lt;a href=&quot;https://www.bilibili.com/video/BV1uR4y167pA/&quot;&gt;“大学除了专业知识，还应该学些什么？” 南京大学《SICP》课堂李樾老师的絮絮叨叨_哔哩哔哩_bilibili&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;ol&gt;
-&lt;li&gt;有限时间内快速（搜索）汲取知识并化为己用的能力&lt;/li&gt;
-&lt;li&gt;这种能力需要训练，系统性地向他人介绍一块知识内容（往往自顶向下）&lt;/li&gt;
-&lt;li&gt;通过实践，实现一个具体的系统来综合运用知识（使用概念与抽象）&lt;/li&gt;
-&lt;li&gt;面对压力困难迷茫时，接纳自己，认同自己，积极应对和拿出勇气&lt;/li&gt;
-&lt;li&gt;理解他人、包容他人、博爱他人&lt;/li&gt;
-&lt;li&gt;学会原谅自己，爱自己&lt;/li&gt;
-&lt;li&gt;be different，做自己，让自己幸福&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/blockquote&gt; - https://akelio-zhang.github.io/posts/2024-%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83%E4%B8%8Ehint/ - 2019–2026 Akelio</description><pubDate>Sat, 01 Jun 2024 07:00:00 GMT</pubDate></item></channel></rss>
+&lt;p&gt;那对于软件系统（产品）而言更是如此，如何打造一个有产品力的软件系统？&lt;/p&gt; - https://akelio-zhang.github.io/posts/2025-%E4%BA%A7%E5%93%81%E5%8A%9B/ - 2019–2026 Akelio</description><pubDate>Fri, 23 May 2025 07:00:00 GMT</pubDate></item></channel></rss>

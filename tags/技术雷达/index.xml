@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0"><channel><title>技术雷达</title><description>Akelio 的技术笔记、读书记录与数字生活。</description><link>https://akelio-zhang.github.io/</link><language>zh</language><item><title>LLM 上下文工程观察：RAG、记忆与 Harness</title><link>https://akelio-zhang.github.io/posts/2026-llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9F%EF%BC%9Arag%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E-harness/</link><guid isPermaLink="true">https://akelio-zhang.github.io/posts/2026-llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9F%EF%BC%9Arag%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E-harness/</guid><description>LIFE CODER https://akelio-zhang.github.io/posts/2026-llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9F%EF%BC%9Arag%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E-harness/ - &lt;h1 id=&quot;llm-上下文工程观察rag记忆与-harness&quot;&gt;LLM 上下文工程观察：RAG、记忆与 Harness&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;RAG 为当前任务检索证据，Memory 保留可跨会话复用的状态，Harness 管理检索与工具调用的权限、预算和结果验证。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Written with Gemini.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;一一次数据分析需要哪些上下文&quot;&gt;一、一次数据分析需要哪些上下文&lt;/h2&gt;
+&lt;p&gt;假设用户请 Agent 按财年汇总收入，并要求这个项目以后默认使用财年口径。Agent 要从财务文档和已有查询中找到当前适用的财年定义，也要把用户确认的默认口径保留给下次会话。执行前，它要检查数据访问权限和查询的只读约束，交付时还要核对取数日期范围。&lt;/p&gt;
+&lt;p&gt;这里有三个职责。&lt;strong&gt;RAG&lt;/strong&gt; 为当次任务查证据。&lt;strong&gt;记忆系统（Memory）&lt;/strong&gt; 管理跨会话沿用的项目约定。&lt;strong&gt;Harness&lt;/strong&gt; 是控制 Agent 执行的运行层，负责决定该查什么、能读什么，以及如何验证动作和结果。&lt;/p&gt;
+&lt;p&gt;长上下文扩大了模型的工作空间。长任务仍然需要为证据和历史分配 Token，处理信息过期与冲突，并约束工具的访问范围。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;二rag从单次召回到按需检索&quot;&gt;二、RAG：从单次召回到按需检索&lt;/h2&gt;
+&lt;h3 id=&quot;21-以向量检索作为基线&quot;&gt;2.1 以向量检索作为基线&lt;/h3&gt;
+&lt;p&gt;Lewis 等人在 2020 年提出结合检索器和生成器的 RAG 模型，分别按序列和按 Token 使用检索到的文档 [1]。一种常见的工程基线是按固定长度切分文档，建立向量索引，召回 Top-K 个片段并放入 Prompt。在 FAQ 和语义明确的知识库问答中，可以用这个基线衡量更复杂的检索是否值得投入。&lt;/p&gt;
+&lt;p&gt;复杂任务会暴露单次相似度召回的几个局限。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;切块可能破坏文档边界。&lt;/strong&gt; 跨章节论证、表格和代码依赖需要保留相应结构。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;相似度只衡量部分相关性。&lt;/strong&gt; 关键词适合精确标识符，向量适合语义匹配，跨文档关系常要沿目录或关系索引进一步查找。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;召回后仍要分配上下文预算。&lt;/strong&gt; 证据可能排序过低，被截断，或被重复内容掩盖。信息位置与干扰也会影响模型对长上下文的利用 [2]。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;各阶段需要单独定位故障。&lt;/strong&gt; 查询改写、召回、重排、上下文组装和生成都可能影响最终结果。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;22-研究中的三种检索改进&quot;&gt;2.2 研究中的三种检索改进&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;调整检索单元。&lt;/strong&gt; Dense X Retrieval 将检索单元从段落细化到命题。Late Chunking 先编码整篇文档，再生成带有文档上下文的块向量。两项研究都提示，切分粒度和文档结构会影响模型找到证据的能力 [8][9]。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;按任务选择检索步骤。&lt;/strong&gt; Self-RAG 用反思标记学习何时检索、如何评价结果。Adaptive-RAG 按问题复杂度选择直接回答、单步检索或多步检索。多步检索能补充候选证据，也会增加模型调用和延迟 [10][11]。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;在构建期和查询期分配成本。&lt;/strong&gt; RAPTOR 预先构建多层摘要树，GraphRAG 预先建图和生成社区摘要。SAG 在查询时按共享实体连接相关原文块。SAG 是预印本，实验覆盖三个多跳问答基准 [3][12][13]。&lt;/p&gt;
+&lt;p&gt;RAGAS 提供回答评估维度，Seven Failure Points 分类检索到生成链路中的工程故障。对执行任务的 Agent，还应检查权限、接口和业务规则是否满足。评测设计见第五节 [14][15]。&lt;/p&gt;
+&lt;h3 id=&quot;23-检索设计的三个工程决策&quot;&gt;2.3 检索设计的三个工程决策&lt;/h3&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;决策&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;可选设计&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;适用场景&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;主要成本与失效模式&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;怎样找候选&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;组合关键词、向量、元数据过滤和重排&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;精确术语和语义查询并存的知识库&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;维护索引，调试召回与排序&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;怎样组织证据关系&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;用目录树保留层级，用图索引关联实体、调用和引用&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;长文档导航、代码依赖、多跳问答、全库主题总结&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;构建和维护结构，检查漏边、错误关系与错误路由&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;何时继续检索&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;先读目录或摘要，根据缺口扩大范围或读取原文&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;大型代码库、研究任务、长程 Agent&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;在线延迟和调用次数随任务变化&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;这三个决策可以组合。PageIndex 根据文档树逐层导航，无需向量数据库或固定长度切块。OpenViking 用类似文件系统的接口组织知识、记忆和技能，支持从摘要、概览逐层打开原文，并在目录范围内做语义检索。Graphify 则对代码、文档构图，并区分直接抽取和推断得到的关系 [4][5][6]。&lt;/p&gt;
+&lt;p&gt;全库主题总结可以评估 GraphRAG 的社区摘要是否提高证据覆盖。查找精确配置项可以先测关键词检索的命中率和延迟。是否引入树或图，取决于查询分布和语料更新频率 [3]。&lt;/p&gt;
+&lt;h3 id=&quot;24-渐进式披露与检索停止条件&quot;&gt;2.4 渐进式披露与检索停止条件&lt;/h3&gt;
+&lt;p&gt;渐进式披露（Progressive Disclosure）先提供目录或摘要，再按需呈现详细内容。多步检索可以据此从低成本的信息入口开始，在证据不足时逐步查阅原文。&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;text&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;问题与任务状态&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;读取目录、摘要或实体索引&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;选择候选范围，查阅局部证据&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;检查必要证据是否齐全，是否存在冲突&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ├─ 证据充分 → 带来源作答&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ├─ 证据不足，仍有预算 → 改写查询、换路或展开下一层&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    │                     └→ 回到证据检查&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    └─ 证据不足，预算耗尽 → 说明缺口、给出有依据的部分结论或转人工&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;例如，核对财年收入至少需要确认财年起止日、收入定义和适用范围。把这些条件列入检查项，再用轮次、Token 和时延限制检索。树导航选错分支时，可以回退到关键词或向量检索。进入上下文的证据应保留文档版本和页码或代码位置，便于读者复核。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;三memory管理跨会话状态&quot;&gt;三、Memory：管理跨会话状态&lt;/h2&gt;
+&lt;h3 id=&quot;31-区分上下文证据和工作流状态&quot;&gt;3.1 区分上下文、证据和工作流状态&lt;/h3&gt;
+&lt;p&gt;本文用 RAG 指向为任务检索外部资料的流程，用 Memory 指向跨会话状态的管理。两者可以共用关键词或向量检索。各自的职责由数据来源、写入权限和有效期决定。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;机制&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;数据来自哪里&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;主要作用&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;长上下文&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;当前请求、会话历史和临时载入的资料&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;提供一次推理的工作空间&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;RAG&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;文档、网页、代码库中的外部知识&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;找到当前问题所需的证据&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;Memory&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;对话、操作轨迹、显式偏好与复盘&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;跨会话复用经过筛选的状态与经验&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;Checkpoint / Run State&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;任务变量、执行位置、工具结果&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;恢复某次工作流的执行进度&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;h3 id=&quot;32-记忆的生命周期&quot;&gt;3.2 记忆的生命周期&lt;/h3&gt;
+&lt;p&gt;Agent 的记忆可以按用途分为工作记忆、情景记忆、语义记忆和程序性记忆。工作记忆通常保存在当前上下文或运行状态中，其余三种可以按需持久化 [16][17]。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;类型&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;典型内容&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;推荐保存方式&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;主要风险&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;工作记忆&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;当前计划、临时变量、正在处理的证据&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;当前上下文或任务状态，随会话清理&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;把临时假设误写成长期事实&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;情景记忆&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;某次故障、修复过程、历史决策及其原因&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;带时间和来源的事件记录，可压缩但保留追溯链&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;流水账膨胀，旧事件覆盖新状态&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;语义记忆&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;稳定偏好、项目约定、已确认事实&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;可更新、可失效的结构化记录&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;冲突、过期、把推测当事实&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;程序性记忆&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;已验证的操作步骤、可复用技能与检查清单&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;版本化 Skill、脚本或流程，并附适用条件&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;在新环境中机械复用旧流程&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;候选写入&lt;/strong&gt; 从用户显式要求、已验证的任务结果和有复用价值的事件中提取候选。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;提炼与校验&lt;/strong&gt; 区分观察、推断和用户确认，剔除敏感信息与无复用价值的中间输出。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;合并与冲突处理&lt;/strong&gt; 去重，保留时间范围、版本和来源，区分适用的项目与时间段。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;检索与注入&lt;/strong&gt; 在已授权的用户、项目和团队范围内召回，在 Token 预算内组装上下文。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;反馈与遗忘&lt;/strong&gt; 支持更正、过期、删除和审计，让失效的记忆退出默认召回。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;以前文的报表为例，用户确认「本项目默认使用财年」后，系统可以把它写成带项目范围和生效时间的偏好。下次先取回这条偏好，再从现行财务文档确认财年起止日。用户改用自然年时，把新口径另存为一个版本，旧版本退出默认召回，并按保留策略处理。&lt;/p&gt;
+&lt;h3 id=&quot;33-记忆项目的不同侧重点&quot;&gt;3.3 记忆项目的不同侧重点&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;AgentMemory&lt;/strong&gt; 面向编码 Agent，支持跨工具捕获会话、查阅和管理项目历史。无密钥模式支持 BM25，向量和图检索取决于配置与可用数据 [20]。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;claude-mem&lt;/strong&gt; 捕获 Agent 活动，并生成观察记录和会话摘要。新会话用「索引—时间线—详情」分步检索历史 [21]。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mem0&lt;/strong&gt; 提供面向用户、会话和 Agent 的通用记忆 API，支持托管与自托管 [22]。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OpenViking&lt;/strong&gt; 通过同一上下文文件系统组织知识、记忆和技能 [6]。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;比较这些项目时，需要先对齐负载。会话捕获重在追溯，用户个性化重在偏好更新，技能复用重在适用条件。报告基准结果时，注明版本、模型、数据和预算。&lt;/p&gt;
+&lt;h3 id=&quot;34-持久化带来的风险&quot;&gt;3.4 持久化带来的风险&lt;/h3&gt;
+&lt;p&gt;陈旧文档或错误索引会使 RAG 在多次查询中重复出错。记忆系统还能把模型生成的推测或工具带回的信息写入长期状态，让它们在后续会话里反复被当作事实。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;错误固化&lt;/strong&gt; 区分模型推断和用户确认，写入时保留来源与验证状态。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;过期与串域&lt;/strong&gt; 根据作用域和有效期召回，支持更正和版本替换。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;持久化提示注入&lt;/strong&gt; 在写入时检查来源。检索结果作为数据交给模型，工具权限由 Harness 单独检查。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;隐私与合规&lt;/strong&gt; 采集时裁剪敏感内容，明确保留期，并支持查看、导出和删除。删除应覆盖派生摘要与检索索引。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;四harness把检索记忆与执行连起来&quot;&gt;四、Harness：把检索、记忆与执行连起来&lt;/h2&gt;
+&lt;p&gt;Harness 在读取时限定检索范围，在执行时校验工具调用，在交付前检查结果。写入路径决定哪些信息能从本次任务进入长期记忆。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;读路径&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&quot;astro-code astro-code-themes github-light github-dark&quot; style=&quot;background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto;&quot; tabindex=&quot;0&quot; data-language=&quot;text&quot;&gt;&lt;code&gt;&lt;span class=&quot;line&quot;&gt;&lt;span&gt;用户请求 + 当前任务状态&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;Harness 选择知识、记忆或任务状态，并在检索前限定授权范围&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ├─ 需要证据 → 在授权范围内查知识或记忆 → 复核来源、排序、按预算组装&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    └─ 已掌握所需信息 → 直接使用当前上下文&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;模型推理 → 检查工具权限和参数 → 调用工具（按需）&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ↓&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;验证答案或执行结果&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ├─ 满足任务约束 → 交付&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    ├─ 证据不足，仍有预算 → 返回检索&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line&quot;&gt;&lt;span&gt;    └─ 无法验证或超出预算 → 报告缺口或转人工&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;写路径&lt;/strong&gt;在采集和落盘前裁剪敏感内容。短期事件日志按保留期管理。后台从获准保留的事件中提炼候选记忆，检查冲突与有效期，必要时请用户确认，再写入长期索引。项目事实尽量关联正式文档、测试或代码提交。&lt;/p&gt;
+&lt;p&gt;以财年收入为例，Harness 可以限制知识检索和数据库工具的项目权限，执行参数校验和只读约束，再按任务定义检查日期范围与结果格式。Jev 一类组件可以参与有界的路由判断。其部分判断接口提供概率字段，具体权限和业务规则仍由应用校验 [7]。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;五分层评估检索记忆与任务结果&quot;&gt;五、分层评估检索、记忆与任务结果&lt;/h2&gt;
+&lt;p&gt;RAG 与 Memory 的评测都必须分层，否则无法知道收益来自哪里，也无法定位退化发生在哪一步。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;层级&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;RAG 重点指标&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;Memory 重点指标&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;写入 / 构建&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;文档解析成功率、结构完整度、索引新鲜度、构建成本&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;写入准确率、重复率、来源覆盖率、敏感信息误存率&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;检索&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Evidence Recall@K、MRR / nDCG、重排增益、无答案拒识&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;必要记忆召回率、过期记忆召回率、冲突识别率、跨域泄漏率&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;上下文&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;有效证据占比、重复率、引用可定位率、Token 消耗&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;有效记忆占比、作用域正确性、注入 Token 与详情展开成本&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;生成 / 执行&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;答案正确性、忠实度、引用准确性、拒答质量&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;个性化或任务成功率增益、错误记忆导致的失败率&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;系统成本&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;P50/P95 延迟、检索轮次、缓存命中率、单次回答成本&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;读写延迟、后台整理成本、存储增长、删除生效时间&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;RAG 对照可以比较无外部知识、直接给模型长文档、简单混合检索和结构化检索。Memory 对照可以比较无记忆、直接提供全量历史、会话摘要和完整记忆管线。各组使用相同的任务集和生成模型。&lt;strong&gt;固定预算时比较任务成功率，达到同一成功率时比较 Token、时延和维护成本。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;组件指标用于定位退化。即使 Recall@K 提高，也要单独检查执行结果是否改善。LoCoMo 和 LongMemEval 可作为长程对话的评测入口。编码项目和企业应用还需要使用各自的真实任务验证 [18][19]。&lt;/p&gt;
+&lt;p&gt;记忆评测按会话时间推进，依次测试写入、召回和更正。可以验证用户更新偏好后是否沿用新值、删除后是否仍能召回、其他项目能否读到这项偏好。报告任务成功率时，同时记录错误记忆引入的失败。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;六两个待验证的工程问题&quot;&gt;六、两个待验证的工程问题&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;结构化索引何时值得维护？&lt;/strong&gt; 在同一批真实查询和语料更新记录上，对照简单混合检索。比较建索引成本、更新后的证据召回、端到端成本和任务成功率。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;跨工具共享记忆何时有收益？&lt;/strong&gt; 让 IDE、CLI 和 Agent 复用同一组项目约定，记录任务成功率和重复确认次数。同步测试作用域隔离、偏好更正和删除生效时间。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;附录llm-生态技术雷达&quot;&gt;附录：LLM 生态技术雷达&lt;/h2&gt;
+&lt;p&gt;下表基于课程材料并借助 AI 归纳。RAG 与 Memory 属于上下文工程，Harness 属于 Agent 执行系统。使用雷达跟踪一个方向时，记录适用负载、对照基线、成本落点、已知失效条件、来源与核对日期。&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th align=&quot;left&quot;&gt;生态领域&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;雷达一级方向&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;代表性技术&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;核心关注问题&lt;/th&gt;&lt;th align=&quot;left&quot;&gt;二级重点专题&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;模型能力&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;1. 模型能力&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Transformer、MoE、Reasoning、Multimodal&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;模型的能力边界如何演进&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;原生推理与多模态&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;数据与训练&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;2. 后训练与适配&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;SFT、RL、DPO、LoRA、Distillation&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何改变模型的行为与能力&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;推理强化学习与领域对齐&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;数据与训练&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;3. 数据工程&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Data Curation、Synthetic Data、Data Flywheel&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何持续获得高质量训练与反馈数据&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;合成数据与反馈闭环&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;推理基础设施&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;4. 推理基础设施&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;vLLM、SGLang、KV Cache、Quantization&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何优化吞吐、延迟与成本&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;注意力优化与低比特推理&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;智能应用&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;5. 上下文工程&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Prompt、RAG、Memory、Context Compression&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何组织高价值上下文&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;RAG、Memory&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;智能应用&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;6. Agent 执行系统&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Harness、Tool Use、Skills、MCP、Sandbox&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何可靠地执行复杂任务&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;Harness&lt;/strong&gt;、MCP 与沙箱&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;推理基础设施&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;7. 多模型协同&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Model Router、Model Gateway、Fallback&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何按任务分配模型和计算资源&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;动态路由与多模型回退&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;可信生产系统&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;8. 评测与验证&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Evals、Benchmark、LLM-as-Judge、Verification&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何证明正确性与可靠性&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;轨迹评测与结果验证&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;可信生产系统&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;9. 安全与治理&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Prompt Injection、Guardrails、Permissions&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何限制模型、数据与工具的风险&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;注入防御与权限控制&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;可信生产系统&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;10. AI 系统运维&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;LLMOps、Tracing、Observability、Cost&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何持续监控并优化生产系统&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;全链路追踪与成本治理&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;&lt;strong&gt;智能应用&lt;/strong&gt;&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;11. 环境与模态交互&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;Vision、Voice、Computer Use、Embodied AI&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;如何让模型感知并操作外部世界&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;桌面/浏览器操作与具身交互&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;RAG 部分参考了 AI 辅助论文调研。该调研说明了选文范围和证据局限。&lt;/p&gt;
+&lt;p&gt;文中公开项目特性的核对日期为 2026 年 11 月 19 日。&lt;/p&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+&lt;p&gt;[1] P. Lewis et al., “Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks,” 2020. &lt;a href=&quot;https://arxiv.org/abs/2005.11401&quot;&gt;arXiv:2005.11401&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[2] N. F. Liu et al., “Lost in the Middle: How Language Models Use Long Contexts,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2307.03172&quot;&gt;arXiv:2307.03172&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[3] D. Edge et al., “From Local to Global: A Graph RAG Approach to Query-Focused Summarization,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2404.16130&quot;&gt;arXiv:2404.16130&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[4] VectifyAI, “PageIndex: Vectorless, Reasoning-based RAG.” &lt;a href=&quot;https://github.com/VectifyAI/PageIndex&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[5] Graphify Labs, “Graphify: Codebase Knowledge Graph for Agents.” &lt;a href=&quot;https://github.com/Graphify-Labs/graphify&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[6] Volcano Engine, “OpenViking: The Context Database for AI Agents.” &lt;a href=&quot;https://github.com/volcengine/OpenViking&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[7] TypeSafe AI, “Jev / System One Models Documentation.” &lt;a href=&quot;https://docs.typesafe.ai/introduction&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[8] T. Chen et al., “Dense X Retrieval: What Retrieval Granularity Should We Use?” 2023. &lt;a href=&quot;https://arxiv.org/abs/2312.06648&quot;&gt;arXiv:2312.06648&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[9] M. Günther et al., “Late Chunking: Contextual Chunk Embeddings Using Long-Context Embedding Models,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2409.04701&quot;&gt;arXiv:2409.04701&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[10] A. Asai et al., “Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2310.11511&quot;&gt;arXiv:2310.11511&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[11] S. Jeong et al., “Adaptive-RAG: Learning to Adapt Retrieval-Augmented Large Language Models through Question Complexity,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2403.14403&quot;&gt;arXiv:2403.14403&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[12] P. Sarthi et al., “RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2401.18059&quot;&gt;arXiv:2401.18059&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[13] Y. Wu et al., “SAG: SQL-Retrieval Augmented Generation with Query-Time Dynamic Hyperedges,” arXiv 预印本，2026. &lt;a href=&quot;https://arxiv.org/abs/2606.15971&quot;&gt;arXiv:2606.15971&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[14] S. Es et al., “RAGAS: Automated Evaluation of Retrieval Augmented Generation,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2309.15217&quot;&gt;arXiv:2309.15217&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[15] S. Barnett et al., “Seven Failure Points When Engineering a Retrieval Augmented Generation System,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2401.05856&quot;&gt;arXiv:2401.05856&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[16] C. Packer et al., “MemGPT: Towards LLMs as Operating Systems,” 2023. &lt;a href=&quot;https://arxiv.org/abs/2310.08560&quot;&gt;arXiv:2310.08560&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[17] Z. Zhang et al., “A Survey on the Memory Mechanism of Large Language Model based Agents,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2404.13501&quot;&gt;arXiv:2404.13501&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[18] D. Wu et al., “LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive Memory,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2410.10813&quot;&gt;arXiv:2410.10813&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[19] A. Maharana et al., “Evaluating Very Long-Term Conversational Memory of LLM Agents,” 2024. &lt;a href=&quot;https://arxiv.org/abs/2402.17753&quot;&gt;arXiv:2402.17753&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[20] Rohit Ghumare, “AgentMemory: Persistent Memory Across Coding Sessions and Agents.” &lt;a href=&quot;https://github.com/rohitg00/agentmemory&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[21] thedotmack, “claude-mem: Persistent Context Across Sessions.” &lt;a href=&quot;https://github.com/thedotmack/claude-mem&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[22] P. Chhikara et al., “Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory,” 2025. &lt;a href=&quot;https://arxiv.org/abs/2504.19413&quot;&gt;arXiv:2504.19413&lt;/a&gt;；&lt;a href=&quot;https://github.com/mem0ai/mem0&quot;&gt;GitHub&lt;/a&gt;&lt;/p&gt; - https://akelio-zhang.github.io/posts/2026-llm-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E8%A7%82%E5%AF%9F%EF%BC%9Arag%E3%80%81%E8%AE%B0%E5%BF%86%E4%B8%8E-harness/ - 2019–2026 Akelio</description><pubDate>Thu, 19 Nov 2026 06:30:00 GMT</pubDate></item></channel></rss>
